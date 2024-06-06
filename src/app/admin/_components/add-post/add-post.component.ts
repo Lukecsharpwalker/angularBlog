@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   ChangeDetectionStrategy,
   Component,
@@ -30,10 +31,19 @@ import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dia
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
+=======
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ApiService } from '../../_services/api.service';
+import { Firestore, FirestoreModule} from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+import { AsyncPipe } from '@angular/common';
+>>>>>>> ab739b9 (nothing special)
 
 @Component({
   selector: 'blog-add-post',
   standalone: true,
+<<<<<<< HEAD
   imports: [
     ReactiveFormsModule,
     FirestoreModule,
@@ -43,6 +53,10 @@ import { AddImageForm } from './add-image/add-image-controls.interface';
     RouterModule,
   ],
   providers: [AdminApiService, NgModel],
+=======
+  imports: [ReactiveFormsModule, FirestoreModule, AsyncPipe],
+  providers: [ApiService, HttpClient],
+>>>>>>> ab739b9 (nothing special)
   templateUrl: './add-post.component.html',
   styleUrl: './add-post.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -65,10 +79,14 @@ export class AddPostComponent implements OnInit {
     this.blogForm = this.fb.group({
       title: ['', [Validators.required]],
       content: ['', [Validators.required]],
+<<<<<<< HEAD
       date: new Timestamp(0, 0),
       description: [null],
       isDraft: [false],
     }) as FormGroup<PostForm>;
+=======
+    });
+>>>>>>> ab739b9 (nothing special)
   }
 
   ngOnInit(): void {
