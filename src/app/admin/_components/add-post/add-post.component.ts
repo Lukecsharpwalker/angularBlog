@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, HostListener, inject, Input, OnInit, viewChild, ViewContainerRef } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, inject, Input, OnInit, viewChild, ViewContainerRef } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminApiService } from '../../_services/admin-api.service';
 import { FirestoreModule, Timestamp } from '@angular/fire/firestore';
 import { AsyncPipe } from '@angular/common';
@@ -11,13 +11,8 @@ import { PostForm } from '../../_models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
 import { loadQuillModules } from '../../../utlis/quill-configuration';
-import { QueryOperators } from '../../../shared/_enums/query-operators';
-import { ExpandedQuillOptions } from 'quill';
 import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dialog.service';
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
-import { AddImageComponent } from './add-image/add-image.component';
-import { HasForm } from '../../../shared/dynamic-dialog/models/has-form.interface';
-import { AddImageForm } from './add-image/add-image-controls.interface';
 
 @Component({
   selector: 'blog-add-post',
@@ -114,19 +109,19 @@ export class AddPostComponent implements OnInit {
       primaryButton: 'Insert',
       secondaryButton: 'Cancel',
     }
-    this.dialogService.openDialog().subscribe((modalStatus) => {
-      if (modalStatus.data) {
-        console.log('Inserting image:', modalStatus.data.form?.controls;
-        const imgTag = `<img src="${modalStatus}" alt="Image" style="max-width: 100%;">`;
-        const range = this.quill().quillEditor.getSelection(); // Get the current cursor position
-        if (range) {
-          console.log('Inserting image at index:', range.index);
-          this.quill().quillEditor.clipboard.dangerouslyPasteHTML(range.index, imgTag); // Insert the <img> tag
-          console.log('Inserted image:', this.quill().quillEditor.root.innerHTML);
-          this.blogForm.controls.content.setValue(this.quill().quillEditor.root.innerHTML); // Update the form control
-        }
-      }
-    });
+    // this.dialogService.openDialog().subscribe((modalStatus) => {
+    //   if (modalStatus.data) {
+    //     console.log('Inserting image:', modalStatus.data.form?.controls;
+    //     const imgTag = `<img src="${modalStatus}" alt="Image" style="max-width: 100%;">`;
+    //     const range = this.quill().quillEditor.getSelection(); // Get the current cursor position
+    //     if (range) {
+    //       console.log('Inserting image at index:', range.index);
+    //       this.quill().quillEditor.clipboard.dangerouslyPasteHTML(range.index, imgTag); // Insert the <img> tag
+    //       console.log('Inserted image:', this.quill().quillEditor.root.innerHTML);
+    //       this.blogForm.controls.content.setValue(this.quill().quillEditor.root.innerHTML); // Update the form control
+    //     }
+    //   }
+    // });
   }
 
   @HostListener('window:beforeunload', ['$event'])

@@ -17,7 +17,7 @@ import { ModalCloseStatusEnum, ModalStatus } from '../../shared/_models/modal-st
 })
 export class LoginCompontent {
 
-  loginForm = new FormGroup({
+  form = new FormGroup({
     email: new FormControl<string>('', { nonNullable: true }),
     password: new FormControl<string>('', { nonNullable: true }),
   });
@@ -29,7 +29,7 @@ export class LoginCompontent {
 
   onSubmit(): void {
     this.isSubmitted = true;
-    this.authService.loginWithEmail(this.loginForm.value as Credentials)
+    this.authService.loginWithEmail(this.form.value as Credentials)
       .then(() => {
         this.loginError.set(false);
         const status = {
