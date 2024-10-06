@@ -29,9 +29,11 @@ export class DynamicDialogComponent<C = unknown> implements OnInit{
     }
   }
 
-  closeDialog(closeStatus: ModalCloseStatusEnum) {
+  closeDialog(modalCloseStatus: ModalCloseStatusEnum) {
+    // console.log((this.componentRef?.instance.form));
+    let test = this.componentRef?.instance as C;
     const status = {} as ModalStatus;
-    status.closeStatus = closeStatus;
+    status.closeStatus = modalCloseStatus;
     if (status.closeStatus === ModalCloseStatusEnum.ACCEPTED
       // && this.hasForm(this.componentRef!.instance)) {
       && this.hasForm()) {

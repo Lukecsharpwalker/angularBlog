@@ -10,11 +10,11 @@ export class DynamicDialogService {
 
   private envInjector = inject(EnvironmentInjector);
   private componentRef!: ComponentRef<DynamicDialogComponent>;
-  private closeRef$ = new Subject<ModalStatus>();
+  private closeRef$ = new Subject<ModalStatus<any>>();
 
 
-  openDialog<C>(viewContainerRef: ViewContainerRef, modalConfig?: ModalConfig, component?: Type<C>)
-    : Subject<ModalStatus> {
+  openDialog<C, T = unknown>(viewContainerRef: ViewContainerRef, modalConfig?: ModalConfig, component?: Type<C>)
+    : Subject<ModalStatus<T>> {
     this.componentRef =
       viewContainerRef.createComponent(DynamicDialogComponent, { environmentInjector: this.envInjector });
     if (component) {

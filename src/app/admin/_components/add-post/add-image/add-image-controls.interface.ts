@@ -1,7 +1,10 @@
-import { FormControl } from "@angular/forms";
+import { Form, FormControl, FormGroup } from "@angular/forms";
 
-export interface AddImageForm {
-  src: FormControl<string>;
-  alt: FormControl<string>;
+export interface AddImageControls {
+  src: FormControl<string | null>;
+  alt: FormControl<string | null>;
 }
 
+export interface AddImageForm {
+  form: FormGroup<AddImageControls>;
+}

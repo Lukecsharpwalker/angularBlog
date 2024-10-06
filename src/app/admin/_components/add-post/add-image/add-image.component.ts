@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AddImageControls } from './add-image-controls.interface';
 
 @Component({
   selector: 'app-add-image',
@@ -10,6 +11,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddImageComponent {
+  form = new FormGroup<AddImageControls>({
+    src: new FormControl<string | null>(''),
+    alt: new FormControl<string | null>(''),
+  })
 
 }
 
