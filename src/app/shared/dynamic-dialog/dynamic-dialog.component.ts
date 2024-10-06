@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, Type, ViewContainerRef, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef, Input, OnInit, Type, ViewContainerRef, inject, viewChild } from '@angular/core';
 import { DynamicDialogService } from './dynamic-dialog.service';
 import { ModalConfig } from '../_models/modal-config.intreface';
-import { ModalStatusEnum } from '../_models/modal-status.interface';
+import { ModalCloseStatusEnum, ModalStatus } from '../_models/modal-status.interface';
 
 @Component({
   selector: 'app-dynamic-dialog',
@@ -20,16 +20,30 @@ export class DynamicDialogComponent<C = unknown> implements OnInit{
 
   dynamicDialogService = inject(DynamicDialogService);
   viewContainerRef = inject(ViewContainerRef);
-  ModalStatusEnum = ModalStatusEnum;
+  componentRef?: ComponentRef<C>;
+  ModalCloseStatusEnum = ModalCloseStatusEnum;
 
   ngOnInit(): void {
     if (this.divEl() && this.component) {
-      this.divEl().createComponent(this.component);
+      this.componentRef = this.divEl().createComponent(this.component);
     }
   }
 
-  closeDialog(status: ModalStatusEnum) {
+  closeDialog(closeStatus: ModalCloseStatusEnum) {
+    const status = {} as ModalStatus;
+    status.closeStatus = closeStatus;
+    if (status.closeStatus === ModalCloseStatusEnum.ACCEPTED
+      // && this.hasForm(this.componentRef!.instance)) {
+      && this.hasForm()) {
+      console.log((this.componentRef?.instance));
+      console.log(this.componentRef);
+    }
     this.dynamicDialogService.closeDialog(status);
   }
-
+  hasForm() {
+    return true;
+  }
+  // hasForm(instance: unknown): instance is HasForm {
+  //   return (instance as HasForm).form !== undefined;
+  // }
 }
