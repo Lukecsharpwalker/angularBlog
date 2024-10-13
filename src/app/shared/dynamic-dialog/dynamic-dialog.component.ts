@@ -12,7 +12,7 @@ import { ModalCloseStatusEnum, ModalStatus } from '../_models/modal-status.inter
   styleUrl: './dynamic-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynamicDialogComponent<C = unknown> implements OnInit{
+export class DynamicDialogComponent<C = unknown> implements OnInit {
   @Input() component?: Type<C>;
   @Input() modalConfig?: ModalConfig;
 

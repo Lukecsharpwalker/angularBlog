@@ -34,7 +34,7 @@ export class AddPostComponent implements OnInit {
   range: Range | null = null;
 
   viewContainerRef = inject(ViewContainerRef);
-  dialogService = inject(DynamicDialogService);
+  dialogService = inject(DynamicDialogService<AddImageForm>);
 
   private fb = inject(FormBuilder);
   private apiService = inject(AdminApiService);
@@ -113,7 +113,7 @@ export class AddPostComponent implements OnInit {
       secondaryButton: 'Cancel',
     }
     this.range = this.quill().quillEditor.getSelection();
-    this.dialogService.openDialog<AddImageComponent, AddImageForm>
+    this.dialogService.openDialog<AddImageComponent>
       (this.viewContainerRef, modalConfig, AddImageComponent).subscribe((modalStatus) => {
         if (modalStatus.data) {
           const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="Image" style="max-width: 100%;">`;

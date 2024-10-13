@@ -6,14 +6,14 @@ import { ModalConfig } from '../_models/modal-config.intreface';
 import { ModalStatus } from '../_models/modal-status.interface';
 
 @Injectable({ providedIn: 'root' })
-export class DynamicDialogService {
+export class DynamicDialogService <T>  {
 
   private envInjector = inject(EnvironmentInjector);
   private componentRef!: ComponentRef<DynamicDialogComponent>;
-  private closeRef$ = new Subject<ModalStatus<any>>();
+  private closeRef$ = new Subject<ModalStatus<T>>();
 
 
-  openDialog<C, T = unknown>(viewContainerRef: ViewContainerRef, modalConfig?: ModalConfig, component?: Type<C>)
+  openDialog<C>(viewContainerRef: ViewContainerRef, modalConfig?: ModalConfig, component?: Type<C>)
     : Subject<ModalStatus<T>> {
     this.componentRef =
       viewContainerRef.createComponent(DynamicDialogComponent, { environmentInjector: this.envInjector });
@@ -24,7 +24,7 @@ export class DynamicDialogService {
     return this.closeRef$;
   };
 
-  closeDialog(status: ModalStatus) {
+  closeDialog(status: ModalStatus<T>) {
     this.componentRef.destroy();
     this.closeRef$.next(status);
   };
