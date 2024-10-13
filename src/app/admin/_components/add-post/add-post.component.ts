@@ -5,7 +5,7 @@ import { FirestoreModule, Timestamp } from '@angular/fire/firestore';
 import { AsyncPipe } from '@angular/common';
 import { EditorModule } from 'primeng/editor';
 import { HighlightModule } from 'ngx-highlightjs';
-import { QuillEditorComponent } from 'ngx-quill'
+import { QuillEditorComponent, Range } from 'ngx-quill'
 import { Post } from '../../../shared/_models/post.interface';
 import { PostForm } from '../../_models/post-from.inteface';
 import hljs from 'highlight.js';
@@ -31,6 +31,7 @@ export class AddPostComponent implements OnInit {
   quill = viewChild.required<QuillEditorComponent>('quill');
 
   blogForm: FormGroup<PostForm>;
+  range: Range | null = null;
 
   viewContainerRef = inject(ViewContainerRef);
   dialogService = inject(DynamicDialogService);
@@ -111,18 +112,13 @@ export class AddPostComponent implements OnInit {
       primaryButton: 'Insert',
       secondaryButton: 'Cancel',
     }
+    this.range = this.quill().quillEditor.getSelection();
     this.dialogService.openDialog<AddImageComponent, AddImageForm>
       (this.viewContainerRef, modalConfig, AddImageComponent).subscribe((modalStatus) => {
-        console.log('Modal status:', modalStatus);
         if (modalStatus.data) {
-          console.log('Inserting image:', modalStatus.data.form.controls.src.value);
-          console.log('Inserting image:', modalStatus.data.form.controls.src.value);
-        const imgTag = `<img src="${modalStatus}" alt="Image" style="max-width: 100%;">`;
-          const range = this.quill().quillEditor.getSelection(); // Get the current cursor position
-          if (range) {
-            console.log('Inserting image at index:', range.index);
-            this.quill().quillEditor.clipboard.dangerouslyPasteHTML(range.index, imgTag); // Insert the <img> tag
-            console.log('Inserted image:', this.quill().quillEditor.root.innerHTML);
+          const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="Image" style="max-width: 100%;">`;
+          if (this.range) {
+            this.quill().quillEditor.clipboard.dangerouslyPasteHTML(this.range.index, imgTag); // Insert the <img> tag
             this.blogForm.controls.content.setValue(this.quill().quillEditor.root.innerHTML); // Update the form control
           }
         }
