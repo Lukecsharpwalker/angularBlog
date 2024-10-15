@@ -40,7 +40,7 @@ export class CookieConsentService {
     localStorage.setItem(LocalStorageEnum.COOKIES_CONSENT, 'false');
   }
 
-  closePopup<T>(closeStatus: ModalCloseStatusEnum) {
+  closePopup(closeStatus: ModalCloseStatusEnum) {
     const status = {
       closeStatus: closeStatus
     } as ModalStatus;
