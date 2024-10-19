@@ -81,22 +81,58 @@ export class AddPostComponent implements OnInit {
     }
   }
 
+  // extractAndHighlight(htmlContent: string): string {
+  //   const tempDiv = document.createElement('div');
+  //   tempDiv.innerHTML = htmlContent;
+
+  //   const codeBlocks = tempDiv.querySelectorAll('pre');
+  //   codeBlocks.forEach((block) => {
+  //     let language = block.getAttribute('data-language') || 'plaintext';
+  //     const codeElement = document.createElement('code');
+  //     codeElement.className = language;
+  //     if (language === 'plain') {
+  //       language = 'plaintext';
+  //     }
+  //     codeElement.innerHTML = hljs.highlight(block.textContent || '', { language }).value;
+  //     block.innerHTML = '';
+  //     block.appendChild(codeElement);
+  //   });
+
+  //   return tempDiv.innerHTML;
+  // }
+
   highlightContent(): void {
-    this.blogForm.controls.content.setValue(this.extractAndHighlight(this.blogForm.controls.content.value as string));
+    this.blogForm.controls.content.setValue(this.extractAndHighlightHTML(this.blogForm.controls.content.value as string));
+    this.blogForm.controls.content.setValue(this.extractAndHighlightTS(this.blogForm.controls.content.value as string));
   }
 
-  extractAndHighlight(htmlContent: string): string {
+  extractAndHighlightHTML(htmlContent: string): string {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
+    console.log(tempDiv);
 
-    const codeBlocks = tempDiv.querySelectorAll('pre');
-    codeBlocks.forEach((block) => {
-      let language = block.getAttribute('data-language') || 'plaintext';
+    const codeBlocksHTML = tempDiv.querySelectorAll('pre[data-language="xml"]');
+    codeBlocksHTML.forEach((block) => {
+      let language = 'xml';
       const codeElement = document.createElement('code');
       codeElement.className = language;
-      if (language === 'plain') {
-        language = 'plaintext';
-      }
+      codeElement.innerHTML = hljs.highlight(block.textContent || '', { language }).value;
+      block.innerHTML = '';
+      block.appendChild(codeElement);
+    });
+
+    return tempDiv.innerHTML;
+  }
+  extractAndHighlightTS(htmlContent: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    console.log(tempDiv);
+
+    const codeBlocksTS = tempDiv.querySelectorAll('pre[data-language="typescript"]');
+    codeBlocksTS.forEach((block) => {
+      let language = 'typescript';
+      const codeElement = document.createElement('code');
+      codeElement.className = language;
       codeElement.innerHTML = hljs.highlight(block.textContent || '', { language }).value;
       block.innerHTML = '';
       block.appendChild(codeElement);
@@ -116,10 +152,10 @@ export class AddPostComponent implements OnInit {
     this.dialogService.openDialog<AddImageComponent>
       (this.viewContainerRef, modalConfig, AddImageComponent).subscribe((modalStatus) => {
         if (modalStatus.data) {
-          const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="Image" style="max-width: 100%;">`;
+          const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="${modalStatus.data.form.controls.alt}" style="max-width: 100%;">`;
           if (this.range) {
             this.quill().quillEditor.clipboard.dangerouslyPasteHTML(this.range.index, imgTag); // Insert the <img> tag
-            this.blogForm.controls.content.setValue(this.quill().quillEditor.root.innerHTML); // Update the form control
+            this.blogForm.controls.content.setValue(this.quill().quillEditor.editor.getContents(this.range.index, 10).ops); // Update the form control
           }
         }
       });
