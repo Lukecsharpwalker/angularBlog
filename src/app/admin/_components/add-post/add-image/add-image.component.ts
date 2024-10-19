@@ -15,7 +15,6 @@ export class AddImageComponent {
     src: new FormControl<string | null>(''),
     alt: new FormControl<string | null>(''),
   })
-
 }
 
 

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicDialogService } from '../../shared/dynamic-dialog/dynamic-dialog.service';
 import { Credentials } from '../../shared/_models/credentials.interface';
 import { ModalCloseStatusEnum, ModalStatus } from '../../shared/_models/modal-status.interface';
+import { LoginFormControls } from './login.interface';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { ModalCloseStatusEnum, ModalStatus } from '../../shared/_models/modal-st
 })
 export class LoginCompontent {
 
-  form = new FormGroup({
+  form = new FormGroup<LoginFormControls>({
     email: new FormControl<string>('', { nonNullable: true }),
     password: new FormControl<string>('', { nonNullable: true }),
   });
