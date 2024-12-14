@@ -1,0 +1,17 @@
+/* Base navbar styles */
+#navbar {
+  position: sticky;
+  top: 20px;
+  margin: 0 auto 0;
+  border-radius: 2rem;
+  transition: all 0.6s ease-in-out;
+  z-index: 10;
+}
+
+/* Sticky state styles */
+#navbar.scrolled {
+  top: 0;
+  margin-top: 0;
+  width: 100%;
+  border-radius: 0;
+}

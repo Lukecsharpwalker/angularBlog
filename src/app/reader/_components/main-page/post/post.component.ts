@@ -9,7 +9,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Comment } from '../../../../shared/_models/comment.inteface';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { cp } from 'node:fs';
 import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
@@ -36,8 +35,8 @@ export class PostComponent implements OnInit {
   post$!: Observable<Post | null>;
   comments$!: Signal<Comment[] | undefined>;
   date: string = '';
-  constructor() { 
-    
+  constructor() {
+
   }
 
   ngOnInit() {

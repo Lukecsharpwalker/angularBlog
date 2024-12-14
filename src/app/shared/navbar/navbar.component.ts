@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewContainerRef, inject } from '@angular/core';
+import {ChangeDetectionStrategy, Component, ViewContainerRef, inject, HostListener} from '@angular/core';
 import { DynamicDialogService } from '../dynamic-dialog/dynamic-dialog.service';
 import { AuthService } from '../../auth/auth.service';
 import { LoginCompontent } from '../../auth/login/login.component';
@@ -14,6 +14,8 @@ import { LoginCompontent } from '../../auth/login/login.component';
 })
 export class NavbarComponent {
   public authService = inject(AuthService);
+  public isScrolled: boolean = false;
+
 
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
@@ -25,4 +27,9 @@ export class NavbarComponent {
       LoginCompontent,
     );
   };
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.pageYOffset > 0;
+  }
 }

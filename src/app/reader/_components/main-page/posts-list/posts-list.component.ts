@@ -1,17 +1,20 @@
-import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FirestoreModule } from '@angular/fire/firestore';
-import { RouterLink, RouterModule } from '@angular/router';
-import { map, Observable } from 'rxjs';
-import { Post } from '../../../../shared/_models/post.interface';
-import { ReaderApiService } from '../../../_services/reader-api.service';
-import { PostComponent } from '../post/post.component';
-import { CardComponent } from '../../../../shared/card/card.component';
+import {AsyncPipe, DatePipe, NgClass, NgOptimizedImage, NgStyle} from '@angular/common';
+import {CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {FirestoreModule} from '@angular/fire/firestore';
+import {RouterLink, RouterModule} from '@angular/router';
+import {map, Observable} from 'rxjs';
+import {Post} from '../../../../shared/_models/post.interface';
+import {ReaderApiService} from '../../../_services/reader-api.service';
+import {PostComponent} from '../post/post.component';
+import {CardComponent} from '../../../../shared/card/card.component';
+import {AboutMeComponent} from "../../../../shared/about-me/about-me.component";
+import {PostCardComponent} from "./post-card/post-card.component";
+import {TAGS} from "../../../../utlis/tags";
 
 @Component({
   selector: 'app-posts-list',
   standalone: true,
-  imports: [FirestoreModule, AsyncPipe, RouterLink, PostComponent, CardComponent, NgClass, RouterModule, DatePipe],
+  imports: [FirestoreModule, AsyncPipe, RouterModule, AboutMeComponent, PostCardComponent, NgOptimizedImage, NgStyle],
   providers: [ReaderApiService, DatePipe],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss',
@@ -28,4 +31,5 @@ export class PostsListComponent {
       dateJS: post.date.toDate(),
     })))
   );
+  protected readonly TAGS = TAGS;
 }

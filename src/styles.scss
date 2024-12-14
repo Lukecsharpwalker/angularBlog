@@ -4,6 +4,8 @@
 @import "../node_modules/quill/dist/quill.snow.css";
 @import 'highlight.js/styles/atom-one-dark.css';
 
+
+
 // Custom styles for highlighted code blocks
 pre {
   overflow-x: auto; /* Enable horizontal scrolling */
@@ -155,4 +157,9 @@ h4 {
 /* Ensure that the flex container applies to block-level elements */
 .ql-align-center > * {
   @apply flex items-center;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
