@@ -1,23 +1,72 @@
-<app-about-me/>
-<div class="flex flex-wrap bg-white p-6 rounded-lg">
-  @for (tag of TAGS; track tag.tag) {
-    <div class="flex flex-col">
-      <div [ngStyle]="{ 'background-color': tag.color }"
-           class="font-bold text-gray-700 rounded-full flex mr-3 items-center justify-center font-mono w-full sm:w-1/2 md:w-1/3 lg:w-1/5 p-5 flex-col"
-           style="height: auto; width: auto;">
-        <img
-          ngSrc="tags/{{ tag.icon }}"
-          [alt]="tag.tag"
-          class="w-14 h-14"
-          width="500"
-          height="500"
-        />
-      </div>
-      <span class="mt-2 text-center">{{ tag.tag }}</span>
+<app-about-me></app-about-me>
+<div class="relative mt-4">
+  <div
+    #scrollContainer
+    class="shadow-lg bg-white p-6 px-14 rounded-[64px] overflow-x-scroll hide-scrollbar whitespace-nowrap scroll-smooth"
+  >
+    <div class="inline-flex space-x-4 gap-x-6">
+      @for (tag of TAGS; track tag.tag) {
+        <div class="flex flex-col items-center min-w-24">
+          <div
+            [ngStyle]="{ 'background-color': tag.color }"
+            class="font-bold text-gray-700 rounded-full flex items-center justify-center font-mono p-5 min-w-18"
+          >
+            <img
+              ngSrc="tags/{{ tag.icon }}"
+              [alt]="tag.tag"
+              class="w-10 h-10"
+              width="50"
+              height="50"
+            />
+          </div>
+          <span class="mt-2 text-center">
+            {{ tag.tag }}
+          </span>
+        </div>
+      }
     </div>
-  }
-</div>
+  </div>
 
+  <button
+    (click)="scrollContainer.scrollLeft = scrollContainer.scrollLeft - 135"
+    class="btn btn-circle rounded-none absolute top-0 left-0 h-40 bg-base-100 bg-opacity-70 hover:bg-base-200 hidden md:flex rounded-tl-full rounded-bl-full"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 transform"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M15 19l-7-7 7-7"
+      />
+    </svg>
+  </button>
+
+  <button
+    (click)="scrollContainer.scrollLeft = scrollContainer.scrollLeft + 135"
+    class="btn btn-circle rounded-none absolute top-0 right-0 h-40 bg-base-100 bg-opacity-70 hover:bg-base-200 hidden md:flex rounded-tr-full rounded-br-full"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 transform rotate-180"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M15 19l-7-7 7-7"
+      />
+    </svg>
+  </button>
+</div>
 
 <div class="flex justify-center mt-5">
   <div class="w-full">
