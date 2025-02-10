@@ -1,19 +1,24 @@
-<article class="bg-white shadow-md w-full h-64 rounded-lg py-8 overflow-hidden mb-6 ">
+<article
+  class="bg-white shadow-md w-full h-64 rounded-lg py-8 overflow-hidden mb-6"
+>
   <div class="bg-white w-full flex flex-row pr-4">
     <div class="flex flex-col items-start basis-2/12">
       @for (tag of tags; track tag.tag; let i = $index) {
-        <app-label [text]="tag.tag" [position]="i" [color]="tag.color"></app-label>
+        <app-label
+          [text]="tag.tag"
+          [position]="i"
+          [color]="tag.color"
+        ></app-label>
       }
     </div>
 
     <div class="flex flex-col basis-10/12">
-      <h2 class="font-bold text-xl mt-0">
+      <h2 class="font-bold text-xl mt-0 text-center">
         {{ post().title }}
       </h2>
-      <div [innerHTML]="sanitizedContent()" class="text-ellipsis overflow-hidden mt-3">
-
+      <div class="text-ellipsis overflow-hidden mt-3">
+        {{ description() }}
       </div>
     </div>
-
   </div>
 </article>

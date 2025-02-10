@@ -5,7 +5,6 @@
 @import 'highlight.js/styles/atom-one-dark.css';
 
 
-
 // Custom styles for highlighted code blocks
 pre {
   overflow-x: auto; /* Enable horizontal scrolling */
@@ -19,9 +18,9 @@ pre {
 pre code {
   font-size: 1rem; /* Set font size */
 }
+
 /* Order */
 @layer reset, primeng;
-
 
 
 /* You can add global styles to this file, and also import other style files */
@@ -53,6 +52,7 @@ h4 {
 .btn {
   @apply text-base font-medium rounded-md p-3 min-w-16;
 }
+
 .btn--rounded {
   @apply rounded-full;
 }
@@ -81,6 +81,7 @@ h4 {
 .btn--primary:disabled, .btn--secondary:disabled {
   @apply bg-gray-300 text-gray-500 cursor-not-allowed;
 }
+
 /* Import TailwindCSS */
 @import 'tailwindcss/utilities';
 
@@ -118,6 +119,7 @@ h4 {
 .read-more {
   @apply text-primary hover:underline;
 }
+
 .editor-container {
   @apply p-4 border border-gray-300 rounded-lg;
 }
@@ -126,6 +128,7 @@ h4 {
 .ql-code-block-container {
   @apply bg-gray-100 border border-gray-300 rounded-lg p-4 break-words;
 }
+
 /* Strike-through text for Quill */
 .ql-strike {
   @apply line-through;
@@ -148,6 +151,7 @@ h4 {
 .ql-header.ql-size-h3 {
   @apply text-2xl;
 }
+
 /* custom-quill-styles.css */
 
 .ql-align-center {
@@ -158,8 +162,9 @@ h4 {
 .ql-align-center > * {
   @apply flex items-center;
 }
+
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
 }
+
