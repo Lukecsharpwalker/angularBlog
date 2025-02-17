@@ -25,6 +25,7 @@
     "@angular/platform-server": "^18.0.5",
     "@angular/router": "^18.0.5",
     "@angular/ssr": "^18.0.6",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "express": "5.0.0",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.2.0",
