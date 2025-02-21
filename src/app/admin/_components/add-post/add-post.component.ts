@@ -38,7 +38,6 @@ import { AddImageForm } from './add-image/add-image-controls.interface';
   imports: [
     ReactiveFormsModule,
     FirestoreModule,
-    AsyncPipe,
     FormsModule,
     QuillEditorComponent,
     HighlightModule,

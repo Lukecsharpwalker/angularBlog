@@ -28,14 +28,7 @@ import { AuthService } from '../../../../auth/auth.service';
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-    JsonPipe,
-    CommentsComponent,
-    AddCommentComponent,
-    NgIf,
-    DatePipe,
-  ],
+  imports: [AsyncPipe, CommentsComponent, AddCommentComponent, DatePipe],
 })
 export class PostComponent implements OnInit {
   //TODO: add resolver
