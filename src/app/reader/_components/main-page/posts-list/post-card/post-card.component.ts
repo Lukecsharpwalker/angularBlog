@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class PostCardComponent {
   tagsMock = ['HTML', 'CSS', 'TypeScript', 'SSG/SSR'];
-  tags = TAGS.filter((tag) => this.tagsMock.includes(tag.tag));
+  tags = TAGS.filter((tag) => this.tagsMock.includes(tag.name));
 
   post = input.required<Post>();
   description = computed(() => {

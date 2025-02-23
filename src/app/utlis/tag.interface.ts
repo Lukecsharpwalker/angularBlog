@@ -1,5 +1,5 @@
 export interface tag {
-  tag: string;
+  name: string;
   color: string;
   icon: string;
 }

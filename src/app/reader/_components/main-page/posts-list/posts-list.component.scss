@@ -1,11 +1,23 @@
 .hide-scrollbar {
-  /* IE and Edge */
   -ms-overflow-style: none;
-  /* Firefox */
   scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-/* Chrome, Safari, and Opera */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
+// Enable vertical overflow for tooltips
+.overflow-x-scroll {
+  overflow-y: visible;
+}
+
+// Optimize animations
+.group {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+
+  img {
+    transform: translateZ(0);
+  }
 }

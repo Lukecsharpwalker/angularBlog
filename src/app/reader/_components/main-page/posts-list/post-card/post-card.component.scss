@@ -16,3 +16,12 @@
 }
 
 
+article {
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  will-change: transform;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.005);
+  }
+}
