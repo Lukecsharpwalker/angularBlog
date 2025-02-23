@@ -9,28 +9,36 @@
   </div>
 }
 
-<div class="flex flex-row">
-  <aside class="lg:w-1/4 w-full p-6 bg-gray-100 rounded-lg shadow-md">
+<div class="container mx-auto grid grid-cols-12 gap-8">
+  <aside class="col-span-12 2xl:col-span-3
+         bg-white/0 backdrop-blur-lg border border-white/90
+         rounded-lg shadow-lg p-6 self-start -mt-16 mb-16 2xl:my-36"
+  >
     <h2 class="text-xl font-bold mb-4">📌 Article Information</h2>
-    <ul class="text-gray-700 space-y-2">
-      <!--      <li><strong>Category:</strong> {{ post.category }}</li>-->
-      <!--      <li><strong>Updated:</strong> {{ post.updated | date }}</li>-->
-      <!--      <li><strong>Author:</strong> {{ post.author }}</li>-->
-      <!--      <li><strong>Reading Time:</strong> {{ post.readingTime }} min</li>-->
-      <!--      <li><strong>Difficulty:</strong> ⭐⭐⭐☆</li>-->
+    <ul class="text-gray-700 bg-gray-50 space-y-2 p-4 rounded-2xl shadow-lg">
+      <li><strong>Category:</strong> {{ post?.category }}</li>
+      <li><strong>Updated:</strong> {{ post?.updated | date }}</li>
+      <li><strong>Author:</strong> {{ post?.author }}</li>
+      <li><strong>Reading Time:</strong> {{ post?.readingTime }} min</li>
+      <li><strong>Difficulty:</strong> ⭐⭐⭐☆</li>
     </ul>
 
     <h2 class="text-xl font-bold mt-6 mb-4">📖 Table of Contents</h2>
-    <ul class="text-gray-700 space-y-2">
-      <!--      <li *ngFor="let item of post.tableOfContents">-->
-      <!--        <a href="#{{ item.id }}" class="text-blue-600 hover:underline">{{ item.title }}</a>-->
-      <!--      </li>-->
+    <ul class="text-gray-700 bg-gray-50 space-y-2 p-4 rounded-2xl shadow-lg">
+      @for (tableOfContents of post?.tableOfContents; track tableOfContents?.id) {
+        <li>
+          <a href="#{{ tableOfContents?.id }}" class="text-blue-600 hover:underline">
+            {{ tableOfContents.title }}
+          </a>
+        </li>
+      }
     </ul>
   </aside>
+
   <section
-    class="flex w-4/5 justify-center bg-white/0 backdrop-blur-lg border border-white/90 rounded-lg shadow-lg p-8 -my-9"
+    class="col-span-12 2xl:col-span-9 bg-white/0 backdrop-blur-lg border border-white/90 rounded-lg shadow-lg p-8 -mt-10"
   >
-    <div class="w-10/12">
+    <div class="w-full">
       @if (post) {
         <h1
           class="font-bold text-center my-5 [webkit-text-stroke:1px_white] [text-shadow:_2px_2px_4px_rgba(255,255,255,0.8)] tittle"
@@ -44,19 +52,20 @@
         </p>
         <!-- TODO: Add social share buttons -->
 
-        <div class="relative  mt-4 leading-8 bg-white text-gray-900 p-6 rounded-2xl shadow-2xl">
+        <div
+          class="relative mt-4 leading-8 bg-gray-50 text-gray-900 p-6 rounded-2xl shadow-2xl"
+        >
           <div
-            class="absolute shadow-2xl inset-0 blur-2xl opacity-100 rounded-3xl -z-10 bg-gradient-to-br from-quaternary/90 via-[#7A9E7E]/50 to-primary"></div>
-
+            class="absolute shadow-2xl inset-0 blur-2xl opacity-100 rounded-3xl -z-10 bg-gradient-to-br from-quaternary/90 via-[#7A9E7E]/50 to-primary"
+          ></div>
           <div [innerHTML]="post.content"></div>
         </div>
 
-
         <hr class="border-gray-300 my-4"/>
-        <add-comment [postId]="id"/>
+        <add-comment [postId]="id"></add-comment>
         <hr class="border-gray-300 my-4"/>
         @defer {
-          <comments [postId]="id!" [comments$]="comments$()"/>
+          <comments [postId]="id!" [comments$]="comments$()"></comments>
         }
       } @else {
         <p class="text-gray-800 text-center">Post not found.</p>
@@ -64,5 +73,3 @@
     </div>
   </section>
 </div>
-
-

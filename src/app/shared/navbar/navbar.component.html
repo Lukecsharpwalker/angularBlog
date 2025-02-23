@@ -5,21 +5,18 @@
   [class.scrolled]="isScrolled"
 >
   <div class="flex-auto flex items-center justify-between ">
-    <!-- Left Section: Search Input -->
     <div class="flex-none">
-      <input type="text" placeholder="Type here" class="input w-full max-w-xs border-0 input-success" />
+      <input type="text" placeholder="Type here" class="input w-full max-w-xs border-0 input-success"/>
     </div>
 
-    <!-- Center Section: Logo and Text -->
-    <div class="flex items-center -ml-20">
-      <img src="logo.png" alt="Logo" class="h-16" />
+    <div class="flex items-center -ml-20" [routerLink]="['/']">
+      <img src="logo.png" alt="Logo" class="h-16"/>
       <span>
         <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
         <h2 class="text-sm mt-0 pt-0">Bring the fun back to coding</h2>
       </span>
     </div>
 
-    <!-- Right Section: Login Button -->
     <div class="flex-none">
       <button class="btn btn--secondary border-0">Login</button>
     </div>
