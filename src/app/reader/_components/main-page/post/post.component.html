@@ -1,8 +1,8 @@
 @let post = post$ | async;
 @if (post) {
-  <div class="flex justify-center -mx-48">
+  <div class="flex justify-center -mx-2 xl:-mx-48">
     <img
-      class="w-full h-80 object-cover mt-10 rounded-2xl"
+      class="w-full h-80 object-cover mt-10  rounded-2xl"
       src="{{ date }}-post.webp"
       alt="{{ post.title }}"
     />
@@ -36,12 +36,12 @@
   </aside>
 
   <section
-    class="col-span-12 2xl:col-span-9 bg-white/0 backdrop-blur-lg border border-white/90 rounded-lg shadow-lg p-8 -mt-10"
+    class="col-span-12 2xl:col-span-9 bg-white/0 backdrop-blur-lg border border-white/90 rounded-lg shadow-lg md:p-8 -mt-10"
   >
     <div class="w-full">
       @if (post) {
         <h1
-          class="font-bold text-center my-5 [webkit-text-stroke:1px_white] [text-shadow:_2px_2px_4px_rgba(255,255,255,0.8)] tittle"
+          class="font-bold text-2xl md:text-4xl text-center my-5 [webkit-text-stroke:1px_white] [text-shadow:_2px_2px_4px_rgba(255,255,255,0.8)] tittle"
         >
           {{ post.title }}
         </h1>

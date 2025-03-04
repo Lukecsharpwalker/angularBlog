@@ -1,7 +1,21 @@
-import { ChangeDetectionStrategy, Component, ComponentRef, Input, OnInit, Type, ViewContainerRef, inject, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ComponentRef,
+  Input,
+  OnInit,
+  Type,
+  ViewContainerRef,
+  inject,
+  viewChild,
+} from '@angular/core';
 import { DynamicDialogService } from './dynamic-dialog.service';
 import { ModalConfig } from '../_models/modal-config.intreface';
-import { ModalCloseStatusEnum, ModalStatus } from '../_models/modal-status.interface';
+import {
+  ModalCloseStatusEnum,
+  ModalStatus,
+} from '../_models/modal-status.interface';
+import { DYNAMIC_DIALOG_DATA } from './dialog-data.token';
 
 @Component({
   selector: 'app-dynamic-dialog',
@@ -10,16 +24,17 @@ import { ModalCloseStatusEnum, ModalStatus } from '../_models/modal-status.inter
   providers: [],
   templateUrl: './dynamic-dialog.component.html',
   styleUrl: './dynamic-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicDialogComponent<C = unknown> implements OnInit {
   @Input() component?: Type<C>;
   @Input() modalConfig?: ModalConfig;
 
-  divEl = viewChild.required('dynamicComponentContainer', {read: ViewContainerRef});
+  divEl = viewChild.required('dynamicComponentContainer', {
+    read: ViewContainerRef,
+  });
 
   dynamicDialogService = inject(DynamicDialogService);
-  viewContainerRef = inject(ViewContainerRef);
   componentRef?: ComponentRef<C>;
   ModalCloseStatusEnum = ModalCloseStatusEnum;
 
@@ -32,10 +47,9 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
   closeDialog(modalCloseStatus: ModalCloseStatusEnum) {
     const status = {
       data: this.componentRef?.instance,
-      closeStatus: modalCloseStatus
+      closeStatus: modalCloseStatus,
     } as ModalStatus;
 
     this.dynamicDialogService.closeDialog(status);
   }
-
 }
