@@ -53,4 +53,8 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
 
     this.dynamicDialogService.closeDialog(status);
   }
+
+  onOverlayClick($event: MouseEvent) {
+    console.log('Overlay clicked', $event);
+  }
 }
