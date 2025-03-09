@@ -124,21 +124,16 @@ export class PostComponent implements OnInit, AfterViewInit {
     const code = codeElement?.innerHTML || '';
     const language = preElement.getAttribute('data-language') || '';
 
-    this.dialogService
-      .openDialog(
-        this.viewContainerRef,
-        {
-          title: `${language.toUpperCase()} Code`,
-          content: '',
-          primaryButton: 'Close',
-          data: { code, language },
-        },
-        CodeBlockModalComponent,
-      )
-      .subscribe((result: ModalStatus) => {
-        // Handle modal close
-        console.log('Modal closed with status:', result);
-      });
+    this.dialogService.openDialog(
+      this.viewContainerRef,
+      {
+        title: `${language.toUpperCase()} Code`,
+        content: '',
+        primaryButton: 'Close',
+        data: { code, language },
+      },
+      CodeBlockModalComponent,
+    );
   }
 
   goBack(): void {
