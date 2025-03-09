@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Injector,
   Input,
@@ -11,10 +10,9 @@ import {
   AfterViewInit,
   ViewContainerRef,
   afterNextRender,
-  afterRender,
 } from '@angular/core';
 import { ReaderApiService } from '../../../_services/reader-api.service';
-import { AsyncPipe, DatePipe, JsonPipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Post } from '../../../../shared/_models/post.interface';
 import { Observable, from, map } from 'rxjs';
 import { CommentsComponent } from './comments/comments.component';
@@ -24,7 +22,6 @@ import { Comment } from '../../../../shared/_models/comment.inteface';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DynamicDialogService } from '../../../../shared/dynamic-dialog/dynamic-dialog.service';
-import { DynamicDialogComponent } from '../../../../shared/dynamic-dialog/dynamic-dialog.component';
 import { CodeBlockModalComponent } from './code-block-modal-component/code-block-modal-component.component';
 import { ModalStatus } from '../../../../shared/_models/modal-status.interface';
 
@@ -63,7 +60,6 @@ export class PostComponent implements OnInit, AfterViewInit {
             post.dateJS,
             'dd-MM-yyyy',
           ) as string;
-          console.log(this.date);
           post.content = this.sanitizer.bypassSecurityTrustHtml(
             post.content as string,
           );
@@ -124,9 +120,7 @@ export class PostComponent implements OnInit, AfterViewInit {
 
   private showCodeModal(event: Event) {
     const preElement = event.currentTarget as HTMLElement;
-    console.log('showCodeModal', preElement);
     const codeElement = preElement.querySelector('code');
-    console.log('code elemnt', codeElement);
     const code = codeElement?.innerHTML || '';
     const language = preElement.getAttribute('data-language') || '';
 
