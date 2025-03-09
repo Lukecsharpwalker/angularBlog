@@ -15,7 +15,6 @@ import {
   ModalCloseStatusEnum,
   ModalStatus,
 } from '../_models/modal-status.interface';
-import { DYNAMIC_DIALOG_DATA } from './dialog-data.token';
 
 @Component({
   selector: 'app-dynamic-dialog',
@@ -44,7 +43,9 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
     }
   }
 
-  closeDialog(modalCloseStatus: ModalCloseStatusEnum) {
+  closeDialog(
+    modalCloseStatus: ModalCloseStatusEnum = ModalCloseStatusEnum.CLOSED,
+  ) {
     const status = {
       data: this.componentRef?.instance,
       closeStatus: modalCloseStatus,
