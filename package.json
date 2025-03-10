@@ -10,8 +10,7 @@
     "test": "ng test",
     "serve:ssr:AngularBlogApp": "node dist/angular-blog-app/server/server.mjs",
     "build:stats": "ng build --stats-json",
-    "analyze": "webpack-bundle-analyzer dist/angular-blog-app/stats.json",
-    "apphosting:build": "FRAMEWORK_VERSION=19 apphosting-adapter-angular-build"
+    "analyze": "webpack-bundle-analyzer dist/angular-blog-app/stats.json"
   },
   "private": true,
   "dependencies": {
