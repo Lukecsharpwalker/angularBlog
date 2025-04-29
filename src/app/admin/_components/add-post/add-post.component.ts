@@ -21,7 +21,6 @@ import {
 import { AdminApiService } from '../../_services/admin-api.service';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
-import { Post } from '../../../shared/_models/post.interface';
 import { PostForm } from '../../_models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
@@ -30,6 +29,7 @@ import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dia
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
+<<<<<<< HEAD
 =======
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -38,6 +38,9 @@ import { Firestore, FirestoreModule} from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
 import { AsyncPipe } from '@angular/common';
 >>>>>>> ab739b9 (nothing special)
+=======
+import { Post } from '../../../types/supabase';
+>>>>>>> fca8c97 (ngrx signal store fixes)
 
 @Component({
   selector: 'blog-add-post',
