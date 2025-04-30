@@ -16,7 +16,7 @@ import { AuthService } from '../auth.service';
 import { SupabaseService } from '../../services/supabase.service';
 >>>>>>> 793fe4a (login fixed)
 
-export const authGuard: CanMatchFn = (): boolean => {
+export const authAdminGuard: CanMatchFn = (): boolean => {
   const supabaseService = inject(SupabaseService);
   const router = inject(Router);
 <<<<<<< HEAD
@@ -31,10 +31,14 @@ export const authGuard: CanMatchFn = (): boolean => {
 =======
   const session = supabaseService.getSession();
 
+<<<<<<< HEAD:src/app/auth/_guards/auth.guard.ts
   // For now, just check if the user is authenticated
   // In a real application, you would check for specific roles in the user's metadata
   if (session) {
 >>>>>>> 793fe4a (login fixed)
+=======
+  if (session?.user?.app_metadata?.['role'] === Roles.ADMIN) {
+>>>>>>> bc9c691 (wip):src/app/auth/_guards/authAdminGuard.ts
     return true;
   } else {
     router.navigate(['/posts']);
