@@ -46,3 +46,8 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 adminSdkConf.json
+
+# Environments
+src/environments/environment.development.ts
+src/environments/environment.ts
+

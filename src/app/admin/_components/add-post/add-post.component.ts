@@ -10,7 +10,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   NgModel,
@@ -18,10 +18,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AdminApiService } from '../../_services/admin-api.service';
-import { FirestoreModule, Timestamp } from '@angular/fire/firestore';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
-import { Post } from '../../../shared/_models/post.interface';
 import { PostForm } from '../../_models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
@@ -30,13 +28,13 @@ import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dia
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
+import { Post } from '../../../types/supabase';
 
 @Component({
   selector: 'blog-add-post',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    FirestoreModule,
     FormsModule,
     QuillEditorComponent,
     HighlightModule,
@@ -44,7 +42,7 @@ import { AddImageForm } from './add-image/add-image-controls.interface';
   ],
   providers: [AdminApiService, NgModel],
   templateUrl: './add-post.component.html',
-  styleUrl: './add-post.component.scss',
+  styleUrls: ['./add-post.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -52,26 +50,32 @@ export class AddPostComponent implements OnInit {
   @Input() postId?: string;
   quill = viewChild.required<QuillEditorComponent>('quill');
 
-  blogForm: FormGroup<PostForm>;
-  range: Range | null = null;
-
   viewContainerRef = inject(ViewContainerRef);
   dialogService = inject(DynamicDialogService<AddImageForm>);
 
-  private fb = inject(FormBuilder);
+  blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
+    title: new FormControl('', {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    content: new FormControl('', {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    date: new FormControl<Date | null>(null),
+    description: new FormControl<string | null>(null),
+    isDraft: new FormControl(false, { nonNullable: true }),
+  });
+  range: Range | null = null;
+
   private apiService = inject(AdminApiService);
 
-  constructor() {
-    this.blogForm = this.fb.group({
-      title: ['', [Validators.required]],
-      content: ['', [Validators.required]],
-      date: new Timestamp(0, 0),
-      description: [null],
-      isDraft: [false],
-    }) as FormGroup<PostForm>;
+  ngOnInit(): void {
+    this.loadPostIfIdExists();
+    this.initializeQuill();
   }
 
-  ngOnInit(): void {
+  private loadPostIfIdExists(): void {
     if (this.postId) {
       this.apiService.getPostById(this.postId).subscribe((post) => {
         if (post) {
@@ -79,7 +83,6 @@ export class AddPostComponent implements OnInit {
         }
       });
     }
-    this.initializeQuill();
   }
 
   async initializeQuill() {
@@ -94,7 +97,7 @@ export class AddPostComponent implements OnInit {
       this.blogForm.controls.content.setValue(cleanedContent);
       this.blogForm.controls.isDraft.setValue(isDraft);
       if (!this.blogForm.controls.date.value) {
-        this.blogForm.controls.date.setValue(Timestamp.fromDate(new Date()));
+        this.blogForm.controls.date.setValue(null);
       }
       if (this.postId) {
         this.apiService.updatePost(this.postId, this.blogForm.value as Post);
@@ -191,12 +194,11 @@ export class AddPostComponent implements OnInit {
     index: number,
     stringToInsert: string,
   ): string {
-    const result = [
+    return [
       ...originalString.slice(0, index),
       ...stringToInsert,
       ...originalString.slice(index),
     ].join('');
-    return result;
   }
 
   @HostListener('window:beforeunload', ['$event'])

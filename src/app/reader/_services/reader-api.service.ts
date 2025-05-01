@@ -1,73 +1,93 @@
-import { Injectable, inject } from '@angular/core';
-import {
-  collectionData,
-  doc,
-  setDoc,
-  getDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-} from '@angular/fire/firestore';
-import { Firestore, collection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { Post } from '../../shared/_models/post.interface';
-import { Collections } from '../../shared/_enums/collections';
-import { Comment } from '../../shared/_models/comment.inteface';
-import { QueryOperators } from '../../shared/_enums/query-operators';
-import { PostField } from '../../shared/_enums/post-fields.enum';
+import { inject, Injectable } from '@angular/core';
+import { SupabaseService } from '../../services/supabase.service';
+import { Comment, Post, Profile, Tag, PostTag } from '../../types/supabase';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ReaderApiService {
-  private firestore = inject(Firestore);
-  private postsCollection = collection(this.firestore, Collections.POST);
-  private postsQuery = query(
-    this.postsCollection,
-    where(PostField.IS_DRAFT, QueryOperators.EQUAL, false),
-    orderBy(PostField.DATE, QueryOperators.DESC),
-  );
+  supabaseService = inject(SupabaseService);
 
-  posts$ = collectionData(this.postsQuery, { idField: 'id' }) as Observable<
-    Post[]
-  >;
-
-  async getPost(id: string): Promise<Post | null> {
-    return getDoc(doc(collection(this.firestore, Collections.POST), id)).then(
-      (doc) => {
-        if (doc.exists()) {
-          return doc.data() as Post;
-        } else {
-          return null;
-        }
-      },
-    );
-  }
-
-  getComments(postId: string): Observable<Comment[]> {
-    return collectionData(
-      collection(
-        this.firestore,
-        `${Collections.POST}/${postId}/${Collections.COMMENT}`,
+  async getPost(id: string): Promise<any | null> {
+    const { data, error } = await this.supabaseService.getClient
+      .from('posts')
+      .select(
+        `
+      *,
+      author:profiles ( id, username, avatar_url ),
+      tags:post_tags!inner (
+        tags ( id, name, color, icon )
       ),
-      { idField: 'id' },
-    ) as Observable<Comment[]>;
+      comments:comments (
+        id, content, created_at, is_deleted, is_reported,
+        author:profiles ( id, username, avatar_url )
+      )
+    `,
+      )
+      .eq('id', id)
+      .single();
+
+    return error ? null : data;
   }
 
-  addComment(postId: string, comment: Comment): void {
-    const newTaskRef = doc(
-      collection(
-        this.firestore,
-        `${Collections.POST}/${postId}/${Collections.COMMENT}`,
-      ),
-    );
-    setDoc(newTaskRef, comment).finally(() => {});
+  async getComments(postId: string): Promise<Comment[]> {
+    const { data: comments, error } = await this.supabaseService.getClient
+      .from('comments')
+      .select('*')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: true });
+    return error ? [] : comments;
   }
 
-  deleteComment(commentId: string, postId: string): void {
-    const commentRef = doc(
-      this.firestore,
-      `${Collections.POST}/${postId}/${Collections.COMMENT}/${commentId}`,
-    );
-    deleteDoc(commentRef);
+  async addComment(postId: string, comment: Comment): Promise<void> {
+    const { error } = await this.supabaseService.getClient
+      .from('comments')
+      .insert({ ...comment, post_id: postId });
+  }
+
+  async deleteComment(commentId: string, postId: string): Promise<void> {
+    const { error } = await this.supabaseService.getClient
+      .from('comments')
+      .delete()
+      .eq('id', commentId)
+      .eq('post_id', postId);
+  }
+
+  async getPosts(): Promise<Post[] | null> {
+    const { data: posts } = await this.supabaseService.getClient
+      .from('posts')
+      .select(
+        `
+        *,
+        author:profiles ( id, username, avatar_url ),
+        post_tags (
+          tags ( id, name, color, icon )
+        )
+      `,
+      )
+      .eq('is_draft', false)
+      .order('created_at', { ascending: false });
+
+    return posts;
+  }
+
+  async getProfiles(): Promise<Profile[] | null> {
+    const { data: profiles, error } = await this.supabaseService.getClient
+      .from('profiles')
+      .select('*');
+    return error ? null : profiles;
+  }
+
+  async getTags(): Promise<Tag[] | null> {
+    const { data: tags, error } = await this.supabaseService.getClient
+      .from('tags')
+      .select('*');
+    return error ? null : tags;
+  }
+
+  async getPostTags(postId: string): Promise<PostTag[] | null> {
+    const { data: postTags, error } = await this.supabaseService.getClient
+      .from('post_tags')
+      .select('*, tags(*)')
+      .eq('post_id', postId);
+    return error ? null : postTags;
   }
 }

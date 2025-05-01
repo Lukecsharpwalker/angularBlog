@@ -1,79 +1,82 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Injector,
-  Input,
   OnInit,
-  Signal,
   inject,
-  runInInjectionContext,
-  AfterViewInit,
   ViewContainerRef,
   afterNextRender,
+  Signal,
+  input,
 } from '@angular/core';
 import { ReaderApiService } from '../../../_services/reader-api.service';
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { Post } from '../../../../shared/_models/post.interface';
-import { Observable, from, map } from 'rxjs';
+import { DatePipe } from '@angular/common';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Comment } from '../../../../shared/_models/comment.inteface';
 import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { DynamicDialogService } from '../../../../shared/dynamic-dialog/dynamic-dialog.service';
 import { CodeBlockModalComponent } from './code-block-modal-component/code-block-modal-component.component';
-import { ModalStatus } from '../../../../shared/_models/modal-status.interface';
+import { PostStore } from './post.store';
+import { CommentsStore } from './comments/comments.store';
+import { Post } from '../../../../types/supabase';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  providers: [ReaderApiService, DatePipe],
+  providers: [ReaderApiService, DatePipe, PostStore, CommentsStore],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, CommentsComponent, AddCommentComponent, DatePipe],
+  imports: [CommentsComponent, AddCommentComponent, DatePipe],
 })
-export class PostComponent implements OnInit, AfterViewInit {
-  //TODO: add resolver
-  @Input() id!: string;
+export class PostComponent implements OnInit {
+  id = input.required<string>();
 
-  apiService = inject(ReaderApiService);
-  injector = inject(Injector);
   router = inject(Router);
-  datePipe = inject(DatePipe);
+  postStore = inject(PostStore);
 
-  private dialogService = inject(DynamicDialogService);
-  private sanitizer = inject(DomSanitizer);
-  private viewContainerRef = inject(ViewContainerRef);
-
-  post$!: Observable<Post | null>;
-  comments$!: Signal<Comment[] | undefined>;
+  post: Signal<Post | null> = this.postStore.post;
   date: string = '';
 
+  private dialogService = inject(DynamicDialogService);
+  private viewContainerRef = inject(ViewContainerRef);
+
+  constructor() {
+    this.addEventsForOpenModalWithCode();
+  }
+
   ngOnInit() {
-    this.post$ = from(this.apiService.getPost(this.id)).pipe(
-      map((post: Post | null) => {
-        if (post) {
-          post.dateJS = post.date.toDate();
-          this.date = this.datePipe.transform(
-            post.dateJS,
-            'dd-MM-yyyy',
-          ) as string;
-          post.content = this.sanitizer.bypassSecurityTrustHtml(
-            post.content as string,
-          );
-        }
-        return post;
-      }),
-    );
-    this.comments$! = runInInjectionContext(this.injector, () =>
-      toSignal(this.apiService.getComments(this.id)),
+    this.loadPost();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/posts']);
+  }
+
+  private loadPost(): void {
+    this.postStore.getPost(this.id());
+  }
+
+  private showCodeModal(event: Event) {
+    const preElement = event.currentTarget as HTMLElement;
+    const codeElement = preElement.querySelector('code');
+    const code = codeElement?.innerHTML || '';
+    const language = preElement.getAttribute('data-language') || '';
+
+    this.dialogService.openDialog(
+      this.viewContainerRef,
+      {
+        title: `${language.toUpperCase()} Code`,
+        content: '',
+        primaryButton: 'Close',
+        data: { code, language },
+      },
+      CodeBlockModalComponent,
     );
   }
 
-  constructor() {
+  private addEventsForOpenModalWithCode() {
     afterNextRender(() => {
+      //TODO: Move to the service
       const processedNodes = new Set<Node>();
 
       const observer = new MutationObserver((mutations) => {
@@ -114,29 +117,5 @@ export class PostComponent implements OnInit, AfterViewInit {
         subtree: true,
       });
     });
-  }
-
-  ngAfterViewInit() {}
-
-  private showCodeModal(event: Event) {
-    const preElement = event.currentTarget as HTMLElement;
-    const codeElement = preElement.querySelector('code');
-    const code = codeElement?.innerHTML || '';
-    const language = preElement.getAttribute('data-language') || '';
-
-    this.dialogService.openDialog(
-      this.viewContainerRef,
-      {
-        title: `${language.toUpperCase()} Code`,
-        content: '',
-        primaryButton: 'Close',
-        data: { code, language },
-      },
-      CodeBlockModalComponent,
-    );
-  }
-
-  goBack(): void {
-    this.router.navigate(['/posts']);
   }
 }

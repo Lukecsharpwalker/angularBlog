@@ -12,9 +12,9 @@ import {
   ElementRef,
 } from '@angular/core';
 import { DynamicDialogService } from '../dynamic-dialog/dynamic-dialog.service';
-import { AuthService } from '../../auth/auth.service';
 import { LoginCompontent } from '../../auth/login/login.component';
 import { RouterLink } from '@angular/router';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'blog-navbar',
@@ -28,7 +28,6 @@ import { RouterLink } from '@angular/router';
 export class NavbarComponent implements AfterViewInit {
   public navbar = viewChild<ElementRef<HTMLElement>>('navbar');
   public mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
-  public authService = inject(AuthService);
   public isScrolled = false;
   public isMenuOpen: WritableSignal<boolean> = signal(false);
   public navHeight: WritableSignal<number> = signal(0);
@@ -37,9 +36,7 @@ export class NavbarComponent implements AfterViewInit {
   private viewContainerRef = inject(ViewContainerRef);
 
   constructor() {
-    afterNextRender(() => {
-      this.navHeight.set(this.navbar()?.nativeElement.scrollHeight ?? 0);
-    });
+    this.initializeNavHeight();
   }
 
   ngAfterViewInit() {}
@@ -64,6 +61,12 @@ export class NavbarComponent implements AfterViewInit {
         );
       }, 1);
     }
+  }
+
+  private initializeNavHeight(): void {
+    afterNextRender(() => {
+      this.navHeight.set(this.navbar()?.nativeElement.scrollHeight ?? 0);
+    });
   }
 
   @HostListener('window:scroll', [])
