@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,7 +10,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
@@ -30,23 +28,11 @@ import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dia
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
-<<<<<<< HEAD
-=======
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ApiService } from '../../_services/api.service';
-import { Firestore, FirestoreModule} from '@angular/fire/firestore';
-import { HttpClient } from '@angular/common/http';
-import { AsyncPipe } from '@angular/common';
->>>>>>> ab739b9 (nothing special)
-=======
 import { Post } from '../../../types/supabase';
->>>>>>> fca8c97 (ngrx signal store fixes)
 
 @Component({
   selector: 'blog-add-post',
   standalone: true,
-<<<<<<< HEAD
   imports: [
     ReactiveFormsModule,
     FormsModule,
@@ -55,12 +41,8 @@ import { Post } from '../../../types/supabase';
     RouterModule,
   ],
   providers: [AdminApiService, NgModel],
-=======
-  imports: [ReactiveFormsModule, FirestoreModule, AsyncPipe],
-  providers: [ApiService, HttpClient],
->>>>>>> ab739b9 (nothing special)
   templateUrl: './add-post.component.html',
-  styleUrl: './add-post.component.scss',
+  styleUrls: ['./add-post.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -88,28 +70,9 @@ export class AddPostComponent implements OnInit {
 
   private apiService = inject(AdminApiService);
 
-<<<<<<< HEAD
-  constructor() {
-    this.blogForm = this.fb.group({
-      title: ['', [Validators.required]],
-      content: ['', [Validators.required]],
-<<<<<<< HEAD
-<<<<<<< HEAD
-      date: new Timestamp(0, 0),
-=======
-      date: null,
->>>>>>> 34e7e50 (supabase added, firebase removed)
-      description: [null],
-      isDraft: [false],
-    }) as FormGroup<PostForm>;
-=======
-    });
->>>>>>> ab739b9 (nothing special)
-=======
   ngOnInit(): void {
     this.loadPostIfIdExists();
     this.initializeQuill();
->>>>>>> cbcd61c (fix lame code)
   }
 
   private loadPostIfIdExists(): void {
@@ -231,12 +194,11 @@ export class AddPostComponent implements OnInit {
     index: number,
     stringToInsert: string,
   ): string {
-    const result = [
+    return [
       ...originalString.slice(0, index),
       ...stringToInsert,
       ...originalString.slice(index),
     ].join('');
-    return result;
   }
 
   @HostListener('window:beforeunload', ['$event'])

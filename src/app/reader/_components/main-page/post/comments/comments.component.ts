@@ -4,7 +4,6 @@ import {
   Input,
   inject,
   input,
-  InputSignal,
 } from '@angular/core';
 import { ReaderApiService } from '../../../../_services/reader-api.service';
 import { Comment } from '../../../../../types/supabase';
@@ -24,7 +23,6 @@ export class CommentsComponent {
   @Input() postId!: string;
   comments = input<Comment[]>();
 
-  private apiService = inject(ReaderApiService);
   private commentsStore = inject(CommentsStore);
 
   deleteComment(commentId: string): void {
