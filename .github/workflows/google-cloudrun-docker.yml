@@ -17,6 +17,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+      - name: Generate environment.ts from secrets
+        shell: bash
+        run: |
+          cat > src/environments/environment.ts <<'EOF'
+          export const environment = {
+            production: true,
+            supabaseUrl: '${{ secrets.SUPABASE_URL }}',
+            supabaseKey: '${{ secrets.SUPABASE_ANON_KEY }}',
+          };
+          EOF
 
       - name: Install dependencies
         run: npm ci
