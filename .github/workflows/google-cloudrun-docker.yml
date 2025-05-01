@@ -31,6 +31,13 @@ jobs:
             supabaseKey: '${SUPABASE_ANON_KEY}',
           };
           EOF
+           cat <<EOF > src/environments/environment.development.ts
+          export const environment = {
+            production: true,
+            supabaseUrl: '${SUPABASE_URL}',
+            supabaseKey: '${SUPABASE_ANON_KEY}',
+          };
+          EOF
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
