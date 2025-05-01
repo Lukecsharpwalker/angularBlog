@@ -1,3 +1,5 @@
-roduction: false,
+export const environment = {
+  production: true,
   supabaseUrl: '',
-  supabaseKey:'',
+  supabaseKey: '',
+};
