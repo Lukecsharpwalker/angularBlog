@@ -85,6 +85,11 @@
       @for (post of posts(); track post.id) {
         <app-post-card [post]="post"></app-post-card>
       }
+      @if (posts2) {
+        @for (post of posts2; track post.id) {
+          <app-post-card [post]="post"></app-post-card>
+        }
+      }
     </div>
   </div>
 </div>
