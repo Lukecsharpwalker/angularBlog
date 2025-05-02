@@ -10,12 +10,15 @@ import {
   signal,
   WritableSignal,
   OnInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AboutMeComponent } from '../../../../shared/about-me/about-me.component';
 import { PostCardComponent } from './post-card/post-card.component';
 import { PostsStore } from './posts.store';
 import { TagsStore } from '../../../../shared/stores/tags.store';
+import { Post } from '../../../../types/supabase';
+import { ReaderApiService } from '../../../_services/reader-api.service';
 
 @Component({
   selector: 'app-posts-list',
@@ -30,7 +33,7 @@ import { TagsStore } from '../../../../shared/stores/tags.store';
   providers: [DatePipe],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PostsListComponent implements OnInit {
@@ -38,11 +41,14 @@ export class PostsListComponent implements OnInit {
 
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
+  cdr = inject(ChangeDetectorRef);
 
   scrollProgress: WritableSignal<number> = signal(0);
   posts = this.postStore.posts;
   tags = this.tagsStore.tags;
   initialTagScrollProgressBarForMobile = 2;
+  posts2: Post[] | null = null;
+  postService = inject(ReaderApiService);
 
   constructor() {
     this.initializeScrollingForMobileView();
@@ -65,7 +71,13 @@ export class PostsListComponent implements OnInit {
   }
 
   private applyPrerenderingHack(): void {
-    setTimeout(() => {}, 10);
+    setTimeout(() => {
+      this.postService.getPosts().then((posts) => {
+        this.posts2 = posts;
+        this.cdr.detectChanges();
+      });
+      console.log(this.posts());
+    }, 1000);
   }
 
   private initializeScrollingForMobileView(): void {
