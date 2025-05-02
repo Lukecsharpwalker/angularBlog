@@ -65,7 +65,7 @@ export class PostsListComponent implements OnInit {
   }
 
   private applyPrerenderingHack(): void {
-    setTimeout(() => {}, 0);
+    setTimeout(() => {}, 10);
   }
 
   private initializeScrollingForMobileView(): void {
