@@ -77,7 +77,7 @@ export class PostsListComponent implements OnInit {
         this.cdr.detectChanges();
       });
       console.log(this.posts());
-    }, 1000);
+    }, 1);
   }
 
   private initializeScrollingForMobileView(): void {
