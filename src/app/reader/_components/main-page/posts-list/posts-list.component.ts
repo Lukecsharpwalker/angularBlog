@@ -36,7 +36,7 @@ import { ReaderApiService } from '../../../_services/reader-api.service';
   changeDetection: ChangeDetectionStrategy.Default,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PostsListComponent {
+export class PostsListComponent implements OnInit {
   scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
 
   postStore = inject(PostsStore);
@@ -47,12 +47,12 @@ export class PostsListComponent {
   posts = this.postStore.posts;
   tags = this.tagsStore.tags;
   initialTagScrollProgressBarForMobile = 2;
-  posts2: Post[] | null = null;
-  postService = inject(ReaderApiService);
 
   constructor() {
     this.initializeScrollingForMobileView();
   }
+
+  async ngOnInit() {}
 
   onScroll(event: Event) {
     const target = event.target as HTMLElement;
@@ -63,16 +63,6 @@ export class PostsListComponent {
     const scrollPercentage = (scrollLeft / (scrollWidth - clientWidth)) * 100;
 
     this.scrollProgress.set(scrollPercentage);
-  }
-
-  private applyPrerenderingHack(): void {
-    setTimeout(() => {
-      this.postService.getPosts().then((posts) => {
-        this.posts2 = posts;
-        this.cdr.detectChanges();
-      });
-      console.log(this.posts());
-    }, 1);
   }
 
   private initializeScrollingForMobileView(): void {
