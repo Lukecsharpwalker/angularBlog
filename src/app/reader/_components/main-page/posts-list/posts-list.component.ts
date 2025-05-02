@@ -36,7 +36,7 @@ import { ReaderApiService } from '../../../_services/reader-api.service';
   changeDetection: ChangeDetectionStrategy.Default,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PostsListComponent implements OnInit {
+export class PostsListComponent {
   scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
 
   postStore = inject(PostsStore);
@@ -52,11 +52,6 @@ export class PostsListComponent implements OnInit {
 
   constructor() {
     this.initializeScrollingForMobileView();
-  }
-
-  ngOnInit() {
-    //TODO: FIX HACK FOR PRERENDERING
-    this.applyPrerenderingHack();
   }
 
   onScroll(event: Event) {
