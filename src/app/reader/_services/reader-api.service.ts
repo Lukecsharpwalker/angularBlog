@@ -84,24 +84,6 @@ export class ReaderApiService {
     return this.http.get<Post[]>(this.baseUrl, { headers, params });
   }
 
-  // async getPosts(): Promise<Post[] | null> {
-  //   const { data: posts } = await this.supabaseService.getClient
-  //     .from('posts')
-  //     .select(
-  //       `
-  //       *,
-  //       author:profiles ( id, username, avatar_url ),
-  //       post_tags (
-  //         tags ( id, name, color, icon )
-  //       )
-  //     `,
-  //     )
-  //     .eq('is_draft', false)
-  //     .order('created_at', { ascending: false });
-  //
-  //   return posts;
-  // }
-
   async getProfiles(): Promise<Profile[] | null> {
     const { data: profiles, error } = await this.supabaseService.getClient
       .from('profiles')
@@ -109,11 +91,13 @@ export class ReaderApiService {
     return error ? null : profiles;
   }
 
-  async getTags(): Promise<Tag[] | null> {
-    const { data: tags, error } = await this.supabaseService.getClient
-      .from('tags')
-      .select('*');
-    return error ? null : tags;
+  getTags(): Observable<Tag[] | null> {
+    const headers = new HttpHeaders({
+      apikey: this.apiKey,
+      Authorization: `Bearer ${this.apiKey}`,
+      Accept: 'application/json',
+    });
+    return this.http.get<Tag[]>(this.baseUrl, { headers });
   }
 
   async getPostTags(postId: string): Promise<PostTag[] | null> {
