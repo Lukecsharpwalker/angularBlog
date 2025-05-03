@@ -52,7 +52,9 @@ export class PostsListComponent implements OnInit {
     this.initializeScrollingForMobileView();
   }
 
-  async ngOnInit() {}
+  ngOnInit() {
+    console.log(this.posts());
+  }
 
   onScroll(event: Event) {
     const target = event.target as HTMLElement;

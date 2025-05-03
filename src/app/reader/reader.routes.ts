@@ -13,7 +13,7 @@ export const readerRoutes: Routes = [
       {
         path: '',
         component: PostsListComponent,
-        resolve: [postListResolver, tagListResolver],
+        // resolve: [postListResolver, tagListResolver],
       },
       {
         path: 'details/:id',

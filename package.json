@@ -23,6 +23,7 @@
     "@angular/platform-server": "^19.2.1",
     "@angular/router": "^19.2.1",
     "@angular/ssr": "^19.2.1",
+    "@ngrx/operators": "^19.1.0",
     "@ngrx/signals": "^19.1.0",
     "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/line-clamp": "^0.4.4",

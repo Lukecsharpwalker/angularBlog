@@ -1,17 +1,21 @@
-import { Post } from '../../../../types/supabase';
+import { computed, inject } from '@angular/core';
+import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
   withState,
+  withMethods,
+  withHooks,
+  withComputed,
 } from '@ngrx/signals';
-import { computed, inject } from '@angular/core';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
+
+import { Post } from '../../../../types/supabase';
 import { ReaderApiService } from '../../../_services/reader-api.service';
 
 type PostsState = {
-  posts: Post[];
+  posts: Post[] | null;
   loading: boolean;
   error: string | null;
 };
@@ -25,25 +29,33 @@ const initialState: PostsState = {
 export const PostsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withMethods((store, api = inject(ReaderApiService)) => ({
+    loadPosts: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { loading: true, error: null })),
+        switchMap(() =>
+          api.getPosts().pipe(
+            tapResponse({
+              next: (posts) => patchState(store, { posts, loading: false }),
+              error: (err) =>
+                patchState(store, {
+                  error: 'Failed to fetch posts',
+                  loading: false,
+                }),
+            }),
+          ),
+        ),
+      ),
+    ),
+  })),
 
-  withMethods((state, postService = inject(ReaderApiService)) => ({
-    async getPosts() {
-      patchState(state, { loading: true, error: null });
-      try {
-        const posts = await postService.getPosts();
-        if (posts) {
-          patchState(state, { posts, loading: false });
-        } else {
-          patchState(state, { error: 'No posts found', loading: false });
-        }
-      } catch (error) {
-        patchState(state, { error: 'Failed to fetch posts', loading: false });
-      }
+  withHooks(({ loadPosts }) => ({
+    onInit() {
+      loadPosts();
     },
   })),
-  withHooks({
-    onInit(store) {
-      store.getPosts();
-    },
-  }),
+
+  withComputed(({ posts }) => ({
+    total: computed(() => posts()!.length),
+  })),
 );
