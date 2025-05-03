@@ -6,7 +6,6 @@ import {
   withState,
   withMethods,
   withHooks,
-  withComputed
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
@@ -23,7 +22,7 @@ type TagsState = {
 const initialState: TagsState = {
   tags: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 export const TagsStore = signalStore(
@@ -37,23 +36,22 @@ export const TagsStore = signalStore(
         switchMap(() =>
           api.getTags().pipe(
             tapResponse({
-              next: (tags) =>
-                patchState(store, { tags, loading: false }),
+              next: (tags) => patchState(store, { tags, loading: false }),
               error: (err) =>
                 patchState(store, {
                   error: 'Failed to fetch tags',
-                  loading: false
-                })
-            })
-          )
-        )
-      )
-    )
+                  loading: false,
+                }),
+            }),
+          ),
+        ),
+      ),
+    ),
   })),
 
   withHooks(({ loadTags }) => ({
     onInit() {
       loadTags();
-    }
-  }))
+    },
+  })),
 );

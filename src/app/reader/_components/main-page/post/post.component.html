@@ -9,8 +9,6 @@
   </div>
 }
 
-
-
 <div class="container mx-auto grid grid-cols-12 gap-8">
   <aside
     class="col-span-12 2xl:col-span-3 bg-white/0 backdrop-blur-lg border border-white/90 rounded-lg shadow-lg p-6 self-start -mt-16 mb-16 2xl:my-36"
@@ -19,7 +17,7 @@
     <ul class="text-gray-700 bg-gray-50 space-y-2 p-4 rounded-2xl shadow-lg">
       <li><strong>Category:</strong> {{ post()?.category }}</li>
       <li><strong>Updated:</strong> {{ post()?.updated | date }}</li>
-      <li><strong>Author:</strong> {{ post()?.author }}</li>
+      <li><strong>Author:</strong> {{ post()?.author?.username }}</li>
       <li><strong>Reading Time:</strong> {{ post()?.readingTime }} min</li>
       <li><strong>Difficulty:</strong> ⭐⭐⭐☆</li>
     </ul>
@@ -49,7 +47,7 @@
         <p
           class="text-center [webkit-text-stroke:1px_white] [text-shadow:_2px_2px_4px_rgba(255,255,255,0.8)] text-gray-500"
         >
-          {{ post()?.author }} - {{ post()?.created_at | date }}
+          {{ post()?.author?.username }} - {{ post()?.created_at | date }}
         </p>
         <!-- TODO: Add social share buttons -->
 

@@ -2,14 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from '../../services/supabase.service';
 import { Comment, Post, Profile, Tag, PostTag } from '../../types/supabase';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
   supabaseService = inject(SupabaseService);
   http = inject(HttpClient);
   private readonly baseUrl =
-    'https://aqdbdmepncxxuanlymwr.supabase.co/rest/v1/posts';
+    'https://aqdbdmepncxxuanlymwr.supabase.co/rest/v1/';
   private readonly apiKey =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxZGJkbWVwbmN4eHVhbmx5bXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNTA0MjYsImV4cCI6MjA2MDYyNjQyNn0.RNtZZ4Of4LIP3XuS9lumHYdjRLVUGXARtAxaTJmF7lc';
 
@@ -34,7 +34,7 @@ export class ReaderApiService {
     });
 
     return this.http
-      .get<Post[]>(this.baseUrl, { headers, params })
+      .get<Post[]>(`${this.baseUrl}posts`, { headers, params })
       .pipe(map((results) => results[0] ?? null));
   }
 
@@ -81,7 +81,7 @@ export class ReaderApiService {
       Accept: 'application/json',
     });
 
-    return this.http.get<Post[]>(this.baseUrl, { headers, params });
+    return this.http.get<Post[]>(`${this.baseUrl}posts`, { headers, params });
   }
 
   async getProfiles(): Promise<Profile[] | null> {
@@ -97,7 +97,7 @@ export class ReaderApiService {
       Authorization: `Bearer ${this.apiKey}`,
       Accept: 'application/json',
     });
-    return this.http.get<Tag[]>(this.baseUrl, { headers });
+    return this.http.get<Tag[]>(`${this.baseUrl}tags`, { headers });
   }
 
   async getPostTags(postId: string): Promise<PostTag[] | null> {

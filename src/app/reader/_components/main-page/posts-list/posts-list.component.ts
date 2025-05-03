@@ -1,4 +1,4 @@
-import { DatePipe, NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
@@ -9,16 +9,12 @@ import {
   ElementRef,
   signal,
   WritableSignal,
-  OnInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AboutMeComponent } from '../../../../shared/about-me/about-me.component';
 import { PostCardComponent } from './post-card/post-card.component';
 import { PostsStore } from './posts.store';
 import { TagsStore } from '../../../../shared/stores/tags.store';
-import { Post } from '../../../../types/supabase';
-import { ReaderApiService } from '../../../_services/reader-api.service';
 
 @Component({
   selector: 'app-posts-list',
@@ -30,18 +26,16 @@ import { ReaderApiService } from '../../../_services/reader-api.service';
     NgOptimizedImage,
     NgStyle,
   ],
-  providers: [DatePipe],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class PostsListComponent implements OnInit {
+export class PostsListComponent {
   scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
 
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
-  cdr = inject(ChangeDetectorRef);
 
   scrollProgress: WritableSignal<number> = signal(0);
   posts = this.postStore.posts;
@@ -50,10 +44,6 @@ export class PostsListComponent implements OnInit {
 
   constructor() {
     this.initializeScrollingForMobileView();
-  }
-
-  ngOnInit() {
-    console.log(this.posts());
   }
 
   onScroll(event: Event) {
