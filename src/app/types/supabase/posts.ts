@@ -4,7 +4,7 @@ import { Comment } from './comments';
 
 export type Post = {
   content: string;
-  created_at: string | null;
+  created_at: Date | null;
   description: string;
   id: string;
   is_draft: boolean;

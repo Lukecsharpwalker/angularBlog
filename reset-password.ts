@@ -6,8 +6,7 @@
  * USAGE (bash):
  *   export SUPABASE_URL="https://aqdbdmepncxxuanlymwr.supabase.co"
  *   export SERVICE_ROLE_KEY="YOUR_SERVICE_ROLE_KEY_HERE"
- *   npx ts-node reset-password.ts \
- *        a3b3cf93-6956-41c7-bec0-1qwqwd42f26 'N3w-Pa$$w0rd!'
+ *  npx tsx reset-password.ts ID 'lSupa'
  *********************************************************************/
 
 import { createClient } from '@supabase/supabase-js';

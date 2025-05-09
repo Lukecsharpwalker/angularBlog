@@ -22,7 +22,6 @@
             "browser": "src/main.ts",
             "allowedCommonJsDependencies": [
               "highlight.js",
-              "quill-delta",
               "whatwg-url",
               "@supabase/node-fetch"
             ],

@@ -1,14 +1,23 @@
 import { inject } from '@angular/core';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { computed } from '@angular/core';
+import {
+  patchState,
+  signalStore,
+  withMethods,
+  withState,
+  withComputed,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 import { Post } from '../../../../types/supabase';
 import { ReaderApiService } from '../../../_services/reader-api.service';
+import { formatDateToDDMMYYYY } from '../../../../utlis/date-utils';
 
 type PostState = {
   post: Post | null;
+  date: string | null;
   loading: boolean;
   error: string | null;
 };
@@ -17,12 +26,15 @@ const initialState: PostState = {
   post: null,
   loading: false,
   error: null,
+  date: null,
 };
 
 export const PostStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-
+  withComputed((store) => ({
+    date: computed(() => formatDateToDDMMYYYY(store.post()?.created_at)),
+  })),
   withMethods((store, postService = inject(ReaderApiService)) => ({
     getPost: rxMethod<string>(
       pipe(
