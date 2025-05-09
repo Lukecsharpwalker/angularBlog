@@ -3,16 +3,22 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Post } from '../../supabase-types';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Injectable()
 export class AdminApiService {
   http = inject(HttpClient);
+  supabaseService = inject(SupabaseService);
   private readonly baseUrl =
     'https://aqdbdmepncxxuanlymwr.supabase.co/rest/v1/';
   private readonly apiKey =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxZGJkbWVwbmN4eHVhbmx5bXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNTA0MjYsImV4cCI6MjA2MDYyNjQyNn0.RNtZZ4Of4LIP3XuS9lumHYdjRLVUGXARtAxaTJmF7lc';
 
-  addPost(post: Post): void {}
+  async addPost(post: Post): Promise<void> {
+    const { error } = await this.supabaseService.getClient
+      .from('posts')
+      .insert({ ...post });
+  }
 
   getPostById(id: string): Observable<Post> {
     const selectQuery = `
@@ -39,7 +45,13 @@ export class AdminApiService {
       .pipe(map((results) => results[0] ?? null));
   }
 
-  updatePost(id: string, post: Post): Promise<void> {
-    return Promise.resolve();
+  async updatePost(id: string, post: Post): Promise<void> {
+    await this.supabaseService.getClient
+      .from('posts')
+      .update({ ...post })
+      .eq('id', id)
+      .then((x) => {
+        console.log(x);
+      });
   }
 }

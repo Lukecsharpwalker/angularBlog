@@ -4,7 +4,7 @@ import { SafeHtml } from '@angular/platform-browser';
 export interface PostForm {
   title: FormControl<string>;
   content: FormControl<string | SafeHtml>;
-  isDraft: FormControl<boolean>;
-  date: FormControl<any>;
+  is_draft: FormControl<boolean>;
+  created_at: FormControl<Date | null>;
   description?: FormControl<string | null>;
 }

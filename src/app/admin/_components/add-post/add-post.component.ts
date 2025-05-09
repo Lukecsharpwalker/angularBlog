@@ -62,9 +62,9 @@ export class AddPostComponent implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
-    date: new FormControl<Date | null>(null),
+    created_at: new FormControl<Date | null>(null),
     description: new FormControl<string | null>(null),
-    isDraft: new FormControl(false, { nonNullable: true }),
+    is_draft: new FormControl(false, { nonNullable: true }),
   });
   range: Range | null = null;
 
@@ -80,6 +80,7 @@ export class AddPostComponent implements OnInit {
       this.apiService.getPostById(this.postId).subscribe((post) => {
         if (post) {
           this.blogForm.patchValue(post);
+          console.log(this.blogForm.value);
         }
       });
     }
@@ -95,9 +96,9 @@ export class AddPostComponent implements OnInit {
       const rawContent = this.blogForm.controls.content.value as string;
       const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');
       this.blogForm.controls.content.setValue(cleanedContent);
-      this.blogForm.controls.isDraft.setValue(isDraft);
-      if (!this.blogForm.controls.date.value) {
-        this.blogForm.controls.date.setValue(null);
+      this.blogForm.controls.is_draft.setValue(isDraft);
+      if (!this.blogForm.controls.created_at.value) {
+        this.blogForm.controls.created_at.setValue(null);
       }
       if (this.postId) {
         this.apiService.updatePost(this.postId, this.blogForm.value as Post);

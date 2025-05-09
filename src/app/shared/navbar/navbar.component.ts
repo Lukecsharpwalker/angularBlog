@@ -14,7 +14,6 @@ import {
 import { DynamicDialogService } from '../dynamic-dialog/dynamic-dialog.service';
 import { LoginCompontent } from '../../auth/login/login.component';
 import { RouterLink } from '@angular/router';
-import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'blog-navbar',
