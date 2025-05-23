@@ -58,9 +58,78 @@ Add screenshots or GIFs here to showcase the reader and admin interfaces.
 - Node.js (v18 or later)
 - npm (v10 or later)
 - Angular CLI (v19 or later)
+- Docker (for local Supabase setup)
 
 ### Installation Steps
 1. Clone the repository:
    ```bash
    git clone https://github.com/Lukecsharpwalker/angularBlog.git
    cd angularBlog
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up local Supabase (optional, but recommended for development):
+
+   **For Unix/macOS users:**
+   ```bash
+   npm run setup:local-supabase
+   ```
+
+   **For Windows users:**
+   ```powershell
+   npm run setup:local-supabase:win
+   ```
+
+   This command will:
+   - Initialize a local Supabase instance using Docker
+   - Create the necessary database tables
+   - Create an admin user for testing (email: admin@example.com, password: admin123)
+
+4. Start the application with local Supabase:
+   ```bash
+   npm run start:local
+   ```
+   Or use the cloud Supabase instance:
+   ```bash
+   npm start
+   ```
+
+### Supabase Management
+- To stop the local Supabase instance:
+  ```bash
+  supabase stop
+  ```
+- To start it again:
+  ```bash
+  supabase start
+  ```
+- To access Supabase Studio (admin interface):
+  Open http://localhost:54323 in your browser
+
+### Syncing from Cloud Supabase
+You can sync your local Supabase instance with the cloud instance to get the latest schema, policies, and data:
+
+**For Unix/macOS users:**
+```bash
+npm run sync:cloud-supabase
+```
+
+**For Windows users:**
+```powershell
+npm run sync:cloud-supabase:win
+```
+
+This command will:
+- Link your local Supabase project to the remote project
+- Pull the database schema and policies from the cloud
+- Dump data from the remote database
+- Apply the schema and data to your local instance
+
+This is useful for:
+- Getting the latest database structure during development
+- Testing with real data from the production environment
+- Ensuring your local environment matches the cloud environment

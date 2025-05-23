@@ -74,6 +74,17 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "local": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -86,6 +97,9 @@
             },
             "development": {
               "buildTarget": "angularblogapp:build:development"
+            },
+            "local": {
+              "buildTarget": "angularblogapp:build:local"
             }
           },
           "defaultConfiguration": "development"

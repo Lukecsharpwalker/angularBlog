@@ -9,7 +9,12 @@
     "test": "ng test",
     "serve:ssr:AngularBlogApp": "node dist/angular-blog-app/server/server.mjs",
     "build:stats": "ng build --stats-json",
-    "analyze": "webpack-bundle-analyzer dist/angular-blog-app/stats.json"
+    "analyze": "webpack-bundle-analyzer dist/angular-blog-app/stats.json",
+    "setup:local-supabase": "bash scripts/setup-local-supabase.sh",
+    "setup:local-supabase:win": "powershell -ExecutionPolicy Bypass -File scripts/setup-local-supabase.ps1",
+    "sync:cloud-supabase": "bash scripts/sync-from-cloud-supabase.sh",
+    "sync:cloud-supabase:win": "powershell -ExecutionPolicy Bypass -File scripts/sync-from-cloud-supabase.ps1",
+    "start:local": "ng serve --configuration=local"
   },
   "private": true,
   "dependencies": {
