@@ -33,7 +33,9 @@ export const PostStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed((store) => ({
-    date: computed(() => formatDateToDDMMYYYY(store.post()?.created_at)),
+    formattedDate: computed(() =>
+      formatDateToDDMMYYYY(store.post()?.created_at),
+    ),
   })),
   withMethods((store, postService = inject(ReaderApiService)) => ({
     getPost: rxMethod<string>(

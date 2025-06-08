@@ -92,6 +92,13 @@ export class AddPostComponent implements OnInit {
 
   onSubmit(isDraft = false): void {
     this.highlightContent();
+    //test for description
+    if (!this.blogForm?.controls?.description?.value) {
+      this.blogForm.controls?.description?.setValue(
+        this.blogForm.controls.content.value.toString().substring(0, 150),
+      );
+    }
+
     if (this.blogForm.valid) {
       const rawContent = this.blogForm.controls.content.value as string;
       const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');

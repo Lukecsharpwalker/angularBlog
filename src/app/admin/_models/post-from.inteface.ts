@@ -7,4 +7,5 @@ export interface PostForm {
   is_draft: FormControl<boolean>;
   created_at: FormControl<Date | null>;
   description?: FormControl<string | null>;
+  tags: FormControl<string[] | null>;
 }
