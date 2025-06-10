@@ -2,16 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from '../../services/supabase.service';
 import { Comment, Post, Profile, Tag, PostTag } from '../../types/supabase';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
   supabaseService = inject(SupabaseService);
   http = inject(HttpClient);
-  private readonly baseUrl =
-    'https://aqdbdmepncxxuanlymwr.supabase.co/rest/v1/';
-  private readonly apiKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxZGJkbWVwbmN4eHVhbmx5bXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNTA0MjYsImV4cCI6MjA2MDYyNjQyNn0.RNtZZ4Of4LIP3XuS9lumHYdjRLVUGXARtAxaTJmF7lc';
+  private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
+  private readonly apiKey = environment.supabaseKey;
 
   getPost(id: string): Observable<Post> {
     const selectQuery = `

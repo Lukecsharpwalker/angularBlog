@@ -28,7 +28,8 @@ import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dia
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
-import { Post } from '../../../types/supabase';
+import { PostInsert, PostUpdate, Tag } from '../../../types/supabase';
+import { TagMultiSelectComponent } from '../../../shared/tag-multi-select/tag-multi-select.component';
 
 @Component({
   selector: 'blog-add-post',
@@ -39,6 +40,7 @@ import { Post } from '../../../types/supabase';
     QuillEditorComponent,
     HighlightModule,
     RouterModule,
+    TagMultiSelectComponent,
   ],
   providers: [AdminApiService, NgModel],
   templateUrl: './add-post.component.html',
@@ -65,6 +67,7 @@ export class AddPostComponent implements OnInit {
     created_at: new FormControl<Date | null>(null),
     description: new FormControl<string | null>(null),
     is_draft: new FormControl(false, { nonNullable: true }),
+    tags: new FormControl<Tag[]>([], { nonNullable: true }),
   });
   range: Range | null = null;
 
@@ -92,18 +95,33 @@ export class AddPostComponent implements OnInit {
 
   onSubmit(isDraft = false): void {
     this.highlightContent();
+    // Test for description
+    if (!this.blogForm?.controls?.description?.value) {
+      this.blogForm.controls?.description?.setValue(
+        this.blogForm.controls.content.value.toString().substring(0, 150),
+      );
+    }
+
     if (this.blogForm.valid) {
       const rawContent = this.blogForm.controls.content.value as string;
       const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');
       this.blogForm.controls.content.setValue(cleanedContent);
       this.blogForm.controls.is_draft.setValue(isDraft);
+
       if (!this.blogForm.controls.created_at.value) {
         this.blogForm.controls.created_at.setValue(null);
       }
+
+      // Extract form data including tags
+      const formData = {
+        ...this.blogForm.value,
+        tags: this.blogForm.controls.tags.value,
+      };
+
       if (this.postId) {
-        this.apiService.updatePost(this.postId, this.blogForm.value as Post);
+        this.apiService.updatePost(this.postId, formData as PostUpdate & { tags: Tag[] });
       } else {
-        this.apiService.addPost(this.blogForm.value as Post);
+        this.apiService.addPost(formData as PostInsert & { tags: Tag[] });
       }
     }
   }

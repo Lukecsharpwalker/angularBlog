@@ -8,6 +8,15 @@
         <div>Title is required.</div>
       }
     }
+
+    <!-- Tags Selection -->
+    <div class="w-full">
+      <label class="label">
+        <span class="label-text">Tags</span>
+      </label>
+      <blog-tag-multi-select formControlName="tags"></blog-tag-multi-select>
+    </div>
+
     <button class="btn btn--secondary" type="button" (click)="insertImage()">Insert Image</button>
     <quill-editor #quill formControlName="content" class="h-screen w-full"></quill-editor>
     <div class="mt-12 btn--group">

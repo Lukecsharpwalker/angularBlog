@@ -35,7 +35,7 @@ export class PostComponent implements OnInit {
   postStore = inject(PostStore);
 
   post: Signal<Post | null> = this.postStore.post;
-  date: Signal<string | null> = this.postStore.date;
+  date: Signal<string | null> = this.postStore.formattedDate;
 
   private dialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
