@@ -95,7 +95,7 @@ export class AddPostComponent implements OnInit {
 
   onSubmit(isDraft = false): void {
     this.highlightContent();
-    //test for description
+    // Test for description
     if (!this.blogForm?.controls?.description?.value) {
       this.blogForm.controls?.description?.setValue(
         this.blogForm.controls.content.value.toString().substring(0, 150),
@@ -107,16 +107,21 @@ export class AddPostComponent implements OnInit {
       const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');
       this.blogForm.controls.content.setValue(cleanedContent);
       this.blogForm.controls.is_draft.setValue(isDraft);
+
       if (!this.blogForm.controls.created_at.value) {
         this.blogForm.controls.created_at.setValue(null);
       }
+
+      // Extract form data including tags
+      const formData = {
+        ...this.blogForm.value,
+        tags: this.blogForm.controls.tags.value,
+      };
+
       if (this.postId) {
-        this.apiService.updatePost(
-          this.postId,
-          this.blogForm.value as PostUpdate,
-        );
+        this.apiService.updatePost(this.postId, formData as PostUpdate & { tags: Tag[] });
       } else {
-        this.apiService.addPost(this.blogForm.value as PostInsert);
+        this.apiService.addPost(formData as PostInsert & { tags: Tag[] });
       }
     }
   }

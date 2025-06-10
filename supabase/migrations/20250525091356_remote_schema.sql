@@ -226,7 +226,7 @@ CREATE POLICY "Only Admin can delete comments" ON "public"."comments" FOR DELETE
 
 
 
-CREATE POLICY "Only Admin can delete post_tags" ON "public"."post_tags" FOR DELETE USING (("auth"."role"() = 'Admin'::"text"));
+CREATE POLICY "Only Admin can delete post_tags" ON "public"."post_tags" FOR DELETE USING (((("auth"."jwt"() -> 'app_metadata'::"text") ->> 'role'::"text") = 'Admin'::"text"));
 
 
 
