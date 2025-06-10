@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Post } from '../../supabase-types';
+import { Post, PostInsert, PostUpdate } from '../../supabase-types';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { SupabaseService } from '../../services/supabase.service';
 import { environment } from '../../../environments/environment.local';
@@ -12,7 +12,7 @@ export class AdminApiService {
   private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
   private readonly apiKey = environment.supabaseKey;
 
-  async addPost(post: Post): Promise<void> {
+  async addPost(post: PostInsert): Promise<void> {
     const { error } = await this.supabaseService.getClient
       .from('posts')
       .insert({ ...post });
@@ -43,7 +43,7 @@ export class AdminApiService {
       .pipe(map((results) => results[0] ?? null));
   }
 
-  async updatePost(id: string, post: Post): Promise<void> {
+  async updatePost(id: string, post: PostUpdate): Promise<void> {
     await this.supabaseService.getClient
       .from('posts')
       .update({ ...post })

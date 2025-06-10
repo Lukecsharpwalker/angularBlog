@@ -210,7 +210,7 @@ CREATE POLICY "Authenticated users can create profiles" ON "public"."profiles" F
 
 
 
-CREATE POLICY "Only Admin can create post_tags" ON "public"."post_tags" FOR INSERT WITH CHECK (("auth"."role"() = 'Admin'::"text"));
+CREATE POLICY "Only Admin can create post_tags" ON "public"."post_tags" FOR INSERT WITH CHECK (((("auth"."jwt"() -> 'app_metadata'::"text") ->> 'role'::"text") = 'Admin'::"text"));
 
 
 

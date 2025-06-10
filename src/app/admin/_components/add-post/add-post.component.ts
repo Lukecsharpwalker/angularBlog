@@ -28,7 +28,8 @@ import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dia
 import { ModalConfig } from '../../../shared/_models/modal-config.intreface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
-import { Post } from '../../../types/supabase';
+import { PostInsert, PostUpdate, Tag } from '../../../types/supabase';
+import { TagMultiSelectComponent } from '../../../shared/tag-multi-select/tag-multi-select.component';
 
 @Component({
   selector: 'blog-add-post',
@@ -39,6 +40,7 @@ import { Post } from '../../../types/supabase';
     QuillEditorComponent,
     HighlightModule,
     RouterModule,
+    TagMultiSelectComponent,
   ],
   providers: [AdminApiService, NgModel],
   templateUrl: './add-post.component.html',
@@ -65,6 +67,7 @@ export class AddPostComponent implements OnInit {
     created_at: new FormControl<Date | null>(null),
     description: new FormControl<string | null>(null),
     is_draft: new FormControl(false, { nonNullable: true }),
+    tags: new FormControl<Tag[]>([], { nonNullable: true }),
   });
   range: Range | null = null;
 
@@ -108,9 +111,12 @@ export class AddPostComponent implements OnInit {
         this.blogForm.controls.created_at.setValue(null);
       }
       if (this.postId) {
-        this.apiService.updatePost(this.postId, this.blogForm.value as Post);
+        this.apiService.updatePost(
+          this.postId,
+          this.blogForm.value as PostUpdate,
+        );
       } else {
-        this.apiService.addPost(this.blogForm.value as Post);
+        this.apiService.addPost(this.blogForm.value as PostInsert);
       }
     }
   }
