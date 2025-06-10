@@ -1,5 +1,4 @@
 import { FormControl } from '@angular/forms';
-import { SafeHtml } from '@angular/platform-browser';
 import { Tag } from '../../types/supabase';
 
 export interface PostForm {

@@ -28,7 +28,7 @@ A modern, feature-rich blog application built with Angular 19 and Supabase. This
 ---
 
 ## Screenshots
-Add screenshots or GIFs here to showcase the reader and admin interfaces.
+
 
 ---
 
