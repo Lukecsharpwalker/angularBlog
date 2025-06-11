@@ -7,108 +7,75 @@ on:
     branches: [ main ]
 
 jobs:
-  e2e-tests:
+  e2e:
     runs-on: ubuntu-latest
+    # Cancel older, still-running copies of the same PR/branch
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    services:
+    # Optional: expose Postgres port for psql debug sessions
+    # postgres:
+    #   image: postgres:15-alpine
+    #   ports: [54322:5432]
 
     steps:
-      - name: Checkout code
+      - name: 📥  Checkout sources
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🧰  Use Node 20 LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
-      - name: Clean and install dependencies
-        run: |
-          npm cache clean --force
-          rm -f package-lock.json
-          rm -rf node_modules
-          npm install
-          npm ls @rollup/rollup-linux-x64-gnu || echo "Rollup native dependency not found, continuing..."
+      - name: 🏗️  Install project dependencies
+        run: npm ci
 
-      - name: Install Supabase CLI
-        run: |
-          mkdir -p /tmp/supabase-cli
-          cd /tmp/supabase-cli
-          curl -fsSL https://github.com/supabase/cli/releases/download/v1.123.4/supabase_linux_amd64.tar.gz | tar -xz
-          chmod +x supabase
-          sudo mv supabase /usr/local/bin/
-          cd /
-          rm -rf /tmp/supabase-cli
-          supabase --version
-
-      - name: Start Docker
-        run: |
-          sudo systemctl start docker
-          sudo usermod -aG docker $USER
-
-      - name: Start Supabase local instance
-        run: |
-          supabase start
-          sleep 15
-          supabase status
-          echo "=== Supabase Services Status ==="
-          docker ps --filter name=supabase
-          echo "=== Testing direct API connectivity ==="
-          curl -v http://127.0.0.1:54321/health || echo "Health check failed"
-          curl -v -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" http://127.0.0.1:54321/rest/v1/tags || echo "Tags API test failed"
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Start Angular app
-        run: |
-          npm run start:local &
-          sleep 45
-          echo "=== Checking if Angular app is running ==="
-          timeout 120 bash -c 'until curl -f http://localhost:4200; do echo "Waiting for Angular..."; sleep 3; done'
-          echo "=== Angular app is running ==="
-          curl -v http://localhost:4200 | head -50
+      # ---------- SUPABASE ----------
+      - name: 🛠️  Install Supabase CLI
+        uses: supabase/setup-cli@v1                 # installs a pinned version
+        with:
+          version: 1.160.6                          # keep in sync with local dev
+          # :contentReference[oaicite:3]{index=3}
+      - name: 🚀  Start local Supabase stack
+        # “--no-analytics” = skip telemetry; background (&)
+        run: supabase start --no-analytics &
         env:
-          SUPABASE_URL: http://127.0.0.1:54321
-          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN || '' }}
+        # ^ token only needed if you sync migrations against the cloud project
 
-      - name: Run API connectivity tests first
-        run: npx playwright test api-connectivity.spec.ts --project=local
+      - name: ⏱️  Wait for Supabase ports to be ready
+        # waits up to 2 min for 54321 (API) and 54322 (DB)
+        run: npx wait-on tcp:54321 tcp:54322 --timeout 120000
+
+      - name: 🌱  Seed fresh database
+        run: psql -h localhost -p 54322 -U postgres -f supabase/seed/seed.sql
         env:
-          SUPABASE_URL: http://127.0.0.1:54321
-          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+          PGPASSWORD: postgres                      # default local password
 
-      - name: Run E2E tests with debugging
+      # Optional: expose keys for tests that use env vars
+      - name: 🔑  Export Supabase env vars
         run: |
-          echo "=== Running E2E tests with full debugging ==="
-          DEBUG=pw:api npx playwright test --project=local --reporter=line
+          echo "SUPABASE_URL=http://localhost:54321"  >> $GITHUB_ENV
+          echo "SUPABASE_ANON_KEY=super-secret-anon-key" >> $GITHUB_ENV
+        # Local anon/service keys are static. If you rotate them, inject here.
+        # :contentReference[oaicite:4]{index=4}
+
+      # ---------- PLAYWRIGHT ----------
+      - name: 📦  Install Playwright browsers
+        run: npx playwright install --with-deps      # installs Chromium, FF, WK
+
+      - name: 🧪  Run Angular 19 E2E tests
+        run: npm run e2e:local
         env:
-          SUPABASE_URL: http://127.0.0.1:54321
-          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+          CI: true                                   # enables retries/screenshots
 
-      - name: Debug on failure
-        if: failure()
-        run: |
-          echo "=== DEBUGGING INFORMATION ==="
-          echo "Docker containers:"
-          docker ps -a
-          echo "Supabase status:"
-          supabase status || echo "Supabase status failed"
-          echo "Angular process:"
-          ps aux | grep ng || echo "No ng process found"
-          echo "Network connections:"
-          netstat -tulpn | grep -E '(4200|54321)' || echo "No connections found"
-          echo "Checking logs:"
-          docker logs $(docker ps -q --filter name=supabase_db) | tail -50 || echo "No DB logs"
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
+      # ---------- REPORT ----------
+      - name: 📊  Upload Playwright HTML report
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-      - name: Stop services
-        if: always()
-        run: |
-          pkill -f "ng serve" || true
-          supabase stop || true
+          path: playwright-report
