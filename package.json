@@ -11,6 +11,8 @@
     "build:stats": "ng build --stats-json",
     "analyze": "webpack-bundle-analyzer dist/angular-blog-app/stats.json",
     "start:local": "ng serve --configuration=local",
+    "start:local:docker": "open -a Docker",
+    "start:local:backend": "npx supabase start",
     "schema:pull": "find supabase/migrations -name '*_remote_schema.sql' -delete && supabase db pull --db-url $PG_EXPORT_URL",
     "db:createSeed": "scripts/create-seed.sh",
     "db:seed": "npx @snaplet/seed init",
