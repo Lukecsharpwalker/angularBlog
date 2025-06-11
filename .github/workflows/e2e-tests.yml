@@ -14,13 +14,10 @@ jobs:
       cancel-in-progress: true
 
     steps:
-      - name: Install Rollup helper explicitly
-        run: npm install --no-save --omit=dev @rollup/rollup-linux-x64-gnu@$(node -p "require('./package.json').devDependencies.rollup || '4'")
-
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
-      - run: npm ci
+      - run: npm ci --omit=optional
 
       - uses: supabase/setup-cli@v1
         with: { version: 2.24.3 }
