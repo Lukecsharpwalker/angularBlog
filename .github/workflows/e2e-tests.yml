@@ -25,13 +25,17 @@ jobs:
 
       - name: Install Supabase CLI
         run: |
-          # Remove any existing supabase binary
-          rm -f supabase
+          # Create a temporary directory for extraction
+          mkdir -p /tmp/supabase-cli
+          cd /tmp/supabase-cli
           # Download and extract
           curl -fsSL https://github.com/supabase/cli/releases/download/v1.123.4/supabase_linux_amd64.tar.gz | tar -xz
           # Make executable and move to system path
           chmod +x supabase
           sudo mv supabase /usr/local/bin/
+          # Clean up
+          cd /
+          rm -rf /tmp/supabase-cli
           # Verify installation
           supabase --version
 
