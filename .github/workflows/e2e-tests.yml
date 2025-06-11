@@ -10,20 +10,6 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,26 +25,52 @@ jobs:
 
       - name: Install Supabase CLI
         run: |
+          # Remove any existing supabase binary
+          rm -f supabase
+          # Download and extract
           curl -fsSL https://github.com/supabase/cli/releases/download/v1.123.4/supabase_linux_amd64.tar.gz | tar -xz
+          # Make executable and move to system path
+          chmod +x supabase
           sudo mv supabase /usr/local/bin/
+          # Verify installation
+          supabase --version
+
+      - name: Start Docker
+        run: |
+          sudo systemctl start docker
+          sudo usermod -aG docker $USER
 
       - name: Start Supabase local instance
         run: |
+          # Start Supabase with existing config
           supabase start
-          sleep 10
+          # Wait for services to be ready
+          sleep 15
+          # Verify services are running
+          supabase status
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Start Angular app
         run: |
+          # Start Angular with local configuration
           npm run start:local &
+          # Wait for app to start
           sleep 30
           # Wait for app to be ready
           timeout 60 bash -c 'until curl -f http://localhost:4200; do sleep 2; done'
+        env:
+          # Set environment variables for local Supabase
+          SUPABASE_URL: http://127.0.0.1:54321
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
 
       - name: Run E2E tests
         run: npm run e2e:local
+        env:
+          # Ensure E2E tests use local Supabase
+          SUPABASE_URL: http://127.0.0.1:54321
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
