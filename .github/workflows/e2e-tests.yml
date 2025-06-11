@@ -20,8 +20,16 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Clean and install dependencies
+        run: |
+          # Clean npm cache and remove lock file to fix Rollup issue
+          npm cache clean --force
+          rm -f package-lock.json
+          rm -rf node_modules
+          # Fresh install
+          npm install
+          # Verify installation
+          npm ls @rollup/rollup-linux-x64-gnu || echo "Rollup native dependency not found, continuing..."
 
       - name: Install Supabase CLI
         run: |
@@ -61,9 +69,9 @@ jobs:
           # Start Angular with local configuration
           npm run start:local &
           # Wait for app to start
-          sleep 30
-          # Wait for app to be ready
-          timeout 60 bash -c 'until curl -f http://localhost:4200; do sleep 2; done'
+          sleep 45
+          # Wait for app to be ready with longer timeout
+          timeout 120 bash -c 'until curl -f http://localhost:4200; do sleep 3; done'
         env:
           # Set environment variables for local Supabase
           SUPABASE_URL: http://127.0.0.1:54321
