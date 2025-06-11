@@ -127,6 +127,20 @@
             ],
             "scripts": []
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "angularblogapp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "angularblogapp:serve:production"
+            },
+            "local": {
+              "devServerTarget": "angularblogapp:serve:local"
+            }
+          }
         }
       }
     }
