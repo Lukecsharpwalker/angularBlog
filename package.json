@@ -18,7 +18,7 @@
     "db:seed": "npx @snaplet/seed init",
     "users:passwords": "scripts/set-passwords.sh",
     "e2e": "ng e2e",
-    "e2e:local": "playwright test --project=local"
+    "e2e:local": "ng e2e -c local"
   },
   "private": true,
   "dependencies": {
