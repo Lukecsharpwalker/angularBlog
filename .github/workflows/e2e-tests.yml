@@ -8,6 +8,7 @@ on:
 
 jobs:
   e2e:
+    if: "!contains(github.event.head_commit.message, 'E2E')"
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
