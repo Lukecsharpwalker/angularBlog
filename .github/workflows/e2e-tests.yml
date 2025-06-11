@@ -1,0 +1,49 @@
+name: E2E Tests with Local Supabase
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  e2e:
+    if: "!contains(github.event.head_commit.message, 'E2E')"
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: |
+          node - <<'NODE'
+          const v = require('./package.json').devDependencies.rollup ?? 'latest';
+          console.log('ℹ Installing native Rollup helper for', v);
+          NODE
+      - run: npm install --no-save @rollup/rollup-linux-x64-gnu@$(node -p "require('./package.json').devDependencies.rollup || '4'")
+
+      - uses: supabase/setup-cli@v1
+        with: { version: 2.24.3 }
+
+      - name: Start Supabase
+        env: { SUPABASE_TELEMETRY_DISABLED: "1" }
+        run: supabase start &
+
+      - name: Wait for Supabase (≤180 s)
+        run: npx --yes wait-on tcp:127.0.0.1:54321 tcp:127.0.0.1:54322 --timeout 180000
+
+      - run: echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_ENV
+      - run: |
+          echo "SUPABASE_ANON_KEY=$(supabase status -o env | grep SUPABASE_ANON_KEY | cut -d= -f2)" >> $GITHUB_ENV
+
+      - run: npx playwright install --with-deps
+      - run: npm run e2e:local
+        env: { CI: "true" }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: playwright-report, path: playwright-report }

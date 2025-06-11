@@ -3,7 +3,7 @@ import { map, Observable } from 'rxjs';
 import { Post, PostInsert, PostUpdate, Tag } from '../../supabase-types';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { SupabaseService } from '../../services/supabase.service';
-import { environment } from '../../../environments/environment.local';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AdminApiService {
@@ -16,11 +16,12 @@ export class AdminApiService {
     const { tags, ...postData } = post;
 
     try {
-      const { data: insertedPost, error: postError } = await this.supabaseService.getClient
-        .from('posts')
-        .insert({ ...postData })
-        .select('id')
-        .single();
+      const { data: insertedPost, error: postError } =
+        await this.supabaseService.getClient
+          .from('posts')
+          .insert({ ...postData })
+          .select('id')
+          .single();
 
       if (postError) {
         console.error('Error inserting post:', postError);
@@ -28,9 +29,9 @@ export class AdminApiService {
       }
 
       if (tags && tags.length > 0 && insertedPost) {
-        const postTagInserts = tags.map(tag => ({
+        const postTagInserts = tags.map((tag) => ({
           post_id: insertedPost.id,
-          tag_id: tag.id
+          tag_id: tag.id,
         }));
 
         const { error: tagError } = await this.supabaseService.getClient
@@ -75,7 +76,10 @@ export class AdminApiService {
       .pipe(map((results) => results[0] ?? null));
   }
 
-  async updatePost(id: string, post: PostUpdate & { tags?: Tag[] }): Promise<void> {
+  async updatePost(
+    id: string,
+    post: PostUpdate & { tags?: Tag[] },
+  ): Promise<void> {
     const { tags, ...postData } = post;
 
     try {
@@ -93,21 +97,25 @@ export class AdminApiService {
       // Handle tags if provided
       if (tags !== undefined) {
         // Get existing tags for comparison
-        const { data: existingPostTags, error: fetchError } = await this.supabaseService.getClient
-          .from('post_tags')
-          .select('tag_id')
-          .eq('post_id', id);
+        const { data: existingPostTags, error: fetchError } =
+          await this.supabaseService.getClient
+            .from('post_tags')
+            .select('tag_id')
+            .eq('post_id', id);
 
         if (fetchError) {
           console.error('Error fetching existing post tags:', fetchError);
           throw fetchError;
         }
 
-        const existingTagIds = (existingPostTags || []).map(pt => pt.tag_id).sort();
-        const newTagIds = tags.map(tag => tag.id).sort();
+        const existingTagIds = (existingPostTags || [])
+          .map((pt) => pt.tag_id)
+          .sort();
+        const newTagIds = tags.map((tag) => tag.id).sort();
 
         // Check if tags have actually changed using JSON comparison for better accuracy
-        const tagsChanged = JSON.stringify(existingTagIds) !== JSON.stringify(newTagIds);
+        const tagsChanged =
+          JSON.stringify(existingTagIds) !== JSON.stringify(newTagIds);
 
         if (tagsChanged) {
           console.log('Tags changed, updating...');
@@ -125,9 +133,9 @@ export class AdminApiService {
 
           // Insert new post-tag relationships if tags exist
           if (tags.length > 0) {
-            const postTagInserts = tags.map(tag => ({
+            const postTagInserts = tags.map((tag) => ({
               post_id: id,
-              tag_id: tag.id
+              tag_id: tag.id,
             }));
 
             const { error: insertError } = await this.supabaseService.getClient
