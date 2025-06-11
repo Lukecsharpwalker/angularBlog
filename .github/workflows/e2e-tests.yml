@@ -31,7 +31,7 @@ jobs:
       - name: 🛠️  Install Supabase CLI
         uses: supabase/setup-cli@v1                 # installs a pinned version
         with:
-          version: 1.160.6                          # keep in sync with local dev
+          version: 2.24.3                       # keep in sync with local dev
           # :contentReference[oaicite:3]{index=3}
       - name: 🚀  Start local Supabase stack
         # “--no-analytics” = skip telemetry; background (&)
