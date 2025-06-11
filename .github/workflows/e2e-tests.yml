@@ -22,29 +22,21 @@ jobs:
 
       - name: Clean and install dependencies
         run: |
-          # Clean npm cache and remove lock file to fix Rollup issue
           npm cache clean --force
           rm -f package-lock.json
           rm -rf node_modules
-          # Fresh install
           npm install
-          # Verify installation
           npm ls @rollup/rollup-linux-x64-gnu || echo "Rollup native dependency not found, continuing..."
 
       - name: Install Supabase CLI
         run: |
-          # Create a temporary directory for extraction
           mkdir -p /tmp/supabase-cli
           cd /tmp/supabase-cli
-          # Download and extract
           curl -fsSL https://github.com/supabase/cli/releases/download/v1.123.4/supabase_linux_amd64.tar.gz | tar -xz
-          # Make executable and move to system path
           chmod +x supabase
           sudo mv supabase /usr/local/bin/
-          # Clean up
           cd /
           rm -rf /tmp/supabase-cli
-          # Verify installation
           supabase --version
 
       - name: Start Docker
@@ -54,35 +46,58 @@ jobs:
 
       - name: Start Supabase local instance
         run: |
-          # Start Supabase with existing config
           supabase start
-          # Wait for services to be ready
           sleep 15
-          # Verify services are running
           supabase status
+          echo "=== Supabase Services Status ==="
+          docker ps --filter name=supabase
+          echo "=== Testing direct API connectivity ==="
+          curl -v http://127.0.0.1:54321/health || echo "Health check failed"
+          curl -v -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" http://127.0.0.1:54321/rest/v1/tags || echo "Tags API test failed"
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Start Angular app
         run: |
-          # Start Angular with local configuration
           npm run start:local &
-          # Wait for app to start
           sleep 45
-          # Wait for app to be ready with longer timeout
-          timeout 120 bash -c 'until curl -f http://localhost:4200; do sleep 3; done'
+          echo "=== Checking if Angular app is running ==="
+          timeout 120 bash -c 'until curl -f http://localhost:4200; do echo "Waiting for Angular..."; sleep 3; done'
+          echo "=== Angular app is running ==="
+          curl -v http://localhost:4200 | head -50
         env:
-          # Set environment variables for local Supabase
           SUPABASE_URL: http://127.0.0.1:54321
           SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
 
-      - name: Run E2E tests
-        run: npm run e2e:local
+      - name: Run API connectivity tests first
+        run: npx playwright test api-connectivity.spec.ts --project=local
         env:
-          # Ensure E2E tests use local Supabase
           SUPABASE_URL: http://127.0.0.1:54321
           SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+
+      - name: Run E2E tests with debugging
+        run: |
+          echo "=== Running E2E tests with full debugging ==="
+          DEBUG=pw:api npx playwright test --project=local --reporter=line
+        env:
+          SUPABASE_URL: http://127.0.0.1:54321
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+
+      - name: Debug on failure
+        if: failure()
+        run: |
+          echo "=== DEBUGGING INFORMATION ==="
+          echo "Docker containers:"
+          docker ps -a
+          echo "Supabase status:"
+          supabase status || echo "Supabase status failed"
+          echo "Angular process:"
+          ps aux | grep ng || echo "No ng process found"
+          echo "Network connections:"
+          netstat -tulpn | grep -E '(4200|54321)' || echo "No connections found"
+          echo "Checking logs:"
+          docker logs $(docker ps -q --filter name=supabase_db) | tail -50 || echo "No DB logs"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -95,7 +110,5 @@ jobs:
       - name: Stop services
         if: always()
         run: |
-          # Kill Angular dev server
           pkill -f "ng serve" || true
-          # Stop Supabase
           supabase stop || true
