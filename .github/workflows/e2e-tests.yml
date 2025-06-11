@@ -54,7 +54,7 @@ jobs:
 
       - name: ⏳  Wait for Supabase (≤180 s)
         run: npx --yes wait-on \
-          tcp:127.0.0.1:54321 tcp:127.0.0.1:54322 --timeout 180000
+          tcp:127.0.0.1:54321 tcp:127.0.0.1:54322 --timeout 280000
 
       - name: 🔑  Export Supabase env vars
         run: |
