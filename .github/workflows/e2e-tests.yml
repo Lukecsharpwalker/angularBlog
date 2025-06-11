@@ -14,12 +14,6 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
 
-    services:
-    # Optional: expose Postgres port for psql debug sessions
-    # postgres:
-    #   image: postgres:15-alpine
-    #   ports: [54322:5432]
-
     steps:
       - name: 📥  Checkout sources
         uses: actions/checkout@v4
