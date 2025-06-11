@@ -33,9 +33,6 @@ jobs:
           SUPABASE_TELEMETRY_DISABLED: "1"   # opt-out, replaces --no-analytics
         run: supabase start &                # detach; health-checks stay on
 
-      # 4. Wait max 60 s for ports 54321/54322
-      - name: Wait for Supabase
-        run: npx --yes wait-on tcp:54321 tcp:54322 --timeout 60000
 
       # 5. Export env keys for Angular → Playwright
       - run: |
