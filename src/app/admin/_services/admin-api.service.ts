@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Post, PostInsert, PostUpdate, Tag } from '../../supabase-types';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { SupabaseService } from '../../services/supabase.service';
 import { environment } from '../../../environments/environment';
+import { Post, PostInsert, PostUpdate, Tag } from '../../types/supabase';
 
 @Injectable()
 export class AdminApiService {
@@ -111,7 +111,7 @@ export class AdminApiService {
         const existingTagIds = (existingPostTags || [])
           .map((pt) => pt.tag_id)
           .sort();
-        const newTagIds = tags.map((tag) => tag.id).sort();
+        const newTagIds = tags.map((tag: Tag) => tag.id).sort();
 
         // Check if tags have actually changed using JSON comparison for better accuracy
         const tagsChanged =

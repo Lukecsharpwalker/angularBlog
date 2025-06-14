@@ -13,9 +13,9 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class SupabaseService {
+  public session: AuthSession | null = null;
   private supabase: SupabaseClient;
   private readonly ngZone = inject(NgZone);
-  public session: AuthSession | null = null;
 
   constructor() {
     this.supabase = this.ngZone.runOutsideAngular(() =>
@@ -24,9 +24,6 @@ export class SupabaseService {
   }
 
   getSession(): AuthSession | null {
-    this.supabase.auth.getSession().then(({ data }) => {
-      this.session = data.session;
-    });
     return this.session;
   }
 

@@ -4,6 +4,7 @@ import { Comment, Post, Profile, Tag, PostTag } from '../../types/supabase';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { createApiUrl } from '../../helpers/api-url-builder';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
@@ -11,6 +12,11 @@ export class ReaderApiService {
   http = inject(HttpClient);
   private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
   private readonly apiKey = environment.supabaseKey;
+  private headers = new HttpHeaders({
+    apikey: this.apiKey,
+    Authorization: `Bearer ${this.apiKey}`,
+    Accept: 'application/json',
+  });
 
   getPost(id: string): Observable<Post> {
     const selectQuery = `
@@ -60,27 +66,20 @@ export class ReaderApiService {
       .eq('post_id', postId);
   }
 
-  getPosts(): Observable<Post[] | null> {
-    const selectQuery = `
-      *,
-      author:profiles(id,username,avatar_url),
-      post_tags(tags(id,name,color,icon))
-    `
-      .replace(/\s+/g, ' ')
-      .trim();
+  getPosts(): Observable<Post[]> {
+    const query = createApiUrl('posts')
+      .select(
+        '*',
+        'author:profiles(id,username,avatar_url)',
+        'post_tags(tags(id,name,color,icon))',
+      )
+      .where('is_draft', 'eq', false)
+      .orderBy('created_at', 'desc')
+      .build();
 
-    const params = new HttpParams()
-      .set('select', selectQuery)
-      .set('is_draft', 'eq.false')
-      .set('order', 'created_at.desc');
-
-    const headers = new HttpHeaders({
-      apikey: this.apiKey,
-      Authorization: `Bearer ${this.apiKey}`,
-      Accept: 'application/json',
+    return this.http.get<Post[]>(`${this.baseUrl}/${query}`, {
+      headers: this.headers,
     });
-
-    return this.http.get<Post[]>(`${this.baseUrl}posts`, { headers, params });
   }
 
   async getProfiles(): Promise<Profile[] | null> {

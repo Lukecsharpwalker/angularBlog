@@ -1,7 +1,8 @@
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
   provideZoneChangeDetection,
+  inject,
+  provideAppInitializer,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
@@ -24,13 +25,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
+    provideAppInitializer(() => {
+      const supabaseService = inject(SupabaseService);
+      return supabaseInitializer(supabaseService)();
+    }),
 
-    {
-      provide: APP_INITIALIZER,
-      useFactory: supabaseInitializer,
-      deps: [SupabaseService],
-      multi: true,
-    },
     provideHighlightOptions({
       coreLibraryLoader: () => import('highlight.js/lib/core'),
       languages: {
