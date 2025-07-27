@@ -1,0 +1,116 @@
+## Prompt for Copilot — angular.fun refactor (Angular 20+)
+
+You are refactoring an **existing** Angular workspace to the target architecture. Work in **English**. Produce diffs, commands, file scaffolds, and ask concise questions when assumptions affect output quality.
+
+### 0) Primary inputs (authority order)
+1. **architecture.txt** — canonical architecture (folder types, isolation, one‑way graph, lazy features, providers, ESLint boundaries). Treat this as the top source of truth. fileciteturn5file3turn5file6turn5file12turn5file15
+2. **app-llm.txt** — system brief: projects (`apps/blog-ssg`, `apps/admin-spa`, `apps/code-samples-mfe`), hosting (Cloud Run/Firebase), SSR/SSG plan, SignalStore, Supabase via PostgREST for prerender, CI gates (Lighthouse 100/100/100/100, Playwright + axe). fileciteturn5file0turn5file10turn5file18
+3. **guidelines-copilot.md** — mandatory coding rules and **NgRx SignalStore** usage with examples (`withState`, `withComputed`, `withMethods`, `withHooks`, `patchState`, `withEntities`, `rxMethod`). fileciteturn5file2turn5file4turn5file5turn5file11turn5file16turn5file19
+4. **llm-full.txt** — excerpts from official Angular docs (signals, hydration, `@defer`, inputs/outputs). Conform to it when ambiguous. fileciteturn5file3
+
+Also follow official docs for hybrid rendering & **route‑level render mode**, hydration / `ngSkipHydration`, `@defer`, `NgOptimizedImage`, **SignalStore**, **Native Federation**, **Supabase PostgREST & SSR cookies**, **Cloud Run deploy from source**, **Node 20.19+ for Angular 20**, and **Lighthouse CI**. citeturn0search0turn0search8turn0search1turn0search2turn0search3turn0search11turn0search4turn0search12turn0search5turn0search13turn0search6turn0search7turn0search14turn0search15turn0search16turn0search5turn0search10
+
+---
+
+### 1) Target system
+
+- **Monorepo (Angular CLI, no Nx)** with projects:
+  - `apps/blog-ssg` — public app. **Home (`/`) = SSR**, **articles (`/posts/:slug`) = SSG**, other routes CSR/SSR case‑by‑case via **route‑level render mode**. Hybrid rendering is the official pattern. fileciteturn5file0 citeturn0search0turn0search8
+  - Hydration enabled by default; opt out only where needed using `host: { ngSkipHydration: 'true' }`. This skips hydration for the component subtree. citeturn0search1turn0search24
+  - Use **`@defer`** to defer heavy, non‑critical UI to improve CWV (LCP/TTFB/INP). citeturn0search2turn0search10turn0search17turn0search25
+  - Use **`NgOptimizedImage`** to prioritize the LCP image, lazy‑load others, add `fetchpriority`, enforce width/height to avoid CLS. citeturn0search3turn0search11turn0search18
+  - `apps/admin-spa` — pure CSR; Quill/editor only here, lazy‑loaded. fileciteturn5file0
+  - `apps/code-samples-mfe` — **Native Federation** remote with heavy examples; lazy‑loaded from blog; share Angular/RxJS as singletons. Native Federation integrates with the CLI’s **esbuild Application Builder**. fileciteturn5file0 citeturn0search5turn0search13
+  - `libs/shared/ui`, `libs/shared/pattern`, `libs/shared/data-access` — enforce **one‑way dependency flow**; no feature→feature imports; reuse via `ui`/`pattern` or routing. Enforce with **eslint‑plugin‑boundaries**. fileciteturn5file3turn5file12
+
+- **State management**:
+  - Local: **signals** (`signal`, `computed`, `linkedSignal`).
+  - Domain/shared: **NgRx SignalStore** with `withState`, `withComputed`, `withMethods`, `withHooks`; immutable updates via **`patchState`**; entities via **`withEntities`** updaters; reactive workflows with **`rxMethod`**; Angular interop via `toSignal`/`toObservable`. **Never mutate.** fileciteturn5file2turn5file4turn5file5turn5file11 citeturn0search4turn0search12turn0search19turn0search5
+
+- **Data / Supabase**:
+  - Public reading (SSG/SSR): use **PostgREST REST** with **anon** role under **RLS**; avoid `supabase-js` during prerender. If SSR needs session, use `@supabase/ssr` with **cookies**. Storage via **Supabase Storage CDN**; use versioned filenames or signed URLs for cache busting. fileciteturn5file0 citeturn0search6turn0search21turn0search14turn0search7turn0search15
+
+- **Hosting / CI**:
+  - `blog-ssg` → **Google Cloud Run**, deploy **from source** using buildpacks. Ensure `npm start` launches the SSR server. Use Workload Identity Federation when feasible. fileciteturn5file0 citeturn0search16
+  - `admin-spa`, `code-samples-mfe` → **Firebase Hosting** (separate targets). fileciteturn5file0
+  - **Angular 20 requires Node ≥ 20.19** — update GitHub Actions runners accordingly. fileciteturn5file0 citeturn0search16
+  - Quality gates: **Lighthouse CI** on `https://angular.fun/` with **100/100/100/100** thresholds; **Playwright + axe** a11y scan. fileciteturn5file0 citeturn0search2
+
+---
+
+### 2) Workflow you must follow
+
+#### Phase A — Inventory & gap analysis
+1. Print the current `angular.json` projects, builders, budgets.
+   Print folder trees for `/apps` and `/libs`, and highlight deviations from `architecture.txt`. fileciteturn5file3turn5file12
+2. Locate usage of SSR/SSG, `ServerRoute[]`, hydration opt‑outs, `@defer`, Quill, Supabase clients.
+3. Detect **feature→feature imports** and any boundaries violations. Produce a **gap report** mapping current → target, with **actionable diffs**.
+
+#### Phase B — Workspace reshape (non‑breaking)
+4. Create missing projects/libs if absent: `apps/blog-ssg`, `apps/admin-spa`, `apps/code-samples-mfe`, `libs/shared/{ui,pattern,data-access}`. Minimal standalone bootstraps with `provideCore({ routes })`. fileciteturn5file3turn5file15
+5. Add **eslint‑plugin‑boundaries** config that encodes allowed imports; fail CI on violations. fileciteturn5file12turn5file13turn5file14
+6. Set **Node 20.19+** in Actions; consider `pnpm` with cache.
+
+#### Phase C — Rendering & routing
+7. Implement **route‑level render mode** with `ServerRoute[]`: `/` → SSR, `/posts/:slug` → SSG, others CSR/SSR as needed. Commit the table and server bootstrap. fileciteturn5file0 citeturn0search0turn0search8
+8. Introduce `@defer` around heavy widgets (charts, embeds, viewers). Provide concrete templates with placeholders/triggers. citeturn0search2turn0search17
+9. Use `host: { ngSkipHydration: 'true' }` only where conflicts are proven; list evidence. citeturn0search1
+10. Replace `<img>` with **`NgOptimizedImage`** and add a simple **Supabase CDN loader** (width/format). Ensure LCP image gets `priority` and `fetchpriority`. citeturn0search3turn0search11
+
+#### Phase D — Data access & state
+11. Implement typed REST clients in `libs/shared/data-access` for PostgREST (DTOs, query builder, error mapping).
+    Add **SignalStore** stores for posts/search/admin flows; strictly use `patchState`. Add **`withEntities`** where lists are managed. fileciteturn5file2 citeturn0search4turn0search12
+12. Add **`scripts/generate-routes.mjs`** to fetch published slugs and write `apps/blog-ssg/routes.txt`; wire it in CI before prerender. Use anon key and RLS‑safe policies. fileciteturn5file0 citeturn0search6turn0search21
+13. Prepare a **server utility** for `createServerClient` with cookies for future SSR user context. citeturn0search7turn0search15
+
+#### Phase E — Micro‑frontend
+14. Configure **Native Federation**: blog = shell, samples = remote exposing `./routes`. Lazy‑load via `loadRemoteModule('samples','./routes')`. Share Angular/RxJS singletons. Provide dev/prod URLs. fileciteturn5file0 citeturn0search5turn0search13
+
+#### Phase F — CI/CD & quality gates
+15. Split CI jobs per app. Blog: `build` → `server` → `prerender` → **Cloud Run deploy from source**. Admin & Samples: build → **Firebase Hosting** deploy. Include **Lighthouse CI** on the **home page** and **Playwright + axe** scan. fileciteturn5file0 citeturn0search16
+
+#### Phase G — i18n scaffold
+16. Prepare i18n for `pl` next: `$localize` extraction, localized builds, serve one locale at a time; generate **per‑locale** route lists for SSG. fileciteturn5file0
+
+---
+
+### 3) Acceptance criteria
+
+- **Architecture**: no feature→feature imports; boundaries lint passes; all features lazy. fileciteturn5file3
+- **Rendering**: server route table in place; home SSR, articles SSG; heavy parts deferred; targeted `ngSkipHydration` only where necessary. fileciteturn5file0 citeturn0search0turn0search2turn0search1
+- **State**: all domain/shared state via **SignalStore** with `patchState`; entity stores where needed; unit tests for store methods. fileciteturn5file2 citeturn0search4
+- **Data**: SSG/SSR use PostgREST; `routes.txt` generated from published slugs; secrets via env/CI. fileciteturn5file0 citeturn0search6
+- **CI**: Node **20.19+**; Cloud Run deploy succeeds; Firebase deploys for admin/samples; LHCI passes with 1.00 thresholds; Playwright + axe finds **no critical violations**. fileciteturn5file0 citeturn0search16
+
+---
+
+### 4) Ask when uncertain — first question block
+
+1) **angular.json**: current projects, builders, budgets? esbuild enabled?
+2) **Secrets**: confirm env names `SUPABASE_REST_URL`, `SUPABASE_ANON_KEY`, `GCP_SA_KEY` (or WIF), Firebase `projectId` and targets for `admin` / `samples`.
+3) **Posts schema**: table name and columns (`id`, `slug`, `published`, `updated_at`)? RLS policy text for `anon` reads?
+4) **Cloud Run runtime**: what command should `npm start` run? Any runtime env vars?
+5) **Quill**: exact packages/plugins and rough bundle size; can we fully defer?
+6) **MFE**: remote name (`samples`) and final public URL; which deps forced as singletons?
+7) **Design tokens & budgets**: initial Tailwind/DaisyUI tokens; CSS/JS budget numbers for `angular.json`?
+8) **Analytics & SEO**: provider? need OG/Twitter tags and `og:image` generation (static vs on‑demand)?
+9) **Testing**: only Playwright, or add unit coverage thresholds? any extra critical E2E flows beyond home?
+10) **i18n**: path strategy (`/en/...`, `/pl/...`); will slugs be localized?
+
+### 5) Deliverables
+    A migration plan (markdown) with a task list and effort estimate.
+    Concrete diffs (files added/modified), including:
+    Route‑level server config and blog routes.
+    scripts/generate-routes.mjs.
+    SignalStore examples for posts and search.
+    Native Federation config for shell/remote.
+    ESLint boundaries config.
+    CI workflow YAML (Cloud Run + Firebase + LHCI + axe).
+    Readme snippets describing local dev, prerender, and deploy commands.
+    A risk log (hydration conflicts, CDN caching, auth on SSR) with mitigations and links to sources.
+    Cite official documentation when proposing non‑obvious choices.
+
+Final instruction
+Begin with Phase A: print the inventory, report deviations vs. architecture.txt, and ask the outstanding questions in one block. Then proceed phase by phase, committing small, reviewable changes.
+
+
