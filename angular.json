@@ -143,6 +143,15 @@
               "devServerTarget": "angularblogapp:serve:local"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -157,7 +166,7 @@
       },
       "root": "projects/admin",
       "sourceRoot": "projects/admin/src",
-      "prefix": "app",
+      "prefix": "admin",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -229,6 +238,16 @@
               "projects/admin/src/styles.scss"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/admin/**/*.ts",
+              "projects/admin/**/*.html"
+            ],
+            "eslintConfig": "projects/admin/eslint.config.js"
+          }
         }
       }
     },
@@ -243,7 +262,7 @@
       },
       "root": "projects/web",
       "sourceRoot": "projects/web/src",
-      "prefix": "app",
+      "prefix": "web",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -327,6 +346,16 @@
               "projects/web/src/styles.scss"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/web/**/*.ts",
+              "projects/web/**/*.html"
+            ],
+            "eslintConfig": "projects/web/eslint.config.js"
+          }
         }
       }
     },
@@ -334,7 +363,7 @@
       "projectType": "library",
       "root": "projects/shared",
       "sourceRoot": "projects/shared/src",
-      "prefix": "lib",
+      "prefix": "shared",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
@@ -364,12 +393,14 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "changeDetection": "OnPush",
+          "displayBlock": true
         }
       },
       "root": "projects/code-samples-mfe",
       "sourceRoot": "projects/code-samples-mfe/src",
-      "prefix": "app",
+      "prefix": "mfe",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -440,6 +471,16 @@
             "styles": [
               "projects/code-samples-mfe/src/styles.scss"
             ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/code-samples-mfe/**/*.ts",
+              "projects/code-samples-mfe/**/*.html"
+            ],
+            "eslintConfig": "projects/code-samples-mfe/eslint.config.js"
           }
         }
       }
