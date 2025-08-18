@@ -218,3 +218,17 @@ The project is currently migrating from monolithic structure to multi-project wo
 - Current: Single app in `/src`
 - Target: Separate projects in `/projects/` with shared libraries
 - Architecture guidance available in `/llms/private/architecture.txt`
+
+## LLM Context Files
+
+Always read these files before making refactor proposals or code edits:
+
+- [llms/private/architecture.txt](llms/private/architecture.txt)
+- [llms/private/llm-full.txt](llms/private/llm-full.txt)
+- [llms/private/app-description.txt](llms/private/app-description.txt)
+
+These documents are authoritative for:
+
+- Workspace and folder structure
+- Angular 20 style and coding conventions
+- Target apps, rendering modes, and deployment
