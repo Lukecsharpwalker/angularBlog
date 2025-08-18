@@ -1,0 +1,90 @@
+# app-llm.txt — Copilot / LLM brief for angular.fun (Angular 20+)
+
+## Overview
+**angular.fun** is a blog and code samples site focused on Angular, built with modern Angular features like SSG, SSR, and micro‑frontends. It serves as a resource for learning.
+Actual is a single app with a monolithic structure, but the goal is to refactor it into a multi‑project workspace with clear separation of concerns and deployment strategies.
+App is in the src folder, with a monolithic structure. At the end /src should be empty.
+Current structure is that:
+- `src/app/` contains the app.
+- `src/app/admin` contains the admin part of the app - Pure CSR.
+- `src/app/reader` contains the part of the blog for reader so it's SSG/SSR.
+
+## Goal
+Rebuild **angular.fun** as a clean Angular 20+ multi‑project workspace (no Nx) with three independently deployed apps and shared libraries:
+
+- **projects/web* (public): Hybrid rendering (**SSG for articles**, **SSR for home**; CSR where needed). Deployed to **Google Cloud Run** from source using buildpacks. SEO and Core Web Vitals are top priority. [docs: hybrid rendering, route‑level render mode, Cloud Run deploy from source]
+- **projects/admin**: Pure CSR admin panel. Will be deployed to **Firebase Hosting**.
+- **projects/code-samples-mfe**: Micro‑frontend for heavy examples, loaded lazily from the blog via **Native Federation** (Angular Architects). Deployed to **Firebase Hosting**.
+- **projects/shared**: UI (presentational), pattern (composable UI + injectables), data‑access (REST clients, mappers, Supabase helpers), models.
+
+**State**: **NgRx SignalStore** for all apps.
+
+**Data**: Supabase (Postgres + Auth + Storage). Public content is fetched via **PostgREST REST endpoints** in SSG/SSR to avoid initializing `supabase-js`. Admin/MFE can use `@supabase/supabase-js`. Public assets come from **Supabase Storage CDN**.
+
+**A11y & Performance**: Aim for **100/100/100/100 Lighthouse** on the home page. Enforce with Lighthouse CI in GitHub Actions. Add Playwright + axe accessibility checks.
+
+---
+
+## Projects & folders
+
+**Workspace (Angular CLI):**
+- `projects/web` — public reader app
+- `projects/admin` — admin
+- `projects/code-samples-mfe` — remote
+- `projects/shared` — Library shared between apps
+- `scripts/` — Node scripts (e.g. prerender route generator)
+- `e2e/` — end‑to‑end tests (Playwright)
+- 'llms' - LLMs and Copilot prompts for the project
+- '.github' - GitHub Actions workflows
+
+** Inside each app inside folder should cover architecture from : llms/private/architecture.txt **
+
+## Data access
+
+- **Web**: call **PostgREST** endpoints with the anon key and RLS‑safe policies. Because of issues with `@supabase/supabase-js` in SSR/SSG
+- **Admin/MFE**: use `@supabase/supabase-js` browser client.
+- **Auth**: already implemented with Supabase. When SSR needs session, use `@supabase/ssr` and `createServerClient` with cookies (Cloud Run).
+- **Storage**: serve images from Supabase **CDN** (public bucket). Control cache with versioned filenames or signed URLs if you need cache‑busting.
+
+---
+## Tooling & versions
+
+- **Angular 20+**.
+- **Node.js LTS**: **20.19+** (Angular 20 drops Node 18). Configure Actions runners to Node 20.
+- **Package manager**: `pnpm` recommended (fast, content‑addressable store). Use `actions/setup-node` caching with `cache: 'pnpm'`.
+- **Testing**: Use `@playwright/test` for e2e tests. - implemeted
+- **Linting**: `@angular-eslint` for Angular code, `eslint-plugin-js
+- **boundaries** : eslint-plugin-boundaries
+- **CI/CD**: GitHub Actions.
+
+---
+
+## CI/CD
+
+### Overview
+- Separate jobs for each app. Common `test` job first.
+- **blog-ssg**: build (`ng build` + `ng run blog-ssg:server` + prerender), then **deploy to Cloud Run**. Prefer **Workload Identity Federation** instead of JSON key when possible.
+- **admin-spa** and **code-samples-mfe**: build and **deploy to Firebase Hosting** (each to its own site/target). Use `firebase init hosting:github` to scaffold.
+- **Lighthouse CI**: run on the preview/live URL of the **home page** only. Thresholds set to 1.00 for all categories; fail PRs on regressions.
+- **Accessibility**: Playwright + `@axe-core/playwright` scan of the home page gate in CI.
+
+### Monorepo workflow (sketch)
+See `.github/workflows/ci.yml` below for a consolidated workflow.
+
+---
+
+## i18n roadmap
+
+- Start English‑only. Next locale: **pl**.
+
+---
+
+## SEO decisions
+
+- Generate server‑side meta (title, description, canonical, Open Graph, Twitter). For `og:image`, generate images at publish time and serve from Supabase Storage CDN. Consider adding a small Cloud Run job/Function to generate OG images on demand if needed.
+
+---
+
+## Styling
+- **Tailwind + DaisyUI**. Provide design tokens (colors, spacing, font scale). Set CSS budget limits in `angular.json`. Monitor CSS size in CI.
+
