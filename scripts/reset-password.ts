@@ -25,8 +25,7 @@ if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
   console.error('Set SUPABASE_URL and SERVICE_ROLE_KEY environment variables.');
   process.exit(1);
 }
-
-(async () => {
+Ś(async () => {
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
