@@ -52,6 +52,12 @@
     },
     {
       "path": "./projects/shared/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/code-samples-mfe/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/code-samples-mfe/tsconfig.spec.json"
     }
   ]
 }
