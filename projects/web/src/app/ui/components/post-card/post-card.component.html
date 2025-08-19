@@ -9,10 +9,10 @@
       class="flex flex-wrap md:flex-col items-start md:basis-2/12 gap-2 px-4 md:px-0">
       @for (tag of post().post_tags; track tag.tags.id; let i = $index) {
         @if (i < 4) {
-          <app-label
+          <web-label
             [text]="tag.tags.name"
             [color]="tag.tags.color"
-          ></app-label>
+          ></web-label>
         }
       }
     </div>

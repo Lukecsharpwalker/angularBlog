@@ -11,10 +11,10 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AboutMeComponent } from '../../../../shared/about-me/about-me.component';
-import { PostCardComponent } from './post-card/post-card.component';
+import { PostCardComponent } from '../../../ui/components/post-card/post-card.component';
 import { PostsStore } from './posts.store';
 import { TagsStore } from 'shared';
+import { AboutMeComponent } from '../../../ui/components/about-me/about-me.component';
 
 @Component({
   selector: 'web-posts-list',

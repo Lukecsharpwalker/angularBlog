@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Post } from 'shared';
 
 @Component({
-  selector: 'app-post-card',
+  selector: 'web-post-card',
   standalone: true,
   imports: [LabelComponent, RouterLink],
   templateUrl: './post-card.component.html',

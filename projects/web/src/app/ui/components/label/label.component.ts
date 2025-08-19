@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-label',
+  selector: 'web-label',
   standalone: true,
   imports: [NgStyle],
   templateUrl: './label.component.html',
