@@ -8,19 +8,19 @@ import {
   Signal,
   input,
 } from '@angular/core';
-import { ReaderApiService } from '../../../_services/reader-api.service';
+import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { DatePipe } from '@angular/common';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { Router } from '@angular/router';
-import { DynamicDialogService } from '../../../../shared/dynamic-dialog/dynamic-dialog.service';
+import { DynamicDialogService } from 'shared';
 import { CodeBlockModalComponent } from './code-block-modal-component/code-block-modal-component.component';
 import { PostStore } from './post.store';
 import { CommentsStore } from './comments/comments.store';
 import { Post } from 'shared';
 
 @Component({
-  selector: 'app-post',
+  selector: 'web-post',
   standalone: true,
   providers: [ReaderApiService, DatePipe, PostStore, CommentsStore],
   templateUrl: './post.component.html',

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { ShellComponent } from './layout/shell/shell.component';
 
 @Component({
   selector: 'web-root',
-  imports: [],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [ShellComponent],
+  template: '<web-shell></web-shell>',
 })
-export class AppComponent {
-
-}
+export class AppComponent {}

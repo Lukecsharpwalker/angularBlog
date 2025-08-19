@@ -1,5 +1,5 @@
 import { CanDeactivateFn } from '@angular/router';
-import { AddPostComponent } from '../_components/add-post/add-post.component';
+import { AddPostComponent } from '../../features/posts/add-post/add-post.component';
 import { DynamicDialogService } from 'shared';
 import { inject } from '@angular/core';
 import { ModalCloseStatusEnum } from 'shared';

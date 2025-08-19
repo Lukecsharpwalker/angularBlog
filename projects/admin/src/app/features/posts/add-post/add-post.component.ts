@@ -17,22 +17,22 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AdminApiService } from '../../_services/admin-api.service';
+import { AdminApiService } from '../../../core/services/admin-api.service';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
-import { PostForm } from '../../_models/post-from.inteface';
+import { PostForm } from './models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
-import { loadQuillModules } from '../../../utlis/quill-configuration';
-import { DynamicDialogService } from '../../../shared/dynamic-dialog/dynamic-dialog.service';
+import { loadQuillModules } from '../../../core/utils/quill-configuration';
+import { DynamicDialogService } from 'shared';
 import { ModalConfig } from 'shared';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 import { PostInsert, PostUpdate, Tag } from 'shared';
-import { TagMultiSelectComponent } from '../../../shared/tag-multi-select/tag-multi-select.component';
+import { TagMultiSelectComponent } from '../../../ui/components/tag-multi-select/tag-multi-select.component';
 
 @Component({
-  selector: 'blog-add-post',
+  selector: 'admin-add-post',
   standalone: true,
   imports: [
     ReactiveFormsModule,

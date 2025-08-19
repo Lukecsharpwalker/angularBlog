@@ -16,7 +16,7 @@ import { LoginCompontent } from '../../auth/login/login.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'blog-navbar',
+  selector: 'web-navbar',
   standalone: true,
   imports: [RouterLink],
   providers: [],

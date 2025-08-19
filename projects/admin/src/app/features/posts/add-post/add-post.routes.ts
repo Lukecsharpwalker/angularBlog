@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { AddPostComponent } from './_components/add-post/add-post.component';
-import { unsavedChangesGuard } from './_guards/unsaved-changes.guard';
+import { AddPostComponent } from './add-post.component';
+import { unsavedChangesGuard } from '../../../core/guards/unsaved-changes.guard';
 
-export const adminRoutes: Routes = [
+export default [
   {
     path: '',
     component: AddPostComponent,
@@ -13,4 +13,4 @@ export const adminRoutes: Routes = [
     component: AddPostComponent,
     canDeactivate: [unsavedChangesGuard],
   },
-];
+] as Routes;

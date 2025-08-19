@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { ShellComponent } from './layout/shell/shell.component';
 
 @Component({
   selector: 'admin-root',
-  imports: [],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [ShellComponent],
+  template: '<admin-shell></admin-shell>',
 })
-export class AppComponent {
-
-}
+export class AppComponent {}

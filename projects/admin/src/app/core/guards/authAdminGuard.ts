@@ -10,7 +10,7 @@ export const authAdminGuard: CanMatchFn = (): boolean => {
   if (session?.user?.app_metadata?.['role'] === Roles.ADMIN) {
     return true;
   } else {
-    router.navigate(['/posts']);
+    router.navigate(['/login']);
     return false;
   }
 };

@@ -17,7 +17,7 @@ import { PostsStore } from './posts.store';
 import { TagsStore } from 'shared';
 
 @Component({
-  selector: 'app-posts-list',
+  selector: 'web-posts-list',
   standalone: true,
   imports: [
     RouterModule,
