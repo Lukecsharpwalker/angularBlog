@@ -1,62 +1,108 @@
+
+/* Order */
+@layer reset, primeng;
+
+
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import "../../../node_modules/quill/dist/quill.core.css";
-@import "../../../node_modules/quill/dist/quill.snow.css";
-@import 'highlight.js/styles/atom-one-dark.css';
-
-// Custom styles for highlighted code blocks
-pre {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  white-space: pre; /* Preserve whitespace and line breaks */
-  padding: 1rem; /* Add padding for better readability */
-  border-radius: 5px; /* Optional: Add border-radius for rounded corners */
-  background-color: #282c34; /* Optional: Set background color to match the theme */
-  color: #abb2bf; /* Optional: Set text color */
+h1 {
+  @apply text-3xl font-bold mt-4 mb-1;
 }
 
-pre code {
-  font-size: 1rem; /* Set font size */
+h2 {
+  @apply text-2xl font-bold mt-4 mb-1;
 }
 
-.editor-container {
-  @apply p-4 border border-gray-300 rounded-lg;
+h3 {
+  @apply text-xl font-bold mt-4 mb-1;
 }
 
-/* Ensure Quill styles are applied correctly */
-.ql-code-block-container {
-  @apply bg-gray-100 border border-gray-300 rounded-lg p-4 break-words;
+h4 {
+  @apply text-lg font-bold mt-2 mb-1;
 }
 
-/* Strike-through text for Quill */
-.ql-strike {
-  @apply line-through;
+.tittle {
+  @apply text-4xl font-bold my-2;
 }
 
-/* Blockquote style for Quill */
-.ql-blockquote {
-  @apply border-l-4 border-gray-300 pl-4 italic;
+/* Base button */
+.btn {
+  @apply text-base font-medium rounded-md p-3 min-w-16;
 }
 
-/* Header styles for Quill */
-.ql-header.ql-size-h1 {
-  @apply text-4xl;
+.btn--rounded {
+  @apply rounded-full;
 }
 
-.ql-header.ql-size-h2 {
-  @apply text-3xl;
+/* Button group */
+.btn--group {
+  @apply flex space-x-4;
 }
 
-.ql-header.ql-size-h3 {
-  @apply text-2xl;
+/* Button primary */
+.btn--primary {
+  @apply bg-primary text-white;
 }
 
-/* custom-quill-styles.css */
-
-.ql-align-center {
-  @apply flex justify-center;
+/* Button secondary */
+.btn--secondary {
+  @apply bg-white text-secondary border border-secondary;
 }
 
-/* Ensure that the flex container applies to block-level elements */
-.ql-align-center > * {
-  @apply flex items-center;
+/* Hover effects */
+.btn--primary:hover, .btn--secondary:hover {
+  @apply shadow-lg -translate-y-0.5;
 }
+
+/* Disabled state */
+.btn--primary:disabled, .btn--secondary:disabled {
+  @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+}
+
+/* Import TailwindCSS */
+@import 'tailwindcss/utilities';
+
+/* Additional styles for the card component */
+.post-card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105;
+}
+
+.card-default {
+  @apply p-4;
+  width: 100%;
+}
+
+.card-main {
+  @apply lg:p-6 lg:col-span-3 lg:row-span-1;
+  width: 100%;
+}
+
+.post-image {
+  @apply w-full h-48 object-cover;
+}
+
+.post-content {
+  @apply p-4;
+}
+
+.post-title {
+  @apply text-xl font-bold text-gray-900 mt-0 pt-0;
+}
+
+.post-summary {
+  @apply text-gray-700;
+}
+
+.read-more {
+  @apply text-primary hover:underline;
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+

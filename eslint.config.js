@@ -11,7 +11,7 @@ module.exports = tseslint.config(
       "node_modules/**", 
       "coverage/**",
       ".angular/**",
-      "src/**", // Exclude legacy monolith during migration
+      "src/**", // Exclude root src - focus linting on projects/
       "**/*.spec.ts",
       "**/e2e/**",
       "**/*.generated.ts",
