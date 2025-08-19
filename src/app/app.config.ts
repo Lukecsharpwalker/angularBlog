@@ -12,12 +12,12 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideQuillConfig } from 'ngx-quill/config';
-import { provideHighlightOptions } from 'ngx-highlightjs';
-import { quillToolbarConfig } from './utlis/quill-toolbar';
-import hljs from 'highlight.js/lib/core';
-import { SupabaseService } from './services/supabase.service';
-import { supabaseInitializer } from './utlis/initialize-supabase';
+import { 
+  SupabaseService,
+  SUPABASE_CONFIG,
+  supabaseInitializer
+} from 'shared';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,21 +30,15 @@ export const appConfig: ApplicationConfig = {
       return supabaseInitializer(supabaseService)();
     }),
 
-    provideHighlightOptions({
-      coreLibraryLoader: () => import('highlight.js/lib/core'),
-      languages: {
-        xml: () => import('highlight.js/lib/languages/xml'),
-        typescript: () => import('highlight.js/lib/languages/typescript'),
-        javascript: () => import('highlight.js/lib/languages/javascript'),
-        css: () => import('highlight.js/lib/languages/css'),
-        plain: () => import('highlight.js/lib/languages/plaintext'),
+    // Provide Supabase configuration
+    {
+      provide: SUPABASE_CONFIG,
+      useValue: {
+        supabaseUrl: environment.supabaseUrl,
+        supabaseKey: environment.supabaseKey,
       },
-    }),
-    provideQuillConfig({
-      modules: {
-        syntax: { hljs },
-        toolbar: quillToolbarConfig,
-      },
-    }),
+    },
+
+    // API services for shared stores moved to individual projects
   ],
 };
