@@ -5,6 +5,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 
 import { Tag } from '../../models';
+import { TAGS_API_SERVICE, TagsApiService } from '../tokens/api-tokens';
 
 interface TagsState {
   tags: Tag[] | null;
@@ -22,7 +23,7 @@ export const TagsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
 
-  withMethods((store, api = inject(null)) => ({
+  withMethods((store, api = inject(TAGS_API_SERVICE)) => ({
     loadTags: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { loading: true, error: null })),

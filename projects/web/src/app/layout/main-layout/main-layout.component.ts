@@ -8,16 +8,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
   imports: [RouterOutlet, NavbarComponent],
   template: `
     <web-navbar></web-navbar>
-    <main>
+    <div class="container mx-auto w-11/12 lg:w-10/12 xl:w-8/12">
       <router-outlet></router-outlet>
-    </main>
+    </div>
   `,
-  styles: [
-    `
-      main {
-        min-height: calc(100vh - 64px); /* Assuming navbar height */
-      }
-    `,
-  ],
 })
-export class ShellComponent {}
+export class MainLayoutComponent {}

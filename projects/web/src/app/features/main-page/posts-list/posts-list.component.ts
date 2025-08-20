@@ -14,18 +14,12 @@ import { RouterModule } from '@angular/router';
 import { PostCardComponent } from '../../../ui/components/post-card/post-card.component';
 import { PostsStore } from './posts.store';
 import { TagsStore } from 'shared';
-import { AboutMeComponent } from '../../../ui/components/about-me/about-me.component';
+import { AboutMeComponent } from '../../../layout/about-me/about-me.component';
 
 @Component({
   selector: 'web-posts-list',
   standalone: true,
-  imports: [
-    RouterModule,
-    AboutMeComponent,
-    PostCardComponent,
-    NgOptimizedImage,
-    NgStyle,
-  ],
+  imports: [RouterModule, AboutMeComponent, PostCardComponent, NgOptimizedImage, NgStyle],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
@@ -60,10 +54,7 @@ export class PostsListComponent {
   private initializeScrollingForMobileView(): void {
     this.scrollProgress.set(this.initialTagScrollProgressBarForMobile);
     afterNextRender(() => {
-      this.scroll()?.nativeElement.addEventListener(
-        'scroll',
-        this.onScroll.bind(this),
-      );
+      this.scroll()?.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
     });
   }
 }

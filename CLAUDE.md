@@ -223,9 +223,9 @@ The project is currently migrating from monolithic structure to multi-project wo
 
 Always read these files before making refactor proposals or code edits:
 
-- [llms/private/architecture.txt](llms/private/architecture.txt)
-- [llms/private/llm-full.txt](llms/private/llm-full.txt)
-- [llms/private/app-description.txt](llms/private/app-description.txt)
+- [llms/**/architecture.txt](llms/private/architecture.txt)
+- [llms/**/llm-full.txt](llms/private/llm-full.txt)
+- [llms/**/app-description.txt](llms/private/app-description.txt)
 
 These documents are authoritative for:
 

@@ -7,13 +7,14 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { SupabaseService, SUPABASE_CONFIG, supabaseInitializer } from 'shared';
+import { SupabaseService, SUPABASE_CONFIG, supabaseInitializer, TAGS_API_SERVICE } from 'shared';
 import { environment } from '../../../../environments/environment';
 import { provideHighlightOptions } from 'ngx-highlightjs';
 import { provideQuillConfig } from 'ngx-quill/config';
 import hljs from 'highlight.js/lib/core';
 import { routes } from './app.routes';
 import { quillToolbarConfig } from './core/utils/quill-toolbar';
+import { AdminApiService } from './core/services/admin-api.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -49,5 +50,11 @@ export const appConfig: ApplicationConfig = {
         toolbar: quillToolbarConfig,
       },
     }),
+
+    // API services for shared stores
+    {
+      provide: TAGS_API_SERVICE,
+      useExisting: AdminApiService,
+    },
   ],
 };

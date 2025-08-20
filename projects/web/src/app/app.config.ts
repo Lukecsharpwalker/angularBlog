@@ -16,9 +16,11 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { 
   SupabaseService,
   SUPABASE_CONFIG,
-  supabaseInitializer
+  supabaseInitializer,
+  TAGS_API_SERVICE
 } from 'shared';
 import { environment } from '../../../../environments/environment';
+import { ReaderApiService } from './core/services/reader-api.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -41,6 +43,10 @@ export const appConfig: ApplicationConfig = {
       },
     },
 
-    // API services for shared stores moved to individual projects
+    // API services for shared stores
+    {
+      provide: TAGS_API_SERVICE,
+      useExisting: ReaderApiService,
+    },
   ],
 };
