@@ -27,6 +27,7 @@ import { Tag } from 'shared';
     },
   ],
   templateUrl: './tag-multi-select.component.html',
+  styleUrl: './tag-multi-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {

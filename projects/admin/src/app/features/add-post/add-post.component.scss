@@ -60,7 +60,7 @@
 // Main Content
 .post-main {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 2rem 120px 2rem; // Add bottom padding for fixed actions
 }
 
 .post-form {
@@ -203,8 +203,12 @@
       .ql-toolbar {
         border: none;
         border-bottom: 1px solid rgba(173, 188, 159, 0.2);
-        background: rgba(251, 250, 218, 0.3);
+        background: white;
         padding: 1rem 1.5rem;
+        position: sticky;
+        top: 112px;
+        z-index: 150;
+        box-shadow: 0 2px 8px rgba(18, 55, 42, 0.08);
 
         .ql-formats {
           margin-right: 1.5rem;
@@ -333,12 +337,22 @@
 // Actions Section
 .actions-section {
   padding: 2rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid rgba(173, 188, 159, 0.2);
+  box-shadow: 0 -2px 8px rgba(18, 55, 42, 0.06);
+  z-index: 200;
 }
 
 .actions-layout {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .primary-actions {
