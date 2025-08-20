@@ -11,7 +11,7 @@ import {
   ReactiveFormsModule,
   FormControl,
 } from '@angular/forms';
-import { ReaderApiService } from '../../../../_services/reader-api.service';
+import { ReaderApiService } from '../../../../core/services/reader-api.service';
 import { CommentsStore } from '../comments/comments.store';
 import { Comment } from 'shared';
 

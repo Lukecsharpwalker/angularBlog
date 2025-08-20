@@ -5,19 +5,19 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: '/login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('./layout/login/login.component').then(m => m.LoginComponent),
   },
   {
     path: 'posts',
-    canMatch: [authAdminGuard],
-    loadChildren: () => import('./features/posts/add-post/add-post.routes')
+    // canMatch: [authAdminGuard],
+    loadChildren: () => import('./features/add-post/add-post.routes'),
   },
   {
     path: '**',
-    redirectTo: '/login'
-  }
+    redirectTo: '/login',
+  },
 ];

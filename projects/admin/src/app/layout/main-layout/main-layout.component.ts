@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'admin-shell',
+  selector: 'admin-main-layout',
   standalone: true,
   imports: [RouterOutlet],
   template: `
@@ -10,11 +10,13 @@ import { RouterOutlet } from '@angular/router';
       <router-outlet></router-outlet>
     </main>
   `,
-  styles: [`
-    .admin-main {
-      min-height: 100vh;
-      padding: 1rem;
-    }
-  `]
+  styles: [
+    `
+      .admin-main {
+        min-height: 100vh;
+        padding: 1rem;
+      }
+    `,
+  ],
 })
-export class ShellComponent {}
+export class MainLayoutComponent {}

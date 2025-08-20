@@ -1,0 +1,206 @@
+// Professional Admin Login Component Styles
+// Brand colors: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA)
+
+.admin-login-container {
+  background: linear-gradient(135deg, 
+    theme(colors.quaternary) 0%, 
+    theme(colors.tertiary/20) 50%, 
+    theme(colors.secondary/10) 100%
+  );
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 80%, theme(colors.primary/5) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, theme(colors.secondary/5) 0%, transparent 50%);
+    z-index: 0;
+  }
+  
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.admin-login-brand {
+  background: linear-gradient(135deg, theme(colors.primary) 0%, theme(colors.secondary) 100%);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg fill='%23FBFADA' fill-opacity='0.03'%3e%3cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e") repeat;
+    opacity: 0.1;
+  }
+}
+
+.admin-login-form-side {
+  backdrop-filter: blur(10px);
+}
+
+.admin-form {
+  border: 1px solid theme(colors.tertiary/20);
+  box-shadow: 
+    0 20px 25px -5px rgba(18, 55, 42, 0.1),
+    0 10px 10px -5px rgba(18, 55, 42, 0.04),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  
+  &:hover {
+    box-shadow: 
+      0 25px 30px -5px rgba(18, 55, 42, 0.15),
+      0 15px 15px -5px rgba(18, 55, 42, 0.08),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+  }
+}
+
+// Enhanced input styling
+input {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: theme(colors.secondary/40);
+  }
+  
+  &:focus {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 
+      0 0 0 2px theme(colors.primary/20),
+      0 4px 6px -1px rgba(18, 55, 42, 0.1);
+  }
+  
+  &::placeholder {
+    transition: opacity 0.2s ease;
+  }
+  
+  &:focus::placeholder {
+    opacity: 0.6;
+  }
+}
+
+// Professional button styling
+button {
+  position: relative;
+  overflow: hidden;
+  
+  &:not(:disabled) {
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(18, 55, 42, 0.25);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 15px rgba(18, 55, 42, 0.2);
+    }
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.6;
+  }
+}
+
+// Primary button (Sign In)
+button[type="submit"] {
+  background: linear-gradient(135deg, theme(colors.primary) 0%, theme(colors.secondary) 100%);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, theme(colors.secondary) 0%, theme(colors.primary) 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Google button styling
+button:not([type="submit"]) {
+  &:hover {
+    box-shadow: 0 4px 15px rgba(67, 104, 80, 0.15);
+  }
+}
+
+// Error validation styling
+.border-red-400:focus {
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2);
+  border-color: #f87171;
+}
+
+// Animation for elements
+.admin-logo {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1023px) {
+  .admin-login-container {
+    background: theme(colors.quaternary);
+  }
+}
+
+// Loading spinner enhancement
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Logo icon hover effect
+.admin-logo svg {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: rotate(10deg) scale(1.05);
+  }
+}
+
+// Feature list animation
+.admin-login-brand .space-y-4 > div {
+  animation: slideInLeft 0.6s ease-out;
+  
+  &:nth-child(2) { animation-delay: 0.1s; }
+  &:nth-child(3) { animation-delay: 0.2s; }
+  &:nth-child(4) { animation-delay: 0.3s; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -1,3 +1,6 @@
+/* Quill Editor Styles */
+@import "../../../node_modules/quill/dist/quill.core.css";
+@import "../../../node_modules/quill/dist/quill.snow.css";
 
 /* Order */
 @layer reset, primeng;
@@ -7,6 +10,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 h1 {
   @apply text-3xl font-bold mt-4 mb-1;

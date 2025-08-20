@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { ReaderApiService } from '../../reader/_services/reader-api.service';
+import { AdminApiService } from '../../../core/services/admin-api.service';
 import { Tag } from 'shared';
 
 @Component({
@@ -31,7 +31,7 @@ import { Tag } from 'shared';
 })
 export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   private elementRef = inject(ElementRef);
-  private readerApi = inject(ReaderApiService);
+  private adminApi = inject(AdminApiService);
 
   searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
 
@@ -67,9 +67,9 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   private loadTags() {
-    this.readerApi.getTags().subscribe({
-      next: (tags) => this.allTags.set(tags!),
-      error: (error) => console.error('Failed to load tags:', error),
+    this.adminApi.getTags().subscribe({
+      next: (tags: Tag[]) => this.allTags.set(tags),
+      error: (error: any) => console.error('Failed to load tags:', error),
     });
   }
 

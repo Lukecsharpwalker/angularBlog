@@ -1,6 +1,6 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { inject } from '@angular/core';
-import { ReaderApiService } from '../../../../_services/reader-api.service';
+import { ReaderApiService } from '../../../../core/services/reader-api.service';
 import { Comment } from 'shared';
 
 type CommentsState = {

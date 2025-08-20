@@ -7,6 +7,7 @@ import {
   Session,
   SupabaseClient,
 } from '@supabase/supabase-js';
+import { environment } from '../../../../environments/environment';
 
 export interface SupabaseConfig {
   supabaseUrl: string;
@@ -22,11 +23,10 @@ export class SupabaseService {
   public session: AuthSession | null = null;
   private supabase: SupabaseClient;
   private readonly ngZone = inject(NgZone);
-  private readonly config = inject(SUPABASE_CONFIG);
 
   constructor() {
     this.supabase = this.ngZone.runOutsideAngular(() =>
-      createClient(this.config.supabaseUrl, this.config.supabaseKey),
+      createClient(environment.supabaseUrl, environment.supabaseKey)
     );
   }
 
@@ -34,9 +34,7 @@ export class SupabaseService {
     return this.session;
   }
 
-  authChanges(
-    callback: (event: AuthChangeEvent, session: Session | null) => void,
-  ) {
+  authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
     return this.supabase.auth.onAuthStateChange(callback);
   }
 

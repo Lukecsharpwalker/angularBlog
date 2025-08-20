@@ -5,6 +5,6 @@ import { ShellComponent } from './layout/shell/shell.component';
   selector: 'web-root',
   standalone: true,
   imports: [ShellComponent],
-  template: '<web-shell></web-shell>',
+  template: '<web-main-layout></web-main-layout>',
 })
 export class AppComponent {}

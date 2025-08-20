@@ -1,34 +1,26 @@
-import { inject, Injectable, InjectionToken } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { SupabaseService } from 'shared';
 import { Post, PostInsert, PostUpdate, Tag } from 'shared';
-
-export interface AdminApiConfig {
-  supabaseUrl: string;
-  supabaseKey: string;
-}
-
-export const ADMIN_API_CONFIG = new InjectionToken<AdminApiConfig>('AdminApiConfig');
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable()
 export class AdminApiService {
   http = inject(HttpClient);
   supabaseService = inject(SupabaseService);
-  private readonly config = inject(ADMIN_API_CONFIG);
-  private readonly baseUrl = `${this.config.supabaseUrl}/rest/v1/`;
-  private readonly apiKey = this.config.supabaseKey;
+  private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
+  private readonly apiKey = environment.supabaseKey;
 
   async addPost(post: PostInsert & { tags?: Tag[] }): Promise<void> {
     const { tags, ...postData } = post;
 
     try {
-      const { data: insertedPost, error: postError } =
-        await this.supabaseService.getClient
-          .from('posts')
-          .insert({ ...postData })
-          .select('id')
-          .single();
+      const { data: insertedPost, error: postError } = await this.supabaseService.getClient
+        .from('posts')
+        .insert({ ...postData })
+        .select('id')
+        .single();
 
       if (postError) {
         console.error('Error inserting post:', postError);
@@ -36,7 +28,7 @@ export class AdminApiService {
       }
 
       if (tags && tags.length > 0 && insertedPost) {
-        const postTagInserts = tags.map((tag) => ({
+        const postTagInserts = tags.map(tag => ({
           post_id: insertedPost.id,
           tag_id: tag.id,
         }));
@@ -68,9 +60,7 @@ export class AdminApiService {
       .replace(/\s+/g, ' ')
       .trim();
 
-    const params = new HttpParams()
-      .set('select', selectQuery)
-      .set('id', `eq.${id}`);
+    const params = new HttpParams().set('select', selectQuery).set('id', `eq.${id}`);
 
     const headers = new HttpHeaders({
       apikey: this.apiKey,
@@ -80,13 +70,10 @@ export class AdminApiService {
 
     return this.http
       .get<Post[]>(`${this.baseUrl}posts`, { headers, params })
-      .pipe(map((results) => results[0] ?? null));
+      .pipe(map(results => results[0] ?? null));
   }
 
-  async updatePost(
-    id: string,
-    post: PostUpdate & { tags?: Tag[] },
-  ): Promise<void> {
+  async updatePost(id: string, post: PostUpdate & { tags?: Tag[] }): Promise<void> {
     const { tags, ...postData } = post;
 
     try {
@@ -104,25 +91,21 @@ export class AdminApiService {
       // Handle tags if provided
       if (tags !== undefined) {
         // Get existing tags for comparison
-        const { data: existingPostTags, error: fetchError } =
-          await this.supabaseService.getClient
-            .from('post_tags')
-            .select('tag_id')
-            .eq('post_id', id);
+        const { data: existingPostTags, error: fetchError } = await this.supabaseService.getClient
+          .from('post_tags')
+          .select('tag_id')
+          .eq('post_id', id);
 
         if (fetchError) {
           console.error('Error fetching existing post tags:', fetchError);
           throw fetchError;
         }
 
-        const existingTagIds = (existingPostTags || [])
-          .map((pt) => pt.tag_id)
-          .sort();
+        const existingTagIds = (existingPostTags || []).map(pt => pt.tag_id).sort();
         const newTagIds = tags.map((tag: Tag) => tag.id).sort();
 
         // Check if tags have actually changed using JSON comparison for better accuracy
-        const tagsChanged =
-          JSON.stringify(existingTagIds) !== JSON.stringify(newTagIds);
+        const tagsChanged = JSON.stringify(existingTagIds) !== JSON.stringify(newTagIds);
 
         if (tagsChanged) {
           console.log('Tags changed, updating...');
@@ -140,7 +123,7 @@ export class AdminApiService {
 
           // Insert new post-tag relationships if tags exist
           if (tags.length > 0) {
-            const postTagInserts = tags.map((tag) => ({
+            const postTagInserts = tags.map(tag => ({
               post_id: id,
               tag_id: tag.id,
             }));
@@ -164,5 +147,14 @@ export class AdminApiService {
       console.error('Failed to update post:', error);
       throw error;
     }
+  }
+
+  getTags(): Observable<Tag[]> {
+    const headers = new HttpHeaders({
+      apikey: this.apiKey,
+      Authorization: `Bearer ${this.apiKey}`,
+      Accept: 'application/json',
+    });
+    return this.http.get<Tag[]>(`${this.baseUrl}tags`, { headers });
   }
 }

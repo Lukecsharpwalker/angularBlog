@@ -5,10 +5,10 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { ReaderApiService } from '../../../../_services/reader-api.service';
+import { ReaderApiService } from '../../../../core/services/reader-api.service';
 import { Comment } from 'shared';
 import { CommentsStore } from './comments.store';
-import { HasRoleDirective } from '../../../../../shared/_directives/has-role.directive';
+import { HasRoleDirective } from 'shared';
 
 @Component({
   selector: 'comments',

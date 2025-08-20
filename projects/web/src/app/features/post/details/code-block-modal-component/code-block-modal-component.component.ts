@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DYNAMIC_DIALOG_DATA } from '../../../../../shared/dynamic-dialog/dialog-data.token';
+import { DYNAMIC_DIALOG_DATA } from 'shared';
 
 @Component({
   selector: 'app-code-block-modal',

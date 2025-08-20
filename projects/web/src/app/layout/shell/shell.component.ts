@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
-  selector: 'web-shell',
+  selector: 'web-main-layout',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent],
   template: `
@@ -12,10 +12,12 @@ import { NavbarComponent } from '../navbar/navbar.component';
       <router-outlet></router-outlet>
     </main>
   `,
-  styles: [`
-    main {
-      min-height: calc(100vh - 64px); /* Assuming navbar height */
-    }
-  `]
+  styles: [
+    `
+      main {
+        min-height: calc(100vh - 64px); /* Assuming navbar height */
+      }
+    `,
+  ],
 })
 export class ShellComponent {}

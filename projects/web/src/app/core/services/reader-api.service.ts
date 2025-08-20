@@ -1,24 +1,17 @@
-import { inject, Injectable, InjectionToken } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from 'shared';
 import { Comment, Post, Profile, Tag, PostTag } from 'shared';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { createApiUrl } from 'shared';
-
-export interface ApiConfig {
-  supabaseUrl: string;
-  supabaseKey: string;
-}
-
-export const API_CONFIG = new InjectionToken<ApiConfig>('ApiConfig');
+import { environment } from '../../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
   supabaseService = inject(SupabaseService);
   http = inject(HttpClient);
-  private readonly config = inject(API_CONFIG);
-  private readonly baseUrl = `${this.config.supabaseUrl}/rest/v1/`;
-  private readonly apiKey = this.config.supabaseKey;
+  private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
+  private readonly apiKey = environment.supabaseKey;
   private headers = new HttpHeaders({
     apikey: this.apiKey,
     Authorization: `Bearer ${this.apiKey}`,
@@ -35,9 +28,7 @@ export class ReaderApiService {
       .replace(/\s+/g, ' ')
       .trim();
 
-    const params = new HttpParams()
-      .set('select', selectQuery)
-      .set('id', `eq.${id}`);
+    const params = new HttpParams().set('select', selectQuery).set('id', `eq.${id}`);
 
     const headers = new HttpHeaders({
       apikey: this.apiKey,
@@ -47,7 +38,7 @@ export class ReaderApiService {
 
     return this.http
       .get<Post[]>(`${this.baseUrl}posts`, { headers, params })
-      .pipe(map((results) => results[0] ?? null));
+      .pipe(map(results => results[0] ?? null));
   }
 
   async getComments(postId: string): Promise<Comment[]> {
@@ -60,9 +51,7 @@ export class ReaderApiService {
   }
 
   async addComment(postId: string, comment: Comment): Promise<void> {
-    await this.supabaseService.getClient
-      .from('comments')
-      .insert({ ...comment, post_id: postId });
+    await this.supabaseService.getClient.from('comments').insert({ ...comment, post_id: postId });
   }
 
   async deleteComment(commentId: string, postId: string): Promise<void> {
@@ -75,11 +64,7 @@ export class ReaderApiService {
 
   getPosts(): Observable<Post[]> {
     const query = createApiUrl('posts')
-      .select(
-        '*',
-        'author:profiles(id,username,avatar_url)',
-        'post_tags(tags(id,name,color,icon))',
-      )
+      .select('*', 'author:profiles(id,username,avatar_url)', 'post_tags(tags(id,name,color,icon))')
       .where('is_draft', 'eq', false)
       .orderBy('created_at', 'desc')
       .build();

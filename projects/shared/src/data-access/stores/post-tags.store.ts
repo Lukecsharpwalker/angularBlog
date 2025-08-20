@@ -1,21 +1,13 @@
-import { inject, InjectionToken } from '@angular/core';
+import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 import { PostTag } from '../../models';
 
-// Abstract interface for post tags API service
-export interface PostTagsApiService {
-  getPostTags(postId: string): Promise<PostTag[] | null>;
-}
-
-// Injection token for the post tags API service
-export const POST_TAGS_API_SERVICE = new InjectionToken<PostTagsApiService>('PostTagsApiService');
-
-type PostTagsState = {
+interface PostTagsState {
   postTags: PostTag[];
   loading: boolean;
   error: string | null;
-};
+}
 
 const initialState: PostTagsState = {
   postTags: [],
@@ -27,7 +19,7 @@ export const PostTagsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
 
-  withMethods((state, postTagsService = inject(POST_TAGS_API_SERVICE)) => ({
+  withMethods((state, postTagsService = inject(null)) => ({
     async getPostTags(postId: string) {
       patchState(state, { loading: true, error: null });
       try {
@@ -44,5 +36,5 @@ export const PostTagsStore = signalStore(
         });
       }
     },
-  })),
+  }))
 );

@@ -1,31 +1,16 @@
-import { inject, InjectionToken } from '@angular/core';
+import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withState,
-  withMethods,
-  withHooks,
-} from '@ngrx/signals';
+import { patchState, signalStore, withState, withMethods, withHooks } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { Observable } from 'rxjs';
 
 import { Tag } from '../../models';
 
-// Abstract interface for tags API service
-export interface TagsApiService {
-  getTags(): Observable<Tag[] | null>;
-}
-
-// Injection token for the tags API service
-export const TAGS_API_SERVICE = new InjectionToken<TagsApiService>('TagsApiService');
-
-type TagsState = {
+interface TagsState {
   tags: Tag[] | null;
   loading: boolean;
   error: string | null;
-};
+}
 
 const initialState: TagsState = {
   tags: [],
@@ -37,23 +22,23 @@ export const TagsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
 
-  withMethods((store, api = inject(TAGS_API_SERVICE)) => ({
+  withMethods((store, api = inject(null)) => ({
     loadTags: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { loading: true, error: null })),
         switchMap(() =>
           api.getTags().pipe(
             tapResponse({
-              next: (tags) => patchState(store, { tags: tags || [], loading: false }),
-              error: (err) =>
+              next: tags => patchState(store, { tags: tags || [], loading: false }),
+              error: err =>
                 patchState(store, {
                   error: 'Failed to fetch tags',
                   loading: false,
                 }),
-            }),
-          ),
-        ),
-      ),
+            })
+          )
+        )
+      )
     ),
   })),
 
@@ -61,5 +46,5 @@ export const TagsStore = signalStore(
     onInit() {
       loadTags();
     },
-  })),
+  }))
 );

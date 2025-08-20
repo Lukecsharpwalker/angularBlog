@@ -7,6 +7,7 @@ export const authAdminGuard: CanMatchFn = (): boolean => {
   const supabaseService = inject(SupabaseService);
   const router = inject(Router);
   const session = supabaseService.getSession();
+  console.log(session);
   if (session?.user?.app_metadata?.['role'] === Roles.ADMIN) {
     return true;
   } else {
@@ -14,4 +15,3 @@ export const authAdminGuard: CanMatchFn = (): boolean => {
     return false;
   }
 };
-

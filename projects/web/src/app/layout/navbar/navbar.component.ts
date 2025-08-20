@@ -12,7 +12,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { DynamicDialogService } from 'shared';
-import { LoginCompontent } from '../../auth/login/login.component';
+import { LoginCompontent } from '../../features/auth/login/login.component';
 import { RouterLink } from '@angular/router';
 
 @Component({

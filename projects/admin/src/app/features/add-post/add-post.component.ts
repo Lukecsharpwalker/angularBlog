@@ -17,19 +17,19 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AdminApiService } from '../../../core/services/admin-api.service';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
 import { PostForm } from './models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
-import { loadQuillModules } from '../../../core/utils/quill-configuration';
 import { DynamicDialogService } from 'shared';
 import { ModalConfig } from 'shared';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 import { PostInsert, PostUpdate, Tag } from 'shared';
-import { TagMultiSelectComponent } from '../../../ui/components/tag-multi-select/tag-multi-select.component';
+import { AdminApiService } from '../../core/services/admin-api.service';
+import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
+import { loadQuillModules } from '../../core/utils/quill-configuration';
 
 @Component({
   selector: 'admin-add-post',
@@ -80,7 +80,7 @@ export class AddPostComponent implements OnInit {
 
   private loadPostIfIdExists(): void {
     if (this.postId) {
-      this.apiService.getPostById(this.postId).subscribe((post) => {
+      this.apiService.getPostById(this.postId).subscribe(post => {
         if (post) {
           this.blogForm.patchValue(post);
           console.log(this.blogForm.value);
@@ -98,7 +98,7 @@ export class AddPostComponent implements OnInit {
     // Test for description
     if (!this.blogForm?.controls?.description?.value) {
       this.blogForm.controls?.description?.setValue(
-        this.blogForm.controls.content.value.toString().substring(0, 150),
+        this.blogForm.controls.content.value.toString().substring(0, 150)
       );
     }
 
@@ -128,14 +128,10 @@ export class AddPostComponent implements OnInit {
 
   highlightContent(): void {
     this.blogForm.controls.content.setValue(
-      this.extractAndHighlightHTML(
-        this.blogForm.controls.content.value as string,
-      ),
+      this.extractAndHighlightHTML(this.blogForm.controls.content.value as string)
     );
     this.blogForm.controls.content.setValue(
-      this.extractAndHighlightTS(
-        this.blogForm.controls.content.value as string,
-      ),
+      this.extractAndHighlightTS(this.blogForm.controls.content.value as string)
     );
   }
 
@@ -144,7 +140,7 @@ export class AddPostComponent implements OnInit {
     tempDiv.innerHTML = htmlContent;
 
     const codeBlocksHTML = tempDiv.querySelectorAll('pre[data-language="xml"]');
-    codeBlocksHTML.forEach((block) => {
+    codeBlocksHTML.forEach(block => {
       let language = 'xml';
       const codeElement = document.createElement('code');
       codeElement.className = language;
@@ -162,10 +158,8 @@ export class AddPostComponent implements OnInit {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
 
-    const codeBlocksTS = tempDiv.querySelectorAll(
-      'pre[data-language="typescript"]',
-    );
-    codeBlocksTS.forEach((block) => {
+    const codeBlocksTS = tempDiv.querySelectorAll('pre[data-language="typescript"]');
+    codeBlocksTS.forEach(block => {
       let language = 'typescript';
       const codeElement = document.createElement('code');
       codeElement.className = language;
@@ -188,19 +182,15 @@ export class AddPostComponent implements OnInit {
     };
     this.range = this.quill().quillEditor.getSelection();
     this.dialogService
-      .openDialog<AddImageComponent>(
-        this.viewContainerRef,
-        modalConfig,
-        AddImageComponent,
-      )
-      .subscribe((modalStatus) => {
+      .openDialog<AddImageComponent>(this.viewContainerRef, modalConfig, AddImageComponent)
+      .subscribe(modalStatus => {
         if (modalStatus.data) {
           const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="${modalStatus.data.form.controls.alt.value}" style="max-width: 100%;">`;
           if (this.range) {
             const newValue = this.insertString(
               this.blogForm.controls.content.value as string,
               this.blogForm.controls.content.value.toString().length,
-              imgTag,
+              imgTag
             );
             this.blogForm.controls.content.setValue(newValue);
           }
@@ -208,11 +198,7 @@ export class AddPostComponent implements OnInit {
       });
   }
 
-  insertString(
-    originalString: string,
-    index: number,
-    stringToInsert: string,
-  ): string {
+  insertString(originalString: string, index: number, stringToInsert: string): string {
     return [
       ...originalString.slice(0, index),
       ...stringToInsert,

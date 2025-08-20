@@ -12,7 +12,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
 import { Post } from 'shared';
-import { ReaderApiService } from '../../../_services/reader-api.service';
+import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { formatDateToDDMMYYYY } from 'shared';
 
 type PostState = {
