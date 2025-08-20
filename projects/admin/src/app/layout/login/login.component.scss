@@ -1,206 +1,366 @@
-// Professional Admin Login Component Styles
+// Clean Admin Login Layout - Structure Focused
 // Brand colors: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA)
 
+.admin-login-layout {
+  min-height: 100vh;
+  background: rgba(251, 250, 218, 0.5); // quaternary/50
+}
+
 .admin-login-container {
-  background: linear-gradient(135deg, 
-    theme(colors.quaternary) 0%, 
-    theme(colors.tertiary/20) 50%, 
-    theme(colors.secondary/10) 100%
-  );
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 20% 80%, theme(colors.primary/5) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, theme(colors.secondary/5) 0%, transparent 50%);
-    z-index: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 40px rgba(18, 55, 42, 0.1);
+}
+
+// Header Section
+.admin-header {
+  padding: 2rem 3rem;
+  background: #12372A; // primary
+  color: white;
+
+  .brand-section {
+    max-width: 1200px;
+    margin: 0 auto;
   }
-  
-  > * {
-    position: relative;
-    z-index: 1;
+
+  .brand-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.025em;
+  }
+
+  .brand-subtitle {
+    font-size: 1.125rem;
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-weight: 500;
   }
 }
 
-.admin-login-brand {
-  background: linear-gradient(135deg, theme(colors.primary) 0%, theme(colors.secondary) 100%);
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg fill='%23FBFADA' fill-opacity='0.03'%3e%3cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e") repeat;
-    opacity: 0.1;
+// Main Content Grid
+.admin-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+// Left Sidebar - Information Panel
+.admin-sidebar {
+  background: rgba(67, 104, 80, 0.05);
+  padding: 3rem;
+
+  .info-panel {
+    max-width: 500px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .panel-header {
+    margin-bottom: 3rem;
+  }
+
+  .panel-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #12372A;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
   }
 }
 
-.admin-login-form-side {
-  backdrop-filter: blur(10px);
+// Features Grid
+.features-grid {
+  display: grid;
+  gap: 2rem;
 }
 
-.admin-form {
-  border: 1px solid theme(colors.tertiary/20);
-  box-shadow: 
-    0 20px 25px -5px rgba(18, 55, 42, 0.1),
-    0 10px 10px -5px rgba(18, 55, 42, 0.04),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
-  
-  &:hover {
-    box-shadow: 
-      0 25px 30px -5px rgba(18, 55, 42, 0.15),
-      0 15px 15px -5px rgba(18, 55, 42, 0.08),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+.feature-card {
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  border-left: 4px solid #ADBC9F;
+  box-shadow: 0 2px 8px rgba(18, 55, 42, 0.1);
+
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #12372A;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .feature-description {
+    font-size: 0.9375rem;
+    color: #436850;
+    margin: 0;
+    line-height: 1.5;
   }
 }
 
-// Enhanced input styling
-input {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: theme(colors.secondary/40);
+// Right Form Section
+.admin-form-section {
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251, 250, 218, 0.2);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #12372A;
+    margin: 0 0 0.5rem 0;
   }
-  
+
+  .form-subtitle {
+    font-size: 1rem;
+    color: #436850;
+    margin: 0;
+  }
+}
+
+// Login Form
+.login-form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(18, 55, 42, 0.12);
+  border: 1px solid rgba(173, 188, 159, 0.2);
+}
+
+.form-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+// Input Groups
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #12372A;
+  margin: 0;
+}
+
+.form-input {
+  padding: 0.875rem 1rem;
+  border: 2px solid rgba(173, 188, 159, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  color: #12372A;
+  transition: all 0.2s ease;
+
   &:focus {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 
-      0 0 0 2px theme(colors.primary/20),
-      0 4px 6px -1px rgba(18, 55, 42, 0.1);
+    outline: none;
+    border-color: #12372A;
+    box-shadow: 0 0 0 3px rgba(18, 55, 42, 0.1);
   }
-  
+
   &::placeholder {
-    transition: opacity 0.2s ease;
+    color: rgba(67, 104, 80, 0.5);
   }
-  
-  &:focus::placeholder {
-    opacity: 0.6;
+
+  &.input-error {
+    border-color: #ef4444;
+
+    &:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
   }
 }
 
-// Professional button styling
-button {
-  position: relative;
-  overflow: hidden;
-  
-  &:not(:disabled) {
-    &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 25px rgba(18, 55, 42, 0.25);
-    }
-    
-    &:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 15px rgba(18, 55, 42, 0.2);
-    }
+.error-message {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+.login-error {
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+// Form Actions
+.form-actions {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  padding: 0.875rem 1.5rem;
+  background: #12372A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(18, 55, 42, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(18, 55, 42, 0.25);
   }
-  
+
   &:disabled {
+    opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+  }
+}
+
+.btn-secondary {
+  padding: 0.875rem 1.5rem;
+  background: white;
+  color: #436850;
+  border: 2px solid rgba(173, 188, 159, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(251, 250, 218, 0.3);
+    border-color: rgba(67, 104, 80, 0.4);;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67, 104, 80, 0.15);
+  }
+
+  &:disabled {
     opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 
-// Primary button (Sign In)
-button[type="submit"] {
-  background: linear-gradient(135deg, theme(colors.primary) 0%, theme(colors.secondary) 100%);
-  position: relative;
-  
-  &::before {
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0;
+
+  &::before,
+  &::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, theme(colors.secondary) 0%, theme(colors.primary) 100%);
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    flex: 1;
+    height: 1px;
+    background: rgba(173, 188, 159, 0.3);
   }
-  
-  &:hover::before {
-    opacity: 1;
-  }
-  
-  > * {
-    position: relative;
-    z-index: 1;
+
+  span {
+    font-size: 0.875rem;
+    color: rgba(67, 104, 80, 0.6);;
+    font-weight: 500;
   }
 }
 
-// Google button styling
-button:not([type="submit"]) {
-  &:hover {
-    box-shadow: 0 4px 15px rgba(67, 104, 80, 0.15);
+.loading-text {
+  opacity: 0.8;
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .admin-main {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    order: 2;
+    padding: 2rem;
+
+    .info-panel {
+      justify-content: flex-start;
+    }
+
+    .features-grid {
+      gap: 1.5rem;
+    }
+  }
+
+  .admin-form-section {
+    order: 1;
+    padding: 2rem;
   }
 }
 
-// Error validation styling
-.border-red-400:focus {
-  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2);
-  border-color: #f87171;
-}
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 1.5rem 2rem;
 
-// Animation for elements
-.admin-logo {
-  animation: fadeInUp 0.8s ease-out;
-}
+    .brand-title {
+      font-size: 2rem;
+    }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+    .brand-subtitle {
+      font-size: 1rem;
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .admin-sidebar {
+    padding: 1.5rem;
   }
-}
 
-// Responsive adjustments
-@media (max-width: 1023px) {
-  .admin-login-container {
-    background: theme(colors.quaternary);
+  .admin-form-section {
+    padding: 1.5rem;
   }
-}
 
-// Loading spinner enhancement
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
+  .login-form {
+    padding: 2rem;
+  }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-// Logo icon hover effect
-.admin-logo svg {
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: rotate(10deg) scale(1.05);
+  .feature-card {
+    padding: 1.5rem;
   }
 }
 
-// Feature list animation
-.admin-login-brand .space-y-4 > div {
-  animation: slideInLeft 0.6s ease-out;
-  
-  &:nth-child(2) { animation-delay: 0.1s; }
-  &:nth-child(3) { animation-delay: 0.2s; }
-  &:nth-child(4) { animation-delay: 0.3s; }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
+@media (max-width: 480px) {
+  .admin-header {
+    padding: 1rem 1.5rem;
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+
+  .admin-sidebar,
+  .admin-form-section {
+    padding: 1rem;
+  }
+
+  .login-form {
+    padding: 1.5rem;
+  }
+
+  .form-header .form-title {
+    font-size: 1.75rem;
   }
 }
