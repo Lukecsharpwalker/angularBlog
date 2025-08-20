@@ -1,9 +1,9 @@
 import { CanDeactivateFn } from '@angular/router';
-import { DynamicDialogService } from 'shared';
 import { inject } from '@angular/core';
-import { ModalCloseStatusEnum } from 'shared';
 import { map, of } from 'rxjs';
 import { AddPostComponent } from '../../features/add-post/add-post.component';
+import { ModalCloseStatusEnum } from '../../../../../shared/src/models';
+import { DynamicDialogService } from '../../../../../shared/src/pattern';
 
 export const unsavedChangesGuard: CanDeactivateFn<AddPostComponent> = (
   component: AddPostComponent

@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { Tag } from 'shared';
+import { Tag } from '../../../../../../shared/src/models';
 
 export interface PostForm {
   title: FormControl<string>;

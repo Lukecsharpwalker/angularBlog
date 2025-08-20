@@ -14,10 +14,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - run: npm ci
 
-      - run: npm run test -- --browsers=ChromeHeadless --watch=false --no-progress
+      - run: npm run test:all -- --browsers=ChromeHeadless --watch=false --no-progress
 
   deploy:
     runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run build --prod
+      - run: npm run build web -- --configuration production
 
       - uses: google-github-actions/auth@v2
         with:

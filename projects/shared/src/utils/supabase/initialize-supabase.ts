@@ -1,4 +1,4 @@
-import { SupabaseService } from '../services';
+import { SupabaseService } from '../../services';
 
 export function supabaseInitializer(supabase: SupabaseService): () => void {
   return () => {

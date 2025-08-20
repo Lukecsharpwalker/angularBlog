@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { SupabaseService } from 'shared';
-import { Post, PostInsert, PostUpdate, Tag } from 'shared';
 import { environment } from '../../../../../../environments/environment';
+import { Post, PostInsert, PostUpdate, Tag } from '../../../../../shared/src/models';
+import { SupabaseService } from '../../../../../shared/src/services';
 
 @Injectable()
 export class AdminApiService {

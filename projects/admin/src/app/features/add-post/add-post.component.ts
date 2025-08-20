@@ -22,14 +22,13 @@ import { QuillEditorComponent, Range } from 'ngx-quill';
 import { PostForm } from './models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
-import { DynamicDialogService } from 'shared';
-import { ModalConfig } from 'shared';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
-import { PostInsert, PostUpdate, Tag } from 'shared';
 import { AdminApiService } from '../../core/services/admin-api.service';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
 import { loadQuillModules } from '../../core/utils/quill-configuration';
+import { ModalConfig, PostInsert, PostUpdate, Tag } from '../../../../../shared/src/models';
+import { DynamicDialogService } from '../../../../../shared/src/pattern';
 
 @Component({
   selector: 'admin-add-post',

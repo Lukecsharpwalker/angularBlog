@@ -13,7 +13,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AdminApiService } from '../../../core/services/admin-api.service';
-import { Tag } from 'shared';
+import { Tag } from '../../../../../../shared/src/models';
 
 @Component({
   selector: 'blog-tag-multi-select',
@@ -53,9 +53,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
     const search = this.searchTerm().toLowerCase();
     const selected = this.selectedTags();
     return this.allTags().filter(
-      (tag) =>
-        tag.name.toLowerCase().includes(search) &&
-        !selected.some((s) => s.id === tag.id),
+      tag => tag.name.toLowerCase().includes(search) && !selected.some(s => s.id === tag.id)
     );
   });
 
@@ -94,8 +92,8 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   selectTag(tag: Tag): void {
-    if (!this.selectedTags().find((t) => t.id === tag.id)) {
-      this.selectedTags.update((tags) => [...tags, tag]);
+    if (!this.selectedTags().find(t => t.id === tag.id)) {
+      this.selectedTags.update(tags => [...tags, tag]);
       this.onChange(this.selectedTags());
       this.onTouched();
 
@@ -112,14 +110,14 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
 
   removeTag(tag: Tag) {
     const current = this.selectedTags();
-    const updated = current.filter((t) => t.id !== tag.id);
+    const updated = current.filter(t => t.id !== tag.id);
     this.selectedTags.set(updated);
     this.onChange(updated);
     this.markAsTouched();
   }
 
   isTagSelected(tag: Tag): boolean {
-    return this.selectedTags().some((t) => t.id === tag.id);
+    return this.selectedTags().some(t => t.id === tag.id);
   }
 
   trackByTagId(index: number, tag: Tag): number {
@@ -138,30 +136,24 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
     if (!this.isOpen() || this.disabled()) return;
 
     const filtered = this.filteredTags();
-    const currentIndex = filtered.findIndex(
-      (tag) => tag.id === this.focusedTagId(),
-    );
+    const currentIndex = filtered.findIndex(tag => tag.id === this.focusedTagId());
 
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
-        const nextIndex =
-          currentIndex < filtered.length - 1 ? currentIndex + 1 : 0;
+        const nextIndex = currentIndex < filtered.length - 1 ? currentIndex + 1 : 0;
         this.focusedTagId.set(filtered[nextIndex]?.id || null);
         break;
 
       case 'ArrowUp':
         event.preventDefault();
-        const prevIndex =
-          currentIndex > 0 ? currentIndex - 1 : filtered.length - 1;
+        const prevIndex = currentIndex > 0 ? currentIndex - 1 : filtered.length - 1;
         this.focusedTagId.set(filtered[prevIndex]?.id || null);
         break;
 
       case 'Enter':
         event.preventDefault();
-        const focusedTag = filtered.find(
-          (tag) => tag.id === this.focusedTagId(),
-        );
+        const focusedTag = filtered.find(tag => tag.id === this.focusedTagId());
         if (focusedTag) {
           this.selectTag(focusedTag);
         }
