@@ -237,6 +237,16 @@
               "zone.js/testing"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/shared/**/*.ts",
+              "projects/shared/**/*.html"
+            ],
+            "eslintConfig": "projects/shared/eslint.config.js"
+          }
         }
       }
     },
