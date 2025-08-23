@@ -3,7 +3,7 @@
   <div class="flex justify-center -mx-2 xl:-mx-48">
     <img
       class="w-full h-80 object-cover mt-10 rounded-2xl"
-      src="{{ date()  }}-post.webp"
+      src="{{ date() }}-post.webp"
       alt="{{ post()?.title }}"
     />
   </div>
@@ -51,9 +51,7 @@
         </p>
         <!-- TODO: Add social share buttons -->
 
-        <div
-          class="relative mt-4 leading-8 bg-gray-50 text-gray-900 p-6 rounded-2xl shadow-2xl"
-        >
+        <div class="relative mt-4 leading-8 bg-gray-50 text-gray-900 p-6 rounded-2xl shadow-2xl">
           <div
             class="absolute shadow-2xl inset-0 blur-2xl opacity-100 rounded-3xl -z-10 bg-gradient-to-br from-quaternary/90 via-[#7A9E7E]/50 to-primary"
           ></div>
@@ -61,18 +59,15 @@
         </div>
 
         <hr class="border-gray-300 my-4"/>
-        @defer (on interaction) {
-          <web-add-comment [postId]="id()"/>
-        } @placeholder {
-          <div class="mx-auto p-4 pt-5 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center">
-            <p class="text-gray-600">Click to load comment form</p>
-          </div>
-        }
+        <web-add-comment [postId]="id()"/>
+
         <hr class="border-gray-300 my-4"/>
         @defer (on viewport) {
           <web-comments [postId]="id()!" [comments]="post()?.comments"/>
         } @placeholder {
-          <div class="mx-auto p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center">
+          <div
+            class="mx-auto p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center"
+          >
             <p class="text-gray-600">Comments loading...</p>
           </div>
         }
