@@ -61,10 +61,20 @@
         </div>
 
         <hr class="border-gray-300 my-4"/>
-        <web-add-comment [postId]="id()"/>
+        @defer (on interaction) {
+          <web-add-comment [postId]="id()"/>
+        } @placeholder {
+          <div class="mx-auto p-4 pt-5 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center">
+            <p class="text-gray-600">Click to load comment form</p>
+          </div>
+        }
         <hr class="border-gray-300 my-4"/>
-        @defer {
+        @defer (on viewport) {
           <web-comments [postId]="id()!" [comments]="post()?.comments"/>
+        } @placeholder {
+          <div class="mx-auto p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center">
+            <p class="text-gray-600">Comments loading...</p>
+          </div>
         }
       } @else {
         <p class="text-gray-800 text-center">Post not found.</p>

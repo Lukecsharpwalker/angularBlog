@@ -7,6 +7,7 @@ import {
   afterNextRender,
   Signal,
   input,
+  DestroyRef,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -30,6 +31,7 @@ import { DynamicDialogService } from 'shared';
 })
 export class PostComponent implements OnInit {
   readonly id = input.required<string>();
+  private destroyRef = inject(DestroyRef);
 
   router = inject(Router);
   postStore = inject(PostStore);
@@ -76,7 +78,6 @@ export class PostComponent implements OnInit {
 
   private addEventsForOpenModalWithCode() {
     afterNextRender(() => {
-      //TODO: Move to the service
       const processedNodes = new Set<Node>();
 
       const observer = new MutationObserver(mutations => {
@@ -111,6 +112,12 @@ export class PostComponent implements OnInit {
       observer.observe(document.body, {
         childList: true,
         subtree: true,
+      });
+
+      // Clean up observer when component is destroyed
+      this.destroyRef.onDestroy(() => {
+        observer.disconnect();
+        processedNodes.clear();
       });
     });
   }

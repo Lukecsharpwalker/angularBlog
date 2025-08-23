@@ -19,11 +19,7 @@ export const unsavedChangesGuard: CanDeactivateFn<AddPostComponent> = (
       })
       .pipe(
         map(status => {
-          if (status.closeStatus === ModalCloseStatusEnum.ACCEPTED) {
-            return true;
-          } else {
-            return false;
-          }
+          return status.closeStatus === ModalCloseStatusEnum.ACCEPTED;
         })
       );
   } else {

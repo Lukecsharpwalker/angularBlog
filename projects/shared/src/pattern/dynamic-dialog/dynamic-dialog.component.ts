@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
-  Input,
   OnInit,
   Type,
   ViewContainerRef,
   inject,
+  input,
   viewChild,
 } from '@angular/core';
 import { DynamicDialogService } from './dynamic-dialog.service';
@@ -26,8 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicDialogComponent<C = unknown> implements OnInit {
-  @Input() component?: Type<C>;
-  @Input() modalConfig?: ModalConfig;
+  component = input<Type<C>>();
+  modalConfig = input<ModalConfig>();
 
   divEl = viewChild.required('dynamicComponentContainer', {
     read: ViewContainerRef,
@@ -53,12 +53,12 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
   }
 
   onOverlayClick($event: MouseEvent) {
-    console.log('Overlay clicked', $event);
+    // Handle overlay click if needed
   }
 
   private createDynamicComponent(): void {
-    if (this.divEl() && this.component) {
-      this.componentRef = this.divEl().createComponent(this.component);
+    if (this.divEl() && this.component()) {
+      this.componentRef = this.divEl().createComponent(this.component()!);
     }
   }
 }

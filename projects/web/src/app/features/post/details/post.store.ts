@@ -23,7 +23,6 @@ const initialState: PostState = {
 };
 
 export const PostStore = signalStore(
-  { providedIn: 'root' },
   withState(initialState),
   withComputed(store => ({
     formattedDate: computed(() => formatDateToDDMMYYYY(store.post()?.created_at)),
@@ -36,9 +35,9 @@ export const PostStore = signalStore(
           postService.getPost(id).pipe(
             tapResponse({
               next: (post: Post) => patchState(store, { post, loading: false }),
-              error: (err: string) =>
+              error: (err: unknown) =>
                 patchState(store, {
-                  error: err ?? 'Failed to fetch post',
+                  error: typeof err === 'string' ? err : 'Failed to fetch post',
                   loading: false,
                 }),
             })

@@ -36,9 +36,11 @@ export class DynamicDialogService<T> {
       { environmentInjector: this.envInjector, injector: dialogInjector },
     );
     if (component) {
-      this.componentRef.instance.component = component;
+      this.componentRef.setInput('component', component);
     }
-    this.componentRef.instance.modalConfig = modalConfig;
+    if (modalConfig) {
+      this.componentRef.setInput('modalConfig', modalConfig);
+    }
     return this.closeRef$;
   }
 

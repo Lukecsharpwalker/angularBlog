@@ -3,12 +3,12 @@ import {
   Component,
   ViewContainerRef,
   inject,
-  HostListener,
   signal,
   WritableSignal,
   viewChild,
   afterNextRender,
   ElementRef,
+  DestroyRef,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from 'shared';
@@ -26,15 +26,17 @@ import { LoginComponent } from '../login/login.component';
 export class NavbarComponent {
   public readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
   public readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
-  public isScrolled = false;
+  public readonly isScrolled: WritableSignal<boolean> = signal(false);
   public readonly isMenuOpen: WritableSignal<boolean> = signal(false);
   public readonly navHeight: WritableSignal<number> = signal(0);
 
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
+  private destroyRef = inject(DestroyRef);
 
   constructor() {
     this.initializeNavHeight();
+    this.initializeScrollDetection();
   }
 
   signIn() {
@@ -50,7 +52,6 @@ export class NavbarComponent {
 
     if (this.isMenuOpen()) {
       setTimeout(() => {
-        console.log(this.mobileMenu()?.nativeElement);
         this.mobileMenu()?.nativeElement.style.setProperty('top', `${this.navHeight()}px`);
       }, 1);
     }
@@ -62,8 +63,18 @@ export class NavbarComponent {
     });
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled = window.scrollY > 0;
+  private initializeScrollDetection(): void {
+    afterNextRender(() => {
+      const scrollHandler = () => {
+        this.isScrolled.set(window.scrollY > 0);
+      };
+
+      window.addEventListener('scroll', scrollHandler, { passive: true });
+
+      // Clean up event listener when component is destroyed
+      this.destroyRef.onDestroy(() => {
+        window.removeEventListener('scroll', scrollHandler);
+      });
+    });
   }
 }

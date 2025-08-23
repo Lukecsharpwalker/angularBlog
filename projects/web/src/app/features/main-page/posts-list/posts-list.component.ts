@@ -9,6 +9,7 @@ import {
   ElementRef,
   signal,
   WritableSignal,
+  DestroyRef,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PostCardComponent } from '../../../ui/components/post-card/post-card.component';
@@ -27,6 +28,7 @@ import { AboutMeComponent } from './about-me/about-me.component';
 })
 export class PostsListComponent {
   readonly scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
+  private destroyRef = inject(DestroyRef);
 
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
@@ -54,7 +56,17 @@ export class PostsListComponent {
   private initializeScrollingForMobileView(): void {
     this.scrollProgress.set(this.initialTagScrollProgressBarForMobile);
     afterNextRender(() => {
-      this.scroll()?.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
+      const scrollHandler = this.onScroll.bind(this);
+      const element = this.scroll()?.nativeElement;
+      
+      if (element) {
+        element.addEventListener('scroll', scrollHandler);
+        
+        // Clean up event listener when component is destroyed
+        this.destroyRef.onDestroy(() => {
+          element.removeEventListener('scroll', scrollHandler);
+        });
+      }
     });
   }
 }

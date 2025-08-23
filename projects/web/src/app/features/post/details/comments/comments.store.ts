@@ -16,7 +16,6 @@ const initialState: CommentsState = {
 };
 
 export const CommentsStore = signalStore(
-  { providedIn: 'root' },
   withState(initialState),
 
   withMethods((state, commentsService = inject(ReaderApiService)) => ({
