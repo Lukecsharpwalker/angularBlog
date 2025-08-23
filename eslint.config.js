@@ -83,7 +83,10 @@ module.exports = tseslint.config(
         { type: "mfe-core", pattern: "projects/code-samples-mfe/src/app/core/**" },
         { type: "mfe-ui", pattern: "projects/code-samples-mfe/src/app/ui/**" },
         { type: "mfe-feature-routes", mode: "file", pattern: "projects/code-samples-mfe/src/app/features/*/*.routes.ts", capture: ["feature"] },
-        { type: "mfe-feature", pattern: "projects/code-samples-mfe/src/app/features/**", capture: ["feature"] }
+        { type: "mfe-feature", pattern: "projects/code-samples-mfe/src/app/features/**", capture: ["feature"] },
+
+        // Environment files - accessible by core services
+        { type: "environment", pattern: "**/environments/**" }
       ],
       "boundaries/ignore": [
         "**/*.spec.ts",
@@ -128,18 +131,18 @@ module.exports = tseslint.config(
           { from: "web-main", allow: ["web-app"] },
           { from: "web-main-server", allow: ["web-app"] },
           { from: "web-server", allow: ["web-app", "shared-public-api"] },
-          { from: "web-app", allow: ["web-core", "web-layout", "web-feature-routes", "shared-public-api"] },
-          { from: "web-core", allow: ["shared-external", "shared-public-api", "shared-data-access", "shared-models", "shared-utils", "shared-services"] },
-          { from: "web-layout", allow: ["web-core", "shared-ui", "shared-pattern", "shared-models", "shared-services"] },
-          { from: "web-ui", allow: ["shared-ui", "shared-models"] },
+          { from: "web-app", allow: ["web-core", "web-layout", "web-feature-routes", "web-feature", "shared-public-api"] },
+          { from: "web-core", allow: ["shared-external", "shared-public-api", "shared-data-access", "shared-models", "shared-utils", "shared-services", "environment"] },
+          { from: "web-layout", allow: ["web-core", "shared-ui", "shared-pattern", "shared-models", "shared-services", "shared-public-api"] },
+          { from: "web-ui", allow: ["shared-ui", "shared-models", "shared-public-api"] },
           { from: "web-pattern", allow: ["shared-external", "shared-public-api", "shared-ui", "shared-pattern", "shared-data-access", "shared-models", "shared-utils", "shared-services"] },
-          { from: "web-feature", allow: ["web-core", "web-layout", "web-ui", "web-pattern", "shared-ui", "shared-pattern", "shared-data-access", "shared-models", "shared-utils", "shared-services"] },
+          { from: "web-feature", allow: ["web-core", "web-layout", "web-ui", "web-pattern", "shared-ui", "shared-pattern", "shared-data-access", "shared-models", "shared-utils", "shared-services", "shared-public-api"] },
           { from: "web-feature-routes", allow: ["web-core", "web-pattern", "web-feature"] },
 
           // Admin app rules - RELAXED FOR MIGRATION 
           { from: "admin-main", allow: ["admin-app"] },
           { from: "admin-app", allow: ["admin-core", "admin-layout", "admin-feature-routes", "shared-public-api"] },
-          { from: "admin-core", allow: ["shared-external", "shared-public-api", "shared-data-access", "shared-models", "shared-utils", "shared-services", "admin-feature", "shared-pattern"] },
+          { from: "admin-core", allow: ["shared-external", "shared-public-api", "shared-data-access", "shared-models", "shared-utils", "shared-services", "admin-feature", "shared-pattern", "environment"] },
           { from: "admin-layout", allow: ["admin-core", "shared-ui", "shared-pattern", "shared-models", "shared-services"] },
           { from: "admin-ui", allow: ["shared-ui", "shared-models"] },
           { from: "admin-pattern", allow: ["shared-ui", "shared-pattern", "shared-data-access", "shared-models", "shared-utils", "shared-services"] },
