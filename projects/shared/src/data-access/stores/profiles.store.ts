@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 
 import { Profile } from '../../models';
+import { ProfilesService } from '../api';
 
 interface ProfilesState {
   profiles: Profile[];
@@ -19,7 +20,7 @@ export const ProfilesStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
 
-  withMethods((state, profilesService = inject(null)) => ({
+  withMethods((state, profilesService = inject(ProfilesService)) => ({
     async getProfiles() {
       patchState(state, { loading: true, error: null });
       try {
@@ -29,9 +30,9 @@ export const ProfilesStore = signalStore(
         } else {
           patchState(state, { profiles: [], error: 'No profiles found', loading: false });
         }
-      } catch (error) {
+      } catch {
         patchState(state, {
-          error: 'Failed to fetch profiles',
+          error: 'Failed to fetch profiles,',
           loading: false,
         });
       }

@@ -9,3 +9,4 @@ export * from './services';
 export * from './ui';
 export * from './pattern';
 export * from './data-access';
+export * from './layout';

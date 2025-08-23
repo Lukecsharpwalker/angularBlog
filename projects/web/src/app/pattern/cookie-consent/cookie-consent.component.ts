@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DynamicDialogService } from 'shared';
-// TODO: Create CardComponent or remove if not needed
 import { NgClass } from '@angular/common';
+import { DynamicDialogService } from '../../../../../shared/src/pattern';
 
 @Component({
   selector: 'web-cookie-consent',
@@ -10,19 +9,17 @@ import { NgClass } from '@angular/common';
   templateUrl: './cookie-consent.component.html',
   styleUrl: './cookie-consent.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CookieConsentComponent  {
+export class CookieConsentComponent {
   activeTab: 'consent' | 'details' | 'about' = 'consent';
   dialogService = inject(DynamicDialogService);
-  cookieGroups = [{
-    name: 'Authentication (Mandatory can\'t be dennied)',
-    cookies: [
-     'cookies-consent',
-     'firebase-heartbeat-database',
-     'firebaseLocalStorageDb'
-    ]
-  }];
+  cookieGroups = [
+    {
+      name: "Authentication (Mandatory can't be dennied)",
+      cookies: ['cookies-consent', 'firebase-heartbeat-database', 'firebaseLocalStorageDb'],
+    },
+  ];
   setActiveTab(tab: 'consent' | 'details' | 'about') {
     this.activeTab = tab;
   }

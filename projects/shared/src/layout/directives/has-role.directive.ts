@@ -1,18 +1,12 @@
-import {
-  Directive,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-  inject,
-} from '@angular/core';
+import { Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
 import { SupabaseService } from '../../services';
 
 @Directive({
-  selector: '[hasRole]',
+  selector: '[sharedHasRole]',
   standalone: true,
 })
 export class HasRoleDirective {
-  @Input() set hasRole(role: string) {
+  @Input() set sharedHasRole(role: string) {
     this.updateView(role);
   }
 

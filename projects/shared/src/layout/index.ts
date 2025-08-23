@@ -1,0 +1,1 @@
+export * from './directives/has-role.directive';

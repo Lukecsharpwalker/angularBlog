@@ -13,11 +13,11 @@ import { DatePipe } from '@angular/common';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { Router } from '@angular/router';
-import { DynamicDialogService } from 'shared';
 import { CodeBlockModalComponent } from './code-block-modal-component/code-block-modal-component.component';
 import { PostStore } from './post.store';
 import { CommentsStore } from './comments/comments.store';
-import { Post } from 'shared';
+import { Post } from '../../../../../../shared/src/models';
+import { DynamicDialogService } from '../../../../../../shared/src/pattern';
 
 @Component({
   selector: 'web-post',
@@ -70,7 +70,7 @@ export class PostComponent implements OnInit {
         primaryButton: 'Close',
         data: { code, language },
       },
-      CodeBlockModalComponent,
+      CodeBlockModalComponent
     );
   }
 
@@ -79,11 +79,11 @@ export class PostComponent implements OnInit {
       //TODO: Move to the service
       const processedNodes = new Set<Node>();
 
-      const observer = new MutationObserver((mutations) => {
+      const observer = new MutationObserver(mutations => {
         let found = false;
 
-        mutations.forEach((mutation) => {
-          mutation.addedNodes.forEach((node) => {
+        mutations.forEach(mutation => {
+          mutation.addedNodes.forEach(node => {
             if (processedNodes.has(node)) {
               return;
             }
@@ -93,13 +93,9 @@ export class PostComponent implements OnInit {
               const preElements = node.querySelectorAll('pre[data-language]');
               if (preElements.length > 0) {
                 found = true;
-                preElements.forEach((pre) => {
-                  pre.classList.add(
-                    'cursor-pointer',
-                    'hover:opacity-80',
-                    'transition-opacity',
-                  );
-                  pre.addEventListener('click', (e) => this.showCodeModal(e));
+                preElements.forEach(pre => {
+                  pre.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
+                  pre.addEventListener('click', e => this.showCodeModal(e));
                 });
               }
             }

@@ -1,14 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject, input } from '@angular/core';
 import { ReaderApiService } from '../../../../core/services/reader-api.service';
-import { Comment } from 'shared';
 import { CommentsStore } from './comments.store';
 import { HasRoleDirective } from 'shared';
+import { Comment } from 'shared';
 
 @Component({
   selector: 'comments',

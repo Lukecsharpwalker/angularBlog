@@ -1,19 +1,13 @@
 import { inject } from '@angular/core';
 import { computed } from '@angular/core';
-import {
-  patchState,
-  signalStore,
-  withMethods,
-  withState,
-  withComputed,
-} from '@ngrx/signals';
+import { patchState, signalStore, withMethods, withState, withComputed } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 
-import { Post } from 'shared';
 import { ReaderApiService } from '../../../core/services/reader-api.service';
-import { formatDateToDDMMYYYY } from 'shared';
+import { formatDateToDDMMYYYY } from '../../../../../../shared/src/utils';
+import { Post } from '../../../../../../shared/src/models';
 
 type PostState = {
   post: Post | null;
@@ -32,16 +26,14 @@ const initialState: PostState = {
 export const PostStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed((store) => ({
-    formattedDate: computed(() =>
-      formatDateToDDMMYYYY(store.post()?.created_at),
-    ),
+  withComputed(store => ({
+    formattedDate: computed(() => formatDateToDDMMYYYY(store.post()?.created_at)),
   })),
   withMethods((store, postService = inject(ReaderApiService)) => ({
     getPost: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { loading: true, error: null })),
-        switchMap((id) =>
+        switchMap(id =>
           postService.getPost(id).pipe(
             tapResponse({
               next: (post: Post) => patchState(store, { post, loading: false }),
@@ -50,10 +42,10 @@ export const PostStore = signalStore(
                   error: err ?? 'Failed to fetch post',
                   loading: false,
                 }),
-            }),
-          ),
-        ),
-      ),
+            })
+          )
+        )
+      )
     ),
-  })),
+  }))
 );

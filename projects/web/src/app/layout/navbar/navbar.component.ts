@@ -11,9 +11,9 @@ import {
   afterNextRender,
   ElementRef,
 } from '@angular/core';
-import { DynamicDialogService } from 'shared';
 import { LoginCompontent } from '../../features/auth/login/login.component';
 import { RouterLink } from '@angular/router';
+import { DynamicDialogService } from '../../../../../shared/src/pattern';
 
 @Component({
   selector: 'web-navbar',
@@ -44,7 +44,7 @@ export class NavbarComponent implements AfterViewInit {
     this.dynamicDialogService.openDialog<LoginCompontent>(
       this.viewContainerRef,
       { title: 'Sign In' },
-      LoginCompontent,
+      LoginCompontent
     );
   }
 
@@ -54,10 +54,7 @@ export class NavbarComponent implements AfterViewInit {
     if (this.isMenuOpen()) {
       setTimeout(() => {
         console.log(this.mobileMenu()?.nativeElement);
-        this.mobileMenu()?.nativeElement.style.setProperty(
-          'top',
-          `${this.navHeight()}px`,
-        );
+        this.mobileMenu()?.nativeElement.style.setProperty('top', `${this.navHeight()}px`);
       }, 1);
     }
   }
