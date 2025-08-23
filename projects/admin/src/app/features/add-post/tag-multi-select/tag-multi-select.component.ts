@@ -94,8 +94,8 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   selectTag(tag: Tag): void {
     if (!this.selectedTags().find(t => t.id === tag.id)) {
       this.selectedTags.update(tags => [...tags, tag]);
-      this.onChange(this.selectedTags());
-      this.onTouched();
+      this.onChange?.(this.selectedTags());
+      this.onTouched?.();
 
       this.searchTerm.set('');
       this.searchInput().nativeElement.value = '';
@@ -112,7 +112,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
     const current = this.selectedTags();
     const updated = current.filter(t => t.id !== tag.id);
     this.selectedTags.set(updated);
-    this.onChange(updated);
+    this.onChange?.(updated);
     this.markAsTouched();
   }
 
@@ -127,7 +127,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   private markAsTouched() {
     if (!this.isTouched()) {
       this.isTouched.set(true);
-      this.onTouched();
+      this.onTouched?.();
     }
   }
 
