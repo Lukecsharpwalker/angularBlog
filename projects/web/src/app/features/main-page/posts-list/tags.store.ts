@@ -4,8 +4,8 @@ import { patchState, signalStore, withState, withMethods, withHooks } from '@ngr
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 
-import { Tag } from '../../models';
-import { TAGS_API_SERVICE, TagsApiService } from '../tokens/api-tokens';
+import { ReaderApiService } from '../../../core/services/reader-api.service';
+import { Tag } from 'shared';
 
 interface TagsState {
   tags: Tag[] | null;
@@ -23,7 +23,7 @@ export const TagsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
 
-  withMethods((store, api = inject(TAGS_API_SERVICE)) => ({
+  withMethods((store, api = inject(ReaderApiService)) => ({
     loadTags: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { loading: true, error: null })),

@@ -5,6 +5,6 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
   selector: 'admin-root',
   standalone: true,
   imports: [MainLayoutComponent],
-  template: '<admin-main-layout></admin-main-layout>',
+  template: '<admin-main-layout/>',
 })
 export class AppComponent {}

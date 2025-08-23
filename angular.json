@@ -134,6 +134,9 @@
             "outputMode": "server",
             "ssr": {
               "entry": "projects/web/src/server.ts"
+            },
+            "prerender": {
+              "routesFile": "routes.txt"
             }
           },
           "configurations": {

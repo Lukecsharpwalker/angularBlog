@@ -22,6 +22,8 @@
     "db:createSeed": "scripts/create-seed.sh",
     "db:seed": "npx @snaplet/seed init",
     "users:passwords": "scripts/set-passwords.sh",
+    "routes:generate": "node scripts/generate-routes.js",
+    "routes:generate:ts": "tsx scripts/generate-routes.ts",
     "e2e": "ng e2e web",
     "e2e:local": "ng e2e web -c local",
     "lint": "npm run lint:projects",
