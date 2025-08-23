@@ -13,7 +13,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AdminApiService } from '../../../core/services/admin-api.service';
-import { Tag } from '../../../../../../shared/src/models';
+import { Tag } from 'shared';
 
 @Component({
   selector: 'admin-tag-multi-select',

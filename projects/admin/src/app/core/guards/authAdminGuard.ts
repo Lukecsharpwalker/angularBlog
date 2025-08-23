@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
-import { Roles } from '../../../../../shared/src/models';
-import { SupabaseService } from '../../../../../shared/src/services';
+import { Roles } from 'shared';
+import { SupabaseService } from 'shared';
 
 export const authAdminGuard: CanMatchFn = (): boolean => {
   const supabaseService = inject(SupabaseService);

@@ -13,8 +13,8 @@ import {
 import { RouterModule } from '@angular/router';
 import { PostCardComponent } from '../../../ui/components/post-card/post-card.component';
 import { PostsStore } from './posts.store';
-import { AboutMeComponent } from '../../../layout/about-me/about-me.component';
 import { TagsStore } from './tags.store';
+import { AboutMeComponent } from './about-me/about-me.component';
 
 @Component({
   selector: 'web-posts-list',

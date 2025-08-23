@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } fr
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginFormControls } from './login.interface';
-import { SupabaseService } from '../../../../../shared/src/services';
-import { Credentials } from '../../../../../shared/src/models';
+import { SupabaseService } from 'shared';
+import { Credentials } from 'shared';
 
 @Component({
   selector: 'admin-login',

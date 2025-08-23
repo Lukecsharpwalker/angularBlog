@@ -27,8 +27,8 @@ import { AddImageForm } from './add-image/add-image-controls.interface';
 import { AdminApiService } from '../../core/services/admin-api.service';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
 import { loadQuillModules } from '../../core/utils/quill-configuration';
-import { ModalConfig, PostInsert, PostUpdate, Tag } from '../../../../../shared/src/models';
-import { DynamicDialogService } from '../../../../../shared/src/pattern';
+import { ModalConfig, PostInsert, PostUpdate, Tag } from 'shared';
+import { DynamicDialogService } from 'shared';
 
 @Component({
   selector: 'admin-add-post',
@@ -118,7 +118,7 @@ export class AddPostComponent implements OnInit {
       };
 
       if (this.postId) {
-        this.apiService.updatePost(this.postId(), formData as PostUpdate & { tags: Tag[] });
+        this.apiService.updatePost(this.postId()!, formData as PostUpdate & { tags: Tag[] });
       } else {
         this.apiService.addPost(formData as PostInsert & { tags: Tag[] });
       }

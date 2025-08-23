@@ -5,8 +5,8 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { ReaderApiService } from '../../../core/services/reader-api.service';
-import { formatDateToDDMMYYYY } from '../../../../../../shared/src/utils';
-import { Post } from '../../../../../../shared/src/models';
+import { formatDateToDDMMYYYY } from 'shared';
+import { Post } from 'shared';
 
 interface PostState {
   post: Post | null;
