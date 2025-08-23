@@ -49,9 +49,9 @@
 
             <!-- Tags Section -->
             <div class="field-group full-width">
-              <label class="field-label">Tags & Categories</label>
+              <span class="field-label">Tags & Categories</span>
               <div class="tags-container">
-                <blog-tag-multi-select formControlName="tags"></blog-tag-multi-select>
+                <admin-tag-multi-select formControlName="tags"/>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@
               #quill
               formControlName="content"
               class="post-editor"
-            ></quill-editor>
+            />
           </div>
         </section>
 

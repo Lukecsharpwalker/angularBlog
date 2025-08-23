@@ -5,6 +5,6 @@ import { MainLayoutComponent } from './layout';
   selector: 'web-root',
   standalone: true,
   imports: [MainLayoutComponent],
-  template: '<web-main-layout></web-main-layout>',
+  template: '<web-main-layout/>',
 })
 export class AppComponent {}

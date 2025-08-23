@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## MOST IMPORTANT: Always read the LLM context files in `/llms/` before making any code changes or refactor proposals.
+
+## MOST IMPORTANT: NO WRITE COMMENTS in the codebase. Use PR comments instead.
+
 ## Project Overview
 
 This is **angular.fun** - a modern Angular 20+ blog application with Supabase backend. The project is currently a monolithic structure in `/src` but is being refactored into a multi-project workspace with micro-frontends and shared libraries.

@@ -1,4 +1,4 @@
-<app-about-me></app-about-me>
+<web-about-me/>
 <div class="relative mt-4 pb-4" data-testid="tags-container">
   <div
     #scrollContainer
@@ -50,7 +50,6 @@
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-5 transform"
-      fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
     >
@@ -71,7 +70,6 @@
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-5 w-5 transform rotate-180"
-      fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
     >
@@ -89,7 +87,7 @@
   <div class="w-full">
     <div class="grid">
       @for (post of posts(); track post.id) {
-        <web-post-card [post]="post"></web-post-card>
+        <web-post-card [post]="post"/>
       }
     </div>
   </div>

@@ -3,7 +3,6 @@ import { tapResponse } from '@ngrx/operators';
 import { patchState, signalStore, withState, withMethods, withHooks } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-
 import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { Tag } from 'shared';
 
@@ -33,7 +32,7 @@ export const TagsStore = signalStore(
               next: tags => patchState(store, { tags: tags || [], loading: false }),
               error: err =>
                 patchState(store, {
-                  error: 'Failed to fetch tags',
+                  error: 'Failed to fetch tags' + err,
                   loading: false,
                 }),
             })

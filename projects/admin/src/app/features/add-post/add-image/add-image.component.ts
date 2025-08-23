@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AddImageControls } from './add-image-controls.interface';
 
 @Component({
-  selector: 'app-add-image',
+  selector: 'admin-add-image',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './add-image.component.html',

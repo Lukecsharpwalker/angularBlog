@@ -2,11 +2,9 @@ import { Component, inject } from '@angular/core';
 import { DYNAMIC_DIALOG_DATA } from 'shared';
 
 @Component({
-  selector: 'app-code-block-modal',
+  selector: 'web-code-block-modal',
   standalone: true,
-  template: ` <pre
-    [class]="data.language"
-  ><code [innerHTML]="data.code"></code></pre>`,
+  template: ` <pre [class]="data.language"><code [innerHTML]="data.code"></code></pre>`,
   styles: [
     `
       :host {

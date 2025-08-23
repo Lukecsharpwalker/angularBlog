@@ -7,13 +7,12 @@ import {
   signal,
   WritableSignal,
   viewChild,
-  AfterViewInit,
   afterNextRender,
   ElementRef,
 } from '@angular/core';
-import { LoginCompontent } from '../../features/auth/login/login.component';
 import { RouterLink } from '@angular/router';
-import { DynamicDialogService } from '../../../../../shared/src/pattern';
+import { DynamicDialogService } from 'shared';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'web-navbar',
@@ -24,12 +23,12 @@ import { DynamicDialogService } from '../../../../../shared/src/pattern';
   styleUrl: './navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavbarComponent implements AfterViewInit {
-  public navbar = viewChild<ElementRef<HTMLElement>>('navbar');
-  public mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
+export class NavbarComponent {
+  public readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
+  public readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
   public isScrolled = false;
-  public isMenuOpen: WritableSignal<boolean> = signal(false);
-  public navHeight: WritableSignal<number> = signal(0);
+  public readonly isMenuOpen: WritableSignal<boolean> = signal(false);
+  public readonly navHeight: WritableSignal<number> = signal(0);
 
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
@@ -38,13 +37,11 @@ export class NavbarComponent implements AfterViewInit {
     this.initializeNavHeight();
   }
 
-  ngAfterViewInit() {}
-
   signIn() {
-    this.dynamicDialogService.openDialog<LoginCompontent>(
+    this.dynamicDialogService.openDialog<LoginComponent>(
       this.viewContainerRef,
       { title: 'Sign In' },
-      LoginCompontent
+      LoginComponent
     );
   }
 

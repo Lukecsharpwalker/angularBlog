@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ReaderApiService } from '../../../../core/services/reader-api.service';
 import { CommentsStore } from './comments.store';
 import { HasRoleDirective } from 'shared';
 import { Comment } from 'shared';
 
 @Component({
-  selector: 'comments',
+  selector: 'web-comments',
   standalone: true,
   providers: [ReaderApiService, CommentsStore],
   templateUrl: './comments.component.html',
@@ -14,12 +14,12 @@ import { Comment } from 'shared';
   imports: [HasRoleDirective],
 })
 export class CommentsComponent {
-  @Input() postId!: string;
-  comments = input<Comment[]>();
+  public readonly comments = input<Comment[]>();
+  public readonly postId = input.required<string>();
 
   private commentsStore = inject(CommentsStore);
 
   deleteComment(commentId: string): void {
-    this.commentsStore.deleteComment(commentId, this.postId);
+    this.commentsStore.deleteComment(commentId, this.postId());
   }
 }

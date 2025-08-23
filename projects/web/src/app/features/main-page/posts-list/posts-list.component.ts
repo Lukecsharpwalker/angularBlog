@@ -26,12 +26,12 @@ import { TagsStore } from './tags.store';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PostsListComponent {
-  scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
+  readonly scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
 
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
 
-  scrollProgress: WritableSignal<number> = signal(0);
+  readonly scrollProgress: WritableSignal<number> = signal(0);
   posts = this.postStore.posts;
   tags = this.tagsStore.tags;
   initialTagScrollProgressBarForMobile = 2;

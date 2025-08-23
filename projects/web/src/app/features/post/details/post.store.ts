@@ -4,17 +4,16 @@ import { patchState, signalStore, withMethods, withState, withComputed } from '@
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-
 import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { formatDateToDDMMYYYY } from '../../../../../../shared/src/utils';
 import { Post } from '../../../../../../shared/src/models';
 
-type PostState = {
+interface PostState {
   post: Post | null;
   date: string | null;
   loading: boolean;
   error: string | null;
-};
+}
 
 const initialState: PostState = {
   post: null,

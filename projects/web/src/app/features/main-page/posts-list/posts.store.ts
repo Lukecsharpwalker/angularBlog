@@ -10,15 +10,14 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-
 import { Post } from 'shared';
 import { ReaderApiService } from '../../../core/services/reader-api.service';
 
-type PostsState = {
+interface PostsState {
   posts: Post[] | null;
   loading: boolean;
   error: string | null;
-};
+}
 
 const initialState: PostsState = {
   posts: [],
@@ -36,16 +35,16 @@ export const PostsStore = signalStore(
         switchMap(() =>
           api.getPosts().pipe(
             tapResponse({
-              next: (posts) => patchState(store, { posts, loading: false }),
-              error: (err) =>
+              next: posts => patchState(store, { posts, loading: false }),
+              error: () =>
                 patchState(store, {
                   error: 'Failed to fetch posts',
                   loading: false,
                 }),
-            }),
-          ),
-        ),
-      ),
+            })
+          )
+        )
+      )
     ),
   })),
 
@@ -57,5 +56,5 @@ export const PostsStore = signalStore(
 
   withComputed(({ posts }) => ({
     total: computed(() => posts()!.length),
-  })),
+  }))
 );

@@ -8,16 +8,16 @@ import {
   Signal,
   input,
 } from '@angular/core';
-import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
-import { Router } from '@angular/router';
 import { CodeBlockModalComponent } from './code-block-modal-component/code-block-modal-component.component';
 import { PostStore } from './post.store';
 import { CommentsStore } from './comments/comments.store';
-import { Post } from '../../../../../../shared/src/models';
-import { DynamicDialogService } from '../../../../../../shared/src/pattern';
+import { Post } from 'shared';
+import { DynamicDialogService } from 'shared';
 
 @Component({
   selector: 'web-post',
@@ -29,13 +29,13 @@ import { DynamicDialogService } from '../../../../../../shared/src/pattern';
   imports: [CommentsComponent, AddCommentComponent, DatePipe],
 })
 export class PostComponent implements OnInit {
-  id = input.required<string>();
+  readonly id = input.required<string>();
 
   router = inject(Router);
   postStore = inject(PostStore);
 
-  post: Signal<Post | null> = this.postStore.post;
-  date: Signal<string | null> = this.postStore.formattedDate;
+  readonly post: Signal<Post | null> = this.postStore.post;
+  readonly date: Signal<string | null> = this.postStore.formattedDate;
 
   private dialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);

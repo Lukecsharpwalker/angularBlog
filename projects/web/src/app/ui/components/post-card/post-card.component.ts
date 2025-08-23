@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
-import { LabelComponent } from '../label/label.component';
 import { RouterLink } from '@angular/router';
-import { Post } from '../../../../../../shared/src/models';
+import { LabelComponent } from '../label/label.component';
+import { Post } from 'shared';
 
 @Component({
   selector: 'web-post-card',
@@ -11,5 +11,5 @@ import { Post } from '../../../../../../shared/src/models';
   styleUrl: './post-card.component.scss',
 })
 export class PostCardComponent {
-  post = input.required<Post>();
+  public readonly post = input.required<Post>();
 }

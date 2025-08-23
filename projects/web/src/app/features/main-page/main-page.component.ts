@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PostsListComponent } from './posts-list/posts-list.component';
 
 @Component({

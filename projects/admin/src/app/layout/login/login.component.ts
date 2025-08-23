@@ -22,8 +22,8 @@ export class LoginComponent {
     password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
   });
   isSubmitted = false;
-  loginError: WritableSignal<boolean> = signal(false);
-  isLoading: WritableSignal<boolean> = signal(false);
+  readonly loginError: WritableSignal<boolean> = signal(false);
+  readonly isLoading: WritableSignal<boolean> = signal(false);
 
   private router = inject(Router);
   private supabaseService = inject(SupabaseService);

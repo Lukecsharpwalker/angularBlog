@@ -4,7 +4,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   HostListener,
   inject,
-  Input,
+  input,
   OnInit,
   viewChild,
   ViewContainerRef,
@@ -19,9 +19,9 @@ import {
 } from '@angular/forms';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
-import { PostForm } from './models/post-from.inteface';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
+import { PostForm } from './models/post-from.inteface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 import { AdminApiService } from '../../core/services/admin-api.service';
@@ -48,8 +48,8 @@ import { DynamicDialogService } from '../../../../../shared/src/pattern';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPostComponent implements OnInit {
-  @Input() postId?: string;
-  quill = viewChild.required<QuillEditorComponent>('quill');
+  public readonly postId = input<string | undefined>();
+  readonly quill = viewChild.required<QuillEditorComponent>('quill');
 
   viewContainerRef = inject(ViewContainerRef);
   dialogService = inject(DynamicDialogService<AddImageForm>);
@@ -78,8 +78,8 @@ export class AddPostComponent implements OnInit {
   }
 
   private loadPostIfIdExists(): void {
-    if (this.postId) {
-      this.apiService.getPostById(this.postId).subscribe(post => {
+    if (this.postId()) {
+      this.apiService.getPostById(this.postId()!).subscribe(post => {
         if (post) {
           this.blogForm.patchValue(post);
           console.log(this.blogForm.value);
@@ -118,7 +118,7 @@ export class AddPostComponent implements OnInit {
       };
 
       if (this.postId) {
-        this.apiService.updatePost(this.postId, formData as PostUpdate & { tags: Tag[] });
+        this.apiService.updatePost(this.postId(), formData as PostUpdate & { tags: Tag[] });
       } else {
         this.apiService.addPost(formData as PostInsert & { tags: Tag[] });
       }
@@ -140,7 +140,7 @@ export class AddPostComponent implements OnInit {
 
     const codeBlocksHTML = tempDiv.querySelectorAll('pre[data-language="xml"]');
     codeBlocksHTML.forEach(block => {
-      let language = 'xml';
+      const language = 'xml';
       const codeElement = document.createElement('code');
       codeElement.className = language;
       codeElement.innerHTML = hljs.highlight(block.textContent || '', {
@@ -159,7 +159,7 @@ export class AddPostComponent implements OnInit {
 
     const codeBlocksTS = tempDiv.querySelectorAll('pre[data-language="typescript"]');
     codeBlocksTS.forEach(block => {
-      let language = 'typescript';
+      const language = 'typescript';
       const codeElement = document.createElement('code');
       codeElement.className = language;
       codeElement.innerHTML = hljs.highlight(block.textContent || '', {

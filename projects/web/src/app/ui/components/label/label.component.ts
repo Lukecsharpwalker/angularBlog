@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { NgStyle } from '@angular/common';
 
 @Component({
@@ -9,6 +9,6 @@ import { NgStyle } from '@angular/common';
   styleUrl: './label.component.scss',
 })
 export class LabelComponent {
-  @Input() text: string = 'Label';
-  @Input() color: string = '#000000';
+  readonly text = input<string>('Label');
+  readonly color = input<string>('#000000');
 }

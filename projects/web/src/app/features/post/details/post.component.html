@@ -61,10 +61,10 @@
         </div>
 
         <hr class="border-gray-300 my-4"/>
-        <add-comment [postId]="id()"></add-comment>
+        <web-add-comment [postId]="id()"/>
         <hr class="border-gray-300 my-4"/>
         @defer {
-          <comments [postId]="id()!" [comments]="post()?.comments"></comments>
+          <web-comments [postId]="id()!" [comments]="post()?.comments"/>
         }
       } @else {
         <p class="text-gray-800 text-center">Post not found.</p>

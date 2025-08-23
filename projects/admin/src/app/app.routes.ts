@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'posts',
-    // canMatch: [authAdminGuard],
+    canMatch: [authAdminGuard],
     loadChildren: () => import('./features/add-post/add-post.routes'),
   },
   {

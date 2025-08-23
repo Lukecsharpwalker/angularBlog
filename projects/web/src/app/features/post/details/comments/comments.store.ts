@@ -3,11 +3,11 @@ import { inject } from '@angular/core';
 import { ReaderApiService } from '../../../../core/services/reader-api.service';
 import { Comment } from '../../../../../../../shared/src/models';
 
-type CommentsState = {
+interface CommentsState {
   comments: Comment[];
   loading: boolean;
   error: string | null;
-};
+}
 
 const initialState: CommentsState = {
   comments: [],
@@ -31,7 +31,7 @@ export const CommentsStore = signalStore(
         }
       } catch (error) {
         patchState(state, {
-          error: 'Failed to fetch comments',
+          error: 'Failed to fetch comments' + error,
           loading: false,
         });
       }
@@ -46,7 +46,7 @@ export const CommentsStore = signalStore(
           patchState(state, { comments, loading: false });
         }
       } catch (error) {
-        patchState(state, { error: 'Failed to add comment', loading: false });
+        patchState(state, { error: 'Failed to add comment' + error, loading: false });
       }
     },
 
@@ -60,7 +60,7 @@ export const CommentsStore = signalStore(
         }
       } catch (error) {
         patchState(state, {
-          error: 'Failed to delete comment',
+          error: 'Failed to delete comment' + error,
           loading: false,
         });
       }

@@ -1,22 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  inject,
-} from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  ReactiveFormsModule,
-  FormControl,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ReaderApiService } from '../../../../core/services/reader-api.service';
 import { CommentsStore } from '../comments/comments.store';
 import { Comment } from 'shared';
 
 @Component({
-  selector: 'add-comment',
+  selector: 'web-add-comment',
   standalone: true,
   imports: [ReactiveFormsModule],
   providers: [ReaderApiService, CommentsStore],
@@ -25,7 +14,7 @@ import { Comment } from 'shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCommentComponent {
-  @Input() postId!: string;
+  public readonly postId = input.required<string>();
 
   commentForm: FormGroup = new FormGroup({
     content: new FormControl<string>('', {
@@ -44,10 +33,10 @@ export class AddCommentComponent {
         created_at: new Date().toISOString(),
         is_deleted: false,
         is_reported: false,
-        post_id: this.postId,
+        post_id: this.postId(),
         user_id: null, // In a real app, this would be the current user's ID
       };
-      this.commentsStore.addComment(this.postId, comment);
+      this.commentsStore.addComment(this.postId(), comment);
       this.commentForm.reset();
     }
   }

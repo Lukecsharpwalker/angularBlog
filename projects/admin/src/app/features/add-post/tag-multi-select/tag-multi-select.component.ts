@@ -16,7 +16,7 @@ import { AdminApiService } from '../../../core/services/admin-api.service';
 import { Tag } from '../../../../../../shared/src/models';
 
 @Component({
-  selector: 'blog-tag-multi-select',
+  selector: 'admin-tag-multi-select',
   standalone: true,
   imports: [],
   providers: [
@@ -34,22 +34,22 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   private elementRef = inject(ElementRef);
   private adminApi = inject(AdminApiService);
 
-  searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
+  readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
 
   // Signals
-  allTags = signal<Tag[]>([]);
-  selectedTags = signal<Tag[]>([]);
-  searchTerm = signal('');
-  isOpen = signal(false);
-  disabled = signal(false);
-  focusedTagId = signal<number | null>(null);
-  isTouched = signal(false);
+  readonly allTags = signal<Tag[]>([]);
+  readonly selectedTags = signal<Tag[]>([]);
+  readonly searchTerm = signal('');
+  readonly isOpen = signal(false);
+  readonly disabled = signal(false);
+  readonly focusedTagId = signal<number | null>(null);
+  readonly isTouched = signal(false);
 
   // Search subject for debouncing
   private searchSubject = new Subject<string>();
 
   // Computed values
-  filteredTags = computed(() => {
+  readonly filteredTags = computed(() => {
     const search = this.searchTerm().toLowerCase();
     const selected = this.selectedTags();
     return this.allTags().filter(
@@ -58,8 +58,8 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   });
 
   // ControlValueAccessor
-  private onChange = (value: Tag[]) => {};
-  private onTouched = () => {};
+  private onChange: ((value: Tag[]) => void) | null = null;
+  private onTouched: (() => void) | null = null;
 
   ngOnInit() {
     this.loadTags();
@@ -68,7 +68,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   private loadTags() {
     this.adminApi.getTags().subscribe({
       next: (tags: Tag[]) => this.allTags.set(tags),
-      error: (error: any) => console.error('Failed to load tags:', error),
+      error: (error: unknown) => console.error('Failed to load tags:', error),
     });
   }
 
@@ -139,25 +139,28 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
     const currentIndex = filtered.findIndex(tag => tag.id === this.focusedTagId());
 
     switch (event.key) {
-      case 'ArrowDown':
+      case 'ArrowDown': {
         event.preventDefault();
         const nextIndex = currentIndex < filtered.length - 1 ? currentIndex + 1 : 0;
         this.focusedTagId.set(filtered[nextIndex]?.id || null);
         break;
+      }
 
-      case 'ArrowUp':
+      case 'ArrowUp': {
         event.preventDefault();
         const prevIndex = currentIndex > 0 ? currentIndex - 1 : filtered.length - 1;
         this.focusedTagId.set(filtered[prevIndex]?.id || null);
         break;
+      }
 
-      case 'Enter':
+      case 'Enter': {
         event.preventDefault();
         const focusedTag = filtered.find(tag => tag.id === this.focusedTagId());
         if (focusedTag) {
           this.selectTag(focusedTag);
         }
         break;
+      }
 
       case 'Escape':
         event.preventDefault();
