@@ -36,9 +36,9 @@ export const PostsStore = signalStore(
           api.getPosts().pipe(
             tapResponse({
               next: posts => patchState(store, { posts, loading: false }),
-              error: () =>
+              error: (err: unknown) =>
                 patchState(store, {
-                  error: 'Failed to fetch posts',
+                  error: typeof err === 'string' ? err : 'Failed to fetch posts',
                   loading: false,
                 }),
             })

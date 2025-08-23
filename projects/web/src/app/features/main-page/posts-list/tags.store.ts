@@ -30,9 +30,9 @@ export const TagsStore = signalStore(
           api.getTags().pipe(
             tapResponse({
               next: tags => patchState(store, { tags: tags || [], loading: false }),
-              error: err =>
+              error: (err: unknown) =>
                 patchState(store, {
-                  error: 'Failed to fetch tags' + err,
+                  error: 'Failed to fetch tags: ' + (typeof err === 'string' ? err : 'Unknown error'),
                   loading: false,
                 }),
             })
