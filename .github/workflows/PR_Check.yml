@@ -2,8 +2,8 @@ name: PR Check
 
 on:
   pull_request:
-    branches: 
-      - main 
+    branches:
+      - main
 
 jobs:
   test:
@@ -21,7 +21,7 @@ jobs:
       - name: Generate environment.ts from secrets
         shell: bash
         run: |
-          cat > src/environments/environment.ts <<'EOF'
+          cat > environments/environment.ts <<'EOF'
           export const environment = {
             production: false,
             supabaseUrl: '${{ secrets.SUPABASE_URL }}',
