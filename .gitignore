@@ -55,3 +55,4 @@ adminSdkConf.json
 
 #llms
 /llms/private
+/llms/priv
