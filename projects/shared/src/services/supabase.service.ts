@@ -1,4 +1,4 @@
-import { inject, Injectable, NgZone, InjectionToken } from '@angular/core';
+import { inject, Injectable, NgZone } from '@angular/core';
 import {
   AuthChangeEvent,
   AuthSession,
@@ -8,13 +8,6 @@ import {
   SupabaseClient,
 } from '@supabase/supabase-js';
 import { environment } from '../../../../environments/environment';
-
-export interface SupabaseConfig {
-  supabaseUrl: string;
-  supabaseKey: string;
-}
-
-export const SUPABASE_CONFIG = new InjectionToken<SupabaseConfig>('SupabaseConfig');
 
 @Injectable({
   providedIn: 'root',

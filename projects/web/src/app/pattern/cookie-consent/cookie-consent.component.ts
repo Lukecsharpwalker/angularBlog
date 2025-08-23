@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { DynamicDialogService } from '../../../../../shared/src/pattern';
+import { DynamicDialogService } from 'shared';
 
 @Component({
   selector: 'web-cookie-consent',

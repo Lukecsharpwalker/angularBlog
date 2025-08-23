@@ -11,8 +11,8 @@ import { provideQuillConfig } from 'ngx-quill/config';
 import hljs from 'highlight.js/lib/core';
 import { routes } from './app.routes';
 import { quillToolbarConfig } from './core/utils/quill-toolbar';
-import { SupabaseService } from '../../../shared/src/services';
-import { supabaseInitializer } from '../../../shared/src/utils/supabase/initialize-supabase';
+import { SupabaseService } from 'shared';
+import { supabaseInitializer } from 'shared';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
-import { SupabaseService } from '../../services';
+import { SupabaseService } from 'shared';
 
 @Directive({
   selector: '[sharedHasRole]',

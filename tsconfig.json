@@ -17,6 +17,12 @@
     "paths": {
       "shared": [
         "./projects/shared/src/public-api"
+      ],
+      "shared/models": [
+        "./projects/shared/models/public-api"
+      ],
+      "shared/utils": [
+        "./projects/shared/utils/public-api"
       ]
     },
     "importHelpers": true,
