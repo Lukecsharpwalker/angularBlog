@@ -171,6 +171,9 @@
             },
             "development": {
               "buildTarget": "web:build:development"
+            },
+            "local": {
+              "buildTarget": "web:build:development"
             }
           },
           "defaultConfiguration": "development"
