@@ -65,7 +65,7 @@ jobs:
         run: npm run lint:admin
 
       - name: Test admin project
-        run: npm run test:admin --watch=false --browsers=ChromeHeadless
+        run: npm run test:admin -- --watch=false --browsers=ChromeHeadless
 
       - name: Build admin project
         run: ng build admin --configuration=production
