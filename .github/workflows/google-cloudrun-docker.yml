@@ -18,9 +18,14 @@ jobs:
 
       - run: npm ci
       - uses: browser-actions/setup-chrome@v1
-      - run: echo "CHROME_BIN=$(which chrome)" >> $GITHUB_ENV
+      - name: Use Chrome with no-sandbox
+        run: |
+          printf '#!/usr/bin/env bash\nexec "%s" --no-sandbox --disable-setuid-sandbox "$@"\n' "$(which chrome)" > /tmp/chrome-nosandbox.sh
+          chmod +x /tmp/chrome-nosandbox.sh
+          echo "CHROME_BIN=/tmp/chrome-nosandbox.sh" >> $GITHUB_ENV
       - run: sudo mount -t tmpfs tmpfs /dev/shm -o size=2G
       - run: xvfb-run -a npm run test:all -- --browsers=ChromeHeadless --watch=false --no-progress
+
 
   deploy:
     runs-on: ubuntu-latest
