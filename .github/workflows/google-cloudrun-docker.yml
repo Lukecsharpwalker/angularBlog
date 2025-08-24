@@ -17,8 +17,10 @@ jobs:
           cache: npm
 
       - run: npm ci
-
-      - run: npm run test:all -- --browsers=ChromeHeadless --watch=false --no-progress
+      - uses: browser-actions/setup-chrome@v1
+      - run: echo "CHROME_BIN=$(which chrome)" >> $GITHUB_ENV
+      - run: sudo mount -t tmpfs tmpfs /dev/shm -o size=2G
+      - run: xvfb-run -a npm run test:all -- --browsers=ChromeHeadless --watch=false --no-progress
 
   deploy:
     runs-on: ubuntu-latest
