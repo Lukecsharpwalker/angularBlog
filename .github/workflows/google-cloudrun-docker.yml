@@ -24,7 +24,7 @@ jobs:
           chmod +x /tmp/chrome-nosandbox.sh
           echo "CHROME_BIN=/tmp/chrome-nosandbox.sh" >> $GITHUB_ENV
       - run: sudo mount -t tmpfs tmpfs /dev/shm -o size=2G
-      - run: xvfb-run -a npm run test:web -- --browsers=ChromeHeadless --watch=false --no-progress
+      - run: xvfb-run -a npm run test -- --browsers=ChromeHeadless --watch=false --no-progress
 
 
   deploy:
