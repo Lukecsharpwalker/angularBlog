@@ -21,10 +21,32 @@ export class SupabaseService {
     this.supabase = this.ngZone.runOutsideAngular(() =>
       createClient(environment.supabaseUrl, environment.supabaseKey)
     );
+    this.initializeSession();
+  }
+
+  private async initializeSession(): Promise<void> {
+    const { data: { session } } = await this.supabase.auth.getSession();
+    this.session = session;
+    
+    this.supabase.auth.onAuthStateChange((event, session) => {
+      this.ngZone.run(() => {
+        this.session = session;
+      });
+    });
   }
 
   getSession(): AuthSession | null {
     return this.session;
+  }
+
+  async getCurrentSession(): Promise<AuthSession | null> {
+    if (this.session) {
+      return this.session;
+    }
+    
+    const { data: { session } } = await this.supabase.auth.getSession();
+    this.session = session;
+    return session;
   }
 
   authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
