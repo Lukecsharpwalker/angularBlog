@@ -2,12 +2,32 @@
   "hosting": [
     {
       "target": "admin",
-      "public": "dist/apps/admin-spa",
+      "public": "dist/admin/browser",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "rewrites": [{ "source": "**", "destination": "/index.html" }],
+      "rewrites": [
+        { "source": "**", "destination": "/index.html" }
+      ],
+      "redirects": [
+        {
+          "source": "/admin",
+          "destination": "/",
+          "type": 301
+        }
+      ],
       "headers": [
         {
-          "source": "**/*.@(js|css)",
+          "source": "/",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+            { "key": "X-Frame-Options", "value": "DENY" },
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+            { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
+            { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" }
+          ]
+        },
+        {
+          "source": "**/*.@(js|css|woff|woff2|ttf|otf|eot|svg|png|jpg|jpeg|gif|webp|ico)",
           "headers": [
             { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
           ]
@@ -16,18 +36,29 @@
     },
     {
       "target": "samples",
-      "public": "dist/apps/code-samples-mfe",
+      "public": "dist/code-samples-mfe",
       "ignore": ["**/.*", "**/node_modules/**"],
-      "rewrites": [{ "source": "**", "destination": "/index.html" }],
+      "rewrites": [
+        { "source": "**", "destination": "/index.html" }
+      ],
       "headers": [
         {
-          "source": "**/remoteEntry.@(js|mjs)",
+          "source": "/",
           "headers": [
-            { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+            { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+            { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+            { "key": "X-Content-Type-Options", "value": "nosniff" }
           ]
         },
         {
-          "source": "**/*.@(js|css)",
+          "source": "**/remoteEntry.@(js|mjs)",
+          "headers": [
+            { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+            { "key": "Access-Control-Allow-Origin", "value": "*" }
+          ]
+        },
+        {
+          "source": "**/*.@(js|css|woff|woff2|ttf|otf|eot|svg|png|jpg|jpeg|gif|webp|ico)",
           "headers": [
             { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
           ]

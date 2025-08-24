@@ -6,8 +6,34 @@ on:
       - main
 
 jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.check.outputs.should-run }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit message
+        id: check
+        run: |
+          message=$(git log --format=%B -n 1 ${{ github.sha }})
+          echo "Checking commit: ${{ github.sha }}"
+          echo "Message: $message"
+          
+          should_run=false
+          if echo "$message" | grep -E "^[^(]+\((web|config)\):" > /dev/null; then
+            should_run=true
+          fi
+          
+          echo "should-run=$should_run" >> $GITHUB_OUTPUT
+          echo "Web workflow should run: $should_run"
   test:
     runs-on: ubuntu-latest
+    needs: check-commit
+    if: needs.check-commit.outputs.should-run == 'true'
     steps:
       - uses: actions/checkout@v4
 

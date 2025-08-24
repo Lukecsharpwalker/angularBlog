@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Get list of staged files
+staged_files=$(git diff --cached --name-only)
+
+# Define project directories
+web_pattern="^projects/web/"
+admin_pattern="^projects/admin/"
+mfe_pattern="^projects/code-samples-mfe/"
+shared_pattern="^projects/shared/"
+config_patterns="^(package\.json|package-lock\.json|angular\.json|tsconfig\.json|\.eslint|\.prettier|tailwind\.config|commitlint\.config|\.github/|\.husky/|scripts/|supabase/|e2e/|.*\.md$)"
+
+# Count files in each category
+web_count=0
+admin_count=0
+mfe_count=0
+shared_count=0
+config_count=0
+
+for file in $staged_files; do
+  if [[ $file =~ $web_pattern ]]; then
+    web_count=$((web_count + 1))
+  elif [[ $file =~ $admin_pattern ]]; then
+    admin_count=$((admin_count + 1))
+  elif [[ $file =~ $mfe_pattern ]]; then
+    mfe_count=$((mfe_count + 1))
+  elif [[ $file =~ $shared_pattern ]]; then
+    shared_count=$((shared_count + 1))
+  elif [[ $file =~ $config_patterns ]]; then
+    config_count=$((config_count + 1))
+  fi
+done
+
+# Count non-zero project types (exclude shared from count - it can be combined)
+project_types=0
+if [ $web_count -gt 0 ]; then project_types=$((project_types + 1)); fi
+if [ $admin_count -gt 0 ]; then project_types=$((project_types + 1)); fi
+if [ $mfe_count -gt 0 ]; then project_types=$((project_types + 1)); fi
+
+# Allow config-only, shared-only, or single project + shared + config
+if [ $project_types -gt 1 ]; then
+  echo "❌ Error: Cannot commit changes to multiple projects in a single commit."
+  echo ""
+  echo "Staged files by project:"
+  if [ $web_count -gt 0 ]; then echo "  📱 Web: $web_count files"; fi
+  if [ $admin_count -gt 0 ]; then echo "  🔧 Admin: $admin_count files"; fi
+  if [ $mfe_count -gt 0 ]; then echo "  📦 MFE: $mfe_count files"; fi
+  if [ $shared_count -gt 0 ]; then echo "  🔄 Shared: $shared_count files"; fi
+  if [ $config_count -gt 0 ]; then echo "  ⚙️  Config: $config_count files"; fi
+  echo ""
+  echo "Please commit changes to one project at a time:"
+  echo "  git reset"
+  echo "  git add projects/web/  # or projects/admin/, etc."
+  echo "  git add projects/shared/  # shared can be combined"
+  echo "  git commit -m 'feat(web): your changes'"
+  exit 1
+fi
+
+echo "✅ Single project commit validation passed"

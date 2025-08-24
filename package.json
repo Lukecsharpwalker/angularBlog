@@ -40,7 +40,13 @@
     "lint:web": "ng lint web",
     "lint:web:fix": "ng lint web --fix",
     "lint:mfe": "ng lint code-samples-mfe",
-    "lint:mfe:fix": "ng lint code-samples-mfe --fix"
+    "lint:mfe:fix": "ng lint code-samples-mfe --fix",
+    "commit:web": "echo 'Use: git commit -m \"feat(web): your message\"'",
+    "commit:admin": "echo 'Use: git commit -m \"feat(admin): your message\"'", 
+    "commit:mfe": "echo 'Use: git commit -m \"feat(mfe): your message\"'",
+    "commit:shared": "echo 'Use: git commit -m \"feat(shared): your message\"'",
+    "commit:config": "echo 'Use: git commit -m \"chore(config): your message\"'",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -73,6 +79,8 @@
     "@angular/build": "^20.1.6",
     "@angular/cli": "^20.1.6",
     "@angular/compiler-cli": "^20.1.7",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "^1.53.0",
     "@snaplet/copycat": "^6.0.0",
     "@snaplet/seed": "^0.98.0",
@@ -90,6 +98,7 @@
     "eslint-plugin-boundaries": "^5.0.1",
     "eslint-plugin-import": "^2.32.0",
     "http-server": "^14.1.1",
+    "husky": "^9.1.7",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
