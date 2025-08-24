@@ -1,17 +1,18 @@
 {
   "projects": {
-    "default": "your-firebase-project-id"
+    "default": "angular-admin-blog"
   },
   "targets": {
-    "your-firebase-project-id": {
+    "angular-admin-blog": {
       "hosting": {
         "admin": [
-          "admin-site-id"
+          "angular-admin-blog"
         ],
         "samples": [
-          "samples-site-id"
+          "angular-admin-blog-samples"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

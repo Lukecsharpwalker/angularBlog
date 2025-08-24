@@ -1,0 +1,117 @@
+name: Deploy Admin App to Firebase
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'projects/admin/**'
+      - 'firebase.json'
+      - '.firebaserc'
+      - 'package*.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'projects/admin/**'
+      - 'firebase.json'
+      - '.firebaserc'
+      - 'package*.json'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint admin project
+        run: npm run lint:admin
+
+      - name: Test admin project
+        run: npm run test -- admin --watch=false --browsers=ChromeHeadless
+
+      - name: Build admin project
+        run: ng build admin --configuration=production
+
+      - name: Deploy to Firebase Preview (PR)
+        if: github.event_name == 'pull_request'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_ADMIN_BLOG }}'
+          projectId: angular-admin-blog
+          channelId: pr-${{ github.event.number }}
+          target: admin
+          expires: 7d
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+      - name: Deploy to Firebase Live (Main Branch)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_ADMIN_BLOG }}'
+          projectId: angular-admin-blog
+          channelId: live
+          target: admin
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+
+      - name: Add PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🔥 Firebase Admin Preview')
+            );
+            
+            const body = `
+            ## 🔥 Firebase Admin Preview Deployed
+            
+            **Preview URL**: https://angular-admin-blog--pr-${{ github.event.number }}-8t1hsdkv.web.app
+            
+            Changes in this PR have been deployed to a preview channel.
+            The preview will be available for 7 days.
+            
+            ### What's included:
+            - ✅ Admin application build
+            - ✅ Security headers configured
+            - ✅ SPA routing enabled
+            - ✅ Production optimizations
+            `;
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
