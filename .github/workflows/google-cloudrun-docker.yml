@@ -22,12 +22,12 @@ jobs:
           message=$(git log --format=%B -n 1 ${{ github.sha }})
           echo "Checking commit: ${{ github.sha }}"
           echo "Message: $message"
-          
+
           should_run=false
-          if echo "$message" | grep -E "^[^(]+\((web|config)\):" > /dev/null; then
+          if echo "$message" | grep -E "^[^(]+\((web)\):" > /dev/null; then
             should_run=true
           fi
-          
+
           echo "should-run=$should_run" >> $GITHUB_OUTPUT
           echo "Web workflow should run: $should_run"
   test:

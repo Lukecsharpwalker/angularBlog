@@ -34,7 +34,7 @@ jobs:
             echo "Checking commit: $commit"
             echo "Message: $message"
 
-            if echo "$message" | grep -E "^[^(]+\((admin|config)\):" > /dev/null; then
+            if echo "$message" | grep -E "^[^(]+\((admin)\):" > /dev/null; then
               should_run=true
               break
             fi
@@ -68,7 +68,7 @@ jobs:
         run: npm run test:admin -- --watch=false --browsers=ChromeHeadless
 
       - name: Build admin project
-        run: ng build admin --configuration=production
+        run: npm run build:admin --configuration=production
 
       - name: Deploy to Firebase Preview (PR)
         if: github.event_name == 'pull_request'

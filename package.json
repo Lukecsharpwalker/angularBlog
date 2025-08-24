@@ -6,6 +6,7 @@
     "start": "ng serve web",
     "build": "ng build web",
     "build:all": "ng build shared && ng build web && ng build admin && ng build code-samples-mfe",
+    "build:admin": "ng build admin",
     "watch": "ng build --watch --configuration development",
     "test": "ng test web",
     "test:admin": "ng test admin",
