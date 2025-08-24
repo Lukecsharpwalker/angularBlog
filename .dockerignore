@@ -1,0 +1,76 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist
+.angular
+.nx
+tmp
+out-tsc
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests
+coverage
+*.tgz
+*.tar.gz
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+
+# Git
+.git
+.gitignore
+README.md
+
+# CI/CD
+.github
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Documentation
+docs
+*.md
+
+# Linting and formatting
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Testing
+e2e
+*.spec.ts
+*.e2e-spec.ts
+karma.conf.js
+protractor.conf.js
+
+# Supabase local development
+supabase/.temp
+supabase/functions/node_modules
+supabase/logs
+supabase/.branches
+
+# Cache directories
+.cache
+.parcel-cache
