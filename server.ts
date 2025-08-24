@@ -2,8 +2,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
 import { CommonEngine } from '@angular/ssr/node';
+import bootstrap from './projects/web/src/main.server';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -25,7 +25,7 @@ export function app(): express.Express {
     express.static(browserDistFolder, {
       maxAge: '1y',
       index: 'index.html',
-    }),
+    })
   );
 
   // All regular routes use the Angular engine
@@ -40,8 +40,8 @@ export function app(): express.Express {
         publicPath: browserDistFolder,
         providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
       })
-      .then((html: any) => res.send(html))
-      .catch((err: any) => next(err));
+      .then((html: unknown) => res.send(html))
+      .catch((err: unknown) => next(err));
   });
 
   return server;

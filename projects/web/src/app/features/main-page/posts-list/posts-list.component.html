@@ -1,0 +1,76 @@
+<web-about-me/>
+<div class="relative mt-4 pb-4" data-testid="tags-container">
+  <div class="relative shadow-lg bg-white p-4 sm:p-6 sm:px-14 rounded-[32px] sm:rounded-[64px] overflow-hidden">
+    <div
+      #scrollContainer
+      data-testid="tags-scroll-container"
+      class="overflow-x-scroll overflow-y-hidden hide-scrollbar whitespace-nowrap scroll-smooth"
+    >
+      <div class="inline-flex space-x-4 gap-x-0 md:gap-x-6" data-testid="tags-list">
+        @for (tag of tags(); track tag.id) {
+          <div class="flex flex-col items-center min-w-24 group" data-testid="tag-item" [attr.data-tag-name]="tag.name">
+            <div
+              [ngStyle]="{ 'background-color': tag.color }"
+              class="font-bold text-gray-700 rounded-full flex items-center justify-center font-mono p-3 md:p-5 min-w-18 transform transition-all duration-300 hover:scale-110 hover:shadow-lg relative cursor-pointer"
+              data-testid="tag-button"
+            >
+              <img
+                ngSrc="tags/{{ tag.icon }}"
+                [alt]="tag.name"
+                class="w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110"
+                width="32"
+                height="32"
+                data-testid="tag-icon"
+              />
+            </div>
+            <span
+              class="mt-1 sm:mt-2 text-center text-gray-600 text-sm sm:text-base"
+              data-testid="tag-name"
+            >{{ tag.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <button
+      (click)="scrollContainer.scrollLeft = scrollContainer.scrollLeft - 135"
+      class="btn btn-circle rounded-none absolute inset-y-0 left-0 h-full bg-base-100 bg-opacity-70 hover:bg-base-200 hidden md:flex rounded-tl-full rounded-bl-full"
+      data-testid="scroll-left-button"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+    </button>
+
+    <button
+      (click)="scrollContainer.scrollLeft = scrollContainer.scrollLeft + 135"
+      class="btn btn-circle rounded-none absolute inset-y-0 right-0 h-full bg-base-100 bg-opacity-70 hover:bg-base-200 hidden md:flex rounded-tr-full rounded-br-full"
+      data-testid="scroll-right-button"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform rotate-180" viewBox="0 0 24 24"
+           stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="relative -top-4 mt-2 md:hidden w-full flex justify-center" data-testid="mobile-progress-container">
+    <div class="w-10/12 bg-tertiary h-1 rounded-full">
+      <div
+        class="bg-primary h-1 rounded-full transition-all duration-300"
+        [style.width.%]="scrollProgress()"
+        data-testid="mobile-progress-bar"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-center mt-5">
+  <div class="w-full">
+    <div class="grid">
+      @for (post of posts(); track post.id) {
+        <web-post-card [post]="post"/>
+      }
+    </div>
+  </div>
+</div>

@@ -9,29 +9,31 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          
+          node-version: '20'
+          cache: npm
+
       - run: npm ci
 
-      - run: npm run test -- --browsers=ChromeHeadless --watch=false --no-progress
+      - run: npm run test:all -- --browsers=ChromeHeadless --watch=false --no-progress
 
   deploy:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: npm
 
       - run: npm ci
 
-      - run: npm run build --prod
+      - run: npm run build -- --configuration production
 
       - uses: google-github-actions/auth@v2
         with:

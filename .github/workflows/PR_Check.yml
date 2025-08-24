@@ -2,8 +2,8 @@ name: PR Check
 
 on:
   pull_request:
-    branches: 
-      - main 
+    branches:
+      - main
 
 jobs:
   test:
@@ -16,12 +16,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Generate environment.ts from secrets
         shell: bash
         run: |
-          cat > src/environments/environment.ts <<'EOF'
+          cat > environments/environment.ts <<'EOF'
           export const environment = {
             production: false,
             supabaseUrl: '${{ secrets.SUPABASE_URL }}',

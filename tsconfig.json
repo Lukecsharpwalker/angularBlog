@@ -14,6 +14,17 @@
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+    "paths": {
+      "shared": [
+        "./projects/shared/src/public-api"
+      ],
+      "shared/models": [
+        "./projects/shared/models/public-api"
+      ],
+      "shared/utils": [
+        "./projects/shared/utils/public-api"
+      ]
+    },
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
@@ -28,5 +39,31 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "references": [
+    {
+      "path": "./projects/admin/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/admin/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/web/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/web/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/code-samples-mfe/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/code-samples-mfe/tsconfig.spec.json"
+    }
+  ]
 }

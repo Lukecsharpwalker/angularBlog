@@ -1,0 +1,12 @@
+// Main page styling for enhanced layout
+.main-page {
+  @apply space-y-8;
+  
+  // Ensure smooth scrolling and proper spacing
+  min-height: calc(100vh - 200px);
+}
+
+// Additional breathing room for content
+web-posts-list {
+  @apply block w-full;
+}

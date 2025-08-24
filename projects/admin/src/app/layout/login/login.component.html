@@ -1,0 +1,135 @@
+<div class="admin-login-layout">
+  <div class="admin-login-container">
+    <!-- Header Section -->
+    <header class="admin-header">
+      <div class="brand-section">
+        <h1 class="brand-title">angular.fun</h1>
+        <p class="brand-subtitle">Administrative Panel</p>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="admin-main">
+      <!-- Left Panel - Information -->
+      <aside class="admin-sidebar">
+        <div class="info-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Content Management System</h2>
+          </div>
+          
+          <div class="features-grid">
+            <div class="feature-card">
+              <h3 class="feature-title">Blog Management</h3>
+              <p class="feature-description">Create, edit, and publish blog posts with rich content editor</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3 class="feature-title">Analytics Dashboard</h3>
+              <p class="feature-description">Monitor site performance and user engagement metrics</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3 class="feature-title">User Management</h3>
+              <p class="feature-description">Manage user accounts, roles, and permissions</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Panel - Login Form -->
+      <section class="admin-form-section">
+        <div class="form-container">
+          <div class="form-header">
+            <h2 class="form-title">Sign In</h2>
+            <p class="form-subtitle">Access your admin dashboard</p>
+          </div>
+
+          <!-- Login Form -->
+          <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+              <!-- Email Field -->
+              <div class="input-group">
+                <label for="email" class="input-label">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  formControlName="email"
+                  type="email"
+                  autocomplete="email"
+                  class="form-input"
+                  placeholder="admin@angular.fun"
+                  [class.input-error]="isSubmitted && form.controls.email.invalid"
+                />
+                @if (isSubmitted && form.controls.email.errors?.['required']) {
+                  <div class="error-message">Email is required</div>
+                }
+                @if (isSubmitted && form.controls.email.errors?.['email']) {
+                  <div class="error-message">Please enter a valid email address</div>
+                }
+              </div>
+
+              <!-- Password Field -->
+              <div class="input-group">
+                <label for="password" class="input-label">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  formControlName="password"
+                  type="password"
+                  autocomplete="current-password"
+                  class="form-input"
+                  placeholder="Enter your password"
+                  [class.input-error]="isSubmitted && form.controls.password.invalid"
+                />
+                @if (isSubmitted && form.controls.password.errors?.['required']) {
+                  <div class="error-message">Password is required</div>
+                }
+              </div>
+
+              <!-- Error Message -->
+              @if (loginError()) {
+                <div class="login-error">
+                  Invalid credentials. Please try again.
+                </div>
+              }
+
+              <!-- Form Actions -->
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  [disabled]="isLoading()"
+                  class="btn-primary"
+                >
+                  @if (isLoading()) {
+                    <span class="loading-text">Signing in...</span>
+                  } @else {
+                    Sign In
+                  }
+                </button>
+
+                <div class="form-divider">
+                  <span>Or</span>
+                </div>
+
+                <button
+                  (click)="onGoogleLogin()"
+                  [disabled]="isLoading()"
+                  class="btn-secondary"
+                  type="button"
+                >
+                  @if (isLoading()) {
+                    Signing in...
+                  } @else {
+                    Continue with Google
+                  }
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>

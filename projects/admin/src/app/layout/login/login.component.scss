@@ -1,0 +1,366 @@
+// Clean Admin Login Layout - Structure Focused
+// Brand colors: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA)
+
+.admin-login-layout {
+  min-height: 100vh;
+  background: rgba(251, 250, 218, 0.5); // quaternary/50
+}
+
+.admin-login-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 40px rgba(18, 55, 42, 0.1);
+}
+
+// Header Section
+.admin-header {
+  padding: 2rem 3rem;
+  background: #12372A; // primary
+  color: white;
+
+  .brand-section {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .brand-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.025em;
+  }
+
+  .brand-subtitle {
+    font-size: 1.125rem;
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+}
+
+// Main Content Grid
+.admin-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+// Left Sidebar - Information Panel
+.admin-sidebar {
+  background: rgba(67, 104, 80, 0.05);
+  padding: 3rem;
+
+  .info-panel {
+    max-width: 500px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .panel-header {
+    margin-bottom: 3rem;
+  }
+
+  .panel-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #12372A;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+  }
+}
+
+// Features Grid
+.features-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.feature-card {
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  border-left: 4px solid #ADBC9F;
+  box-shadow: 0 2px 8px rgba(18, 55, 42, 0.1);
+
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #12372A;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .feature-description {
+    font-size: 0.9375rem;
+    color: #436850;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Right Form Section
+.admin-form-section {
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251, 250, 218, 0.2);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #12372A;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .form-subtitle {
+    font-size: 1rem;
+    color: #436850;
+    margin: 0;
+  }
+}
+
+// Login Form
+.login-form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(18, 55, 42, 0.12);
+  border: 1px solid rgba(173, 188, 159, 0.2);
+}
+
+.form-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+// Input Groups
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #12372A;
+  margin: 0;
+}
+
+.form-input {
+  padding: 0.875rem 1rem;
+  border: 2px solid rgba(173, 188, 159, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  color: #12372A;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #12372A;
+    box-shadow: 0 0 0 3px rgba(18, 55, 42, 0.1);
+  }
+
+  &::placeholder {
+    color: rgba(67, 104, 80, 0.5);
+  }
+
+  &.input-error {
+    border-color: #ef4444;
+
+    &:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+}
+
+.error-message {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+.login-error {
+  padding: 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+// Form Actions
+.form-actions {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  padding: 0.875rem 1.5rem;
+  background: #12372A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(18, 55, 42, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(18, 55, 42, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.btn-secondary {
+  padding: 0.875rem 1.5rem;
+  background: white;
+  color: #436850;
+  border: 2px solid rgba(173, 188, 159, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(251, 250, 218, 0.3);
+    border-color: rgba(67, 104, 80, 0.4);;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67, 104, 80, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(173, 188, 159, 0.3);
+  }
+
+  span {
+    font-size: 0.875rem;
+    color: rgba(67, 104, 80, 0.6);;
+    font-weight: 500;
+  }
+}
+
+.loading-text {
+  opacity: 0.8;
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .admin-main {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    order: 2;
+    padding: 2rem;
+
+    .info-panel {
+      justify-content: flex-start;
+    }
+
+    .features-grid {
+      gap: 1.5rem;
+    }
+  }
+
+  .admin-form-section {
+    order: 1;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 1.5rem 2rem;
+
+    .brand-title {
+      font-size: 2rem;
+    }
+
+    .brand-subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  .admin-sidebar {
+    padding: 1.5rem;
+  }
+
+  .admin-form-section {
+    padding: 1.5rem;
+  }
+
+  .login-form {
+    padding: 2rem;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .admin-sidebar,
+  .admin-form-section {
+    padding: 1rem;
+  }
+
+  .login-form {
+    padding: 1.5rem;
+  }
+
+  .form-header .form-title {
+    font-size: 1.75rem;
+  }
+}

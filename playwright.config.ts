@@ -33,22 +33,44 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'web',
+      testDir: './e2e/web',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:4200',
+      },
+    },
+
+    {
+      name: 'admin',
+      testDir: './e2e/admin',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:4201',
+      },
+    },
+
+    {
       name: 'chromium',
+      testDir: './e2e/web',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
+      testDir: './e2e/web',
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
       name: 'webkit',
+      testDir: './e2e/web',
       use: { ...devices['Desktop Safari'] },
     },
 
     {
       name: 'local',
+      testDir: './e2e/web',
       use: {
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:4200',

@@ -52,3 +52,7 @@ adminSdkConf.json
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+#llms
+/llms/private
+/llms/priv

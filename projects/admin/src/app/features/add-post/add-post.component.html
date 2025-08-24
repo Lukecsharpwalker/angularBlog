@@ -1,0 +1,113 @@
+@defer {
+  <div class="admin-post-layout">
+    <!-- Header -->
+    <header class="post-header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1 class="page-title">Create New Post</h1>
+          <p class="page-subtitle">Write and publish your blog content</p>
+        </div>
+        <div class="header-right">
+          <div class="status-indicator">
+            @if (!postId) {
+              <span class="status-text">New Post</span>
+            } @else {
+              <span class="status-text">Editing Post</span>
+            }
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="post-main">
+      <form class="post-form" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+        <!-- Title and Meta Section -->
+        <section class="meta-section">
+          <div class="section-header">
+            <h2 class="section-title">Post Details</h2>
+          </div>
+
+          <div class="meta-grid">
+            <!-- Title Field -->
+            <div class="field-group full-width">
+              <label for="title" class="field-label">Title</label>
+              <input
+                id="title"
+                type="text"
+                formControlName="title"
+                class="field-input title-input"
+                placeholder="Enter your post title..."
+                required
+              />
+              @if (blogForm.controls.title.invalid && (blogForm.controls.title.dirty || blogForm.controls.title.touched)) {
+                @if (blogForm.controls.title.errors?.['required']) {
+                  <div class="field-error">Title is required</div>
+                }
+              }
+            </div>
+
+            <!-- Tags Section -->
+            <div class="field-group full-width">
+              <span class="field-label">Tags & Categories</span>
+              <div class="tags-container">
+                <admin-tag-multi-select formControlName="tags"/>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Content Editor Section -->
+        <section class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Content Editor</h2>
+            <div class="section-actions">
+              <button
+                type="button"
+                class="action-button"
+                (click)="insertImage()"
+              >
+                Add Image
+              </button>
+            </div>
+          </div>
+
+          <div class="editor-container">
+            <quill-editor
+              #quill
+              formControlName="content"
+              class="post-editor"
+            />
+          </div>
+        </section>
+
+        <!-- Action Section -->
+        <section class="actions-section">
+          <div class="actions-layout">
+            <div class="primary-actions">
+              <button
+                type="submit"
+                class="btn-publish"
+                [disabled]="blogForm.invalid"
+              >
+                Publish Post
+              </button>
+
+              <button
+                type="button"
+                class="btn-draft"
+                (click)="onSubmit(true)"
+              >
+                Save as Draft
+              </button>
+            </div>
+
+            <div class="secondary-info">
+              <span class="auto-save-status">Auto-saved 2 minutes ago</span>
+            </div>
+          </div>
+        </section>
+      </form>
+    </main>
+  </div>
+}
