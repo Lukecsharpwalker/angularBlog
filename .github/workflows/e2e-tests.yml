@@ -40,6 +40,13 @@ jobs:
       - run: |
           echo "SUPABASE_ANON_KEY=$(supabase status -o env | grep SUPABASE_ANON_KEY | cut -d= -f2)" >> $GITHUB_ENV
 
+      - name: Start Angular web app
+        run: npm run start:local &
+        env: { NODE_ENV: "test" }
+
+      - name: Wait for Angular web app (≤30 s)
+        run: npx --yes wait-on http://localhost:4200 --timeout 30000
+
       - run: npx playwright install --with-deps
       - run: npm run e2e:web:local
         env: { CI: "true" }
