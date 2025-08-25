@@ -17,7 +17,7 @@ import {
 } from '../../models';
 
 @Component({
-  selector: 'app-dynamic-dialog',
+  selector: 'shared-dynamic-dialog',
   standalone: true,
   imports: [],
   providers: [],
@@ -26,10 +26,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicDialogComponent<C = unknown> implements OnInit {
-  component = input<Type<C>>();
-  modalConfig = input<ModalConfig>();
+  readonly component = input<Type<C>>();
+  readonly modalConfig = input<ModalConfig>();
 
-  divEl = viewChild.required('dynamicComponentContainer', {
+  readonly divEl = viewChild.required('dynamicComponentContainer', {
     read: ViewContainerRef,
   });
 
@@ -52,7 +52,7 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
     this.dynamicDialogService.closeDialog(status);
   }
 
-  onOverlayClick($event: MouseEvent) {
+  onOverlayClick() {
     // Handle overlay click if needed
   }
 

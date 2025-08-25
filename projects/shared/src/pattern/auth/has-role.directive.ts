@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, inject, input } from '@angular/core';
 import { SupabaseService } from 'shared';
 
 @Directive({
@@ -6,28 +6,33 @@ import { SupabaseService } from 'shared';
   standalone: true,
 })
 export class HasRoleDirective {
-  @Input() set sharedHasRole(role: string) {
-    this.updateView(role);
-  }
+  readonly role = input.required<string, string>({
+    alias: 'sharedHasRole',
+    transform: (role: string): string => {
+      this.updateView(role);
+      return role;
+    },
+  });
 
-  private templateRef = inject(TemplateRef);
+  private templateRef = inject(TemplateRef<unknown>);
   private viewContainer = inject(ViewContainerRef);
   private supabaseService = inject(SupabaseService);
 
-  private updateView(role: string): void {
+  private hasView = false;
+
+  private updateView(requiredRole: string): void {
     const session = this.supabaseService.getSession();
+    const userRole = session?.user?.app_metadata?.['role'] as string | undefined;
+    const allowed = !!userRole && userRole === requiredRole;
 
-    if (session?.user?.app_metadata?.['role']) {
-      const userRole = session.user.app_metadata?.['role'] as string;
-      const hasRole = userRole === role;
-
-      if (hasRole) {
+    if (allowed) {
+      if (!this.hasView) {
         this.viewContainer.createEmbeddedView(this.templateRef);
-      } else {
-        this.viewContainer.clear();
+        this.hasView = true;
       }
-    } else {
+    } else if (this.hasView) {
       this.viewContainer.clear();
+      this.hasView = false;
     }
   }
 }
