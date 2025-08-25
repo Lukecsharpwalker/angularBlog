@@ -79,7 +79,7 @@ export class AddPostComponent implements OnInit {
 
   private loadPostIfIdExists(): void {
     if (this.postId()) {
-      this.apiService.getPostById(this.postId()!).subscribe(post => {
+      this.apiService.getPostById(this.postId()!).then(post => {
         if (post) {
           this.blogForm.patchValue(post);
           console.log(this.blogForm.value);

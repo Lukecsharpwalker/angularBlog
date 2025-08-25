@@ -1,16 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '../../../../../../environments/environment';
 import { Post, PostInsert, PostUpdate, Tag } from 'shared';
 import { SupabaseService } from 'shared';
 
 @Injectable()
 export class AdminApiService {
-  http = inject(HttpClient);
   supabaseService = inject(SupabaseService);
-  private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
-  private readonly apiKey = environment.supabaseKey;
 
   async addPost(post: PostInsert & { tags?: Tag[] }): Promise<void> {
     const { tags, ...postData } = post;
@@ -50,27 +44,29 @@ export class AdminApiService {
     }
   }
 
-  getPostById(id: string): Observable<Post> {
-    const selectQuery = `
-      *,
-      author:profiles(id,username,avatar_url),
-      post_tags!inner(tags(id,name,color,icon)),
-      comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))
-    `
-      .replace(/\s+/g, ' ')
-      .trim();
+  async getPostById(id: string): Promise<Post | null> {
+    try {
+      const { data, error } = await this.supabaseService.getClient
+        .from('posts')
+        .select(`
+          *,
+          author:profiles(id,username,avatar_url),
+          post_tags!inner(tags(id,name,color,icon)),
+          comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))
+        `)
+        .eq('id', id)
+        .single();
 
-    const params = new HttpParams().set('select', selectQuery).set('id', `eq.${id}`);
+      if (error) {
+        console.error('Error fetching post:', error);
+        throw error;
+      }
 
-    const headers = new HttpHeaders({
-      apikey: this.apiKey,
-      Authorization: `Bearer ${this.apiKey}`,
-      Accept: 'application/json',
-    });
-
-    return this.http
-      .get<Post[]>(`${this.baseUrl}posts`, { headers, params })
-      .pipe(map(results => results[0] ?? null));
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch post:', error);
+      throw error;
+    }
   }
 
   async updatePost(id: string, post: PostUpdate & { tags?: Tag[] }): Promise<void> {
@@ -149,12 +145,21 @@ export class AdminApiService {
     }
   }
 
-  getTags(): Observable<Tag[]> {
-    const headers = new HttpHeaders({
-      apikey: this.apiKey,
-      Authorization: `Bearer ${this.apiKey}`,
-      Accept: 'application/json',
-    });
-    return this.http.get<Tag[]>(`${this.baseUrl}tags`, { headers });
+  async getTags(): Promise<Tag[]> {
+    try {
+      const { data, error } = await this.supabaseService.getClient
+        .from('tags')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching tags:', error);
+        throw error;
+      }
+
+      return data || [];
+    } catch (error) {
+      console.error('Failed to fetch tags:', error);
+      throw error;
+    }
   }
 }
