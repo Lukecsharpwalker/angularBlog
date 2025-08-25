@@ -66,10 +66,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   private loadTags() {
-    this.adminApi.getTags().subscribe({
-      next: (tags: Tag[]) => this.allTags.set(tags),
-      error: (error: unknown) => console.error('Failed to load tags:', error),
-    });
+    this.adminApi.getTags().then(tags => this.allTags.set(tags));
   }
 
   onSearchChange(event: Event) {

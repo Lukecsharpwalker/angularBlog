@@ -12,7 +12,6 @@ module.exports = tseslint.config(
       'node_modules/**',
       'coverage/**',
       '.angular/**',
-      'src/**',
       '**/*.spec.ts',
       '**/e2e/**',
       '**/*.generated.ts',
