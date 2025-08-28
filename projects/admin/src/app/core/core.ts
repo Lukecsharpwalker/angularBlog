@@ -1,0 +1,41 @@
+import { inject, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter, Routes, withComponentInputBinding } from '@angular/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { supabaseInitializer, SupabaseService } from 'shared';
+import { provideHighlightOptions } from 'ngx-highlightjs';
+import { provideQuillConfig } from 'ngx-quill/config';
+import hljs from 'highlight.js/lib/core';
+import { quillToolbarConfig } from './utils/quill-toolbar';
+
+export interface CoreOptions {
+  routes: Routes;
+}
+
+export function provideCore({ routes }: CoreOptions) {
+  return [
+    provideZonelessChangeDetection(),
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(withFetch()),
+
+    provideAppInitializer(() => {
+      const supabaseService = inject(SupabaseService);
+      return supabaseInitializer(supabaseService)();
+    }),
+    provideHighlightOptions({
+      coreLibraryLoader: () => import('highlight.js/lib/core'),
+      languages: {
+        xml: () => import('highlight.js/lib/languages/xml'),
+        typescript: () => import('highlight.js/lib/languages/typescript'),
+        javascript: () => import('highlight.js/lib/languages/javascript'),
+        css: () => import('highlight.js/lib/languages/css'),
+        plain: () => import('highlight.js/lib/languages/plaintext'),
+      },
+    }),
+    provideQuillConfig({
+      modules: {
+        syntax: { hljs },
+        toolbar: quillToolbarConfig,
+      },
+    }),
+  ];
+}
