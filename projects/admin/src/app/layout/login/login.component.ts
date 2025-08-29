@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, effect } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginFormControls } from './login.interface';
-import { SupabaseService } from 'shared';
+import { AuthStore } from 'shared';
 import { Credentials } from 'shared';
+import { LoginFormControls } from './login.interface';
 
 @Component({
   selector: 'admin-login',
@@ -13,8 +13,8 @@ import { Credentials } from 'shared';
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
-  form = new FormGroup<LoginFormControls>({
+export class LoginComponent implements OnInit {
+  form: FormGroup<LoginFormControls> = new FormGroup<LoginFormControls>({
     email: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
@@ -22,60 +22,47 @@ export class LoginComponent {
     password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
   });
   isSubmitted = false;
-  readonly loginError: WritableSignal<boolean> = signal(false);
-  readonly isLoading: WritableSignal<boolean> = signal(false);
 
-  private router = inject(Router);
-  private supabaseService = inject(SupabaseService);
+  readonly authStore = inject(AuthStore);
+  private readonly router = inject(Router);
+
+  constructor() {
+    effect(() => {
+      console.log('Effect triggered:', {
+        isAuthenticated: this.authStore.isAuthenticated(),
+        ready: this.authStore.ready(),
+        loading: this.authStore.loading(),
+        session: this.authStore.session?.()?.user?.email
+      });
+      
+      if (this.authStore.isAuthenticated() && this.authStore.ready() && !this.authStore.loading()) {
+        console.log('Navigating to /posts');
+        this.router.navigate(['/posts']);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.authStore.init();
+  }
 
   onSubmit(): void {
     this.isSubmitted = true;
-    this.loginError.set(false);
+    this.authStore.clearError();
 
     if (this.form.invalid) {
       return;
     }
 
-    const credentials = this.form.value as Credentials;
-    this.isLoading.set(true);
-
-    this.supabaseService
-      .signInWithPassword(credentials.email, credentials.password)
-      .then(({ error }) => {
-        this.isLoading.set(false);
-        console.log(error);
-        console.log('Login successful:', credentials.email);
-        if (error) {
-          this.loginError.set(true);
-          return;
-        }
-
-        this.loginError.set(false);
-        this.router.navigate(['/posts']);
-      })
-      .catch(() => {
-        this.isLoading.set(false);
-        this.loginError.set(true);
-      });
+    const credentials: Credentials = this.form.value as Credentials;
+    this.authStore.loginWithPassword({
+      email: credentials.email,
+      password: credentials.password,
+    });
   }
 
-  onGoogleLogin() {
-    this.isLoading.set(true);
-    this.supabaseService
-      .signInWithProvider('google')
-      .then(({ error }) => {
-        this.isLoading.set(false);
-
-        if (!error) {
-          // Redirect to admin dashboard
-          this.router.navigate(['/posts/add']);
-        } else {
-          this.loginError.set(true);
-        }
-      })
-      .catch(() => {
-        this.isLoading.set(false);
-        this.loginError.set(true);
-      });
+  onGoogleLogin(): void {
+    this.authStore.clearError();
+    this.authStore.loginWithProvider({ provider: 'google' });
   }
 }

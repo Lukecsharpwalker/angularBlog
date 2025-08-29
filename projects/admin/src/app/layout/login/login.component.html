@@ -89,9 +89,9 @@
               </div>
 
               <!-- Error Message -->
-              @if (loginError()) {
+              @if (authStore.error()) {
                 <div class="login-error">
-                  Invalid credentials. Please try again.
+                  {{ authStore.error() }}
                 </div>
               }
 
@@ -99,10 +99,10 @@
               <div class="form-actions">
                 <button
                   type="submit"
-                  [disabled]="isLoading()"
+                  [disabled]="authStore.loading()"
                   class="btn-primary"
                 >
-                  @if (isLoading()) {
+                  @if (authStore.loading()) {
                     <span class="loading-text">Signing in...</span>
                   } @else {
                     Sign In
@@ -115,11 +115,11 @@
 
                 <button
                   (click)="onGoogleLogin()"
-                  [disabled]="isLoading()"
+                  [disabled]="authStore.loading()"
                   class="btn-secondary"
                   type="button"
                 >
-                  @if (isLoading()) {
+                  @if (authStore.loading()) {
                     Signing in...
                   } @else {
                     Continue with Google

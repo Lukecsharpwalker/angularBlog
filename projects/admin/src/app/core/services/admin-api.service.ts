@@ -1,16 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { Post, PostInsert, PostUpdate, Tag } from 'shared';
-import { SupabaseService } from 'shared';
+import { SupabaseClient } from 'shared';
 
 @Injectable()
 export class AdminApiService {
-  supabaseService = inject(SupabaseService);
+  supabaseClient = inject(SupabaseClient);
 
   async addPost(post: PostInsert & { tags?: Tag[] }): Promise<void> {
     const { tags, ...postData } = post;
 
     try {
-      const { data: insertedPost, error: postError } = await this.supabaseService.getClient
+      const { data: insertedPost, error: postError } = await this.supabaseClient.getClient
         .from('posts')
         .insert({ ...postData })
         .select('id')
@@ -27,7 +27,7 @@ export class AdminApiService {
           tag_id: tag.id,
         }));
 
-        const { error: tagError } = await this.supabaseService.getClient
+        const { error: tagError } = await this.supabaseClient.getClient
           .from('post_tags')
           .insert(postTagInserts);
 
@@ -46,7 +46,7 @@ export class AdminApiService {
 
   async getPostById(id: string): Promise<Post | null> {
     try {
-      const { data, error } = await this.supabaseService.getClient
+      const { data, error } = await this.supabaseClient.getClient
         .from('posts')
         .select(`
           *,
@@ -74,7 +74,7 @@ export class AdminApiService {
 
     try {
       // Update the post
-      const { error: postError } = await this.supabaseService.getClient
+      const { error: postError } = await this.supabaseClient.getClient
         .from('posts')
         .update({ ...postData })
         .eq('id', id);
@@ -87,7 +87,7 @@ export class AdminApiService {
       // Handle tags if provided
       if (tags !== undefined) {
         // Get existing tags for comparison
-        const { data: existingPostTags, error: fetchError } = await this.supabaseService.getClient
+        const { data: existingPostTags, error: fetchError } = await this.supabaseClient.getClient
           .from('post_tags')
           .select('tag_id')
           .eq('post_id', id);
@@ -97,7 +97,7 @@ export class AdminApiService {
           throw fetchError;
         }
 
-        const existingTagIds = (existingPostTags || []).map(pt => pt.tag_id).sort();
+        const existingTagIds = (existingPostTags || []).map((pt: any) => pt.tag_id).sort();
         const newTagIds = tags.map((tag: Tag) => tag.id).sort();
 
         // Check if tags have actually changed using JSON comparison for better accuracy
@@ -107,7 +107,7 @@ export class AdminApiService {
           console.log('Tags changed, updating...');
 
           // Delete existing post-tag relationships
-          const { error: deleteError } = await this.supabaseService.getClient
+          const { error: deleteError } = await this.supabaseClient.getClient
             .from('post_tags')
             .delete()
             .eq('post_id', id);
@@ -124,7 +124,7 @@ export class AdminApiService {
               tag_id: tag.id,
             }));
 
-            const { error: insertError } = await this.supabaseService.getClient
+            const { error: insertError } = await this.supabaseClient.getClient
               .from('post_tags')
               .insert(postTagInserts);
 
@@ -147,7 +147,7 @@ export class AdminApiService {
 
   async getTags(): Promise<Tag[]> {
     try {
-      const { data, error } = await this.supabaseService.getClient
+      const { data, error } = await this.supabaseClient.getClient
         .from('tags')
         .select('*');
 
