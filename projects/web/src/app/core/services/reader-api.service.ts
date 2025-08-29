@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { SupabaseService } from 'shared';
+import { SupabaseClient } from 'shared';
 import { Comment, Post, Profile, Tag, PostTag } from 'shared';
 import { createApiUrl } from 'shared';
 import { environment } from '../../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
-  supabaseService = inject(SupabaseService);
+  supabaseClient = inject(SupabaseClient);
   http = inject(HttpClient);
   private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
   private readonly apiKey = environment.supabaseKey;
@@ -42,7 +42,7 @@ export class ReaderApiService {
   }
 
   async getComments(postId: string): Promise<Comment[]> {
-    const { data: comments, error } = await this.supabaseService.getClient
+    const { data: comments, error } = await this.supabaseClient.getClient
       .from('comments')
       .select('*')
       .eq('post_id', postId)
@@ -51,11 +51,11 @@ export class ReaderApiService {
   }
 
   async addComment(postId: string, comment: Comment): Promise<void> {
-    await this.supabaseService.getClient.from('comments').insert({ ...comment, post_id: postId });
+    await this.supabaseClient.getClient.from('comments').insert({ ...comment, post_id: postId });
   }
 
   async deleteComment(commentId: string, postId: string): Promise<void> {
-    await this.supabaseService.getClient
+    await this.supabaseClient.getClient
       .from('comments')
       .delete()
       .eq('id', commentId)
@@ -75,7 +75,7 @@ export class ReaderApiService {
   }
 
   async getProfiles(): Promise<Profile[] | null> {
-    const { data: profiles, error } = await this.supabaseService.getClient
+    const { data: profiles, error } = await this.supabaseClient.getClient
       .from('profiles')
       .select('*');
     return error ? null : profiles;
@@ -91,7 +91,7 @@ export class ReaderApiService {
   }
 
   async getPostTags(postId: string): Promise<PostTag[] | null> {
-    const { data: postTags, error } = await this.supabaseService.getClient
+    const { data: postTags, error } = await this.supabaseClient.getClient
       .from('post_tags')
       .select('*, tags(*)')
       .eq('post_id', postId);

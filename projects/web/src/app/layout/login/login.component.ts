@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicDialogService } from 'shared';
-import { SupabaseService } from 'shared';
+import { SupabaseClient } from 'shared';
 import { Credentials } from 'shared';
 import { ModalCloseStatusEnum, ModalStatus } from 'shared';
 import { LoginFormControls } from './login.interface';
@@ -24,13 +24,13 @@ export class LoginComponent {
   readonly loginError: WritableSignal<boolean> = signal(false);
 
   private dynamicDialogService = inject(DynamicDialogService);
-  private supabaseService = inject(SupabaseService);
+  private supabaseClient = inject(SupabaseClient);
 
   onSubmit(): void {
     this.isSubmitted = true;
     const credentials = this.form.value as Credentials;
 
-    this.supabaseService
+    this.supabaseClient
       .signInWithPassword(credentials.email, credentials.password)
       .then(({ error }) => {
         if (error) {
@@ -50,7 +50,7 @@ export class LoginComponent {
   }
 
   onGoogleLogin() {
-    this.supabaseService.signInWithProvider('google').then(({ error }) => {
+    this.supabaseClient.signInWithProvider('google').then(({ error }) => {
       if (!error) {
         const status = {
           closeStatus: ModalCloseStatusEnum.ACCEPTED,
