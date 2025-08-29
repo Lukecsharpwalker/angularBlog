@@ -1,1 +1,1 @@
-export * from './supabase.service';
+// Services moved to data-access layer

@@ -1,5 +1,5 @@
 import { Directive, TemplateRef, ViewContainerRef, inject, input, effect } from '@angular/core';
-import { SupabaseService } from 'shared';
+import { SupabaseClient } from 'shared';
 
 @Directive({
   selector: '[sharedHasRole]',
@@ -10,14 +10,14 @@ export class HasRoleDirective {
 
   private templateRef = inject(TemplateRef<unknown>);
   private viewContainer = inject(ViewContainerRef);
-  private supabaseService = inject(SupabaseService);
+  private supabaseClient = inject(SupabaseClient);
 
   private hasView = false;
 
   private _renderEff = effect(() => {
     const requiredRole = this.role();
 
-    const session = this.supabaseService.getSession();
+    const session = this.supabaseClient.getSession();
     const userRole = session?.user?.app_metadata?.['role'] as string | undefined;
 
     const allowed = !!userRole && userRole === requiredRole;

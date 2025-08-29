@@ -4,13 +4,14 @@ import {
   createClient,
   Provider,
   Session,
-  SupabaseClient,
+  SupabaseClient as SupabaseClientType,
 } from '@supabase/supabase-js';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class SupabaseService implements OnDestroy {
-  private supabase: SupabaseClient;
+export class SupabaseClient implements OnDestroy {
+  private supabase: SupabaseClientType;
+  public session: Session | null = null;
   private sub?: { data: { subscription: { unsubscribe(): void } } };
   private readonly ngZone = inject(NgZone);
 
@@ -61,7 +62,7 @@ export class SupabaseService implements OnDestroy {
     return this.supabase.auth.onAuthStateChange(cb);
   }
 
-  get getClient(): SupabaseClient {
+  get getClient() {
     return this.supabase;
   }
 
