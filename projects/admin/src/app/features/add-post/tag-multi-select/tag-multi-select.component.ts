@@ -12,8 +12,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { AdminApiService } from '../../../core/services/admin-api.service';
 import { Tag } from 'shared';
+import { AddPostService } from '../add-post.service';
 
 @Component({
   selector: 'admin-tag-multi-select',
@@ -32,7 +32,7 @@ import { Tag } from 'shared';
 })
 export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   private elementRef = inject(ElementRef);
-  private adminApi = inject(AdminApiService);
+  private addPostService = inject(AddPostService);
 
   readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
 
@@ -66,7 +66,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   }
 
   private loadTags() {
-    this.adminApi.getTags().then(tags => this.allTags.set(tags));
+    this.addPostService.getTags().then(tags => this.allTags.set(tags));
   }
 
   onSearchChange(event: Event) {

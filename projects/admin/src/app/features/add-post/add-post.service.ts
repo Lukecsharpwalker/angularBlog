@@ -3,7 +3,7 @@ import { Post, PostInsert, PostUpdate, Tag } from 'shared';
 import { SupabaseClient } from 'shared';
 
 @Injectable()
-export class AdminApiService {
+export class AddPostService {
   supabaseClient = inject(SupabaseClient);
 
   async addPost(post: PostInsert & { tags?: Tag[] }): Promise<void> {
@@ -48,12 +48,14 @@ export class AdminApiService {
     try {
       const { data, error } = await this.supabaseClient.getClient
         .from('posts')
-        .select(`
+        .select(
+          `
           *,
           author:profiles(id,username,avatar_url),
           post_tags!inner(tags(id,name,color,icon)),
           comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))
-        `)
+        `
+        )
         .eq('id', id)
         .single();
 
@@ -147,9 +149,7 @@ export class AdminApiService {
 
   async getTags(): Promise<Tag[]> {
     try {
-      const { data, error } = await this.supabaseClient.getClient
-        .from('tags')
-        .select('*');
+      const { data, error } = await this.supabaseClient.getClient.from('tags').select('*');
 
       if (error) {
         console.error('Error fetching tags:', error);

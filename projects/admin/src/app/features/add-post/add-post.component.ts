@@ -21,14 +21,14 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
 import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
+import { ModalConfig, PostInsert, PostUpdate, Tag } from 'shared';
+import { DynamicDialogService } from 'shared';
 import { PostForm } from './models/post-from.inteface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
-import { AdminApiService } from '../../core/services/admin-api.service';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
 import { loadQuillModules } from '../../core/utils/quill-configuration';
-import { ModalConfig, PostInsert, PostUpdate, Tag } from 'shared';
-import { DynamicDialogService } from 'shared';
+import { AddPostService } from './add-post.service';
 
 @Component({
   selector: 'admin-add-post',
@@ -41,7 +41,7 @@ import { DynamicDialogService } from 'shared';
     RouterModule,
     TagMultiSelectComponent,
   ],
-  providers: [AdminApiService, NgModel],
+  providers: [AddPostService, NgModel],
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -70,7 +70,7 @@ export class AddPostComponent implements OnInit {
   });
   range: Range | null = null;
 
-  private apiService = inject(AdminApiService);
+  private addPostService = inject(AddPostService);
 
   ngOnInit(): void {
     this.loadPostIfIdExists();
@@ -79,7 +79,7 @@ export class AddPostComponent implements OnInit {
 
   private loadPostIfIdExists(): void {
     if (this.postId()) {
-      this.apiService.getPostById(this.postId()!).then(post => {
+      this.addPostService.getPostById(this.postId()!).then(post => {
         if (post) {
           this.blogForm.patchValue(post);
           console.log(this.blogForm.value);
@@ -118,9 +118,9 @@ export class AddPostComponent implements OnInit {
       };
 
       if (this.postId) {
-        this.apiService.updatePost(this.postId()!, formData as PostUpdate & { tags: Tag[] });
+        this.addPostService.updatePost(this.postId()!, formData as PostUpdate & { tags: Tag[] });
       } else {
-        this.apiService.addPost(formData as PostInsert & { tags: Tag[] });
+        this.addPostService.addPost(formData as PostInsert & { tags: Tag[] });
       }
     }
   }
