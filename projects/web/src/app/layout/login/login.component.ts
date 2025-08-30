@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, effect, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicDialogService } from 'shared';
-import { SupabaseClient } from 'shared';
+import { AuthStore } from 'shared';
 import { Credentials } from 'shared';
 import { ModalCloseStatusEnum, ModalStatus } from 'shared';
 import { LoginFormControls } from './login.interface';
@@ -15,48 +15,51 @@ import { LoginFormControls } from './login.interface';
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   form = new FormGroup<LoginFormControls>({
-    email: new FormControl<string>('', { nonNullable: true }),
-    password: new FormControl<string>('', { nonNullable: true }),
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
   });
   isSubmitted = false;
-  readonly loginError: WritableSignal<boolean> = signal(false);
 
-  private dynamicDialogService = inject(DynamicDialogService);
-  private supabaseClient = inject(SupabaseClient);
+  readonly authStore = inject(AuthStore);
+  private readonly dynamicDialogService = inject(DynamicDialogService);
 
-  onSubmit(): void {
-    this.isSubmitted = true;
-    const credentials = this.form.value as Credentials;
-
-    this.supabaseClient
-      .signInWithPassword(credentials.email, credentials.password)
-      .then(({ error }) => {
-        if (error) {
-          this.loginError.set(true);
-          return;
-        }
-
-        this.loginError.set(false);
-        const status = {
-          closeStatus: ModalCloseStatusEnum.ACCEPTED,
-        } as ModalStatus;
-        this.dynamicDialogService.closeDialog(status);
-      })
-      .catch(() => {
-        this.loginError.set(true);
-      });
-  }
-
-  onGoogleLogin() {
-    this.supabaseClient.signInWithProvider('google').then(({ error }) => {
-      if (!error) {
+  constructor() {
+    effect(() => {
+      if (this.authStore.isAuthenticated() && this.authStore.ready() && !this.authStore.loading()) {
         const status = {
           closeStatus: ModalCloseStatusEnum.ACCEPTED,
         } as ModalStatus;
         this.dynamicDialogService.closeDialog(status);
       }
     });
+  }
+
+  onSubmit(): void {
+    this.isSubmitted = true;
+    this.authStore.clearError();
+
+    if (this.form.invalid) {
+      return;
+    }
+
+    const credentials: Credentials = this.form.value as Credentials;
+    this.authStore.loginWithPassword({
+      email: credentials.email,
+      password: credentials.password,
+    });
+  }
+
+  ngOnInit(): void {
+    this.authStore.init();
+  }
+
+  onGoogleLogin(): void {
+    this.authStore.clearError();
+    this.authStore.loginWithProvider({ provider: 'google' });
   }
 }

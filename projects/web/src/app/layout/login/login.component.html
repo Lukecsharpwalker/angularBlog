@@ -13,7 +13,12 @@
     <div class="text-red-500 text-xs mt-1">
       Email is required.
     </div>
-  }
+    }
+    @if (isSubmitted && form.controls.email.errors?.['email']) {
+    <div class="text-red-500 text-xs mt-1">
+      Please enter a valid email address.
+    </div>
+    }
   </div>
   <div class="mb-4">
     <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
@@ -31,16 +36,21 @@
     </div>
   }
   </div>
-  @if (isSubmitted && loginError()) {
+  @if (authStore.error()) {
   <div class="text-red-500 text-sm mb-4">
-    Login or password invalid.
+    {{ authStore.error() }}
   </div>
   }
   <button
     type="submit"
-    class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+    [disabled]="authStore.loading()"
+    class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
   >
-    Submit
+    @if (authStore.loading()) {
+      <span>Loading...</span>
+    } @else {
+      <span>Submit</span>
+    }
   </button>
 </form>
 <div class="flex items-center justify-center my-6">
@@ -50,7 +60,12 @@
 </div>
 <button
   (click)="onGoogleLogin()"
-  class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+  [disabled]="authStore.loading()"
+  class="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
 >
-  Login with Google
+  @if (authStore.loading()) {
+    <span>Loading...</span>
+  } @else {
+    <span>Login with Google</span>
+  }
 </button>
