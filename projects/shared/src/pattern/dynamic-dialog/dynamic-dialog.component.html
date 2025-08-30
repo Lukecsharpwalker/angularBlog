@@ -12,7 +12,7 @@
 
   <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
 
-    <div (click)="closeDialog()" (keyup)="closeDialog()" 
+    <div (click)="closeDialog()" (keyup.escape)="closeDialog()"
          class="flex min-h-20  md:min-h-full items-end justify-center p-4 text-center sm:items-center "
          tabindex="0"
     >
@@ -39,10 +39,10 @@
             >
               {{ modalConfig()?.title || "" }}
             </h3>
-            <hr class="h-px w-100 my-1 bg-gray-100 border-0" />
+            <hr class="h-px w-100 my-1 bg-gray-100 border-0"/>
             <div class="mt-2 min-h-24 max-h-[65vh] overflow-auto">
               {{ modalConfig()?.content || "" }}
-              <ng-template #dynamicComponentContainer />
+              <ng-template #dynamicComponentContainer/>
             </div>
           </div>
         </div>
