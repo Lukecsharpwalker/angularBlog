@@ -28,15 +28,7 @@ export class LoginComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      console.log('Effect triggered:', {
-        isAuthenticated: this.authStore.isAuthenticated(),
-        ready: this.authStore.ready(),
-        loading: this.authStore.loading(),
-        session: this.authStore.session?.()?.user?.email
-      });
-      
       if (this.authStore.isAuthenticated() && this.authStore.ready() && !this.authStore.loading()) {
-        console.log('Navigating to /posts');
         this.router.navigate(['/posts']);
       }
     });
