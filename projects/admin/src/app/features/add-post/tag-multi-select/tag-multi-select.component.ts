@@ -31,12 +31,7 @@ import { AddPostService } from '../add-post.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
-  private elementRef = inject(ElementRef);
-  private addPostService = inject(AddPostService);
-
   readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
-
-  // Signals
   readonly allTags = signal<Tag[]>([]);
   readonly selectedTags = signal<Tag[]>([]);
   readonly searchTerm = signal('');
@@ -44,11 +39,6 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
   readonly disabled = signal(false);
   readonly focusedTagId = signal<number | null>(null);
   readonly isTouched = signal(false);
-
-  // Search subject for debouncing
-  private searchSubject = new Subject<string>();
-
-  // Computed values
   readonly filteredTags = computed(() => {
     const search = this.searchTerm().toLowerCase();
     const selected = this.selectedTags();
@@ -57,16 +47,14 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
     );
   });
 
-  // ControlValueAccessor
+  private elementRef = inject(ElementRef);
+  private addPostService = inject(AddPostService);
+  private searchSubject = new Subject<string>();
   private onChange: ((value: Tag[]) => void) | null = null;
   private onTouched: (() => void) | null = null;
 
   ngOnInit() {
     this.loadTags();
-  }
-
-  private loadTags() {
-    this.addPostService.getTags().then(tags => this.allTags.set(tags));
   }
 
   onSearchChange(event: Event) {
@@ -119,13 +107,6 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
 
   trackByTagId(index: number, tag: Tag): number {
     return tag.id;
-  }
-
-  private markAsTouched() {
-    if (!this.isTouched()) {
-      this.isTouched.set(true);
-      this.onTouched?.();
-    }
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -188,5 +169,16 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
+  }
+
+  private loadTags() {
+    this.addPostService.getTags().then(tags => this.allTags.set(tags));
+  }
+
+  private markAsTouched() {
+    if (!this.isTouched()) {
+      this.isTouched.set(true);
+      this.onTouched?.();
+    }
   }
 }

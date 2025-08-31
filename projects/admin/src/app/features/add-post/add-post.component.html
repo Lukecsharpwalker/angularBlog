@@ -1,6 +1,5 @@
 @defer {
   <div class="admin-post-layout">
-    <!-- Header -->
     <header class="post-header">
       <div class="header-content">
         <div class="header-left">
@@ -9,7 +8,7 @@
         </div>
         <div class="header-right">
           <div class="status-indicator">
-            @if (!postId) {
+            @if (!postId()) {
               <span class="status-text">New Post</span>
             } @else {
               <span class="status-text">Editing Post</span>
@@ -19,7 +18,6 @@
       </div>
     </header>
 
-    <!-- Main Content -->
     <main class="post-main">
       <form class="post-form" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
         <!-- Title and Meta Section -->
@@ -29,7 +27,6 @@
           </div>
 
           <div class="meta-grid">
-            <!-- Title Field -->
             <div class="field-group full-width">
               <label for="title" class="field-label">Title</label>
               <input
@@ -47,7 +44,6 @@
               }
             </div>
 
-            <!-- Tags Section -->
             <div class="field-group full-width">
               <span class="field-label">Tags & Categories</span>
               <div class="tags-container">
@@ -57,7 +53,6 @@
           </div>
         </section>
 
-        <!-- Content Editor Section -->
         <section class="content-section">
           <div class="section-header">
             <h2 class="section-title">Content Editor</h2>

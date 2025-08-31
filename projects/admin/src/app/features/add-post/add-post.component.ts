@@ -49,12 +49,7 @@ import { AddPostService } from './add-post.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPostComponent implements OnInit {
-  public readonly postId = input<string | undefined>();
-  readonly quill = viewChild.required<QuillEditorComponent>('quill');
-
   viewContainerRef = inject(ViewContainerRef);
-  dialogService = inject(DynamicDialogService<AddImageForm>);
-
   blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl('', {
       validators: [Validators.required],
@@ -69,31 +64,21 @@ export class AddPostComponent implements OnInit {
     is_draft: new FormControl(false, { nonNullable: true }),
     tags: new FormControl<Tag[]>([], { nonNullable: true }),
   });
-  range: Range | null = null;
 
-  readonly addPostStore = inject(AddPostStore);
+  protected readonly postId = input<string | undefined>();
+
+  private readonly quill = viewChild.required<QuillEditorComponent>('quill');
+  private range: Range | null = null;
+
+  private dialogService = inject(DynamicDialogService<AddImageForm>);
+  private readonly addPostStore = inject(AddPostStore);
 
   ngOnInit(): void {
     this.initPostFormIfPostExists();
     this.initializeQuill();
   }
 
-  private async initPostFormIfPostExists(): Promise<void> {
-    if (!this.postId()) {
-      return;
-    }
-    await this.addPostStore.loadPost(this.postId()!);
-    const currentPost = this.addPostStore.currentPost();
-    if (currentPost) {
-      this.blogForm.patchValue(currentPost);
-    }
-  }
-
-  async initializeQuill() {
-    await loadQuillModules();
-  }
-
-  async onSubmit(isDraft = false): Promise<void> {
+  protected async onSubmit(isDraft = false): Promise<void> {
     this.highlightContent();
     // Test for description
     if (!this.blogForm?.controls?.description?.value) {
@@ -129,55 +114,7 @@ export class AddPostComponent implements OnInit {
     }
   }
 
-  highlightContent(): void {
-    this.blogForm.controls.content.setValue(
-      this.extractAndHighlightHTML(this.blogForm.controls.content.value as string)
-    );
-    this.blogForm.controls.content.setValue(
-      this.extractAndHighlightTS(this.blogForm.controls.content.value as string)
-    );
-  }
-
-  extractAndHighlightHTML(htmlContent: string): string {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
-
-    const codeBlocksHTML = tempDiv.querySelectorAll('pre[data-language="xml"]');
-    codeBlocksHTML.forEach(block => {
-      const language = 'xml';
-      const codeElement = document.createElement('code');
-      codeElement.className = language;
-      codeElement.innerHTML = hljs.highlight(block.textContent || '', {
-        language,
-      }).value;
-      block.innerHTML = '';
-      block.appendChild(codeElement);
-    });
-
-    return tempDiv.innerHTML;
-  }
-
-  extractAndHighlightTS(htmlContent: string): string {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
-
-    const codeBlocksTS = tempDiv.querySelectorAll('pre[data-language="typescript"]');
-    codeBlocksTS.forEach(block => {
-      const language = 'typescript';
-      const codeElement = document.createElement('code');
-      codeElement.className = language;
-      codeElement.innerHTML = hljs.highlight(block.textContent || '', {
-        language,
-      }).value;
-      block.innerHTML = '';
-      block.appendChild(codeElement);
-    });
-
-    return tempDiv.innerHTML;
-  }
-
-  // Function to insert an image into Quill editor
-  insertImage() {
+  protected insertImage(): void {
     const modalConfig: ModalConfig = {
       title: 'Add Image',
       primaryButton: 'Insert',
@@ -201,7 +138,54 @@ export class AddPostComponent implements OnInit {
       });
   }
 
-  insertString(originalString: string, index: number, stringToInsert: string): string {
+  private highlightContent(): void {
+    this.blogForm.controls.content.setValue(
+      this.extractAndHighlightHTML(this.blogForm.controls.content.value as string)
+    );
+    this.blogForm.controls.content.setValue(
+      this.extractAndHighlightTS(this.blogForm.controls.content.value as string)
+    );
+  }
+
+  private extractAndHighlightHTML(htmlContent: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+
+    const codeBlocksHTML = tempDiv.querySelectorAll('pre[data-language="xml"]');
+    codeBlocksHTML.forEach(block => {
+      const language = 'xml';
+      const codeElement = document.createElement('code');
+      codeElement.className = language;
+      codeElement.innerHTML = hljs.highlight(block.textContent || '', {
+        language,
+      }).value;
+      block.innerHTML = '';
+      block.appendChild(codeElement);
+    });
+
+    return tempDiv.innerHTML;
+  }
+
+  private extractAndHighlightTS(htmlContent: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+
+    const codeBlocksTS = tempDiv.querySelectorAll('pre[data-language="typescript"]');
+    codeBlocksTS.forEach(block => {
+      const language = 'typescript';
+      const codeElement = document.createElement('code');
+      codeElement.className = language;
+      codeElement.innerHTML = hljs.highlight(block.textContent || '', {
+        language,
+      }).value;
+      block.innerHTML = '';
+      block.appendChild(codeElement);
+    });
+
+    return tempDiv.innerHTML;
+  }
+
+  private insertString(originalString: string, index: number, stringToInsert: string): string {
     return [
       ...originalString.slice(0, index),
       ...stringToInsert,
@@ -209,8 +193,23 @@ export class AddPostComponent implements OnInit {
     ].join('');
   }
 
+  private async initializeQuill(): Promise<void> {
+    await loadQuillModules();
+  }
+
+  private async initPostFormIfPostExists(): Promise<void> {
+    if (!this.postId()) {
+      return;
+    }
+    await this.addPostStore.loadPost(this.postId()!);
+    const currentPost = this.addPostStore.currentPost();
+    if (currentPost) {
+      this.blogForm.patchValue(currentPost);
+    }
+  }
+
   @HostListener('window:beforeunload', ['$event'])
-  handleBeforeUnload(event: BeforeUnloadEvent) {
+  private handleBeforeUnload(event: BeforeUnloadEvent) {
     event.preventDefault();
   }
 }

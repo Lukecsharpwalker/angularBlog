@@ -1,5 +1,3 @@
-// Clean Admin Add-Post Layout - Structure Focused
-// Brand colors: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA)
 
 .admin-post-layout {
   min-height: 100vh;
@@ -8,7 +6,6 @@
   flex-direction: column;
 }
 
-// Header Section
 .post-header {
   background: white;
   border-bottom: 2px solid rgba(173, 188, 159, 0.2);
@@ -57,10 +54,9 @@
   }
 }
 
-// Main Content
 .post-main {
   flex: 1;
-  padding: 2rem 2rem 120px 2rem; // Add bottom padding for fixed actions
+  padding: 2rem 2rem 120px 2rem;
 }
 
 .post-form {
@@ -70,7 +66,6 @@
   gap: 2rem;
 }
 
-// Sections
 .meta-section,
 .content-section,
 .actions-section {
@@ -117,7 +112,6 @@
   }
 }
 
-// Meta Section
 .meta-grid {
   padding: 2rem;
   display: grid;
@@ -185,7 +179,6 @@
   }
 }
 
-// Content Section
 .content-section {
   .section-header {
     padding: 1.5rem 2rem;
@@ -334,7 +327,6 @@
   }
 }
 
-// Actions Section
 .actions-section {
   padding: 2rem;
   position: fixed;
@@ -411,7 +403,6 @@
   }
 }
 
-// Responsive Design
 @media (max-width: 1024px) {
   .post-main {
     padding: 1.5rem;
