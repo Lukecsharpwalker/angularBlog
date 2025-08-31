@@ -1,11 +1,12 @@
-<div class="tag-multi-select">
+<div class="w-full relative">
   <!-- Selected Tags Display -->
   @if (selectedTags().length > 0) {
-    <div class="selected-tags-container">
+    <div class="flex flex-wrap gap-2 mb-3 min-h-8">
       @for (tag of selectedTags(); track tag.id) {
         <div
-          class="selected-tag"
+          class="inline-flex items-center gap-2 px-3 py-1.5 text-white rounded-full text-sm font-medium cursor-pointer transition-all duration-150 border-none outline-none relative hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(18,55,42,0.2)] focus-visible:shadow-[0_0_0_2px_white,0_0_0_4px_#12372A]"
           [style.background-color]="tag.color || '#12372A'"
+          [style.background]="tag.color && tag.color !== '#12372A' ? tag.color : 'rgba(18, 55, 42, 0.9)'"
           (click)="removeTag(tag)"
           [attr.aria-label]="'Remove ' + tag.name"
           role="button"
@@ -13,9 +14,9 @@
           (keydown.enter)="removeTag(tag)"
           (keydown.space)="removeTag(tag)"
         >
-          <span class="tag-name">{{ tag.name }}</span>
-          <button class="remove-button" type="button" [attr.aria-label]="'Remove ' + tag.name">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="remove-icon">
+          <span class="leading-none">{{ tag.name }}</span>
+          <button class="bg-transparent border-none text-current cursor-pointer p-0 m-0 flex items-center justify-center rounded-full w-4 h-4 opacity-70 transition-opacity duration-150 hover:opacity-100 hover:bg-white/20" type="button" [attr.aria-label]="'Remove ' + tag.name">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
               <path
                 d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
             </svg>
@@ -26,11 +27,11 @@
   }
 
   <!-- Search Input -->
-  <div class="search-container">
+  <div class="relative">
     <input
       #searchInput
       type="text"
-      class="search-input"
+      class="w-full px-4 py-3 pr-10 border-2 border-[#adbc9f]/30 rounded-lg text-sm bg-white text-[#12372a] transition-all duration-200 focus:outline-none focus:border-[#12372a] focus:shadow-[0_0_0_3px_rgba(18,55,42,0.1)] placeholder:text-[#436850]/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#adbc9f]/10"
       placeholder="Search and add tags..."
       [value]="searchTerm()"
       (input)="onSearchChange($event)"
@@ -44,8 +45,8 @@
     />
 
     <!-- Search Icon -->
-    <div class="search-icon">
-      <svg viewBox="0 0 20 20" fill="currentColor">
+    <div class="absolute right-3 top-1/2 -translate-y-1/2 text-[#436850]/50 pointer-events-none">
+      <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
         <path fill-rule="evenodd"
               d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
               clip-rule="evenodd"/>
@@ -54,11 +55,11 @@
 
     <!-- Dropdown -->
     @if (isOpen() && !disabled()) {
-      <div class="dropdown-menu" role="listbox" [attr.aria-label]="'Available tags'">
+      <div class="absolute top-full left-0 right-0 z-[1000] mt-1 bg-white border border-[#adbc9f]/30 rounded-lg shadow-[0_4px_12px_rgba(18,55,42,0.15)] max-h-60 overflow-y-auto p-1 animate-[slideDown_0.15s_ease] scrollbar-thin scrollbar-track-[#adbc9f]/10 scrollbar-thumb-[#adbc9f]/30 hover:scrollbar-thumb-[#adbc9f]/50" role="listbox" [attr.aria-label]="'Available tags'">
         @for (tag of filteredTags(); track tag.id) {
           <div
-            class="dropdown-item"
-            [class.focused]="tag.id === focusedTagId()"
+            class="flex items-center justify-between p-3 rounded-md cursor-pointer transition-all duration-150 text-[#12372a] hover:bg-[#adbc9f]/10 hover:text-[#12372a]"
+            [class]="tag.id === focusedTagId() ? 'bg-[#12372a] text-white' : ''"
             (click)="selectTag(tag)"
             (keydown.enter)="selectTag(tag)"
             (keydown.space)="selectTag(tag)"
@@ -66,27 +67,27 @@
             role="option"
             tabindex="-1"
           >
-            <div class="tag-info">
-              <span class="tag-name">{{ tag.name }}</span>
+            <div class="flex items-center gap-2 flex-1">
+              <span class="text-sm font-medium">{{ tag.name }}</span>
               @if (tag.color) {
-                <div class="tag-color-indicator" [style.background-color]="tag.color"></div>
+                <div class="w-3 h-3 rounded-full border border-[#adbc9f]/30 flex-shrink-0" [style.background-color]="tag.color" [class]="tag.id === focusedTagId() ? 'border-white' : ''"></div>
               }
             </div>
-            <div class="add-icon">
-              <svg viewBox="0 0 20 20" fill="currentColor">
+            <div class="flex items-center justify-center w-5 h-5 transition-colors duration-150" [class]="tag.id === focusedTagId() ? 'text-white' : 'text-[#436850]/60'">
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
                 <path
                   d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>
               </svg>
             </div>
           </div>
         } @empty {
-          <div class="no-results">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="no-results-icon">
+          <div class="flex flex-col items-center justify-center p-6 text-[#436850]/60 text-center">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6 mb-2 opacity-50">
               <path fill-rule="evenodd"
                     d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
                     clip-rule="evenodd"/>
             </svg>
-            <span>No tags found</span>
+            <span class="text-sm italic">No tags found</span>
           </div>
         }
       </div>

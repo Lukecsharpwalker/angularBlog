@@ -1,65 +1,65 @@
 @defer {
-  <div class="admin-post-layout">
-    <header class="post-header">
-      <div class="header-content">
-        <div class="header-left">
-          <h1 class="page-title">Create New Post</h1>
-          <p class="page-subtitle">Write and publish your blog content</p>
+  <div class="min-h-screen bg-[#fbfada]/20 flex flex-col">
+    <header class="bg-white border-b-2 border-[#adbc9f]/20 px-6 md:px-8 py-6 sticky top-0 z-[100]">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
+        <div>
+          <h1 class="text-3xl font-bold text-[#12372a] mb-1 leading-tight">Create New Post</h1>
+          <p class="text-base text-[#436850] m-0">Write and publish your blog content</p>
         </div>
-        <div class="header-right">
-          <div class="status-indicator">
+        <div>
+          <div class="px-4 py-2 bg-[#adbc9f]/20 rounded-full border border-[#adbc9f]/30">
             @if (!postId()) {
-              <span class="status-text">New Post</span>
+              <span class="text-sm font-semibold text-[#436850]">New Post</span>
             } @else {
-              <span class="status-text">Editing Post</span>
+              <span class="text-sm font-semibold text-[#436850]">Editing Post</span>
             }
           </div>
         </div>
       </div>
     </header>
 
-    <main class="post-main">
-      <form class="post-form" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+    <main class="flex-1 px-4 md:px-8 py-8 pb-32">
+      <form class="max-w-6xl mx-auto grid gap-8" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
         <!-- Title and Meta Section -->
-        <section class="meta-section">
-          <div class="section-header">
-            <h2 class="section-title">Post Details</h2>
+        <section class="bg-white rounded-xl border border-[#adbc9f]/20 shadow-[0_2px_8px_rgba(18,55,42,0.06)]">
+          <div class="px-6 md:px-8 py-6 border-b border-[#adbc9f]/20 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-0">
+            <h2 class="text-xl font-semibold text-[#12372a] m-0">Post Details</h2>
           </div>
 
-          <div class="meta-grid">
-            <div class="field-group full-width">
-              <label for="title" class="field-label">Title</label>
+          <div class="p-6 md:p-8 grid gap-8">
+            <div class="flex flex-col gap-3 col-span-full">
+              <label for="title" class="text-sm font-semibold text-[#12372a] m-0">Title</label>
               <input
                 id="title"
                 type="text"
                 formControlName="title"
-                class="field-input title-input"
+                class="px-4 md:px-5 py-4 md:py-4 border-2 border-[#adbc9f]/30 rounded-lg text-xl font-semibold bg-white text-[#12372a] transition-all duration-200 focus:outline-none focus:border-[#12372a] focus:shadow-[0_0_0_3px_rgba(18,55,42,0.1)] placeholder:text-[#436850]/50"
                 placeholder="Enter your post title..."
                 required
               />
               @if (blogForm.controls.title.invalid && (blogForm.controls.title.dirty || blogForm.controls.title.touched)) {
                 @if (blogForm.controls.title.errors?.['required']) {
-                  <div class="field-error">Title is required</div>
+                  <div class="text-[0.8125rem] text-red-500 mt-1">Title is required</div>
                 }
               }
             </div>
 
-            <div class="field-group full-width">
-              <span class="field-label">Tags & Categories</span>
-              <div class="tags-container">
-                <admin-tag-multi-select formControlName="tags"/>
+            <div class="flex flex-col gap-3 col-span-full">
+              <span class="text-sm font-semibold text-[#12372a] m-0">Tags & Categories</span>
+              <div class="p-4 border-2 border-[#adbc9f]/20 rounded-lg bg-[#fbfada]/30 min-h-[3rem]">
+                <admin-tag-multi-select formControlName="tags" class="block"/>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="content-section">
-          <div class="section-header">
-            <h2 class="section-title">Content Editor</h2>
-            <div class="section-actions">
+        <section class="bg-white rounded-xl border border-[#adbc9f]/20 shadow-[0_2px_8px_rgba(18,55,42,0.06)]">
+          <div class="px-6 md:px-8 py-6 border-b border-[#adbc9f]/20 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-0">
+            <h2 class="text-xl font-semibold text-[#12372a] m-0">Content Editor</h2>
+            <div class="flex gap-4">
               <button
                 type="button"
-                class="action-button"
+                class="px-4 py-2 bg-[#436850]/10 text-[#436850] border border-[#436850]/20 rounded-md text-sm font-medium cursor-pointer transition-all duration-200 hover:bg-[#436850]/20 hover:border-[#436850]/30"
                 (click)="insertImage()"
               >
                 Add Image
@@ -67,22 +67,22 @@
             </div>
           </div>
 
-          <div class="editor-container">
+          <div class="p-0">
             <quill-editor
               #quill
               formControlName="content"
-              class="post-editor"
+              class="post-editor border-none rounded-b-xl"
             />
           </div>
         </section>
 
         <!-- Action Section -->
-        <section class="actions-section">
-          <div class="actions-layout">
-            <div class="primary-actions">
+        <section class="fixed bottom-0 left-0 right-0 bg-white border-t border-[#adbc9f]/20 shadow-[0_-2px_8px_rgba(18,55,42,0.06)] z-[200] p-6 md:p-8">
+          <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center max-w-6xl mx-auto gap-4 lg:gap-0">
+            <div class="flex flex-col lg:flex-row gap-4">
               <button
                 type="submit"
-                class="btn-publish"
+                class="px-6 py-3.5 bg-[#12372a] text-white border-none rounded-lg text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#12372a]/90 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(18,55,42,0.25)] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 [disabled]="blogForm.invalid"
               >
                 Publish Post
@@ -90,15 +90,15 @@
 
               <button
                 type="button"
-                class="btn-draft"
+                class="px-6 py-3.5 bg-white text-[#436850] border-2 border-[#adbc9f]/30 rounded-lg text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#fbfada]/30 hover:border-[#436850]/40 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(67,104,80,0.15)]"
                 (click)="onSubmit(true)"
               >
                 Save as Draft
               </button>
             </div>
 
-            <div class="secondary-info">
-              <span class="auto-save-status">Auto-saved 2 minutes ago</span>
+            <div class="text-center lg:text-left">
+              <span class="text-sm text-[#436850]/60 italic">Auto-saved 2 minutes ago</span>
             </div>
           </div>
         </section>

@@ -80,7 +80,6 @@ export class AddPostComponent implements OnInit {
 
   protected async onSubmit(isDraft = false): Promise<void> {
     this.highlightContent();
-    // Test for description
     if (!this.blogForm?.controls?.description?.value) {
       this.blogForm.controls?.description?.setValue(
         this.blogForm.controls.content.value.toString().substring(0, 150)
@@ -97,7 +96,6 @@ export class AddPostComponent implements OnInit {
         this.blogForm.controls.created_at.setValue(null);
       }
 
-      // Extract form data including tags
       const formData = {
         ...this.blogForm.value,
         tags: this.blogForm.controls.tags.value,
