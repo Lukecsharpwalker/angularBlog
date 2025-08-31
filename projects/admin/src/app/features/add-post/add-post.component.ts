@@ -28,6 +28,7 @@ import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
 import { loadQuillModules } from '../../core/utils/quill-configuration';
+import { AddPostStore } from './add-post.store';
 import { AddPostService } from './add-post.service';
 
 @Component({
@@ -41,7 +42,7 @@ import { AddPostService } from './add-post.service';
     RouterModule,
     TagMultiSelectComponent,
   ],
-  providers: [AddPostService, NgModel],
+  providers: [AddPostStore, NgModel, AddPostService],
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -70,21 +71,21 @@ export class AddPostComponent implements OnInit {
   });
   range: Range | null = null;
 
-  private addPostService = inject(AddPostService);
+  readonly addPostStore = inject(AddPostStore);
 
   ngOnInit(): void {
-    this.loadPostIfIdExists();
+    this.initPostFormIfPostExists();
     this.initializeQuill();
   }
 
-  private loadPostIfIdExists(): void {
-    if (this.postId()) {
-      this.addPostService.getPostById(this.postId()!).then(post => {
-        if (post) {
-          this.blogForm.patchValue(post);
-          console.log(this.blogForm.value);
-        }
-      });
+  private async initPostFormIfPostExists(): Promise<void> {
+    if (!this.postId()) {
+      return;
+    }
+    await this.addPostStore.loadPost(this.postId()!);
+    const currentPost = this.addPostStore.currentPost();
+    if (currentPost) {
+      this.blogForm.patchValue(currentPost);
     }
   }
 
@@ -92,7 +93,7 @@ export class AddPostComponent implements OnInit {
     await loadQuillModules();
   }
 
-  onSubmit(isDraft = false): void {
+  async onSubmit(isDraft = false): Promise<void> {
     this.highlightContent();
     // Test for description
     if (!this.blogForm?.controls?.description?.value) {
@@ -117,10 +118,13 @@ export class AddPostComponent implements OnInit {
         tags: this.blogForm.controls.tags.value,
       };
 
-      if (this.postId) {
-        this.addPostService.updatePost(this.postId()!, formData as PostUpdate & { tags: Tag[] });
+      if (this.postId()) {
+        await this.addPostStore.updatePost(
+          this.postId()!,
+          formData as PostUpdate & { tags: Tag[] }
+        );
       } else {
-        this.addPostService.addPost(formData as PostInsert & { tags: Tag[] });
+        await this.addPostStore.addPost(formData as PostInsert & { tags: Tag[] });
       }
     }
   }
