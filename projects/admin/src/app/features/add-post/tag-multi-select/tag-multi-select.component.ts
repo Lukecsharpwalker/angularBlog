@@ -9,11 +9,14 @@ import {
   HostListener,
   ElementRef,
   viewChild,
+  effect,
+  input,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Tag } from 'shared';
 import { AddPostService } from '../add-post.service';
+import { AddPostStore } from '../add-post.store';
 
 @Component({
   selector: 'admin-tag-multi-select',
@@ -30,15 +33,15 @@ import { AddPostService } from '../add-post.service';
   styleUrl: './tag-multi-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
+export class TagMultiSelectComponent implements ControlValueAccessor {
   readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
-  readonly allTags = signal<Tag[]>([]);
+  readonly allTags = input.required<Tag[]>();
+
   readonly selectedTags = signal<Tag[]>([]);
   readonly searchTerm = signal('');
   readonly isOpen = signal(false);
   readonly disabled = signal(false);
   readonly focusedTagId = signal<number | null>(null);
-  readonly isTouched = signal(false);
   readonly filteredTags = computed(() => {
     const search = this.searchTerm().toLowerCase();
     const selected = this.selectedTags();
@@ -47,15 +50,12 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
     );
   });
 
+  private readonly isTouched = signal(false);
+
   private elementRef = inject(ElementRef);
-  private addPostService = inject(AddPostService);
   private searchSubject = new Subject<string>();
   private onChange: ((value: Tag[]) => void) | null = null;
   private onTouched: (() => void) | null = null;
-
-  ngOnInit() {
-    this.loadTags();
-  }
 
   onSearchChange(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -169,10 +169,6 @@ export class TagMultiSelectComponent implements ControlValueAccessor, OnInit {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
-  }
-
-  private loadTags() {
-    this.addPostService.getTags().then(tags => this.allTags.set(tags));
   }
 
   private markAsTouched() {

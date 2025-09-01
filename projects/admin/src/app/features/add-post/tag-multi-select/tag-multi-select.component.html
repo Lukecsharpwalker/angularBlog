@@ -1,5 +1,4 @@
 <div class="w-full relative">
-  <!-- Selected Tags Display -->
   @if (selectedTags().length > 0) {
     <div class="flex flex-wrap gap-2 mb-3 min-h-8">
       @for (tag of selectedTags(); track tag.id) {
@@ -15,7 +14,9 @@
           (keydown.space)="removeTag(tag)"
         >
           <span class="leading-none">{{ tag.name }}</span>
-          <button class="bg-transparent border-none text-current cursor-pointer p-0 m-0 flex items-center justify-center rounded-full w-4 h-4 opacity-70 transition-opacity duration-150 hover:opacity-100 hover:bg-white/20" type="button" [attr.aria-label]="'Remove ' + tag.name">
+          <button
+            class="bg-transparent border-none text-current cursor-pointer p-0 m-0 flex items-center justify-center rounded-full w-4 h-4 opacity-70 transition-opacity duration-150 hover:opacity-100 hover:bg-white/20"
+            type="button" [attr.aria-label]="'Remove ' + tag.name">
             <svg viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
               <path
                 d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
@@ -26,7 +27,6 @@
     </div>
   }
 
-  <!-- Search Input -->
   <div class="relative">
     <input
       #searchInput
@@ -44,7 +44,6 @@
       aria-label="Search tags"
     />
 
-    <!-- Search Icon -->
     <div class="absolute right-3 top-1/2 -translate-y-1/2 text-[#436850]/50 pointer-events-none">
       <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
         <path fill-rule="evenodd"
@@ -53,9 +52,10 @@
       </svg>
     </div>
 
-    <!-- Dropdown -->
     @if (isOpen() && !disabled()) {
-      <div class="absolute top-full left-0 right-0 z-[1000] mt-1 bg-white border border-[#adbc9f]/30 rounded-lg shadow-[0_4px_12px_rgba(18,55,42,0.15)] max-h-60 overflow-y-auto p-1 animate-[slideDown_0.15s_ease] scrollbar-thin scrollbar-track-[#adbc9f]/10 scrollbar-thumb-[#adbc9f]/30 hover:scrollbar-thumb-[#adbc9f]/50" role="listbox" [attr.aria-label]="'Available tags'">
+      <div
+        class="absolute top-full left-0 right-0 z-[1000] mt-1 bg-white border border-[#adbc9f]/30 rounded-lg shadow-[0_4px_12px_rgba(18,55,42,0.15)] max-h-60 overflow-y-auto p-1 animate-[slideDown_0.15s_ease] scrollbar-thin scrollbar-track-[#adbc9f]/10 scrollbar-thumb-[#adbc9f]/30 hover:scrollbar-thumb-[#adbc9f]/50"
+        role="listbox" [attr.aria-label]="'Available tags'">
         @for (tag of filteredTags(); track tag.id) {
           <div
             class="flex items-center justify-between p-3 rounded-md cursor-pointer transition-all duration-150 text-[#12372a] hover:bg-[#adbc9f]/10 hover:text-[#12372a]"
@@ -70,10 +70,13 @@
             <div class="flex items-center gap-2 flex-1">
               <span class="text-sm font-medium">{{ tag.name }}</span>
               @if (tag.color) {
-                <div class="w-3 h-3 rounded-full border border-[#adbc9f]/30 flex-shrink-0" [style.background-color]="tag.color" [class]="tag.id === focusedTagId() ? 'border-white' : ''"></div>
+                <div class="w-3 h-3 rounded-full border border-[#adbc9f]/30 flex-shrink-0"
+                     [style.background-color]="tag.color"
+                     [class]="tag.id === focusedTagId() ? 'border-white' : ''"></div>
               }
             </div>
-            <div class="flex items-center justify-center w-5 h-5 transition-colors duration-150" [class]="tag.id === focusedTagId() ? 'text-white' : 'text-[#436850]/60'">
+            <div class="flex items-center justify-center w-5 h-5 transition-colors duration-150"
+                 [class]="tag.id === focusedTagId() ? 'text-white' : 'text-[#436850]/60'">
               <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
                 <path
                   d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>

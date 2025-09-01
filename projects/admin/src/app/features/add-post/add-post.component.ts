@@ -6,8 +6,10 @@ import {
   inject,
   input,
   OnInit,
+  signal,
   viewChild,
   ViewContainerRef,
+  WritableSignal,
 } from '@angular/core';
 import {
   FormControl,
@@ -66,6 +68,8 @@ export class AddPostComponent implements OnInit {
   });
 
   protected readonly postId = input<string | undefined>();
+  protected readonly allTags: WritableSignal<Tag[]> = signal<Tag[]>([]);
+  protected readonly selectedTags: WritableSignal<Tag[]> = signal<Tag[]>([]);
 
   private readonly quill = viewChild.required<QuillEditorComponent>('quill');
   private range: Range | null = null;
@@ -201,6 +205,8 @@ export class AddPostComponent implements OnInit {
     }
     await this.addPostStore.loadPost(this.postId()!);
     const currentPost = this.addPostStore.currentPost();
+    await this.addPostStore.loadTags();
+    this.allTags.set(this.addPostStore.availableTags());
     if (currentPost) {
       this.blogForm.patchValue(currentPost);
     }
