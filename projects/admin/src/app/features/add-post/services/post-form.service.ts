@@ -3,13 +3,8 @@ import { FormGroup } from '@angular/forms';
 import hljs from 'highlight.js';
 import { Post, PostInsert, PostUpdate, Tag } from 'shared';
 import { PostForm } from '../models/post-form.interface';
+import { ProcessedPostData } from '../models/processed-post-data.interface';
 import { ADD_POST_CONSTANTS } from '../constants/add-post.constants';
-
-export interface ProcessedPostData {
-  formData: (PostInsert | PostUpdate) & { tags: Tag[] };
-  isUpdate: boolean;
-  postId?: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +13,7 @@ export class PostFormService {
   processFormForSubmission(
     form: FormGroup<PostForm>,
     isDraft: boolean,
+    isEditMode: boolean,
     postId?: string
   ): ProcessedPostData | null {
     if (!form.valid) {
@@ -30,11 +26,11 @@ export class PostFormService {
     this.setDraftStatus(form, isDraft);
     this.normalizeCreatedDate(form);
 
-    const formData = this.transformToApiFormat(form);
+    const formData: (PostInsert | PostUpdate) & { tags: Tag[] } = this.transformToApiFormat(form);
 
     return {
       formData,
-      isUpdate: !!postId,
+      isUpdate: isEditMode,
       postId,
     };
   }

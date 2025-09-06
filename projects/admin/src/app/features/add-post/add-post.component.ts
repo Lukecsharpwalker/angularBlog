@@ -1,11 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   CUSTOM_ELEMENTS_SCHEMA,
   HostListener,
   inject,
   input,
   OnInit,
+  Signal,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -29,6 +31,7 @@ import { loadQuillModules } from '../../core/utils/quill-configuration';
 import { AddPostStore } from './add-post.store';
 import { PostFormService } from './services/post-form.service';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './constants/add-post.constants';
+import { ProcessedPostData } from './models/processed-post-data.interface';
 
 @Component({
   selector: 'admin-add-post',
@@ -73,6 +76,7 @@ export class AddPostComponent implements OnInit {
   });
 
   protected readonly postId = input<string | undefined>();
+  protected readonly isEditMode: Signal<boolean> = computed(() => !!this.postId());
   protected readonly addPostStore = inject(AddPostStore);
 
   private readonly quill = viewChild.required<QuillEditorComponent>('quill');
@@ -91,9 +95,10 @@ export class AddPostComponent implements OnInit {
   }
 
   protected async onSubmit(isDraft = false): Promise<void> {
-    const processedData = this.postFormService.processFormForSubmission(
+    const processedData: ProcessedPostData | null = this.postFormService.processFormForSubmission(
       this.blogForm,
       isDraft,
+      this.isEditMode(),
       this.postId()
     );
 
@@ -120,7 +125,7 @@ export class AddPostComponent implements OnInit {
         if (modalStatus.data) {
           const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="${modalStatus.data.form.controls.alt.value}" style="${ADD_POST_CONSTANTS.IMAGE_MAX_WIDTH_STYLE}">`;
           if (this.range) {
-            const newValue = this.postFormService.insertStringAtIndex(
+            const newValue: string = this.postFormService.insertStringAtIndex(
               this.blogForm.controls.content.value,
               this.blogForm.controls.content.value.toString().length,
               imgTag
