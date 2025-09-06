@@ -18,9 +18,8 @@ import {
 } from '@angular/forms';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
-import hljs from 'highlight.js';
 import { RouterModule } from '@angular/router';
-import { ModalConfig, PostInsert, PostUpdate, Tag } from 'shared';
+import { ModalConfig, Post, PostInsert, PostUpdate, Tag } from 'shared';
 import { DynamicDialogService } from 'shared';
 import { PostForm } from './models/post-form.interface';
 import { AddImageComponent } from './add-image/add-image.component';
@@ -28,7 +27,7 @@ import { AddImageForm } from './add-image/add-image-controls.interface';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
 import { loadQuillModules } from '../../core/utils/quill-configuration';
 import { AddPostStore } from './add-post.store';
-import { ContentProcessorService } from './services/content-processor.service';
+import { PostFormService } from './services/post-form.service';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './constants/add-post.constants';
 
 @Component({
@@ -78,7 +77,7 @@ export class AddPostComponent implements OnInit {
 
   private readonly quill = viewChild.required<QuillEditorComponent>('quill');
   private dialogService = inject(DynamicDialogService<AddImageForm>);
-  private contentProcessor = inject(ContentProcessorService);
+  private postFormService = inject(PostFormService);
   private range: Range | null = null;
 
   async ngOnInit(): Promise<void> {
@@ -92,36 +91,23 @@ export class AddPostComponent implements OnInit {
   }
 
   protected async onSubmit(isDraft = false): Promise<void> {
-    this.highlightContent();
-    if (!this.blogForm.controls.description.value) {
-      this.blogForm.controls.description.setValue(
-        this.blogForm.controls.content.value.toString().substring(0, ADD_POST_CONSTANTS.DESCRIPTION_MAX_LENGTH)
-      );
+    const processedData = this.postFormService.processFormForSubmission(
+      this.blogForm,
+      isDraft,
+      this.postId()
+    );
+
+    if (!processedData) {
+      return;
     }
 
-    if (this.blogForm.valid) {
-      const rawContent = this.blogForm.controls.content.value;
-      const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');
-      this.blogForm.controls.content.setValue(cleanedContent);
-      this.blogForm.controls.is_draft.setValue(isDraft);
-
-      if (!this.blogForm.controls.created_at.value) {
-        this.blogForm.controls.created_at.setValue(null);
-      }
-
-      const formData = {
-        ...this.blogForm.value,
-        tags: this.blogForm.controls.tags.value,
-      };
-
-      if (this.postId()) {
-        await this.addPostStore.updatePost(
-          this.postId()!,
-          formData as PostUpdate & { tags: Tag[] }
-        );
-      } else {
-        await this.addPostStore.addPost(formData as PostInsert & { tags: Tag[] });
-      }
+    if (processedData.isUpdate) {
+      await this.addPostStore.updatePost(
+        processedData.postId!,
+        processedData.formData as PostUpdate & { tags: Tag[] }
+      );
+    } else {
+      await this.addPostStore.addPost(processedData.formData as PostInsert & { tags: Tag[] });
     }
   }
 
@@ -134,7 +120,7 @@ export class AddPostComponent implements OnInit {
         if (modalStatus.data) {
           const imgTag = `<img src="${modalStatus.data.form.controls.src.value}" alt="${modalStatus.data.form.controls.alt.value}" style="${ADD_POST_CONSTANTS.IMAGE_MAX_WIDTH_STYLE}">`;
           if (this.range) {
-            const newValue = this.contentProcessor.insertStringAtIndex(
+            const newValue = this.postFormService.insertStringAtIndex(
               this.blogForm.controls.content.value,
               this.blogForm.controls.content.value.toString().length,
               imgTag
@@ -143,12 +129,6 @@ export class AddPostComponent implements OnInit {
           }
         }
       });
-  }
-
-  private highlightContent(): void {
-    this.blogForm.controls.content.setValue(
-      this.contentProcessor.processContent(this.blogForm.controls.content.value)
-    );
   }
 
   private async initializeQuill(): Promise<void> {
@@ -165,14 +145,9 @@ export class AddPostComponent implements OnInit {
   }
 
   private patchFormWithPostData(): void {
-    const currentPost = this.addPostStore.currentPost();
-
-    if (!currentPost) {
-      return;
+    const currentPost: Post | null = this.addPostStore.currentPost();
+    if (currentPost) {
+      this.postFormService.initializeFormWithPost(this.blogForm, currentPost!);
     }
-
-    this.blogForm.patchValue({
-      ...currentPost,
-    });
   }
 }
