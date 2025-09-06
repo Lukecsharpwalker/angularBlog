@@ -1,5 +1,12 @@
 import { inject } from '@angular/core';
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { Post, PostInsert, PostUpdate, Tag } from 'shared';
 import { AddPostService } from './add-post.service';
 
@@ -21,9 +28,9 @@ const initialState: AddPostState = {
 
 export const AddPostStore = signalStore(
   withState(initialState),
-  withComputed((store) => ({
+  withComputed(store => ({
     availableTags: () => store.tags(),
-    currentPostTags: () => store.currentPost()?.post_tags.map(pt => pt.tags) || [],
+    currentPostTags: () => store.currentPost()?.tags || [],
   })),
   withMethods((store, addPostService = inject(AddPostService)) => ({
     async loadPost(id: string) {
@@ -71,11 +78,16 @@ export const AddPostStore = signalStore(
         patchState(store, { tags });
       } catch (error) {
         patchState(store, {
-          error: typeof error === 'string' ? error : 'Failed to load tags'
+          error: typeof error === 'string' ? error : 'Failed to load tags',
         });
       }
     },
 
     clearError: () => patchState(store, { error: null }),
-  }))
+  })),
+  withHooks({
+    async onInit(store) {
+      await store.loadTags();
+    },
+  })
 );

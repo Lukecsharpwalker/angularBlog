@@ -34,12 +34,13 @@ export class AddPostService {
       .from('posts')
       .select(
         `
-        *,
-        author:profiles(id,username,avatar_url),
-        post_tags(tags(id,name,color,icon)),
-        comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))
-      `
+    *,
+    author:profiles(id,username,avatar_url),
+    tags:tags!post_tags(id,name,color,icon),
+    comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))
+  `
       )
+
       .eq('id', id)
       .single();
 

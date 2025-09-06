@@ -53,12 +53,17 @@
             <span class="text-sm font-semibold text-[#12372a] m-0">Tags & Categories</span>
             <div class="p-4 border-2 border-[#adbc9f]/20 rounded-lg bg-[#fbfada]/30 min-h-[3rem]">
               <admin-tag-multi-select
-                [selectedTags]="selectedTags()"
-                [allTags]="allTags()"
+                [allTags]="addPostStore.availableTags()"
                 formControlName="tags"
                 class="block"
               />
             </div>
+            @if (blogForm.controls.tags.invalid &&
+            (blogForm.controls.tags.dirty || blogForm.controls.tags.touched)) {
+              @if (blogForm.controls.tags.errors?.['required']) {
+                <div class="text-[0.8125rem] text-red-500 mt-1">Please select at least one tag</div>
+              }
+            }
           </div>
         </div>
       </section>

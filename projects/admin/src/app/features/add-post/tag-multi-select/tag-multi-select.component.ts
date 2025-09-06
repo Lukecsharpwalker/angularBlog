@@ -3,25 +3,19 @@ import {
   Component,
   forwardRef,
   inject,
-  OnInit,
   signal,
   computed,
   HostListener,
   ElementRef,
   viewChild,
-  effect,
   input,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
 import { Tag } from 'shared';
-import { AddPostService } from '../add-post.service';
-import { AddPostStore } from '../add-post.store';
 
 @Component({
   selector: 'admin-tag-multi-select',
   standalone: true,
-  imports: [],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -37,12 +31,13 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
   readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
   readonly allTags = input.required<Tag[]>();
 
-  readonly selectedTags = signal<Tag[]>([]);
-  readonly searchTerm = signal('');
-  readonly isOpen = signal(false);
-  readonly disabled = signal(false);
-  readonly focusedTagId = signal<number | null>(null);
-  readonly filteredTags = computed(() => {
+  protected readonly selectedTags = signal<Tag[]>([]);
+  protected readonly searchTerm = signal('');
+  protected readonly isOpen = signal(false);
+  protected readonly disabled = signal(false);
+  protected readonly focusedTagId = signal<number | null>(null);
+
+  protected readonly filteredTags = computed(() => {
     const search = this.searchTerm().toLowerCase();
     const selected = this.selectedTags();
     return this.allTags().filter(
@@ -50,33 +45,45 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
     );
   });
 
-  private readonly isTouched = signal(false);
-
   private elementRef = inject(ElementRef);
-  private searchSubject = new Subject<string>();
   private onChange: ((value: Tag[]) => void) | null = null;
   private onTouched: (() => void) | null = null;
 
-  onSearchChange(event: Event) {
+  writeValue(value: Tag[] | null): void {
+    this.selectedTags.set(value || []);
+  }
+
+  registerOnChange(fn: (value: Tag[]) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled.set(isDisabled);
+  }
+
+  protected onSearchChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     this.searchTerm.set(value);
-    this.searchSubject.next(value);
   }
 
-  onInputFocus() {
+  protected onInputFocus(): void {
     this.isOpen.set(true);
     this.focusedTagId.set(null);
   }
 
-  onInputBlur() {
+  protected onInputBlur(): void {
     setTimeout(() => {
       this.isOpen.set(false);
-      this.markAsTouched();
+      this.onTouched?.();
     }, 150);
   }
 
-  selectTag(tag: Tag): void {
+  protected selectTag(tag: Tag): void {
     if (!this.selectedTags().find(t => t.id === tag.id)) {
       this.selectedTags.update(tags => [...tags, tag]);
       this.onChange?.(this.selectedTags());
@@ -84,7 +91,6 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
 
       this.searchTerm.set('');
       this.searchInput().nativeElement.value = '';
-
       this.isOpen.set(true);
 
       setTimeout(() => {
@@ -93,24 +99,18 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
     }
   }
 
-  removeTag(tag: Tag) {
-    const current = this.selectedTags();
-    const updated = current.filter(t => t.id !== tag.id);
-    this.selectedTags.set(updated);
-    this.onChange?.(updated);
-    this.markAsTouched();
+  protected removeTag(tag: Tag): void {
+    this.selectedTags.update(tags => tags.filter(t => t.id !== tag.id));
+    this.onChange?.(this.selectedTags());
+    this.onTouched?.();
   }
 
-  isTagSelected(tag: Tag): boolean {
+  protected isTagSelected(tag: Tag): boolean {
     return this.selectedTags().some(t => t.id === tag.id);
   }
 
-  trackByTagId(index: number, tag: Tag): number {
-    return tag.id;
-  }
-
   @HostListener('document:keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent) {
+  protected onKeyDown(event: KeyboardEvent): void {
     if (!this.isOpen() || this.disabled()) return;
 
     const filtered = this.filteredTags();
@@ -149,32 +149,9 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
   }
 
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event) {
+  protected onDocumentClick(event: Event): void {
     if (!this.elementRef.nativeElement.contains(event.target as Node)) {
       this.isOpen.set(false);
-    }
-  }
-
-  writeValue(value: Tag[]): void {
-    this.selectedTags.set(value || []);
-  }
-
-  registerOnChange(fn: (value: Tag[]) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled.set(isDisabled);
-  }
-
-  private markAsTouched() {
-    if (!this.isTouched()) {
-      this.isTouched.set(true);
-      this.onTouched?.();
     }
   }
 }

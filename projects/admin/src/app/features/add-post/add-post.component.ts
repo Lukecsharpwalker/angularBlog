@@ -6,10 +6,8 @@ import {
   inject,
   input,
   OnInit,
-  signal,
   viewChild,
   ViewContainerRef,
-  WritableSignal,
 } from '@angular/core';
 import {
   FormControl,
@@ -52,6 +50,7 @@ import { AddPostService } from './add-post.service';
 })
 export class AddPostComponent implements OnInit {
   viewContainerRef = inject(ViewContainerRef);
+
   blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl('', {
       validators: [Validators.required],
@@ -64,22 +63,32 @@ export class AddPostComponent implements OnInit {
     created_at: new FormControl<Date | null>(null),
     description: new FormControl<string | null>(null),
     is_draft: new FormControl(false, { nonNullable: true }),
-    tags: new FormControl<Tag[]>([], { nonNullable: true }),
+    tags: new FormControl<Tag[]>([], {
+      nonNullable: true,
+      validators: [
+        control => {
+          const value = control.value;
+          return value && value.length > 0 ? null : { required: true };
+        },
+      ],
+    }),
   });
 
   protected readonly postId = input<string | undefined>();
-  protected readonly allTags: WritableSignal<Tag[]> = signal<Tag[]>([]);
-  protected readonly selectedTags: WritableSignal<Tag[]> = signal<Tag[]>([]);
+  protected readonly addPostStore = inject(AddPostStore);
 
   private readonly quill = viewChild.required<QuillEditorComponent>('quill');
-  private range: Range | null = null;
-
   private dialogService = inject(DynamicDialogService<AddImageForm>);
-  private readonly addPostStore = inject(AddPostStore);
+  private range: Range | null = null;
 
   ngOnInit(): void {
     this.initPostFormIfPostExists();
     this.initializeQuill();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  protected handleBeforeUnload(event: BeforeUnloadEvent) {
+    event.preventDefault();
   }
 
   protected async onSubmit(isDraft = false): Promise<void> {
@@ -203,17 +212,21 @@ export class AddPostComponent implements OnInit {
     if (!this.postId()) {
       return;
     }
+
     await this.addPostStore.loadPost(this.postId()!);
-    const currentPost = this.addPostStore.currentPost();
-    await this.addPostStore.loadTags();
-    this.allTags.set(this.addPostStore.availableTags());
-    if (currentPost) {
-      this.blogForm.patchValue(currentPost);
-    }
+    this.patchFormWithPostData();
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  private handleBeforeUnload(event: BeforeUnloadEvent) {
-    event.preventDefault();
+  private patchFormWithPostData(): void {
+    const currentPost = this.addPostStore.currentPost();
+    console.log(currentPost);
+
+    if (!currentPost) {
+      return;
+    }
+
+    this.blogForm.patchValue({
+      ...currentPost,
+    });
   }
 }

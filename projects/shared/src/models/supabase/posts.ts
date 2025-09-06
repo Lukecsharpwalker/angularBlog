@@ -1,6 +1,7 @@
 import { Profile } from './profiles';
 import { PostTagList } from './post-tags';
 import { Comment } from './comments';
+import { Tag } from './tags';
 
 export interface Post {
   content: string;
@@ -12,6 +13,7 @@ export interface Post {
   user_id: string;
   author?: Profile;
   post_tags: PostTagList[];
+  tags: Tag[];
   comments: Comment[];
   category: string | null;
   updated: string | null;
