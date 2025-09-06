@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddImageControls } from './add-image-controls.interface';
 
 @Component({
@@ -7,17 +7,14 @@ import { AddImageControls } from './add-image-controls.interface';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './add-image.component.html',
-  styleUrl: './add-image.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddImageComponent {
-  form = new FormGroup<AddImageControls>({
-    src: new FormControl<string | null>(''),
-    alt: new FormControl<string | null>(''),
-  })
+  protected form = new FormGroup<AddImageControls>({
+    src: new FormControl<string | null>('', [
+      Validators.required,
+      Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i),
+    ]),
+    alt: new FormControl<string | null>('', [Validators.required]),
+  });
 }
-
-
-
-
-
