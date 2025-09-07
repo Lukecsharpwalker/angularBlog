@@ -12,6 +12,7 @@
       top: 0;
       z-index: 150;
       box-shadow: 0 2px 8px rgba(18, 55, 42, 0.08);
+      backdrop-filter: blur(8px);
 
       .ql-formats {
         margin-right: 1.5rem;
@@ -79,6 +80,8 @@
     .ql-container {
       border: none;
       font-family: inherit;
+      max-height: 60vh;
+      overflow-y: auto;
 
       .ql-editor {
         padding: 2rem;
