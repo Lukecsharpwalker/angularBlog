@@ -5,16 +5,10 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
   selector: 'web-code-block-modal',
   standalone: true,
   template: `
-    <div class="code-modal-container" [class.large-code]="data.isLargeCode">
-      <pre [class]="'language-' + data.language + ' ' + 'hljs'" class="code-block" 
-           [class.large-code-block]="data.isLargeCode">
+    <div class="code-modal-container">
+      <pre [class]="'language-' + data.language + ' ' + 'hljs'" class="code-block modal-code-block">
         <code [innerHTML]="data.code"></code>
       </pre>
-      @if (data.isLargeCode) {
-        <div class="code-info">
-          <small class="text-gray-500">{{ data.lineCount }} lines</small>
-        </div>
-      }
     </div>
   `,
   styles: [
@@ -23,26 +17,16 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
         display: block;
         width: 100%;
         height: 100%;
-        /* Force parent dialog to expand for large code */
-        min-width: var(--code-modal-min-width, 320px);
-        min-height: var(--code-modal-min-height, 200px);
       }
 
       .code-modal-container {
         width: 100%;
         height: 100%;
-        max-height: 70vh;
+        max-height: 60vh;
+        max-width: 80vw;
         overflow: auto;
         padding: 0;
         position: relative;
-      }
-
-      .code-modal-container.large-code {
-        max-height: 85vh;
-        /* For large code, expand to almost full screen */
-        width: calc(100vw - 4rem);
-        max-width: 90vw;
-        min-height: 60vh;
       }
 
       .code-block {
@@ -59,15 +43,19 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
         white-space: pre;
         word-wrap: normal;
         font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-        /* Better scrollbars */
+        background: #1a1a1a !important;
+        color: #f8f8f2 !important;
         scrollbar-width: thin;
-        scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
       }
 
-      .code-block.large-code-block {
-        font-size: 0.9rem;
-        line-height: 1.4;
-        padding: 2rem;
+      .modal-code-block {
+        cursor: default !important;
+        pointer-events: none;
+      }
+
+      .modal-code-block * {
+        pointer-events: none;
       }
 
       /* Custom scrollbar for code blocks */
@@ -77,69 +65,43 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
       }
 
       .code-block::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 4px;
       }
 
       .code-block::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.3);
         border-radius: 4px;
       }
 
       .code-block::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.5);
-      }
-
-      .code-info {
-        position: absolute;
-        bottom: 0.5rem;
-        left: 1rem;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        font-size: 0.75rem;
+        background: rgba(255, 255, 255, 0.5);
       }
 
       /* Mobile optimizations */
       @media (max-width: 768px) {
-        .code-block {
-          font-size: 1rem;
-          padding: 1rem;
-          line-height: 1.4;
+        .code-modal-container {
+          max-height: 70vh;
+          max-width: 90vw;
         }
         
-        .code-modal-container {
-          max-height: 80vh;
-        }
-
-        .code-modal-container.large-code {
-          width: calc(100vw - 2rem);
-          max-width: 95vw;
-          max-height: 90vh;
-        }
-
-        .code-block.large-code-block {
-          font-size: 0.95rem;
-          padding: 1.5rem;
+        .code-block {
+          font-size: 0.9rem;
+          padding: 1rem;
+          line-height: 1.4;
         }
       }
 
       /* For very small screens */
       @media (max-width: 480px) {
+        .code-modal-container {
+          max-height: 80vh;
+          max-width: 95vw;
+        }
+        
         .code-block {
-          font-size: 0.9rem;
-          padding: 0.75rem;
-        }
-
-        .code-modal-container.large-code {
-          width: calc(100vw - 1rem);
-          max-width: 98vw;
-          max-height: 95vh;
-        }
-
-        .code-block.large-code-block {
           font-size: 0.85rem;
-          padding: 1rem;
+          padding: 0.75rem;
         }
       }
     `,
@@ -154,6 +116,4 @@ export class CodeBlockModalComponent {
 interface CodeBlockModalData {
   code: string;
   language: string;
-  isLargeCode?: boolean;
-  lineCount?: number;
 }

@@ -112,11 +112,6 @@ export class PostComponent implements OnInit {
     // Format language name for display
     const displayLanguage = this.formatLanguageForDisplay(language);
 
-    // Determine if this is a large code block - count actual text lines, not HTML
-    const textContent = codeElement?.textContent || preElement.textContent || '';
-    const lineCount = textContent.split('\n').length;
-    const isLargeCode = lineCount > 10 || textContent.length > 500;
-
     this.dialogService.openDialog(
       this.viewContainerRef,
       {
@@ -125,9 +120,7 @@ export class PostComponent implements OnInit {
         primaryButton: 'Close',
         data: { 
           code, 
-          language, 
-          isLargeCode,
-          lineCount
+          language
         },
       },
       CodeBlockModalComponent
@@ -181,10 +174,10 @@ export class PostComponent implements OnInit {
         const processedNodes = new Set<Node>();
 
         const processCodeBlocks = () => {
-          const preElements = document.querySelectorAll('pre');
+          const preElements = document.querySelectorAll('pre:not(.modal-code-block)');
           
           preElements.forEach((preElement) => {
-            if (!processedNodes.has(preElement)) {
+            if (!processedNodes.has(preElement) && preElement instanceof HTMLElement) {
               processedNodes.add(preElement);
               this.styleCodeBlock(preElement);
               preElement.addEventListener('click', e => this.showCodeModal(e));
