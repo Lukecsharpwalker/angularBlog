@@ -4,7 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## MOST IMPORTANT: Always read the LLM context files in `/llms/` before making any code changes or refactor proposals.
 
-## MOST IMPORTANT: NO WRITE COMMENTS in the codebase. Use PR comments instead.
+## MOST IMPORTANT: NEVER WRITE ANY COMMENTS IN CODE - ABSOLUTELY FORBIDDEN
+
+**ZERO TOLERANCE POLICY**: Do not add comments, explanations, or documentation inside any code files. This includes:
+- // single line comments
+- /* block comments */ 
+- /** JSDoc comments */
+- <!-- HTML comments -->
+- # Any other comment syntax
+
+Use PR comments for discussions instead. Code must be self-explanatory through naming and structure.
 
 ## Project Overview
 
@@ -152,6 +161,12 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 - Strict TypeScript configuration enabled
 - Supabase types generated in `/src/app/types/supabase/` -> refactor to `/projects/shared/src/models/supabase/`
 - Use proper interfaces for all data models
+
+### Code Style
+
+- **CRITICAL**: NEVER ADD ANY COMMENTS IN CODE FILES - ZERO TOLERANCE
+- Code must be self-documenting through clear naming and structure only
+- No explanatory text inside TypeScript, HTML, CSS, or any other code files
 
 ### Environment Configuration
 
