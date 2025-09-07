@@ -78,22 +78,100 @@ export class PostComponent implements OnInit {
     this.postStore.getPost(this.id());
   }
 
+  private styleCodeBlock(element: HTMLElement): void {
+    element.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
+    
+    // Check if it's a one-liner
+    const isOneLiner = !element.textContent?.includes('\n') || element.textContent?.trim().split('\n').length === 1;
+    
+    if (isOneLiner) {
+      element.classList.add('inline-block', 'px-2', 'py-1', 'text-sm');
+      element.style.display = 'inline-block';
+      element.style.margin = '0 2px';
+    } else {
+      element.classList.add('block', 'my-4');
+    }
+  }
+
   private showCodeModal(event: Event) {
     const preElement = event.currentTarget as HTMLElement;
     const codeElement = preElement.querySelector('code');
     const code = codeElement?.innerHTML || '';
-    const language = preElement.getAttribute('data-language') || '';
+    
+    // Extract language from Highlight.js classes
+    let language = 'code';
+    if (codeElement) {
+      const languageClass = Array.from(codeElement.classList).find(cls => 
+        cls.startsWith('language-') || cls.startsWith('hljs-')
+      );
+      if (languageClass) {
+        language = languageClass.replace('language-', '').replace('hljs-', '');
+      }
+    }
+
+    // Format language name for display
+    const displayLanguage = this.formatLanguageForDisplay(language);
+
+    // Determine if this is a large code block - count actual text lines, not HTML
+    const textContent = codeElement?.textContent || preElement.textContent || '';
+    const lineCount = textContent.split('\n').length;
+    const isLargeCode = lineCount > 10 || textContent.length > 500;
 
     this.dialogService.openDialog(
       this.viewContainerRef,
       {
-        title: `${language.toUpperCase()} Code`,
+        title: `${displayLanguage} Code`,
         content: '',
         primaryButton: 'Close',
-        data: { code, language },
+        data: { 
+          code, 
+          language, 
+          isLargeCode,
+          lineCount
+        },
       },
       CodeBlockModalComponent
     );
+  }
+
+  private formatLanguageForDisplay(language: string): string {
+    const languageMap: Record<string, string> = {
+      'js': 'JavaScript',
+      'ts': 'TypeScript', 
+      'javascript': 'JavaScript',
+      'typescript': 'TypeScript',
+      'html': 'HTML',
+      'css': 'CSS',
+      'scss': 'SCSS',
+      'json': 'JSON',
+      'xml': 'XML',
+      'bash': 'Bash',
+      'sh': 'Shell',
+      'cmd': 'Command',
+      'powershell': 'PowerShell',
+      'sql': 'SQL',
+      'python': 'Python',
+      'py': 'Python',
+      'java': 'Java',
+      'c': 'C',
+      'cpp': 'C++',
+      'csharp': 'C#',
+      'php': 'PHP',
+      'ruby': 'Ruby',
+      'go': 'Go',
+      'rust': 'Rust',
+      'swift': 'Swift',
+      'kotlin': 'Kotlin',
+      'dart': 'Dart',
+      'yaml': 'YAML',
+      'yml': 'YAML',
+      'markdown': 'Markdown',
+      'md': 'Markdown',
+      'text': 'Plain Text',
+      'code': 'Code'
+    };
+    
+    return languageMap[language.toLowerCase()] || language.charAt(0).toUpperCase() + language.slice(1);
   }
 
   private addEventsForOpenModalWithCode() {
@@ -103,34 +181,13 @@ export class PostComponent implements OnInit {
         const processedNodes = new Set<Node>();
 
         const processCodeBlocks = () => {
-          const preElements = document.querySelectorAll('pre code[class*="language-"], pre code[class*="hljs"]');
+          const preElements = document.querySelectorAll('pre');
           
-          preElements.forEach((codeElement) => {
-            const preElement = codeElement.parentElement as HTMLElement;
-            if (preElement && !processedNodes.has(preElement)) {
+          preElements.forEach((preElement) => {
+            if (!processedNodes.has(preElement)) {
               processedNodes.add(preElement);
-              
-              // Extract language from class
-              const languageClass = Array.from(codeElement.classList).find(cls => 
-                cls.startsWith('language-') || cls.startsWith('hljs')
-              );
-              const language = languageClass ? languageClass.replace('language-', '').replace('hljs-', '') : 'code';
-              
-              // Set data attribute for styling
-              preElement.setAttribute('data-language', language);
-              preElement.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
+              this.styleCodeBlock(preElement);
               preElement.addEventListener('click', e => this.showCodeModal(e));
-            }
-          });
-
-          // Also handle simple pre elements without specific highlighting
-          const simplePres = document.querySelectorAll('pre:not([data-language])');
-          simplePres.forEach(pre => {
-            if (!processedNodes.has(pre)) {
-              processedNodes.add(pre);
-              pre.setAttribute('data-language', 'text');
-              pre.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
-              pre.addEventListener('click', e => this.showCodeModal(e));
             }
           });
         };

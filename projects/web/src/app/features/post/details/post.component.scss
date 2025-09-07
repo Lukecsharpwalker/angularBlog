@@ -35,7 +35,10 @@
     }
     
     code {
-      @apply bg-tertiary/30 text-primary px-2 py-1 rounded text-sm font-mono;
+      @apply bg-quaternary/60 text-primary px-2 py-1 rounded text-sm font-mono;
+      /* Better contrast for inline code */
+      background: rgba(173, 188, 159, 0.3) !important;
+      color: #383a42 !important;
     }
     
     pre {
@@ -84,18 +87,8 @@
     }
   }
   
-  /* Enhanced code block styling */
-  pre[data-language] {
+  /* Simple code block styling - no custom badges */
+  pre {
     @apply cursor-pointer hover:bg-tertiary/20 transition-all duration-200 relative;
-    
-    &::before {
-      content: attr(data-language);
-      @apply absolute top-2 right-2 text-xs px-2 py-1 bg-secondary text-quaternary rounded uppercase font-bold;
-    }
-    
-    &:hover::after {
-      content: 'Click to expand';
-      @apply absolute bottom-2 right-2 text-xs text-primary/60;
-    }
   }
 }

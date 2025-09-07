@@ -8,7 +8,8 @@
 >
   <div class="absolute inset-0 glass-overlay-dialog"></div>
 
-  <div class="relative max-w-md w-full transform-gpu animate-scale-in perspective-1000"
+  <div class="relative max-w-md w-full transform-gpu animate-scale-in perspective-1000 modal-container"
+       [class.code-modal]="modalConfig()?.title?.includes('Code')"
        (click)="$event.stopPropagation()"
        (keydown)="$event.stopPropagation()"
        tabindex="-1">

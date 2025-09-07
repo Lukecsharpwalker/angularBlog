@@ -1,0 +1,23 @@
+/* Special styling for code modals */
+.modal-container.code-modal {
+  max-width: none;
+  width: auto;
+  min-width: 320px;
+  max-width: 95vw;
+}
+
+/* Mobile responsiveness for code modals */
+@media (max-width: 768px) {
+  .modal-container.code-modal {
+    max-width: 98vw;
+    margin: 0 1vw;
+  }
+}
+
+/* Desktop and large screens - allow code modals to be bigger */
+@media (min-width: 1024px) {
+  .modal-container.code-modal {
+    max-width: 85vw;
+    min-width: 800px;
+  }
+}
