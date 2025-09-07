@@ -47,6 +47,20 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
         color: #f8f8f2 !important;
         scrollbar-width: thin;
         scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        text-align: left;
+      }
+
+      .code-block code {
+        display: block;
+        text-indent: 0 !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+      }
+
+      .code-block code * {
+        text-indent: 0 !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
       }
 
       .modal-code-block {
