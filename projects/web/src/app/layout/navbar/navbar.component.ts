@@ -29,6 +29,7 @@ export class NavbarComponent {
   public readonly isScrolled: WritableSignal<boolean> = signal(false);
   public readonly isMenuOpen: WritableSignal<boolean> = signal(false);
   public readonly navHeight: WritableSignal<number> = signal(0);
+  public readonly searchQuery: WritableSignal<string> = signal('');
 
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
@@ -55,6 +56,10 @@ export class NavbarComponent {
         this.mobileMenu()?.nativeElement.style.setProperty('top', `${this.navHeight()}px`);
       }, 1);
     }
+  }
+
+  clearSearch() {
+    this.searchQuery.set('');
   }
 
   private initializeNavHeight(): void {

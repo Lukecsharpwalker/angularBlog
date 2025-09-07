@@ -3,11 +3,204 @@
 /* Order */
 @layer reset, primeng;
 
-
 /* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 2025 Design Utilities */
+@layer components {
+  /* Glass Morphism Components */
+  .glass-card {
+    @apply bg-glass-100 backdrop-blur-lg border border-glass-200;
+    box-shadow: 0 8px 32px rgba(12, 55, 42, 0.1);
+  }
+
+  /* Dialog-specific glass card - more opaque for better readability */
+  .glass-card-dialog {
+    @apply bg-white/95 backdrop-blur-xl border border-white/30;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .glass-overlay {
+    @apply bg-glass-50 backdrop-blur-md;
+  }
+
+  /* Dialog overlay - darker for better contrast */
+  .glass-overlay-dialog {
+    @apply backdrop-blur-md;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .grain-overlay {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.15) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+
+  /* Kinetic Typography */
+  .kinetic-heading {
+    @apply text-4xl font-bold bg-gradient-to-r from-primary via-accent-neon to-secondary bg-clip-text text-transparent;
+    background-size: 400%;
+    animation: gradient-x 3s ease-in-out infinite;
+  }
+
+  .kinetic-text-lg {
+    @apply text-2xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  /* Interactive Elements */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+    &:hover {
+      box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+    }
+  }
+
+  /* Enhanced Buttons */
+  .btn-primary-modern {
+    @apply relative overflow-hidden transition-all duration-300 transform
+           bg-gradient-to-r from-primary to-secondary text-white font-semibold
+           rounded-xl px-6 py-3 hover:scale-105 hover:shadow-lg;
+    
+    &:hover::before {
+      content: '';
+      @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent;
+      animation: shine 0.6s ease-out;
+    }
+
+    &:active {
+      @apply scale-95;
+      animation: ripple 0.3s ease-out;
+    }
+
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed transform-none hover:scale-100;
+    }
+  }
+
+  .btn-glass {
+    @apply glass-card hover-lift focus:outline-none focus:ring-2 
+           focus:ring-secondary focus:ring-offset-2 px-6 py-3 rounded-xl
+           font-medium transition-all duration-300;
+  }
+
+  /* Bento Grid System */
+  .bento-container {
+    @apply grid gap-4 p-4;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: minmax(200px, auto);
+  }
+
+  .bento-card {
+    @apply glass-card rounded-xl p-6 hover-lift;
+    grid-row: span var(--row-span, 1);
+    grid-column: span var(--col-span, 1);
+  }
+
+  .bento-wide { --col-span: 2; }
+  .bento-tall { --row-span: 2; }
+  .bento-large { --col-span: 2; --row-span: 2; }
+
+  @media (max-width: 768px) {
+    .bento-wide, .bento-large { --col-span: 1; }
+  }
+
+  /* 3D Transforms */
+  .perspective-1000 { perspective: 1000px; }
+  .transform-gpu { transform: translate3d(0, 0, 0); }
+  .rotate-y-5 { transform: rotateY(5deg); }
+  .translate-z-4 { transform: translateZ(16px); }
+
+  /* Focus Management */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 
+           focus-visible:ring-secondary focus-visible:ring-offset-2
+           focus-visible:ring-offset-white;
+  }
+
+  /* Enhanced Input Fields */
+  .input-modern {
+    @apply w-full px-4 py-3 bg-glass-50 border border-glass-200 
+           rounded-xl focus:outline-none focus:ring-2 
+           focus:ring-secondary focus:border-transparent
+           transition-all duration-300 placeholder-transparent
+           hover:border-secondary/50;
+  }
+
+  .input-label-modern {
+    @apply absolute left-4 -top-2.5 text-sm text-gray-600 
+           transition-all duration-300 bg-white px-1;
+  }
+
+  /* Navbar Neon Hover Effect */
+  .navbar-neon-hover {
+    @apply relative transition-all duration-300 ease-in-out;
+    
+    &:hover {
+      box-shadow: 
+        0 8px 32px rgba(12, 55, 42, 0.15),
+        0 2px 8px rgba(67, 104, 80, 0.2);
+    }
+
+    &:hover::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(67, 104, 80, 0.6), 
+        rgba(255, 107, 53, 0.4), 
+        rgba(67, 104, 80, 0.6), 
+        transparent
+      );
+      border-radius: 0 0 1rem 1rem;
+      animation: subtle-glow 3s ease-in-out infinite;
+      z-index: -1;
+    }
+  }
+
+  @keyframes subtle-glow {
+    0%, 100% { 
+      opacity: 0.4;
+    }
+    50% { 
+      opacity: 0.7;
+    }
+  }
+}
+
+/* Accessibility & Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .kinetic-heading,
+  .hover-lift,
+  .animate-pulse,
+  .animate-bounce-slow {
+    animation: none;
+  }
+  
+  .transition-all {
+    transition: none;
+  }
+
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .glass-card {
+    @apply bg-white border-2 border-gray-800;
+  }
+  
+  .text-gray-600 {
+    @apply text-gray-900;
+  }
+}
 
 h1 {
   @apply text-3xl font-bold mt-4 mb-1;
@@ -65,7 +258,37 @@ h4 {
 
 
 body {
-  @apply bg-gradient-to-br from-quaternary/40 via-[#7A9E7E]/50 to-primary min-h-screen;
+  position: relative;
+  background: 
+    /* Main gradient background */
+    linear-gradient(135deg, #FBFADA66 0%, #7A9E7E80 50%, #12372A 100%);
+  min-height: 100vh;
+}
+
+/* Star grid background effect - much smaller with glow */
+.bg-stars {
+  z-index: 1;
+  background: 
+    radial-gradient(circle, rgba(255, 255, 255, 1) 0.05px, rgba(255, 255, 255, 0.6) 0.1px, rgba(255, 255, 255, 0.2) 0.2px, transparent 0.3px);
+  background-size: 25px 25px;
+  filter: blur(0.1px) drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.8));
+}
+
+
+/* Gentle floating animation for bubbles */
+@keyframes float-bubbles {
+  0%, 100% { 
+    transform: translate(0, 0);
+  }
+  25% { 
+    transform: translate(10px, -15px);
+  }
+  50% { 
+    transform: translate(-8px, 10px);
+  }
+  75% { 
+    transform: translate(5px, -5px);
+  }
 }
 
 * {

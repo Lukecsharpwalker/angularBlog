@@ -1,15 +1,12 @@
 <nav
   #navbar
   id="navbar"
-  class="fixed top-0 left-0 right-0 z-10 flex items-center justify-center px-4 py-2 bg-white/70 backdrop-blur-md shadow-lg transition-all duration-500 ease-in-out <!-- Mobile styles (default) --> w-full rounded-none <!-- Medium+ styles --> md:top-5 md:w-[90%] md:mx-auto md:rounded-[2rem] lg:w-[80%] xl:w-[68%]"
+  class="navbar-neon-hover fixed top-0 left-0 right-0 z-10 flex items-center justify-center px-4 py-2 bg-white/70 backdrop-blur-md shadow-lg transition-all duration-500 ease-in-out <!-- Mobile styles (default) --> w-full rounded-none <!-- Medium+ styles --> md:top-5 md:w-[90%] md:mx-auto md:rounded-[2rem] lg:w-[80%] xl:w-[68%]"
   [class.scrolled]="isScrolled()"
 >
   <div class="flex-1 flex items-center justify-between">
     <div class="flex items-center">
-      <button
-        class="md:hidden mr-2 text-gray-700 focus:outline-none"
-        (click)="toggleMenu()"
-      >
+      <button class="md:hidden mr-2 text-gray-700 focus:outline-none" (click)="toggleMenu()">
         <svg
           class="w-6 h-6"
           fill="none"
@@ -26,31 +23,33 @@
       <div class="hidden md:block">
         <input
           type="text"
-          placeholder="Search..."
-          class="input input-success border-0 max-w-xs rounded-full"
+          placeholder="Search posts..."
+          class="px-4 py-2 bg-white/80 backdrop-blur-sm border-2 border-gray-200/60 
+                 rounded-full w-64 focus:outline-none focus:ring-2 focus:ring-primary/50 
+                 focus:border-primary/60 transition-all duration-300 text-sm 
+                 placeholder-gray-400 hover:border-gray-300/80"
         />
       </div>
     </div>
 
-    <div
-      class="flex items-center cursor-pointer text-center mx-2"
-      [routerLink]="['/']"
-    >
-      <img src="logo.png" alt="Logo" class="h-12 md:h-16 mr-2"/>
-      <div>
-        <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
-        <h2 class="text-xs sm:text-sm mt-0 pt-0">
-          Bring the fun back to coding
-        </h2>
+    <div class="flex-1 flex justify-center">
+      <div class="flex items-center cursor-pointer text-center" [routerLink]="['/']">
+        <div>
+          <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
+          <h2 class="text-xs sm:text-sm mt-0 pt-0">Bring the fun back to coding</h2>
+        </div>
       </div>
     </div>
 
     <div class="flex items-center">
-      <button
-        class="hidden md:inline-block btn btn--secondary border-0 ml-2"
+      <button 
+        class="hidden md:inline-block bg-primary hover:bg-primary/90 text-white 
+               font-medium px-6 py-2 rounded-full transition-all duration-300
+               focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2
+               transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md"
         (click)="signIn()"
       >
-        Login
+        Sign In
       </button>
     </div>
   </div>
@@ -63,17 +62,21 @@
       <div class="flex flex-col items-start space-y-4">
         <input
           type="text"
-          placeholder="Search..."
-          class="shadow-md input input-success border-0 w-full rounded-full outline outline-1  outline-primary"
+          placeholder="Search posts..."
+          class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl
+                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary 
+                 transition-all duration-300 text-gray-900 placeholder-gray-400"
         />
         <button
-          class="shadow-md btn btn--secondary border-0 w-full outline outline-1 outline-primary"
+          class="w-full bg-primary hover:bg-primary/90 text-white font-medium 
+                 py-3 px-4 rounded-xl transition-all duration-300
+                 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
+                 transform hover:scale-[1.02] active:scale-[0.98]"
           (click)="signIn()"
         >
-          Login
+          Sign In
         </button>
       </div>
     </div>
   }
-
 </nav>
