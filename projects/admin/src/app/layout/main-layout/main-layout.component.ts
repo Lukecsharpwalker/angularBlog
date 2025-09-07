@@ -1,22 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'admin-main-layout',
   standalone: true,
-  imports: [RouterOutlet],
-  template: `
-    <main class="admin-main">
-      <router-outlet />
-    </main>
-  `,
-  styles: [
-    `
-      .admin-main {
-        min-height: 100vh;
-        padding: 1rem;
-      }
-    `,
-  ],
+  imports: [RouterOutlet, NavbarComponent],
+  templateUrl: './main-layout.component.html',
 })
 export class MainLayoutComponent {}

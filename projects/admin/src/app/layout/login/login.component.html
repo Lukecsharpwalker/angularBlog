@@ -1,135 +1,199 @@
-<div class="admin-login-layout">
-  <div class="admin-login-container">
-    <!-- Header Section -->
-    <header class="admin-header">
-      <div class="brand-section">
-        <h1 class="brand-title">angular.fun</h1>
-        <p class="brand-subtitle">Administrative Panel</p>
-      </div>
-    </header>
-
-    <!-- Main Content Grid -->
-    <main class="admin-main">
-      <!-- Left Panel - Information -->
-      <aside class="admin-sidebar">
-        <div class="info-panel">
-          <div class="panel-header">
-            <h2 class="panel-title">Content Management System</h2>
+<div class="min-h-screen bg-gradient-to-br from-quaternary/20 via-white to-tertiary/20 flex items-center justify-center p-4">
+  
+  <div class="w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+    
+    <div class="order-2 lg:order-1 space-y-12">
+      <div class="text-center lg:text-left space-y-4">
+        <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-tertiary/30 backdrop-blur-sm">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center">
+            <span class="text-white text-lg font-bold">A</span>
           </div>
-          
-          <div class="features-grid">
-            <div class="feature-card">
-              <h3 class="feature-title">Blog Management</h3>
-              <p class="feature-description">Create, edit, and publish blog posts with rich content editor</p>
+          <div>
+            <h1 class="text-2xl font-black text-primary leading-none">angular.fun</h1>
+            <p class="text-xs text-secondary/70 leading-none">Administrative Panel</p>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <h2 class="text-4xl lg:text-5xl font-black text-primary leading-tight">
+            <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Content Management</span>
+          </h2>
+          <p class="text-xl text-secondary/80">Powerful tools for creative minds</p>
+        </div>
+      </div>
+      
+      <div class="grid gap-6">
+        <div class="group bg-white/60 backdrop-blur-xl border border-tertiary/20 rounded-3xl p-8 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/80">
+          <div class="flex items-start gap-6">
+            <div class="w-14 h-14 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <span class="text-2xl">📝</span>
             </div>
-            
-            <div class="feature-card">
-              <h3 class="feature-title">Analytics Dashboard</h3>
-              <p class="feature-description">Monitor site performance and user engagement metrics</p>
-            </div>
-            
-            <div class="feature-card">
-              <h3 class="feature-title">User Management</h3>
-              <p class="feature-description">Manage user accounts, roles, and permissions</p>
+            <div class="space-y-2">
+              <h3 class="text-xl font-bold text-primary">Blog Management</h3>
+              <p class="text-secondary/70">Create, edit, and publish blog posts with rich content editor and advanced formatting</p>
             </div>
           </div>
         </div>
-      </aside>
-
-      <!-- Right Panel - Login Form -->
-      <section class="admin-form-section">
-        <div class="form-container">
-          <div class="form-header">
-            <h2 class="form-title">Sign In</h2>
-            <p class="form-subtitle">Access your admin dashboard</p>
+        
+        <div class="group bg-white/60 backdrop-blur-xl border border-tertiary/20 rounded-3xl p-8 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/80">
+          <div class="flex items-start gap-6">
+            <div class="w-14 h-14 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <span class="text-2xl">📊</span>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xl font-bold text-primary">Analytics Dashboard</h3>
+              <p class="text-secondary/70">Monitor site performance, user engagement metrics, and content analytics</p>
+            </div>
           </div>
+        </div>
+        
+        <div class="group bg-white/60 backdrop-blur-xl border border-tertiary/20 rounded-3xl p-8 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/80">
+          <div class="flex items-start gap-6">
+            <div class="w-14 h-14 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <span class="text-2xl">👥</span>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-xl font-bold text-primary">User Management</h3>
+              <p class="text-secondary/70">Manage user accounts, roles, permissions, and access control</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <!-- Login Form -->
-          <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="form-grid">
-              <!-- Email Field -->
-              <div class="input-group">
-                <label for="email" class="input-label">
+    <div class="order-1 lg:order-2">
+      <div class="max-w-md mx-auto space-y-8">
+        
+        <div class="text-center space-y-4">
+          <div class="w-20 h-20 mx-auto bg-gradient-to-r from-primary to-secondary rounded-3xl flex items-center justify-center shadow-2xl">
+            <span class="text-white text-3xl">🔐</span>
+          </div>
+          <div class="space-y-2">
+            <h2 class="text-3xl font-black text-primary">Welcome Back</h2>
+            <p class="text-secondary/70 text-lg">Access your admin dashboard</p>
+          </div>
+        </div>
+
+        <div class="bg-white/70 backdrop-blur-xl border border-tertiary/20 rounded-3xl shadow-2xl overflow-hidden">
+          <div class="p-8 space-y-8">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+              
+              <div class="space-y-3">
+                <label for="email" class="block text-sm font-bold text-primary/90 uppercase tracking-wide">
                   Email Address
                 </label>
-                <input
-                  id="email"
-                  formControlName="email"
-                  type="email"
-                  autocomplete="email"
-                  class="form-input"
-                  placeholder="admin@angular.fun"
-                  [class.input-error]="isSubmitted && form.controls.email.invalid"
-                />
+                <div class="relative">
+                  <input
+                    id="email"
+                    formControlName="email"
+                    type="email"
+                    autocomplete="email"
+                    class="w-full px-6 py-4 text-lg bg-white/60 backdrop-blur-sm border-2 border-tertiary/30 rounded-2xl text-primary placeholder:text-secondary/40 transition-all duration-300 focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(18,55,42,0.1)] focus:bg-white"
+                    [class.border-red-400]="isSubmitted && form.controls.email.invalid"
+                    [class.focus:border-red-400]="isSubmitted && form.controls.email.invalid"
+                    [class.focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]="isSubmitted && form.controls.email.invalid"
+                    placeholder="admin@angular.fun"
+                  />
+                  <div class="absolute inset-x-0 -bottom-1 h-1 bg-gradient-to-r from-primary to-secondary rounded-full opacity-0 scale-x-0 transition-all duration-300 peer-focus:opacity-100 peer-focus:scale-x-100"></div>
+                </div>
                 @if (isSubmitted && form.controls.email.errors?.['required']) {
-                  <div class="error-message">Email is required</div>
+                  <div class="flex items-center gap-2 text-red-500 text-sm bg-red-50 px-4 py-2 rounded-xl">
+                    <span>⚠️</span>
+                    <span>Email is required</span>
+                  </div>
                 }
                 @if (isSubmitted && form.controls.email.errors?.['email']) {
-                  <div class="error-message">Please enter a valid email address</div>
+                  <div class="flex items-center gap-2 text-red-500 text-sm bg-red-50 px-4 py-2 rounded-xl">
+                    <span>⚠️</span>
+                    <span>Please enter a valid email address</span>
+                  </div>
                 }
               </div>
 
-              <!-- Password Field -->
-              <div class="input-group">
-                <label for="password" class="input-label">
+              <div class="space-y-3">
+                <label for="password" class="block text-sm font-bold text-primary/90 uppercase tracking-wide">
                   Password
                 </label>
-                <input
-                  id="password"
-                  formControlName="password"
-                  type="password"
-                  autocomplete="current-password"
-                  class="form-input"
-                  placeholder="Enter your password"
-                  [class.input-error]="isSubmitted && form.controls.password.invalid"
-                />
+                <div class="relative">
+                  <input
+                    id="password"
+                    formControlName="password"
+                    type="password"
+                    autocomplete="current-password"
+                    class="w-full px-6 py-4 text-lg bg-white/60 backdrop-blur-sm border-2 border-tertiary/30 rounded-2xl text-primary placeholder:text-secondary/40 transition-all duration-300 focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(18,55,42,0.1)] focus:bg-white"
+                    [class.border-red-400]="isSubmitted && form.controls.password.invalid"
+                    [class.focus:border-red-400]="isSubmitted && form.controls.password.invalid"
+                    [class.focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]="isSubmitted && form.controls.password.invalid"
+                    placeholder="Enter your password"
+                  />
+                  <div class="absolute inset-x-0 -bottom-1 h-1 bg-gradient-to-r from-primary to-secondary rounded-full opacity-0 scale-x-0 transition-all duration-300 peer-focus:opacity-100 peer-focus:scale-x-100"></div>
+                </div>
                 @if (isSubmitted && form.controls.password.errors?.['required']) {
-                  <div class="error-message">Password is required</div>
+                  <div class="flex items-center gap-2 text-red-500 text-sm bg-red-50 px-4 py-2 rounded-xl">
+                    <span>⚠️</span>
+                    <span>Password is required</span>
+                  </div>
                 }
               </div>
 
-              <!-- Error Message -->
               @if (authStore.error()) {
-                <div class="login-error">
+                <div class="bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-2xl p-4 text-red-600 text-center font-medium">
                   {{ authStore.error() }}
                 </div>
               }
 
-              <!-- Form Actions -->
-              <div class="form-actions">
+              <div class="space-y-4 pt-4">
                 <button
                   type="submit"
                   [disabled]="authStore.loading()"
-                  class="btn-primary"
+                  class="group relative overflow-hidden w-full px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
                 >
+                  <div class="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   @if (authStore.loading()) {
-                    <span class="loading-text">Signing in...</span>
+                    <div class="relative flex items-center gap-3">
+                      <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Signing in...</span>
+                    </div>
                   } @else {
-                    Sign In
+                    <div class="relative flex items-center gap-3">
+                      <span class="text-xl group-hover:scale-110 transition-transform duration-300">🚀</span>
+                      <span>Sign In</span>
+                    </div>
                   }
                 </button>
 
-                <div class="form-divider">
-                  <span>Or</span>
+                <div class="relative flex items-center gap-4 py-2">
+                  <div class="flex-1 h-px bg-gradient-to-r from-transparent via-tertiary/40 to-transparent"></div>
+                  <span class="text-sm font-medium text-secondary/60 bg-white/60 px-4 py-2 rounded-full border border-tertiary/20">Or continue with</span>
+                  <div class="flex-1 h-px bg-gradient-to-r from-transparent via-tertiary/40 to-transparent"></div>
                 </div>
 
                 <button
                   (click)="onGoogleLogin()"
                   [disabled]="authStore.loading()"
-                  class="btn-secondary"
                   type="button"
+                  class="group w-full px-8 py-4 bg-white/60 hover:bg-white text-secondary border-2 border-tertiary/30 hover:border-secondary/50 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 backdrop-blur-sm"
                 >
                   @if (authStore.loading()) {
-                    Signing in...
+                    <div class="flex items-center gap-3">
+                      <div class="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                      <span>Signing in...</span>
+                    </div>
                   } @else {
-                    Continue with Google
+                    <div class="flex items-center gap-3">
+                      <span class="text-xl group-hover:scale-110 transition-transform duration-300">🔍</span>
+                      <span>Continue with Google</span>
+                    </div>
                   }
                 </button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </section>
-    </main>
+
+        <div class="text-center text-sm text-secondary/60">
+          <p>Secure access to your content management system</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

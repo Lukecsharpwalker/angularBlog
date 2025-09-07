@@ -10,7 +10,6 @@ import { LoginFormControls } from './login.interface';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
@@ -35,6 +34,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authStore.clearError();
+    this.authStore.resetLoadingState();
     this.authStore.init();
   }
 

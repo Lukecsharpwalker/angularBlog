@@ -75,6 +75,8 @@ export const AuthStore = signalStore(
       },
 
       clearError: () => patchState(store, { error: null }),
+      
+      resetLoadingState: () => patchState(store, { loading: false }),
 
       whenReady: (): Promise<void> =>
         new Promise<void>((resolve: () => void) => {

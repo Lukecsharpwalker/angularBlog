@@ -1,129 +1,198 @@
-<div class="min-h-screen bg-[#fbfada]/20 flex flex-col">
-  <header class="bg-white border-b-2 border-[#adbc9f]/20 px-6 md:px-8 py-6 sticky top-0 z-[100]">
-    <div
-      class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0"
-    >
-      <div>
-        <h1 class="text-3xl font-bold text-[#12372a] mb-1 leading-tight">Create New Post</h1>
-        <p class="text-base text-[#436850] m-0">Write and publish your blog content</p>
+@if (addPostStore.loading()) {
+  <div class="fixed inset-0 bg-white/60 backdrop-blur-lg z-[9999] flex items-center justify-center">
+    <div class="bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-tertiary/20 flex flex-col items-center gap-6 max-w-sm mx-4">
+      <div class="relative">
+        <div class="w-16 h-16 border-4 border-tertiary/30 rounded-full"></div>
+        <div class="absolute inset-0 w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
-      <div>
-        <div class="px-4 py-2 bg-[#adbc9f]/20 rounded-full border border-[#adbc9f]/30">
-          @if (!isEditMode()) {
-            <span class="text-sm font-semibold text-[#436850]">New Post</span>
-          } @else {
-            <span class="text-sm font-semibold text-[#436850]">Editing Post</span>
-          }
+      <div class="text-center">
+        <h3 class="text-xl font-bold text-primary mb-2">Loading Post</h3>
+        <p class="text-secondary/70">Please wait while we fetch your content...</p>
+      </div>
+    </div>
+  </div>
+}
+<div class="min-h-screen bg-gradient-to-br from-quaternary/5 via-tertiary/5 to-quaternary/10">
+  <header class="px-6 pt-6 pb-2">
+    <div class="max-w-6xl mx-auto">
+      <div class="bg-white/80 backdrop-blur-xl border border-tertiary/20 rounded-3xl shadow-xl p-8">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+          <div class="space-y-2">
+            <h1 class="text-4xl font-black text-primary tracking-tight">
+              @if (isEditMode()) {
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Edit Post</span>
+              } @else {
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Create New Post</span>
+              }
+            </h1>
+            <p class="text-secondary/80 text-lg">
+              @if (isEditMode()) {
+                Polish your content to perfection
+              } @else {
+                Share your thoughts with the world
+              }
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <div class="px-6 py-3 bg-gradient-to-r from-tertiary/20 to-quaternary/40 rounded-2xl border border-tertiary/30 backdrop-blur-sm">
+              @if (isEditMode()) {
+                <span class="text-sm font-bold text-secondary flex items-center gap-2">
+                  <span class="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></span>
+                  Editing Mode
+                </span>
+              } @else {
+                <span class="text-sm font-bold text-secondary flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  New Draft
+                </span>
+              }
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="flex-1 px-4 md:px-8 py-8 pb-32">
-    <form class="max-w-6xl mx-auto grid gap-8" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
-      <section
-        class="bg-white rounded-xl border border-[#adbc9f]/20 shadow-[0_2px_8px_rgba(18,55,42,0.06)]"
-      >
-        <div
-          class="px-6 md:px-8 py-6 border-b border-[#adbc9f]/20 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-0"
-        >
-          <h2 class="text-xl font-semibold text-[#12372a] m-0">Post Details</h2>
+  <main class="px-6 pb-32">
+    <form class="max-w-6xl mx-auto space-y-8" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+      
+      <div class="bg-white/70 backdrop-blur-xl border border-tertiary/20 rounded-3xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-primary/5 to-secondary/5 px-8 py-6 border-b border-tertiary/20">
+          <h2 class="text-2xl font-bold text-primary flex items-center gap-3">
+            <span class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center">
+              <span class="text-white text-sm">📝</span>
+            </span>
+            Post Details
+          </h2>
         </div>
 
-        <div class="p-6 md:p-8 grid gap-8">
-          <div class="flex flex-col gap-3 col-span-full">
-            <label for="title" class="text-sm font-semibold text-[#12372a] m-0">Title</label>
-            <input
-              id="title"
-              type="text"
-              formControlName="title"
-              class="px-4 md:px-5 py-4 md:py-4 border-2 border-[#adbc9f]/30 rounded-lg text-xl font-semibold bg-white text-[#12372a] transition-all duration-200 focus:outline-none focus:border-[#12372a] focus:shadow-[0_0_0_3px_rgba(18,55,42,0.1)] placeholder:text-[#436850]/50"
-              placeholder="Enter your post title..."
-              required
-            />
-            @if (blogForm.controls.title.invalid &&
-            (blogForm.controls.title.dirty || blogForm.controls.title.touched)) {
-              @if (blogForm.controls.title.errors?.['required']) {
-                <div class="text-[0.8125rem] text-red-500 mt-1">Title is required</div>
-              }
+        <div class="p-8 space-y-8">
+          <div class="space-y-3">
+            <label for="title" class="block text-sm font-bold text-primary/90 uppercase tracking-wide">Post Title</label>
+            <div class="relative">
+              <input
+                id="title"
+                type="text"
+                formControlName="title"
+                class="w-full px-6 py-5 text-2xl font-bold bg-white/60 backdrop-blur-sm border-2 border-tertiary/30 rounded-2xl text-primary placeholder:text-secondary/40 transition-all duration-300 focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(18,55,42,0.1)] focus:bg-white"
+                placeholder="Enter an inspiring title..."
+              />
+              <div class="absolute inset-x-0 -bottom-1 h-1 bg-gradient-to-r from-primary to-secondary rounded-full opacity-0 scale-x-0 transition-all duration-300 peer-focus:opacity-100 peer-focus:scale-x-100"></div>
+            </div>
+            @if (blogForm.controls.title.invalid && (blogForm.controls.title.dirty || blogForm.controls.title.touched)) {
+              <div class="flex items-center gap-2 text-red-500 text-sm bg-red-50 px-4 py-2 rounded-xl">
+                <span>⚠️</span>
+                <span>A captivating title is required</span>
+              </div>
             }
           </div>
 
-          <div class="flex flex-col gap-3 col-span-full">
-            <span class="text-sm font-semibold text-[#12372a] m-0">Tags & Categories</span>
-            <div class="p-4 border-2 border-[#adbc9f]/20 rounded-lg bg-[#fbfada]/30 min-h-[3rem]">
+          <div class="space-y-3">
+            <label class="block text-sm font-bold text-primary/90 uppercase tracking-wide">Tags & Categories</label>
+            <div class="p-6 bg-gradient-to-br from-quaternary/20 to-tertiary/20 border-2 border-tertiary/20 rounded-2xl min-h-[4rem] backdrop-blur-sm">
               <admin-tag-multi-select
                 [allTags]="addPostStore.availableTags()"
                 formControlName="tags"
-                class="block"
               />
             </div>
-            @if (blogForm.controls.tags.invalid &&
-            (blogForm.controls.tags.dirty || blogForm.controls.tags.touched)) {
-              @if (blogForm.controls.tags.errors?.['required']) {
-                <div class="text-[0.8125rem] text-red-500 mt-1">Please select at least one tag</div>
-              }
+            @if (blogForm.controls.tags.invalid && (blogForm.controls.tags.dirty || blogForm.controls.tags.touched)) {
+              <div class="flex items-center gap-2 text-red-500 text-sm bg-red-50 px-4 py-2 rounded-xl">
+                <span>⚠️</span>
+                <span>Please select at least one tag</span>
+              </div>
             }
           </div>
         </div>
-      </section>
+      </div>
 
-      <section
-        class="bg-white rounded-xl border border-[#adbc9f]/20 shadow-[0_2px_8px_rgba(18,55,42,0.06)]"
-      >
-        <div
-          class="px-6 md:px-8 py-6 border-b border-[#adbc9f]/20 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-0"
-        >
-          <h2 class="text-xl font-semibold text-[#12372a] m-0">Content Editor</h2>
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="px-4 py-2 bg-[#436850]/10 text-[#436850] border border-[#436850]/20 rounded-md text-sm font-medium cursor-pointer transition-all duration-200 hover:bg-[#436850]/20 hover:border-[#436850]/30"
-              (click)="insertImage()"
-            >
-              Add Image
-            </button>
-          </div>
+      <div class="bg-white/70 backdrop-blur-xl border border-tertiary/20 rounded-3xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-secondary/5 to-primary/5 px-8 py-6 border-b border-tertiary/20 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <h2 class="text-2xl font-bold text-primary flex items-center gap-3">
+            <span class="w-8 h-8 bg-gradient-to-r from-secondary to-primary rounded-xl flex items-center justify-center">
+              <span class="text-white text-sm">✍️</span>
+            </span>
+            Content Editor
+          </h2>
+          
+          <button
+            type="button"
+            class="group px-6 py-3 bg-gradient-to-r from-secondary/10 to-primary/10 hover:from-secondary/20 hover:to-primary/20 text-secondary border border-secondary/20 hover:border-secondary/40 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-3"
+            (click)="insertImage()"
+            [disabled]="addPostStore.submitting()"
+          >
+            <span class="text-lg group-hover:scale-110 transition-transform duration-300">🖼️</span>
+            <span>Add Image</span>
+          </button>
         </div>
 
-        <div class="p-0">
+        <div class="overflow-hidden rounded-b-3xl">
           <quill-editor
             #quill
             formControlName="content"
-            class="post-editor border-none rounded-b-xl"
+            class="post-editor border-none min-h-[400px]"
           />
         </div>
-      </section>
+      </div>
+    </form>
+  </main>
 
-      <section
-        class="fixed bottom-0 left-0 right-0 bg-white border-t border-[#adbc9f]/20 shadow-[0_-2px_8px_rgba(18,55,42,0.06)] z-[200] p-6 md:p-8"
-      >
-        <div
-          class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center max-w-6xl mx-auto gap-4 lg:gap-0"
-        >
-          <div class="flex flex-col lg:flex-row gap-4">
+  <div class="fixed bottom-6 left-6 right-6 z-50">
+    <div class="max-w-6xl mx-auto">
+      <div class="bg-white/90 backdrop-blur-xl border border-tertiary/20 rounded-3xl shadow-2xl p-6">
+        <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+          
+          <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
             <button
               type="submit"
-              class="px-6 py-3.5 bg-[#12372a] text-white border-none rounded-lg text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#12372a]/90 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(18,55,42,0.25)] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              [disabled]="blogForm.invalid"
+              class="group relative overflow-hidden px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 min-w-[180px]"
+              [disabled]="blogForm.invalid || addPostStore.submitting()"
+              (click)="onSubmit(false)"
             >
-              Publish Post
+              <div class="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              @if (addPostStore.submitting()) {
+                <div class="relative flex items-center gap-3">
+                  <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Publishing...</span>
+                </div>
+              } @else {
+                <div class="relative flex items-center gap-3">
+                  <span class="text-xl group-hover:scale-110 transition-transform duration-300">🚀</span>
+                  @if (isEditMode()) {
+                    <span>Update Post</span>
+                  } @else {
+                    <span>Publish Post</span>
+                  }
+                </div>
+              }
             </button>
 
             <button
               type="button"
-              class="px-6 py-3.5 bg-white text-[#436850] border-2 border-[#adbc9f]/30 rounded-lg text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#fbfada]/30 hover:border-[#436850]/40 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(67,104,80,0.15)]"
+              class="group px-8 py-4 bg-white/60 hover:bg-white text-secondary border-2 border-tertiary/30 hover:border-secondary/50 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 min-w-[180px] backdrop-blur-sm"
               (click)="onSubmit(true)"
+              [disabled]="blogForm.invalid || addPostStore.submitting()"
             >
-              Save as Draft
+              @if (addPostStore.submitting()) {
+                <div class="flex items-center gap-3">
+                  <div class="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                  <span>Saving...</span>
+                </div>
+              } @else {
+                <div class="flex items-center gap-3">
+                  <span class="text-xl group-hover:scale-110 transition-transform duration-300">💾</span>
+                  <span>Save Draft</span>
+                </div>
+              }
             </button>
           </div>
 
-          <div class="text-center lg:text-left">
-            <span class="text-sm text-[#436850]/60 italic">Auto-saved 2 minutes ago</span>
+          <div class="flex items-center gap-2 text-secondary/60 text-sm">
+            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            <span class="italic">All changes saved</span>
           </div>
         </div>
-      </section>
-    </form>
-  </main>
+      </div>
+    </div>
+  </div>
 </div>

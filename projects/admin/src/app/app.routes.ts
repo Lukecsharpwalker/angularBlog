@@ -12,9 +12,15 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/login/login.component').then(m => m.LoginComponent),
   },
   {
-    path: 'posts',
+    path: '',
+    loadComponent: () => import('./layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
     canMatch: [authAdminGuard],
-    loadChildren: () => import('./features/add-post/add-post.routes'),
+    children: [
+      {
+        path: 'posts',
+        loadChildren: () => import('./features/add-post/add-post.routes'),
+      },
+    ],
   },
   {
     path: '**',
