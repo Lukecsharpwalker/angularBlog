@@ -1,20 +1,73 @@
-<div class="comments-section bg-gray-50 p-4 rounded-2xl shadow-2xl">
-  <h2 class="text-xl font-semibold mb-4">Comments</h2>
-
+<div class="p-6">
   @for (comment of comments(); track comment.id) {
-    <div class="comment mb-4 p-4 bg-tertiary bg-opacity-20 rounded-lg shadow-sm flex justify-between items-center">
-      <div>
-        <p class="text-gray-800 mb-2">{{ comment.content }}</p>
-        <p class="text-sm text-gray-600">- {{ comment.author?.username }}</p>
+    <div class="comment group mb-6 last:mb-0">
+      <!-- Comment Card with Subtle Glass Effect -->
+      <div class="backdrop-blur-sm bg-white/60 hover:bg-white/80 border border-white/30 rounded-lg p-5 transition-all duration-300 hover:shadow-md">
+        <!-- Comment Content -->
+        <div class="flex justify-between items-start gap-4">
+          <div class="flex-1">
+            <!-- Comment Text -->
+            <p class="text-primary mb-3 leading-relaxed font-medium">
+              {{ comment.content }}
+            </p>
+            
+            <!-- Author Info -->
+            <div class="flex items-center gap-3 text-sm">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-secondary to-tertiary rounded-full flex items-center justify-center text-white font-semibold text-xs shadow-sm">
+                  {{ comment.author?.username?.charAt(0)?.toUpperCase() }}
+                </div>
+                <span class="font-medium text-primary">{{ comment.author?.username }}</span>
+              </div>
+              <span class="text-primary/40">•</span>
+              <time class="text-primary/60" [title]="comment.created_at || ''">
+                {{ comment.created_at ? getRelativeTime(comment.created_at) : 'Unknown time' }}
+              </time>
+            </div>
+          </div>
+          
+          <!-- Admin Delete Button -->
+          <button 
+            *sharedHasRole="'Admin'" 
+            (click)="deleteComment(comment.id!)" 
+            class="opacity-0 group-hover:opacity-100 btn btn-ghost btn-circle btn-sm text-primary/40 hover:text-red-500 hover:bg-red-50/80 transition-all duration-200"
+            aria-label="Delete comment"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Subtle interaction hint -->
+        <div class="mt-4 pt-3 border-t border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div class="flex items-center gap-4">
+            <button class="flex items-center gap-1 text-xs text-primary/50 hover:text-secondary transition-colors">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+              Like
+            </button>
+            <button class="flex items-center gap-1 text-xs text-primary/50 hover:text-secondary transition-colors">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+              Reply
+            </button>
+          </div>
+        </div>
       </div>
-      <button *sharedHasRole="'Admin'" (click)="deleteComment(comment.id!)" class="text-red-500 hover:text-red-700">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
     </div>
   } @empty {
-    <p class="text-gray-800">No comments yet.</p>
+    <!-- Empty State -->
+    <div class="text-center py-12 backdrop-blur-sm bg-white/60 rounded-lg border border-white/30">
+      <div class="w-16 h-16 bg-gradient-to-br from-secondary/20 to-tertiary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-primary mb-2">No comments yet</h3>
+      <p class="text-primary/60">Be the first to share your thoughts on this article.</p>
+    </div>
   }
-
 </div>

@@ -1,22 +1,58 @@
-<div class="mx-auto p-4 pt-5 bg-white shadow-md rounded-lg">
-  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Wht do you think?</h2>
-  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-    <div class="mb-4">
-      <textarea
-        id="content"
-        formControlName="content"
-        class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-950 focus:border-transparent"
-        rows="5"
-        placeholder="Write your comment here..."
-      ></textarea>
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+  <!-- Comment Input -->
+  <div class="mb-4">
+    <textarea
+      id="content"
+      formControlName="content"
+      class="w-full p-4 bg-white/90 backdrop-blur-sm border border-white/40 rounded-lg text-primary placeholder-primary/50 focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary focus:bg-white transition-all duration-200 resize-none shadow-sm"
+      rows="4"
+      placeholder="Share your thoughts about this article..."
+      [class.border-red-400]="commentForm.get('content')?.touched && commentForm.get('content')?.invalid"
+    ></textarea>
+    
+    <!-- Character counter and validation -->
+    <div class="flex justify-between items-center mt-2">
+      <div class="flex items-center gap-2">
+        <div class="text-xs text-primary/50">
+          {{ commentForm.get('content')?.value?.length || 0 }}/500 characters
+        </div>
+        @if (commentForm.get('content')?.valid && commentForm.get('content')?.value?.length > 0) {
+          <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+        }
+      </div>
+      
+      <!-- Validation Message -->
+      @if (commentForm.get('content')?.touched && commentForm.get('content')?.errors) {
+        <div class="text-sm text-red-500 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          Comment is required
+        </div>
+      }
     </div>
-    <div class="flex justify-end">
-      <button
-        class="btn btn--primary"
-        [disabled]="commentForm.invalid"
-      >
-        Submit
-      </button>
-    </div>
-  </form>
-</div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="flex justify-end">
+    <button
+      type="submit"
+      class="btn bg-gradient-to-r from-secondary to-tertiary text-white hover:from-primary hover:to-secondary disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all duration-200 px-6"
+      [disabled]="commentForm.invalid || isSubmitting()"
+    >
+      @if (isSubmitting()) {
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          <span>Publishing...</span>
+        </div>
+      } @else {
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
+          Publish Comment
+        </div>
+      }
+    </button>
+  </div>
+</form>

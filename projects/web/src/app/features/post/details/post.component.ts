@@ -11,12 +11,14 @@ import {
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { HighlightModule } from 'ngx-highlightjs';
 import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { CodeBlockModalComponent } from './code-block-modal-component/code-block-modal-component.component';
 import { PostStore } from './post.store';
 import { CommentsStore } from './comments/comments.store';
+import { SocialShareService } from './services/social-share.service';
 import { Post } from 'shared';
 import { DynamicDialogService } from 'shared';
 
@@ -27,7 +29,7 @@ import { DynamicDialogService } from 'shared';
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommentsComponent, AddCommentComponent, DatePipe],
+  imports: [CommentsComponent, AddCommentComponent, DatePipe, HighlightModule],
 })
 export class PostComponent implements OnInit {
   readonly id = input.required<string>();
@@ -41,6 +43,7 @@ export class PostComponent implements OnInit {
 
   private dialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
+  private socialShareService = inject(SocialShareService);
 
   constructor() {
     this.addEventsForOpenModalWithCode();
@@ -52,6 +55,23 @@ export class PostComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/posts']);
+  }
+
+  shareOnSocial(platform: 'twitter' | 'linkedin'): void {
+    const post = this.post();
+    if (!post) return;
+    
+    this.socialShareService.shareOnSocial(platform, post.title);
+  }
+
+  async copyLink(): Promise<void> {
+    const success = await this.socialShareService.copyLink();
+    if (success) {
+      // TODO: Add toast notification for successful copy
+      console.log('Link copied to clipboard');
+    } else {
+      console.error('Failed to copy link');
+    }
   }
 
   private loadPost(): void {
@@ -78,47 +98,62 @@ export class PostComponent implements OnInit {
 
   private addEventsForOpenModalWithCode() {
     afterNextRender(() => {
-      const processedNodes = new Set<Node>();
+      // Wait a bit for content to be fully rendered
+      setTimeout(() => {
+        const processedNodes = new Set<Node>();
 
-      const observer = new MutationObserver(mutations => {
-        let found = false;
-
-        mutations.forEach(mutation => {
-          mutation.addedNodes.forEach(node => {
-            if (processedNodes.has(node)) {
-              return;
-            }
-            processedNodes.add(node);
-
-            if (node instanceof HTMLElement) {
-              const preElements = node.querySelectorAll('pre[data-language]');
-              if (preElements.length > 0) {
-                found = true;
-                preElements.forEach(pre => {
-                  pre.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
-                  pre.addEventListener('click', e => this.showCodeModal(e));
-                });
-              }
+        const processCodeBlocks = () => {
+          const preElements = document.querySelectorAll('pre code[class*="language-"], pre code[class*="hljs"]');
+          
+          preElements.forEach((codeElement) => {
+            const preElement = codeElement.parentElement as HTMLElement;
+            if (preElement && !processedNodes.has(preElement)) {
+              processedNodes.add(preElement);
+              
+              // Extract language from class
+              const languageClass = Array.from(codeElement.classList).find(cls => 
+                cls.startsWith('language-') || cls.startsWith('hljs')
+              );
+              const language = languageClass ? languageClass.replace('language-', '').replace('hljs-', '') : 'code';
+              
+              // Set data attribute for styling
+              preElement.setAttribute('data-language', language);
+              preElement.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
+              preElement.addEventListener('click', e => this.showCodeModal(e));
             }
           });
+
+          // Also handle simple pre elements without specific highlighting
+          const simplePres = document.querySelectorAll('pre:not([data-language])');
+          simplePres.forEach(pre => {
+            if (!processedNodes.has(pre)) {
+              processedNodes.add(pre);
+              pre.setAttribute('data-language', 'text');
+              pre.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
+              pre.addEventListener('click', e => this.showCodeModal(e));
+            }
+          });
+        };
+
+        // Initial processing
+        processCodeBlocks();
+
+        // Set up observer for dynamic content
+        const observer = new MutationObserver(() => {
+          processCodeBlocks();
         });
 
-        if (found) {
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
+
+        // Clean up observer when component is destroyed
+        this.destroyRef.onDestroy(() => {
           observer.disconnect();
           processedNodes.clear();
-        }
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
-
-      // Clean up observer when component is destroyed
-      this.destroyRef.onDestroy(() => {
-        observer.disconnect();
-        processedNodes.clear();
-      });
+        });
+      }, 100);
     });
   }
 }
