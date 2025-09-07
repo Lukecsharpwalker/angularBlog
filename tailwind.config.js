@@ -62,6 +62,15 @@ module.exports = {
       backgroundSize: {
         '400%': '400%',
       },
+      backdropBlur: {
+        xs: '2px',
+        sm: '4px',
+        md: '8px',
+        lg: '16px',
+        xl: '24px',
+        '2xl': '40px',
+        '3xl': '64px',
+      },
     },
   },
   plugins: [require('daisyui')],
