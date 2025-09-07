@@ -23,6 +23,8 @@ export function provideCore({ routes }: CoreOptions) {
         typescript: () => import('highlight.js/lib/languages/typescript'),
         javascript: () => import('highlight.js/lib/languages/javascript'),
         css: () => import('highlight.js/lib/languages/css'),
+        sql: () => import('highlight.js/lib/languages/sql'),
+        yaml: () => import('highlight.js/lib/languages/yaml'),
         plain: () => import('highlight.js/lib/languages/plaintext'),
       },
     }),

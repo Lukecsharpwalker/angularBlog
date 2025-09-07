@@ -11,6 +11,8 @@ export async function loadQuillModules(): Promise<void> {
     { key: 'typescript', label: 'TypeScript' },
     { key: 'javascript', label: 'JavaScript' },
     { key: 'css', label: 'CSS' },
+    { key: 'sql', label: 'SQL' },
+    { key: 'yaml', label: 'YAML' },
     { key: 'plaintext', label: 'Plain Text' }
   ];
 

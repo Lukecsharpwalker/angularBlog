@@ -44,9 +44,7 @@ export class PostFormService {
   }
 
   processContent(htmlContent: string): string {
-    let processedContent = this.extractAndHighlightHTML(htmlContent);
-    processedContent = this.extractAndHighlightTS(processedContent);
-    return processedContent;
+    return this.extractAndHighlightAllCodeBlocks(htmlContent);
   }
 
   insertStringAtIndex(originalString: string, index: number, stringToInsert: string): string {
@@ -95,18 +93,19 @@ export class PostFormService {
     } as (PostInsert | PostUpdate) & { tags: Tag[] };
   }
 
-  private extractAndHighlightHTML(htmlContent: string): string {
+  private extractAndHighlightAllCodeBlocks(htmlContent: string): string {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
 
-    const codeBlocksHTML = tempDiv.querySelectorAll('pre[data-language="xml"]');
-    codeBlocksHTML.forEach(block => {
-      const language = 'xml';
+    const allPreBlocks = tempDiv.querySelectorAll('pre');
+    allPreBlocks.forEach(block => {
+      const rawText = block.textContent || '';
+      const language = this.detectLanguage(rawText);
+      
       const codeElement = document.createElement('code');
       codeElement.className = language;
-      codeElement.innerHTML = hljs.highlight(block.textContent || '', {
-        language,
-      }).value;
+      codeElement.innerHTML = hljs.highlight(rawText, { language }).value;
+      
       block.innerHTML = '';
       block.appendChild(codeElement);
     });
@@ -114,22 +113,30 @@ export class PostFormService {
     return tempDiv.innerHTML;
   }
 
-  private extractAndHighlightTS(htmlContent: string): string {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlContent;
-
-    const codeBlocksTS = tempDiv.querySelectorAll('pre[data-language="typescript"]');
-    codeBlocksTS.forEach(block => {
-      const language = 'typescript';
-      const codeElement = document.createElement('code');
-      codeElement.className = language;
-      codeElement.innerHTML = hljs.highlight(block.textContent || '', {
-        language,
-      }).value;
-      block.innerHTML = '';
-      block.appendChild(codeElement);
-    });
-
-    return tempDiv.innerHTML;
+  private detectLanguage(code: string): string {
+    const lowerCode = code.toLowerCase();
+    
+    if ((lowerCode.includes('name:') && lowerCode.includes('on:')) || lowerCode.includes('uses:') || lowerCode.includes('runs-on:')) {
+      return 'yaml';
+    }
+    if (lowerCode.includes('select') && (lowerCode.includes('from') || lowerCode.includes('where') || lowerCode.includes('insert') || lowerCode.includes('update'))) {
+      return 'sql';
+    }
+    if (code.includes('import') && (code.includes(': ') || code.includes('interface') || code.includes('type ') || code.includes('<T>'))) {
+      return 'typescript';
+    }
+    if (code.includes('import') && code.includes('test') && code.includes('@playwright')) {
+      return 'typescript';
+    }
+    if (code.includes('import') && (code.includes('=>') || code.includes('function'))) {
+      return 'typescript';
+    }
+    if (code.includes('<') && code.includes('>') && (code.includes('=') || code.includes('</'))) {
+      return 'xml';
+    }
+    if (code.includes('function') || code.includes('const') || code.includes('let')) {
+      return 'javascript';
+    }
+    return 'javascript';
   }
 }
