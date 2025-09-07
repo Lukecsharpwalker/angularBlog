@@ -1,4 +1,4 @@
-import { NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgOptimizedImage, NgStyle, NgClass } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
@@ -10,6 +10,7 @@ import {
   signal,
   WritableSignal,
   DestroyRef,
+  computed,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PostCardComponent } from '../../../ui/components/post-card/post-card.component';
@@ -20,7 +21,7 @@ import { AboutMeComponent } from './about-me/about-me.component';
 @Component({
   selector: 'web-posts-list',
   standalone: true,
-  imports: [RouterModule, AboutMeComponent, PostCardComponent, NgOptimizedImage, NgStyle],
+  imports: [RouterModule, AboutMeComponent, PostCardComponent, NgOptimizedImage, NgStyle, NgClass],
   templateUrl: './posts-list.component.html',
   styleUrl: './posts-list.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
@@ -34,6 +35,13 @@ export class PostsListComponent {
   tagsStore = inject(TagsStore);
 
   readonly scrollProgress: WritableSignal<number> = signal(0);
+  readonly activeDotIndex = computed(() => {
+    const progress = this.scrollProgress();
+    if (progress < 33) return 0;
+    if (progress < 66) return 1;
+    return 2;
+  });
+
   posts = this.postStore.posts;
   tags = this.tagsStore.tags;
   initialTagScrollProgressBarForMobile = 2;
@@ -54,20 +62,18 @@ export class PostsListComponent {
   }
 
   private initializeScrollingForMobileView(): void {
-    this.scrollProgress.set(this.initialTagScrollProgressBarForMobile);
+    this.scrollProgress.set(0);
     afterNextRender(() => {
       const scrollHandler = this.onScroll.bind(this);
       const element = this.scroll()?.nativeElement;
-      
+
       if (element) {
         element.addEventListener('scroll', scrollHandler);
-        
-        // Clean up event listener when component is destroyed
+
         this.destroyRef.onDestroy(() => {
           element.removeEventListener('scroll', scrollHandler);
         });
       }
     });
   }
-
 }

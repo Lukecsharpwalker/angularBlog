@@ -1,30 +1,32 @@
 <web-about-me/>
-<div class="relative mt-4 pb-4" data-testid="tags-container">
-  <div class="relative shadow-lg bg-white p-4 sm:p-6 sm:px-14 rounded-[32px] sm:rounded-[64px] overflow-hidden">
+<div class="relative mt-8 pb-4" data-testid="tags-container">
+  <div class="bg-white/60 backdrop-blur-sm p-4 sm:p-5 rounded-2xl relative overflow-hidden shadow-sm">
     <div
       #scrollContainer
       data-testid="tags-scroll-container"
       class="overflow-x-scroll overflow-y-hidden hide-scrollbar whitespace-nowrap scroll-smooth"
+      (scroll)="onScroll($event)"
     >
-      <div class="inline-flex space-x-4 gap-x-0 md:gap-x-6" data-testid="tags-list">
+      <div class="inline-flex space-x-2 md:space-x-6" data-testid="tags-list">
         @for (tag of tags(); track tag.id) {
-          <div class="flex flex-col items-center min-w-24 group" data-testid="tag-item" [attr.data-tag-name]="tag.name">
+          <div class="flex flex-col items-center w-20 md:w-24 group" data-testid="tag-item"
+               [attr.data-tag-name]="tag.name">
             <div
               [ngStyle]="{ 'background-color': tag.color }"
-              class="font-bold text-gray-700 rounded-full flex items-center justify-center font-mono p-3 md:p-5 min-w-18 transform transition-all duration-300 hover:scale-110 hover:shadow-lg relative cursor-pointer"
+              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer shadow-sm hover:shadow-md"
               data-testid="tag-button"
             >
               <img
                 ngSrc="tags/{{ tag.icon }}"
                 [alt]="tag.name"
-                class="w-8 h-8 sm:w-10 sm:h-10 transition-transform duration-300 group-hover:scale-110"
+                class="w-7 h-7 md:w-8 md:h-8"
                 width="32"
                 height="32"
                 data-testid="tag-icon"
               />
             </div>
             <span
-              class="mt-1 sm:mt-2 text-center text-gray-600 text-sm sm:text-base"
+              class="mt-2 text-center text-gray-600 text-xs md:text-sm font-medium leading-tight"
               data-testid="tag-name"
             >{{ tag.name }}</span>
           </div>
@@ -34,34 +36,32 @@
 
     <button
       (click)="scrollContainer.scrollLeft = scrollContainer.scrollLeft - 135"
-      class="btn btn-circle rounded-none absolute inset-y-0 left-0 h-full bg-base-100 bg-opacity-70 hover:bg-base-200 hidden md:flex rounded-tl-full rounded-bl-full"
+      class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white/90 transition-all duration-300 hidden md:flex items-center justify-center"
       data-testid="scroll-left-button"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
       </svg>
     </button>
 
     <button
       (click)="scrollContainer.scrollLeft = scrollContainer.scrollLeft + 135"
-      class="btn btn-circle rounded-none absolute inset-y-0 right-0 h-full bg-base-100 bg-opacity-70 hover:bg-base-200 hidden md:flex rounded-tr-full rounded-br-full"
+      class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white/90 transition-all duration-300 hidden md:flex items-center justify-center"
       data-testid="scroll-right-button"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform rotate-180" viewBox="0 0 24 24"
-           stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
       </svg>
     </button>
   </div>
 
-  <div class="relative -top-4 mt-2 md:hidden w-full flex justify-center" data-testid="mobile-progress-container">
-    <div class="w-10/12 bg-tertiary h-1 rounded-full">
-      <div
-        class="bg-primary h-1 rounded-full transition-all duration-300"
-        [style.width.%]="scrollProgress()"
-        data-testid="mobile-progress-bar"
-      ></div>
-    </div>
+  <div class="mt-3 md:hidden w-full flex justify-center space-x-1" data-testid="mobile-scroll-indicator">
+    <div class="w-1.5 h-1.5 rounded-full transition-all duration-300"
+         [ngClass]="activeDotIndex() === 0 ? 'bg-secondary/70' : 'bg-tertiary/30'"></div>
+    <div class="w-1.5 h-1.5 rounded-full transition-all duration-300"
+         [ngClass]="activeDotIndex() === 1 ? 'bg-secondary/70' : 'bg-tertiary/30'"></div>
+    <div class="w-1.5 h-1.5 rounded-full transition-all duration-300"
+         [ngClass]="activeDotIndex() === 2 ? 'bg-secondary/70' : 'bg-tertiary/30'"></div>
   </div>
 </div>
 
