@@ -72,7 +72,6 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
         pointer-events: none;
       }
 
-      /* Custom scrollbar for code blocks */
       .code-block::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -98,7 +97,7 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
           max-height: 70vh;
           max-width: 90vw;
         }
-        
+
         .code-block {
           font-size: 0.9rem;
           padding: 1rem;
@@ -112,7 +111,7 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
           max-height: 80vh;
           max-width: 95vw;
         }
-        
+
         .code-block {
           font-size: 0.85rem;
           padding: 0.75rem;
@@ -122,7 +121,7 @@ import { DYNAMIC_DIALOG_DATA } from 'shared';
   ],
 })
 export class CodeBlockModalComponent {
-  public data: CodeBlockModalData = inject(DYNAMIC_DIALOG_DATA, {
+  data: CodeBlockModalData = inject(DYNAMIC_DIALOG_DATA, {
     optional: true,
   }) as CodeBlockModalData;
 }

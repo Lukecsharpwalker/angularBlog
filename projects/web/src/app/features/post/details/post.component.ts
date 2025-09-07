@@ -12,6 +12,8 @@ import {
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
+import { Post } from 'shared';
+import { DynamicDialogService } from 'shared';
 import { ReaderApiService } from '../../../core/services/reader-api.service';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
@@ -19,8 +21,6 @@ import { CodeBlockModalComponent } from './code-block-modal-component/code-block
 import { PostStore } from './post.store';
 import { CommentsStore } from './comments/comments.store';
 import { SocialShareService } from './services/social-share.service';
-import { Post } from 'shared';
-import { DynamicDialogService } from 'shared';
 
 @Component({
   selector: 'web-post',
@@ -60,7 +60,7 @@ export class PostComponent implements OnInit {
   shareOnSocial(platform: 'twitter' | 'linkedin'): void {
     const post = this.post();
     if (!post) return;
-    
+
     this.socialShareService.shareOnSocial(platform, post.title);
   }
 
@@ -80,10 +80,11 @@ export class PostComponent implements OnInit {
 
   private styleCodeBlock(element: HTMLElement): void {
     element.classList.add('cursor-pointer', 'hover:opacity-80', 'transition-opacity');
-    
+
     // Check if it's a one-liner
-    const isOneLiner = !element.textContent?.includes('\n') || element.textContent?.trim().split('\n').length === 1;
-    
+    const isOneLiner =
+      !element.textContent?.includes('\n') || element.textContent?.trim().split('\n').length === 1;
+
     if (isOneLiner) {
       element.classList.add('inline-block', 'px-2', 'py-1', 'text-sm');
       element.style.display = 'inline-block';
@@ -97,30 +98,27 @@ export class PostComponent implements OnInit {
     const preElement = event.currentTarget as HTMLElement;
     const codeElement = preElement.querySelector('code');
     const code = codeElement?.innerHTML || '';
-    
+
     // Extract language from Highlight.js classes
     let language = 'code';
     if (codeElement) {
-      const languageClass = Array.from(codeElement.classList).find(cls => 
-        cls.startsWith('language-') || cls.startsWith('hljs-')
+      const languageClass = Array.from(codeElement.classList).find(
+        cls => cls.startsWith('language-') || cls.startsWith('hljs-')
       );
       if (languageClass) {
         language = languageClass.replace('language-', '').replace('hljs-', '');
       }
     }
 
-    // Format language name for display
-    const displayLanguage = this.formatLanguageForDisplay(language);
-
     this.dialogService.openDialog(
       this.viewContainerRef,
       {
-        title: `${displayLanguage} Code`,
+        title: `Code`,
         content: '',
         primaryButton: 'Close',
-        data: { 
-          code, 
-          language
+        data: {
+          code,
+          language,
         },
       },
       CodeBlockModalComponent
@@ -129,42 +127,44 @@ export class PostComponent implements OnInit {
 
   private formatLanguageForDisplay(language: string): string {
     const languageMap: Record<string, string> = {
-      'js': 'JavaScript',
-      'ts': 'TypeScript', 
-      'javascript': 'JavaScript',
-      'typescript': 'TypeScript',
-      'html': 'HTML',
-      'css': 'CSS',
-      'scss': 'SCSS',
-      'json': 'JSON',
-      'xml': 'XML',
-      'bash': 'Bash',
-      'sh': 'Shell',
-      'cmd': 'Command',
-      'powershell': 'PowerShell',
-      'sql': 'SQL',
-      'python': 'Python',
-      'py': 'Python',
-      'java': 'Java',
-      'c': 'C',
-      'cpp': 'C++',
-      'csharp': 'C#',
-      'php': 'PHP',
-      'ruby': 'Ruby',
-      'go': 'Go',
-      'rust': 'Rust',
-      'swift': 'Swift',
-      'kotlin': 'Kotlin',
-      'dart': 'Dart',
-      'yaml': 'YAML',
-      'yml': 'YAML',
-      'markdown': 'Markdown',
-      'md': 'Markdown',
-      'text': 'Plain Text',
-      'code': 'Code'
+      js: 'JavaScript',
+      ts: 'TypeScript',
+      javascript: 'JavaScript',
+      typescript: 'TypeScript',
+      html: 'HTML',
+      css: 'CSS',
+      scss: 'SCSS',
+      json: 'JSON',
+      xml: 'XML',
+      bash: 'Bash',
+      sh: 'Shell',
+      cmd: 'Command',
+      powershell: 'PowerShell',
+      sql: 'SQL',
+      python: 'Python',
+      py: 'Python',
+      java: 'Java',
+      c: 'C',
+      cpp: 'C++',
+      csharp: 'C#',
+      php: 'PHP',
+      ruby: 'Ruby',
+      go: 'Go',
+      rust: 'Rust',
+      swift: 'Swift',
+      kotlin: 'Kotlin',
+      dart: 'Dart',
+      yaml: 'YAML',
+      yml: 'YAML',
+      markdown: 'Markdown',
+      md: 'Markdown',
+      text: 'Plain Text',
+      code: 'Code',
     };
-    
-    return languageMap[language.toLowerCase()] || language.charAt(0).toUpperCase() + language.slice(1);
+
+    return (
+      languageMap[language.toLowerCase()] || language.charAt(0).toUpperCase() + language.slice(1)
+    );
   }
 
   private addEventsForOpenModalWithCode() {
@@ -175,8 +175,8 @@ export class PostComponent implements OnInit {
 
         const processCodeBlocks = () => {
           const preElements = document.querySelectorAll('pre:not(.modal-code-block)');
-          
-          preElements.forEach((preElement) => {
+
+          preElements.forEach(preElement => {
             if (!processedNodes.has(preElement) && preElement instanceof HTMLElement) {
               processedNodes.add(preElement);
               this.styleCodeBlock(preElement);

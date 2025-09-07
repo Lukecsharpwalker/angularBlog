@@ -8,13 +8,10 @@ import {
   inject,
   input,
   viewChild,
+  HostListener,
 } from '@angular/core';
 import { DynamicDialogService } from './dynamic-dialog.service';
-import { 
-  ModalConfig, 
-  ModalCloseStatusEnum, 
-  ModalStatus 
-} from '../../models';
+import { ModalConfig, ModalCloseStatusEnum, ModalStatus } from '../../models';
 
 @Component({
   selector: 'shared-dynamic-dialog',
@@ -41,9 +38,15 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
     this.createDynamicComponent();
   }
 
-  closeDialog(
-    modalCloseStatus: ModalCloseStatusEnum = ModalCloseStatusEnum.CLOSED,
-  ) {
+  @HostListener('document:keydown', ['$event'])
+  handleEscapeKey(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.closeDialog();
+    }
+  }
+
+  closeDialog(modalCloseStatus: ModalCloseStatusEnum = ModalCloseStatusEnum.CLOSED) {
     const status = {
       data: this.componentRef?.instance,
       closeStatus: modalCloseStatus,
@@ -53,7 +56,7 @@ export class DynamicDialogComponent<C = unknown> implements OnInit {
   }
 
   onOverlayClick() {
-    // Handle overlay click if needed
+    this.closeDialog();
   }
 
   private createDynamicComponent(): void {
