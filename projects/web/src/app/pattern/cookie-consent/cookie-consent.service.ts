@@ -33,15 +33,15 @@ export class CookieConsentService {
     }
   }
 
-  acceptCookies() {
+  acceptCookies(): void {
     localStorage.setItem(LocalStorageEnum.COOKIES_CONSENT, 'true');
   }
 
-  denyCookies() {
+  denyCookies(): void {
     localStorage.setItem(LocalStorageEnum.COOKIES_CONSENT, 'false');
   }
 
-  closePopup(closeStatus: ModalCloseStatusEnum) {
+  closePopup(closeStatus: ModalCloseStatusEnum): void {
     const status = {
       closeStatus: closeStatus,
     } as ModalStatus;

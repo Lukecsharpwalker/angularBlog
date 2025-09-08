@@ -4,7 +4,6 @@ import {
   ViewContainerRef,
   inject,
   signal,
-  WritableSignal,
   viewChild,
   afterNextRender,
   ElementRef,
@@ -24,12 +23,12 @@ import { LoginComponent } from '../login/login.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  public readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
-  public readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
-  public readonly isScrolled: WritableSignal<boolean> = signal(false);
-  public readonly isMenuOpen: WritableSignal<boolean> = signal(false);
-  public readonly navHeight: WritableSignal<number> = signal(0);
-  public readonly searchQuery: WritableSignal<string> = signal('');
+  readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
+  readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
+  readonly isScrolled = signal(false);
+  readonly isMenuOpen = signal(false);
+  readonly navHeight = signal(0);
+  readonly searchQuery = signal('');
 
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
@@ -40,7 +39,7 @@ export class NavbarComponent {
     this.initializeScrollDetection();
   }
 
-  signIn() {
+  signIn(): void {
     this.dynamicDialogService.openDialog<LoginComponent>(
       this.viewContainerRef,
       { title: 'Sign In' },
@@ -48,7 +47,7 @@ export class NavbarComponent {
     );
   }
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.isMenuOpen.set(!this.isMenuOpen());
 
     if (this.isMenuOpen()) {
@@ -58,7 +57,7 @@ export class NavbarComponent {
     }
   }
 
-  clearSearch() {
+  clearSearch(): void {
     this.searchQuery.set('');
   }
 

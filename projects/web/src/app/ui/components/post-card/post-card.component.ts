@@ -11,5 +11,5 @@ import { Post } from 'shared/models';
   styleUrl: './post-card.component.scss',
 })
 export class PostCardComponent {
-  public readonly post = input.required<Post>();
+  readonly post = input.required<Post>();
 }

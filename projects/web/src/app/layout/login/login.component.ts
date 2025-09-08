@@ -1,34 +1,30 @@
 import { ChangeDetectionStrategy, Component, inject, effect, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicDialogService } from 'shared';
 import { AuthStore } from 'shared';
-import { Credentials } from 'shared';
 import { ModalCloseStatusEnum, ModalStatus } from 'shared';
 import { LoginFormControls } from './login.interface';
+import { AuthFormService } from '../services/auth-form.service';
 
 @Component({
   selector: 'web-login',
   standalone: true,
   imports: [ReactiveFormsModule],
-  providers: [],
+  providers: [AuthFormService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  form = new FormGroup<LoginFormControls>({
-    email: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.email],
-    }),
-    password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-  });
-  isSubmitted = false;
-
   readonly authStore = inject(AuthStore);
+  isSubmitted = false;
+  form!: FormGroup<LoginFormControls>;
+
+  private authFormService = inject(AuthFormService);
   private readonly dynamicDialogService = inject(DynamicDialogService);
 
   constructor() {
+    this.form = this.authFormService.createLoginForm();
     effect(() => {
       if (this.authStore.isAuthenticated() && this.authStore.ready() && !this.authStore.loading()) {
         const status = {
@@ -41,25 +37,16 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.isSubmitted = true;
-    this.authStore.clearError();
+    this.authFormService.clearError();
 
-    if (this.form.invalid) {
-      return;
-    }
-
-    const credentials: Credentials = this.form.value as Credentials;
-    this.authStore.loginWithPassword({
-      email: credentials.email,
-      password: credentials.password,
-    });
+    this.authFormService.validateAndSubmitLogin(this.form);
   }
 
   ngOnInit(): void {
-    this.authStore.init();
+    this.authFormService.initializeAuth();
   }
 
   onGoogleLogin(): void {
-    this.authStore.clearError();
-    this.authStore.loginWithProvider({ provider: 'google' });
+    this.authFormService.loginWithProvider('google');
   }
 }

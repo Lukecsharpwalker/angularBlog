@@ -20,7 +20,7 @@ export class CookieConsentComponent {
       cookies: ['cookies-consent', 'firebase-heartbeat-database', 'firebaseLocalStorageDb'],
     },
   ];
-  setActiveTab(tab: 'consent' | 'details' | 'about') {
+  setActiveTab(tab: 'consent' | 'details' | 'about'): void {
     this.activeTab = tab;
   }
 }
