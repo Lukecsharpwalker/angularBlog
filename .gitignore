@@ -54,5 +54,4 @@ adminSdkConf.json
 /playwright/.cache/
 
 #llms
-/llms/private
-/llms/priv
+/llms

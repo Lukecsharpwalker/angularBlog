@@ -4,11 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## MOST IMPORTANT: Always read the LLM context files in `/llms/` before making any code changes or refactor proposals.
 
+### Essential LLM Context Files
+- **`/llms/public/app-description.txt`** - Complete application overview, architecture goals, and deployment strategy
+- **`/llms/public/architecture.txt`** - Authoritative enterprise architecture rules and folder structure
+- **`/llms/public/llm-full.txt`** - Comprehensive Angular development guidelines and best practices
+
+These files contain the definitive project specifications and must be consulted before any architectural decisions or code modifications.
+
 ## MOST IMPORTANT: NEVER WRITE ANY COMMENTS IN CODE - ABSOLUTELY FORBIDDEN
 
 **ZERO TOLERANCE POLICY**: Do not add comments, explanations, or documentation inside any code files. This includes:
+
 - // single line comments
-- /* block comments */ 
+- /* block comments */
 - /** JSDoc comments */
 - <!-- HTML comments -->
 - # Any other comment syntax
@@ -238,16 +246,4 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 - ✅ **Active**: Separate projects in `/projects/` with shared libraries
 - Architecture guidance available in `/llms/private/architecture.txt`
 
-## LLM Context Files
 
-Always read these files before making refactor proposals or code edits:
-
-- [llms/**/architecture.txt](llms/private/architecture.txt)
-- [llms/**/llm-full.txt](llms/private/llm-full.txt)
-- [llms/**/app-description.txt](llms/private/app-description.txt)
-
-These documents are authoritative for:
-
-- Workspace and folder structure
-- Angular 20 style and coding conventions
-- Target apps, rendering modes, and deployment
