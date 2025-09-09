@@ -21,25 +21,6 @@ export interface Post {
   tableOfContents: [];
 }
 
-export interface PostInsert {
-  content: string;
-  created_at?: string | null;
-  description: string;
-  id?: string;
-  is_draft?: boolean;
-  title: string;
-  user_id: string;
-}
-
-export interface PostUpdate {
-  content?: string;
-  created_at?: string | null;
-  description?: string;
-  id?: string;
-  is_draft?: boolean;
-  title?: string;
-  user_id?: string;
-}
 
 export type PostRelationships = [
   {

@@ -1,9 +1,9 @@
-// export * from './supabase';
+export * from './supabase';
 
 // API Services
 export * from './clients/supabase.client';
 
-// Stores
-export * from './stores/auth.store';
+// Auth Domain
+export * from './auth';
 
 // Tokens

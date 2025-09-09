@@ -10,34 +10,19 @@ import { environment } from '../../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseClient implements OnDestroy {
-  private supabase: SupabaseClientType;
-  public session: Session | null = null;
-  private sub?: { data: { subscription: { unsubscribe(): void } } };
-  private readonly ngZone = inject(NgZone);
-
-  // Optional: expose reactive session
+  session: Session | null = null;
   readonly sessionSig = signal<Session | null>(null);
   readonly ready = signal(false);
+  
+  private supabase: SupabaseClientType;
+  private sub?: { data: { subscription: { unsubscribe(): void } } };
+  private readonly ngZone = inject(NgZone);
 
   constructor() {
     this.supabase = this.ngZone.runOutsideAngular(() =>
       createClient(environment.supabaseUrl, environment.supabaseKey)
     );
     this.initializeSession();
-  }
-
-  private async initializeSession(): Promise<void> {
-    const {
-      data: { session },
-    } = await this.supabase.auth.getSession();
-    this.ngZone.run(() => {
-      this.sessionSig.set(session);
-      this.ready.set(true);
-    });
-
-    this.sub = this.supabase.auth.onAuthStateChange((event, session) => {
-      this.ngZone.run(() => this.sessionSig.set(session));
-    });
   }
 
   ngOnDestroy() {
@@ -83,5 +68,19 @@ export class SupabaseClient implements OnDestroy {
   }
   signOut() {
     return this.supabase.auth.signOut();
+  }
+
+  private async initializeSession(): Promise<void> {
+    const {
+      data: { session },
+    } = await this.supabase.auth.getSession();
+    this.ngZone.run(() => {
+      this.sessionSig.set(session);
+      this.ready.set(true);
+    });
+
+    this.sub = this.supabase.auth.onAuthStateChange((event, session) => {
+      this.ngZone.run(() => this.sessionSig.set(session));
+    });
   }
 }

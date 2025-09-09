@@ -1,4 +1,4 @@
-import { SupabaseClient } from '../../data-access/clients/supabase.client';
+import { SupabaseClient } from '../clients/supabase.client';
 
 export function supabaseInitializer(supabase: SupabaseClient): () => void {
   return () => {
