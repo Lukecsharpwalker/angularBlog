@@ -9,7 +9,8 @@ import {
 import { ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DynamicDialogComponent } from './dynamic-dialog.component';
-import { ModalConfig, ModalStatus } from '../../models';
+import { ModalConfig } from './modal-config';
+import { ModalStatus } from './modal-status';
 import { DYNAMIC_DIALOG_DATA } from './dialog-data.token';
 
 @Injectable({ providedIn: 'root' })

@@ -11,7 +11,8 @@ import {
   HostListener,
 } from '@angular/core';
 import { DynamicDialogService } from './dynamic-dialog.service';
-import { ModalConfig, ModalCloseStatusEnum, ModalStatus } from '../../models';
+import { ModalConfig } from './modal-config';
+import { ModalCloseStatusEnum, ModalStatus } from './modal-status';
 
 @Component({
   selector: 'shared-dynamic-dialog',

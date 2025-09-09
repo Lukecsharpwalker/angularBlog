@@ -1,4 +1,3 @@
-// Re-export all types from the individual files
 export * from './database';
 export * from './helpers';
 export * from './collections';
