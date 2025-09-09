@@ -4,10 +4,7 @@
 **angular.fun** is a blog and code samples site focused on Angular, built with modern Angular features like SSG, SSR, and micro‑frontends. It serves as a resource for learning.
 Actual is a single app with a monolithic structure, but the goal is to refactor it into a multi‑project workspace with clear separation of concerns and deployment strategies.
 App is in the src folder, with a monolithic structure. At the end /src should be empty.
-Current structure is that:
-- `src/app/` contains the app.
-- `src/app/admin` contains the admin part of the app - Pure CSR.
-- `src/app/reader` contains the part of the blog for reader so it's SSG/SSR.
+
 
 ## Goal
 Rebuild **angular.fun** as a clean Angular 20+ multi‑project workspace (no Nx) with three independently deployed apps and shared libraries:
@@ -37,7 +34,6 @@ Rebuild **angular.fun** as a clean Angular 20+ multi‑project workspace (no Nx)
 - 'llms' - LLMs and Copilot prompts for the project
 - '.github' - GitHub Actions workflows
 
-** Inside each app inside folder should cover architecture from : llms/private/architecture.txt **
 
 ## Data access
 
