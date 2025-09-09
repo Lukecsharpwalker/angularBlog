@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { PostsListComponent } from './components/posts-list/posts-list.component';
+import { PostsListComponent } from './posts-list/posts-list.component';
 
 @Component({
   selector: 'web-main-page',

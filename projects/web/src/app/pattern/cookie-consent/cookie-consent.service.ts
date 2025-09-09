@@ -1,7 +1,8 @@
 import { Injectable, ViewContainerRef, inject } from '@angular/core';
 import { CookieConsentComponent } from './cookie-consent.component';
 import { DynamicDialogService } from 'shared';
-import { LocalStorageEnum, ModalCloseStatusEnum, ModalStatus } from 'shared';
+import { ModalCloseStatusEnum, ModalStatus } from 'shared';
+import { LocalStorageEnum } from './local-storage';
 
 @Injectable({
   providedIn: 'root',
