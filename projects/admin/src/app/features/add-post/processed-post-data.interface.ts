@@ -1,4 +1,5 @@
-import { PostInsert, PostUpdate, Tag } from 'shared';
+import { Tag } from 'shared';
+import { PostInsert, PostUpdate } from './post-operations';
 
 export interface ProcessedPostData {
   formData: (PostInsert | PostUpdate) & { tags: Tag[] };

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import hljs from 'highlight.js';
-import { Post, PostInsert, PostUpdate, Tag } from 'shared';
-import { PostForm } from '../models/post-form.interface';
-import { ProcessedPostData } from '../models/processed-post-data.interface';
-import { ADD_POST_CONSTANTS } from '../constants/add-post.constants';
+import { Post, Tag } from 'shared';
+import { PostInsert, PostUpdate } from './post-operations';
+import { PostForm } from './post-form.interface';
+import { ProcessedPostData } from './processed-post-data.interface';
+import { ADD_POST_CONSTANTS } from './add-post.constants';
 
 @Injectable({
   providedIn: 'root',

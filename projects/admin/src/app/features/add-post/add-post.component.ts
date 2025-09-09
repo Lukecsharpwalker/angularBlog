@@ -21,17 +21,18 @@ import {
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
-import { ModalConfig, Post, PostInsert, PostUpdate, Tag } from 'shared';
+import { ModalConfig, Post, Tag } from 'shared';
+import { PostInsert, PostUpdate } from './post-operations';
 import { DynamicDialogService } from 'shared';
-import { PostForm } from './models/post-form.interface';
+import { PostForm } from './post-form.interface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
 import { loadQuillModules } from '../../core/utils/quill-configuration';
 import { AddPostStore } from './add-post.store';
-import { PostFormService } from './services/post-form.service';
-import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './constants/add-post.constants';
-import { ProcessedPostData } from './models/processed-post-data.interface';
+import { PostFormService } from './post-form.service';
+import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
+import { ProcessedPostData } from './processed-post-data.interface';
 
 @Component({
   selector: 'admin-add-post',

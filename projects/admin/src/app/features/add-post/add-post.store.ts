@@ -7,7 +7,8 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { Post, PostInsert, PostUpdate, Tag } from 'shared';
+import { Post, Tag } from 'shared';
+import { PostInsert, PostUpdate } from './post-operations';
 import { AddPostService } from './add-post.service';
 
 interface AddPostState {

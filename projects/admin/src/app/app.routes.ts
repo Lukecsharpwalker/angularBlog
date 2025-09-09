@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authAdminGuard } from './core/auth/auth-admin-guard';
+import { authAdminGuard } from './core/auth/auth-admin.guard';
 
 export const routes: Routes = [
   {
@@ -13,7 +13,8 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadComponent: () => import('./layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
+    loadComponent: () =>
+      import('./layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
     canMatch: [authAdminGuard],
     children: [
       {

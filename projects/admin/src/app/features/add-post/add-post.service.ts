@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Post, PostInsert, PostUpdate, Tag } from 'shared';
+import { Post, Tag } from 'shared';
+import { PostInsert, PostUpdate } from './post-operations';
 import { SupabaseClient } from 'shared';
 
 @Injectable({ providedIn: 'root' })
