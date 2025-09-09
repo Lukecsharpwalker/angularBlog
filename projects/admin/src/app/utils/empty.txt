@@ -1,0 +1,8 @@
+# Admin Utils
+
+This folder contains admin-specific utility functions and helpers.
+
+According to BOOK architecture:
+- Utils contain pure functions and helpers specific to the admin application
+- When utils are shared across first-level features, they should be moved to core/utils/
+- When utils are shared across applications, they should be moved to shared library

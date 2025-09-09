@@ -1,0 +1,8 @@
+# Admin Patterns
+
+This folder contains admin-specific patterns - reusable bundles of standalones + injectables used within the admin application.
+
+According to BOOK architecture:
+- Patterns are reusable drop-in mini-features
+- They differ from UI (patterns may bind to data sources) and from Core (patterns include UI)
+- They contain both presentation and logic as cohesive units
