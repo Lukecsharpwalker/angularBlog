@@ -31,7 +31,6 @@ export class PostsListComponent {
   tagsStore = inject(TagsStore);
   posts = this.postStore.posts;
   tags = this.tagsStore.tags;
-  initialTagScrollProgressBarForMobile = 2;
 
   private destroyRef = inject(DestroyRef);
   private postsListService = inject(PostsListService);

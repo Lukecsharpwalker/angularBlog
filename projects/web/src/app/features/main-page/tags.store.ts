@@ -1,9 +1,16 @@
 import { inject, computed } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withState, withMethods, withHooks, withComputed } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withState,
+  withMethods,
+  withHooks,
+  withComputed,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { ReaderApiService } from '../../core/blog/reader-api.service';
+import { ReaderApiService } from '../../core';
 import { Tag } from '@shared/core/supabase';
 
 interface TagsState {
@@ -37,7 +44,8 @@ export const TagsStore = signalStore(
               next: tags => patchState(store, { tags: tags || [], loading: false }),
               error: (err: unknown) =>
                 patchState(store, {
-                  error: 'Failed to fetch tags: ' + (typeof err === 'string' ? err : 'Unknown error'),
+                  error:
+                    'Failed to fetch tags: ' + (typeof err === 'string' ? err : 'Unknown error'),
                   loading: false,
                 }),
             })
