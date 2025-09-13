@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthStore } from '../../data-access';
-import { Credentials } from '../../models';
+import { AuthStore } from '../../core/auth';
+import { Credentials } from '../../core/auth';
 import { AuthFormControls } from './auth-form.interface';
 
 @Injectable()

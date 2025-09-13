@@ -8,7 +8,7 @@ import {
   OnInit 
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AuthStore } from '../../data-access';
+import { AuthStore } from '../../core/auth';
 import { AuthFormService } from './auth-form.service';
 import { AuthFormControls, AuthFormConfig } from './auth-form.interface';
 

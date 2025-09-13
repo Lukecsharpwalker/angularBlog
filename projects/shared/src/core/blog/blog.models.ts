@@ -17,3 +17,10 @@ export enum PostField {
   LIKES_ENABLED = 'likesEnabled',
   IS_DRAFT = 'isDraft'
 }
+
+export interface TableOfContentsInterface {
+  id?: string;
+  title: string;
+  level: number;
+  children: TableOfContentsInterface[];
+}

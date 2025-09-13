@@ -18,7 +18,7 @@ import {
   OAuthResponse,
 } from '@supabase/supabase-js';
 import { catchError, EMPTY, finalize, from, pipe, switchMap, tap } from 'rxjs';
-import { SupabaseClient } from '../clients/supabase.client';
+import { SupabaseClient } from '../supabase/supabase.client';
 
 interface AuthState {
   session: Session | null;

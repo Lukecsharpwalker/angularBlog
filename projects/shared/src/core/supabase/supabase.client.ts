@@ -1,4 +1,4 @@
-import { inject, Injectable, NgZone, OnDestroy, signal } from '@angular/core';
+import { inject, Injectable, NgZone, OnDestroy, signal, InjectionToken } from '@angular/core';
 import {
   AuthChangeEvent,
   createClient,
@@ -6,7 +6,13 @@ import {
   Session,
   SupabaseClient as SupabaseClientType,
 } from '@supabase/supabase-js';
-import { environment } from '../../../../../environments/environment';
+
+export interface SupabaseConfig {
+  supabaseUrl: string;
+  supabaseKey: string;
+}
+
+export const SUPABASE_CONFIG = new InjectionToken<SupabaseConfig>('SUPABASE_CONFIG');
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseClient implements OnDestroy {
@@ -17,10 +23,11 @@ export class SupabaseClient implements OnDestroy {
   private supabase: SupabaseClientType;
   private sub?: { data: { subscription: { unsubscribe(): void } } };
   private readonly ngZone = inject(NgZone);
+  private readonly config = inject(SUPABASE_CONFIG);
 
   constructor() {
     this.supabase = this.ngZone.runOutsideAngular(() =>
-      createClient(environment.supabaseUrl, environment.supabaseKey)
+      createClient(this.config.supabaseUrl, this.config.supabaseKey)
     );
     this.initializeSession();
   }

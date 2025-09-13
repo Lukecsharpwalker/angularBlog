@@ -1,3 +1,3 @@
-export * from './models';
+export * from './core';
 export * from './pattern';
 export * from './data-access';
