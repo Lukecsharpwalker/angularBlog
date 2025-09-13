@@ -5,5 +5,3 @@ export * from './clients/supabase.client';
 
 // Auth Domain
 export * from './auth';
-
-// Tokens
