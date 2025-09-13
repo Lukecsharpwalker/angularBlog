@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { Roles } from './roles';
-import { AuthStore } from 'shared';
+import { AuthStore } from '@shared/core/auth';
 
 export const authAdminGuard: CanMatchFn = async (): Promise<boolean> => {
   const authStore = inject(AuthStore);

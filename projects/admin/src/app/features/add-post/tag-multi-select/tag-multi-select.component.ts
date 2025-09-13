@@ -11,7 +11,7 @@ import {
   input,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Tag } from 'shared';
+import { Tag } from '@shared/core/supabase';
 
 @Component({
   selector: 'admin-tag-multi-select',

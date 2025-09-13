@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthFormComponent, AuthFormConfig } from 'shared';
+import { AuthFormComponent, AuthFormConfig } from '@shared/pattern/auth-form';
 
 @Component({
   selector: 'admin-login',

@@ -7,7 +7,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { Post, Tag } from 'shared';
+import { Post, Tag } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
 import { AddPostService } from './add-post.service';
 

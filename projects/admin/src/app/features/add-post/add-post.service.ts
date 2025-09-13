@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { Post, Tag } from 'shared';
+import { Post, Tag } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
-import { SupabaseClient } from 'shared';
+import { SupabaseClient } from '@shared/core/supabase';
 
 @Injectable({ providedIn: 'root' })
 export class AddPostService {

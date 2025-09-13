@@ -5,6 +5,8 @@ import { provideHighlightOptions } from 'ngx-highlightjs';
 import { provideQuillConfig } from 'ngx-quill/config';
 import hljs from 'highlight.js/lib/core';
 import { quillToolbarConfig } from './utils/quill-toolbar';
+import { SUPABASE_CONFIG } from '@shared/core/supabase';
+import { environment } from '../../../../../environments/environment';
 
 export interface CoreOptions {
   routes: Routes;
@@ -15,6 +17,14 @@ export function provideCore({ routes }: CoreOptions) {
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withFetch()),
+
+    {
+      provide: SUPABASE_CONFIG,
+      useValue: {
+        supabaseUrl: environment.supabaseUrl,
+        supabaseKey: environment.supabaseKey,
+      },
+    },
 
     provideHighlightOptions({
       coreLibraryLoader: () => import('highlight.js/lib/core'),

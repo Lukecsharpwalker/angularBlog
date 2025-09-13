@@ -21,9 +21,10 @@ import {
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
-import { ModalConfig, Post, Tag } from 'shared';
+import { Post, Tag } from '@shared/core/supabase';
+import { ModalConfig } from '@shared/pattern/dynamic-dialog';
 import { PostInsert, PostUpdate } from './post-operations';
-import { DynamicDialogService } from 'shared';
+import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { PostForm } from './post-form.interface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
