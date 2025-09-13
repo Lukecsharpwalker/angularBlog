@@ -10,7 +10,7 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { Post } from 'shared';
+import { Post } from '@shared/core/supabase';
 import { ReaderApiService } from '../../core/blog/reader-api.service';
 
 interface PostsState {

@@ -1,7 +1,7 @@
 import { patchState, signalStore, withMethods, withState, withComputed } from '@ngrx/signals';
 import { inject, computed } from '@angular/core';
 import { ReaderApiService } from '../../core/blog/reader-api.service';
-import { Comment } from 'shared';
+import { Comment } from '@shared/core/supabase';
 
 interface CommentsState {
   comments: Comment[];

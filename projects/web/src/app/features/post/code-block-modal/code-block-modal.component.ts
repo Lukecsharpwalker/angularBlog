@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DYNAMIC_DIALOG_DATA } from 'shared';
+import { DYNAMIC_DIALOG_DATA } from '@shared/pattern/dynamic-dialog';
 
 @Component({
   selector: 'web-code-block-modal',

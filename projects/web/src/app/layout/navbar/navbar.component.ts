@@ -10,7 +10,7 @@ import {
   DestroyRef,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DynamicDialogService } from 'shared';
+import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { LoginComponent } from '../login/login.component';
 
 @Component({

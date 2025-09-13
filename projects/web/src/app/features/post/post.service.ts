@@ -1,5 +1,5 @@
 import { Injectable, ViewContainerRef, DestroyRef, afterNextRender } from '@angular/core';
-import { DynamicDialogService } from 'shared';
+import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { CodeBlockModalComponent } from './code-block-modal/code-block-modal.component';
 
 @Injectable()

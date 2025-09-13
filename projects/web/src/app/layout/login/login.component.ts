@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DynamicDialogService } from 'shared';
-import { ModalCloseStatusEnum, ModalStatus } from 'shared';
-import { AuthFormComponent, AuthFormConfig } from 'shared';
+import { DynamicDialogService, ModalCloseStatusEnum, ModalStatus } from '@shared/pattern/dynamic-dialog';
+import { AuthFormComponent, AuthFormConfig } from '@shared/pattern/auth-form';
 
 @Component({
   selector: 'web-login',

@@ -4,7 +4,7 @@ import { patchState, signalStore, withState, withMethods, withHooks, withCompute
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { ReaderApiService } from '../../core/blog/reader-api.service';
-import { Tag } from 'shared';
+import { Tag } from '@shared/core/supabase';
 
 interface TagsState {
   tags: Tag[] | null;

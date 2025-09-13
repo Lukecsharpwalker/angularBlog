@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input, signal, Signal } fro
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ReaderApiService } from '../../../core/blog/reader-api.service';
 import { CommentsStore } from '../comments.store';
-import { Comment } from 'shared';
+import { Comment } from '@shared/core/supabase';
 
 @Component({
   selector: 'web-add-comment',

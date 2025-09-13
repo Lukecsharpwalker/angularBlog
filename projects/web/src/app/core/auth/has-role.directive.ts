@@ -1,5 +1,5 @@
 import { Directive, TemplateRef, ViewContainerRef, inject, input, effect } from '@angular/core';
-import { SupabaseClient } from 'shared';
+import { SupabaseClient } from '@shared/core/supabase';
 
 @Directive({
   selector: '[webHasRole]',

@@ -6,7 +6,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { ReaderApiService } from '../../core/blog/reader-api.service';
 import { formatDateToDDMMYYYY } from '../../utils/date/date-utils';
-import { Post } from 'shared';
+import { Post } from '@shared/core/supabase';
 
 interface PostState {
   post: Post | null;
