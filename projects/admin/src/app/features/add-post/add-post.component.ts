@@ -23,8 +23,8 @@ import { QuillEditorComponent, Range } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
 import { Post, Tag } from '@shared/core/supabase';
 import { ModalConfig } from '@shared/pattern/dynamic-dialog';
-import { PostInsert, PostUpdate } from './post-operations';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
+import { PostInsert, PostUpdate } from './post-operations';
 import { PostForm } from './post-form.interface';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
@@ -81,7 +81,8 @@ export class AddPostComponent implements OnInit {
   protected readonly isEditMode: Signal<boolean> = computed(() => !!this.postId());
   protected readonly addPostStore = inject(AddPostStore);
 
-  private readonly quill = viewChild.required<QuillEditorComponent>('quill');
+  private readonly quill: Signal<QuillEditorComponent> =
+    viewChild.required<QuillEditorComponent>('quill');
   private dialogService = inject(DynamicDialogService<AddImageForm>);
   private postFormService = inject(PostFormService);
   private range: Range | null = null;
