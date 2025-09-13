@@ -45,6 +45,10 @@ module.exports = tseslint.config(
       'boundaries/elements': [
         { type: 'shared-lib', pattern: 'projects/shared/src/lib/**' },
         { type: 'shared-pattern', pattern: 'projects/shared/src/pattern/**' },
+        { type: 'shared-core', pattern: 'projects/shared/src/core/**' },
+        { type: 'shared-core-auth', pattern: 'projects/shared/src/core/auth/**' },
+        { type: 'shared-core-blog', pattern: 'projects/shared/src/core/blog/**' },
+        { type: 'shared-core-supabase', pattern: 'projects/shared/src/core/supabase/**' },
         { type: 'shared-data-access', pattern: 'projects/shared/src/data-access/**' },
         { type: 'shared-models', pattern: 'projects/shared/src/models/**' },
         { type: 'shared-models-api', mode: 'file', pattern: 'projects/shared/models/public-api.ts' },
@@ -153,7 +157,11 @@ module.exports = tseslint.config(
           default: 'disallow',
           rules: [
             { from: 'shared-lib', allow: [] },
-            { from: 'shared-pattern', allow: ['shared-models', 'shared-data-access', 'shared-public-api'] },
+            { from: 'shared-pattern', allow: ['shared-models', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-data-access', 'shared-public-api'] },
+            { from: 'shared-core', allow: ['shared-models'] },
+            { from: 'shared-core-auth', allow: ['shared-models', 'shared-core-supabase'] },
+            { from: 'shared-core-blog', allow: ['shared-models', 'shared-core-auth', 'shared-core-supabase'] },
+            { from: 'shared-core-supabase', allow: ['shared-models'] },
             { from: 'shared-data-access', allow: ['shared-models'] },
             { from: 'shared-models', allow: [] },
             { from: 'shared-models-api', allow: ['shared-models'] },
@@ -162,6 +170,10 @@ module.exports = tseslint.config(
               allow: [
                 'shared-lib',
                 'shared-pattern',
+                'shared-core',
+                'shared-core-auth',
+                'shared-core-blog',
+                'shared-core-supabase',
                 'shared-data-access',
                 'shared-models',
               ],
@@ -181,32 +193,32 @@ module.exports = tseslint.config(
                 'shared-public-api',
               ],
             },
-            { from: 'web-core', allow: ['web-utils', 'shared-public-api', 'environment'] },
+            { from: 'web-core', allow: ['web-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
             {
               from: 'web-layout',
-              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-public-api'],
+              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-public-api', 'shared-core'],
             },
             { from: 'web-ui', allow: ['shared-models', 'shared-models-api'] },
             {
               from: 'web-pattern',
-              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-public-api'],
+              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-public-api', 'shared-core'],
             },
             {
               from: 'web-feature',
-              allow: ['web-core', 'web-ui', 'web-pattern', 'web-utils', 'shared-public-api', 'shared-models-api'],
+              allow: ['web-core', 'web-ui', 'web-pattern', 'web-utils', 'shared-public-api', 'shared-models-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern'],
             },
             { from: 'web-feature-routes', allow: ['web-core', 'web-pattern', 'web-feature'] },
-            { from: 'web-utils', allow: ['shared-models', 'shared-public-api', 'environment'] },
+            { from: 'web-utils', allow: ['shared-models', 'shared-public-api', 'shared-core', 'shared-core-supabase', 'environment'] },
 
             { from: 'admin-main', allow: ['admin-app'] },
             {
               from: 'admin-app',
               allow: ['admin-core', 'admin-layout', 'admin-feature-routes', 'shared-public-api'],
             },
-            { from: 'admin-core', allow: ['shared-public-api', 'environment'] },
+            { from: 'admin-core', allow: ['shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
             {
               from: 'admin-layout',
-              allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-public-api'],
+              allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-public-api', 'shared-core'],
             },
             { from: 'admin-ui', allow: ['shared-models', 'shared-models-api'] },
             {
@@ -216,7 +228,7 @@ module.exports = tseslint.config(
             { from: 'admin-utils', allow: ['shared-models', 'shared-public-api', 'environment'] },
             {
               from: 'admin-feature',
-              allow: ['admin-core', 'admin-ui', 'admin-pattern', 'admin-utils', 'shared-public-api'],
+              allow: ['admin-core', 'admin-ui', 'admin-pattern', 'admin-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern'],
             },
             {
               from: 'admin-feature-routes',
