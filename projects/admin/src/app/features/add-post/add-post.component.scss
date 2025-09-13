@@ -139,7 +139,6 @@
   }
 }
 
-// Responsive styles for Quill editor that can't be handled with Tailwind responsive prefixes
 @media (max-width: 768px) {
   .post-editor ::ng-deep {
     .ql-toolbar {

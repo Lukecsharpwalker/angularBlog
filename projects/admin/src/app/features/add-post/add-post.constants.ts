@@ -3,7 +3,7 @@ export const ADD_POST_CONSTANTS = {
   IMAGE_MAX_WIDTH_STYLE: 'max-width: 100%;',
   MODAL_DIALOG_DELAY: 150,
   FOCUS_DELAY: 0,
-} as const;
+};
 
 export const MODAL_CONFIG_DEFAULTS = {
   ADD_IMAGE: {
@@ -17,4 +17,4 @@ export const MODAL_CONFIG_DEFAULTS = {
     primaryButton: 'Yes',
     secondaryButton: 'No',
   },
-} as const;
+};

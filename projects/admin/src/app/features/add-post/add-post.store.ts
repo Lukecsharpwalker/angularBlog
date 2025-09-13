@@ -31,7 +31,6 @@ export const AddPostStore = signalStore(
   withState(initialState),
   withComputed(store => ({
     availableTags: () => store.tags(),
-    currentPostTags: () => store.currentPost()?.tags || [],
   })),
   withMethods((store, addPostService = inject(AddPostService)) => ({
     async loadPost(id: string) {

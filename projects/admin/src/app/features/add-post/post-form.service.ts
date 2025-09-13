@@ -33,7 +33,7 @@ export class PostFormService {
       formData,
       isUpdate: isEditMode,
       postId,
-    };
+    } as ProcessedPostData;
   }
 
   initializeFormWithPost(form: FormGroup<PostForm>, post: Post): void {
@@ -102,11 +102,11 @@ export class PostFormService {
     allPreBlocks.forEach(block => {
       const rawText = block.textContent || '';
       const language = this.detectLanguage(rawText);
-      
+
       const codeElement = document.createElement('code');
       codeElement.className = language;
       codeElement.innerHTML = hljs.highlight(rawText, { language }).value;
-      
+
       block.innerHTML = '';
       block.appendChild(codeElement);
     });
@@ -116,14 +116,30 @@ export class PostFormService {
 
   private detectLanguage(code: string): string {
     const lowerCode = code.toLowerCase();
-    
-    if ((lowerCode.includes('name:') && lowerCode.includes('on:')) || lowerCode.includes('uses:') || lowerCode.includes('runs-on:')) {
+
+    if (
+      (lowerCode.includes('name:') && lowerCode.includes('on:')) ||
+      lowerCode.includes('uses:') ||
+      lowerCode.includes('runs-on:')
+    ) {
       return 'yaml';
     }
-    if (lowerCode.includes('select') && (lowerCode.includes('from') || lowerCode.includes('where') || lowerCode.includes('insert') || lowerCode.includes('update'))) {
+    if (
+      lowerCode.includes('select') &&
+      (lowerCode.includes('from') ||
+        lowerCode.includes('where') ||
+        lowerCode.includes('insert') ||
+        lowerCode.includes('update'))
+    ) {
       return 'sql';
     }
-    if (code.includes('import') && (code.includes(': ') || code.includes('interface') || code.includes('type ') || code.includes('<T>'))) {
+    if (
+      code.includes('import') &&
+      (code.includes(': ') ||
+        code.includes('interface') ||
+        code.includes('type ') ||
+        code.includes('<T>'))
+    ) {
       return 'typescript';
     }
     if (code.includes('import') && code.includes('test') && code.includes('@playwright')) {
