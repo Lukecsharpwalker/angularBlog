@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import hljs from 'highlight.js';
-import { Post, Tag } from '@shared/core/supabase';
+import { Post, Tag } from 'shared';
 import { PostInsert, PostUpdate } from './post-operations';
 import { PostForm } from './post-form.interface';
 import { ProcessedPostData } from './processed-post-data.interface';

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthStore } from '@shared/core/auth';
+import { AuthStore } from 'shared';
 
 @Component({
   selector: 'admin-navbar',
