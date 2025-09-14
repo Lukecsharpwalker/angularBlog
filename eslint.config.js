@@ -52,7 +52,8 @@ module.exports = tseslint.config(
         { type: 'shared-data-access', pattern: 'projects/shared/src/data-access/**' },
         { type: 'shared-models', pattern: 'projects/shared/src/models/**' },
         { type: 'shared-models-api', mode: 'file', pattern: 'projects/shared/models/public-api.ts' },
-        { type: 'shared-utils-api', mode: 'file', pattern: 'projects/shared/utils/public-api.ts' },
+        { type: 'shared-utils', pattern: 'projects/shared/src/utils/**' },
+        { type: 'shared-utils-api', mode: 'file', pattern: 'projects/shared/src/utils/public-api.ts' },
         { type: 'shared-public-api', mode: 'file', pattern: 'projects/shared/src/public-api.ts' },
         { type: 'shared-external', mode: 'file', pattern: 'shared' },
         { type: 'web-main', mode: 'file', pattern: 'projects/web/src/main.ts' },
@@ -165,6 +166,8 @@ module.exports = tseslint.config(
             { from: 'shared-data-access', allow: ['shared-models'] },
             { from: 'shared-models', allow: [] },
             { from: 'shared-models-api', allow: ['shared-models'] },
+            { from: 'shared-utils', allow: [] },
+            { from: 'shared-utils-api', allow: ['shared-utils'] },
             {
               from: 'shared-public-api',
               allow: [
@@ -176,6 +179,7 @@ module.exports = tseslint.config(
                 'shared-core-supabase',
                 'shared-data-access',
                 'shared-models',
+                'shared-utils',
               ],
             },
             { from: 'shared-external', allow: [] },
