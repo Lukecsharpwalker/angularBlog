@@ -51,7 +51,4 @@ export class TagsScrollComponent {
     }
   }
 
-  protected getTagStyle(color: string): Record<string, string> {
-    return { 'background-color': color };
-  }
 }

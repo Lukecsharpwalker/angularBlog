@@ -10,7 +10,7 @@
           <div class="flex flex-col items-center w-20 md:w-24 group" data-testid="tag-item"
                [attr.data-tag-name]="tag.name">
             <div
-              [style]="getTagStyle(tag.color)"
+              [style.background-color]="tag.color"
               class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer shadow-sm hover:shadow-md"
               data-testid="tag-button"
             >
