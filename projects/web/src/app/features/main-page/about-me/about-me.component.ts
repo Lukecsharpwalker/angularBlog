@@ -6,7 +6,6 @@ import { NgOptimizedImage } from '@angular/common';
   standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './about-me.component.html',
-  styleUrl: './about-me.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutMeComponent {}

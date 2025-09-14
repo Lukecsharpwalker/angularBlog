@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./features/main-page.routes'),
+    loadChildren: () => import('./features/main-page/main-page.routes'),
   },
   {
     path: 'post',

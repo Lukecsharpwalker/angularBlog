@@ -10,8 +10,8 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { ReaderApiService } from '../../core';
 import { Tag } from '@shared/core/supabase';
+import { ReaderApiService } from '../../core';
 
 interface TagsState {
   tags: Tag[] | null;

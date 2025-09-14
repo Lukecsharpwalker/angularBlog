@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, input, signal, Signal } from '@angular/core';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { ReaderApiService } from '../../../core/blog/reader-api.service';
-import { CommentsStore } from '../comments.store';
 import { Comment } from '@shared/core/supabase';
+import { ReaderApiService } from '../../../core';
+import { CommentsStore } from '../comments.store';
 
 @Component({
   selector: 'web-add-comment',
@@ -35,7 +35,7 @@ export class AddCommentComponent {
   async onSubmit(): Promise<void> {
     if (this.commentForm.valid && !this._isSubmitting()) {
       this._isSubmitting.set(true);
-      
+
       try {
         const comment: Comment = {
           ...this.commentForm.value,
@@ -46,10 +46,10 @@ export class AddCommentComponent {
           post_id: this.postId(),
           user_id: null, // In a real app, this would be the current user's ID
         };
-        
+
         await this.commentsStore.addComment(this.postId(), comment);
         this.commentForm.reset();
-        
+
         // Add a small delay for UX smoothness
         setTimeout(() => {
           this._isSubmitting.set(false);

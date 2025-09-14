@@ -1,4 +1,4 @@
-import { ColumnName, RowOf, TableName } from '@shared/core/supabase';
+import { ColumnName, RowOf, TableName } from 'shared';
 
 //https://postgrest.org/en/stable/references/api/tables_views.html#operators
 type Op =
@@ -43,22 +43,18 @@ export class UB<T extends TableName> {
   constructor(private readonly table: T) {}
 
   select(...cols: string[]) {
-    cols.forEach((c) => this.selects.add(c));
+    cols.forEach(c => this.selects.add(c));
     return this;
   }
 
   where<K extends ColumnName<T>>(col: K, op: Op, value: RowOf<T>[K]) {
     this.filters.push(
-      `${encodeURIComponent(String(col))}=${op}.${encodeURIComponent(String(value))}`,
+      `${encodeURIComponent(String(col))}=${op}.${encodeURIComponent(String(value))}`
     );
     return this;
   }
 
-  orderBy<K extends ColumnName<T>>(
-    col: K,
-    dir: 'asc' | 'desc' = 'asc',
-    nulls?: 'first' | 'last',
-  ) {
+  orderBy<K extends ColumnName<T>>(col: K, dir: 'asc' | 'desc' = 'asc', nulls?: 'first' | 'last') {
     this.orders.push(`${String(col)}.${dir}${nulls ? `.nulls${nulls}` : ''}`);
     return this;
   }
@@ -71,11 +67,9 @@ export class UB<T extends TableName> {
 
   build(): string {
     const p: string[] = [];
-    if (this.selects.size)
-      p.push(`select=${encodeURIComponent([...this.selects].join(','))}`);
+    if (this.selects.size) p.push(`select=${encodeURIComponent([...this.selects].join(','))}`);
     if (this.filters.length) p.push(...this.filters);
-    if (this.orders.length)
-      p.push(`order=${encodeURIComponent(this.orders.join(','))}`);
+    if (this.orders.length) p.push(`order=${encodeURIComponent(this.orders.join(','))}`);
     if (this.lim !== undefined) p.push(`limit=${this.lim}`);
     if (this.off !== undefined) p.push(`offset=${this.off}`);
     return `${this.table}?${p.join('&')}`;
