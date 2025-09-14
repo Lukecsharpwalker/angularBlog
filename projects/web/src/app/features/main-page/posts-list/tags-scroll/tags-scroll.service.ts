@@ -1,10 +1,4 @@
-import {
-  Injectable,
-  ElementRef,
-  DestroyRef,
-  signal,
-  computed,
-} from '@angular/core';
+import { Injectable, ElementRef, DestroyRef, signal, computed } from '@angular/core';
 
 @Injectable()
 export class TagsScrollService {
@@ -12,15 +6,26 @@ export class TagsScrollService {
 
   readonly activeDotIndex = computed(() => {
     const progress = this.scrollProgress();
-    if (progress < 33) return 0;
-    if (progress < 66) return 1;
-    return 2;
+    const thresholds = this.progressThresholds();
+
+    for (let i = 0; i < thresholds.length; i++) {
+      if (progress < thresholds[i]) {
+        return i;
+      }
+    }
+    return thresholds.length;
   });
+
+  private readonly progressThresholds = signal<number[]>([33, 66]);
 
   initializeScrolling(
     scrollContainer: () => ElementRef<HTMLElement> | undefined,
-    destroyRef: DestroyRef
+    destroyRef: DestroyRef,
+    thresholds?: number[]
   ): void {
+    if (thresholds) {
+      this.progressThresholds.set(thresholds);
+    }
     this.scrollProgress.set(0);
 
     const scrollHandler = this.createScrollHandler();

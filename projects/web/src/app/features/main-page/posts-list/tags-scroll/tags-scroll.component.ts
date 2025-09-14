@@ -14,6 +14,9 @@ import {
 import { TagsScrollService } from './tags-scroll.service';
 import { Tag } from '@shared/core/supabase';
 
+const SCROLL_AMOUNT = 135;
+const PROGRESS_THRESHOLDS = [33, 66];
+
 @Component({
   selector: 'web-tags-scroll',
   imports: [NgOptimizedImage],
@@ -27,11 +30,11 @@ export class TagsScrollComponent {
   readonly tags = input.required<Tag[] | null>();
   readonly activeDotClasses: Signal<string[]> = computed(() => {
     const activeIndex = this.scrollService.activeDotIndex();
-    return [
-      activeIndex === 0 ? 'bg-secondary/70' : 'bg-tertiary/30',
-      activeIndex === 1 ? 'bg-secondary/70' : 'bg-tertiary/30',
-      activeIndex === 2 ? 'bg-secondary/70' : 'bg-tertiary/30',
-    ];
+    const dotCount = PROGRESS_THRESHOLDS.length + 1;
+
+    return Array.from({ length: dotCount }, (_, i) =>
+      i === activeIndex ? 'bg-secondary/70' : 'bg-tertiary/30'
+    );
   });
 
   protected readonly scrollService = inject(TagsScrollService);
@@ -39,14 +42,14 @@ export class TagsScrollComponent {
 
   constructor() {
     afterNextRender(() => {
-      this.scrollService.initializeScrolling(this.scroll, this.destroyRef);
+      this.scrollService.initializeScrolling(this.scroll, this.destroyRef, PROGRESS_THRESHOLDS);
     });
   }
 
   protected scrollBy(direction: 'left' | 'right'): void {
     const container = this.scroll()?.nativeElement;
     if (container) {
-      const scrollAmount = direction === 'left' ? -135 : 135;
+      const scrollAmount = direction === 'left' ? -SCROLL_AMOUNT : SCROLL_AMOUNT;
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
