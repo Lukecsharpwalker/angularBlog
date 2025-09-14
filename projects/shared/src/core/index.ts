@@ -1,3 +1,3 @@
-export * from './auth';
-export * from './blog'; 
-export * from './supabase';
+export * from './auth/public-api';
+export * from './blog/public-api'; 
+export * from './supabase/public-api';

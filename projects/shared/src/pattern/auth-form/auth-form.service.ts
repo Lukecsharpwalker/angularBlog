@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthStore } from '../../core/auth';
-import { Credentials } from '../../core/auth';
-import { AuthFormControls } from './auth-form.interface';
+import { AuthStore } from '@shared/core';
+import { Credentials } from '@shared/core';
+import { AuthFormControls } from '@shared/pattern';
 
 @Injectable()
 export class AuthFormService {
@@ -14,9 +14,9 @@ export class AuthFormService {
         nonNullable: true,
         validators: [Validators.required, Validators.email],
       }),
-      password: new FormControl<string>('', { 
-        nonNullable: true, 
-        validators: [Validators.required] 
+      password: new FormControl<string>('', {
+        nonNullable: true,
+        validators: [Validators.required],
       }),
     });
   }

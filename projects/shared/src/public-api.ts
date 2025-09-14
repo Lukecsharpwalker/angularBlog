@@ -1,3 +1,3 @@
 export * from './core';
 export * from './pattern';
-export * from './data-access';
+export * from './utils';
