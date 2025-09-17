@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { PostCardComponent } from '../post-card/post-card.component';
+import { PostCardComponent } from './post-card/post-card.component';
 import { PostsStore } from '../posts.store';
 import { TagsStore } from '../tags.store';
-import { AboutMeComponent } from '../about-me/about-me.component';
+import { AboutMeComponent } from './about-me/about-me.component';
 import { TagsScrollComponent } from './tags-scroll/tags-scroll.component';
 
 @Component({
@@ -11,12 +11,11 @@ import { TagsScrollComponent } from './tags-scroll/tags-scroll.component';
   standalone: true,
   imports: [RouterModule, AboutMeComponent, PostCardComponent, TagsScrollComponent],
   templateUrl: './posts-list.component.html',
-  styleUrl: './posts-list.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PostsListComponent {
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
-  posts = this.postStore.posts;
+  readonly posts: Signal<Post[] | null> = this.postStore.posts;
   tags = this.tagsStore.tags;
 }

@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Post } from '@shared/core/supabase';
-import { LabelComponent } from '../label/label.component';
+import { LabelComponent } from './label/label.component';
 
 @Component({
   selector: 'web-post-card',
