@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PostCardComponent } from './post-card/post-card.component';
-import { PostsStore } from '../posts.store';
-import { TagsStore } from '../tags.store';
+import { PostsStore } from '../../posts.store';
+import { TagsStore } from '../../tags.store';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { TagsScrollComponent } from './tags-scroll/tags-scroll.component';
+import { Post, Tag } from '@shared/core';
 
 @Component({
   selector: 'web-posts-list',
@@ -17,5 +18,5 @@ export class PostsListComponent {
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
   readonly posts: Signal<Post[] | null> = this.postStore.posts;
-  tags = this.tagsStore.tags;
+  readonly tags: Signal<Tag[] | null> = this.tagsStore.tags;
 }

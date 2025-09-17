@@ -7,7 +7,7 @@ import {
   input,
   DestroyRef,
 } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
@@ -26,7 +26,7 @@ import { PostService } from '../post.service';
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommentsComponent, AddCommentComponent, DatePipe, HighlightModule],
+  imports: [CommentsComponent, AddCommentComponent, DatePipe, HighlightModule, NgOptimizedImage],
 })
 export class PostComponent implements OnInit {
   readonly id = input.required<string>();
@@ -34,6 +34,10 @@ export class PostComponent implements OnInit {
   postStore = inject(PostStore);
   readonly post = this.postStore.post;
   readonly date = this.postStore.formattedDate;
+  readonly loading = this.postStore.loading;
+  readonly error = this.postStore.error;
+  readonly hasPost = this.postStore.hasPost;
+  readonly postTitle = this.postStore.postTitle;
 
   private destroyRef = inject(DestroyRef);
   private postService = inject(PostService);
@@ -73,7 +77,7 @@ export class PostComponent implements OnInit {
     }
   }
 
-  private loadPost(): void {
+  loadPost(): void {
     this.postStore.getPost(this.id());
   }
 }
