@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primary Button System Examples</title>
+    <link rel="stylesheet" href="./tokens.scss">
+    <link rel="stylesheet" href="./components.scss">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            background-color: var(--color-surface-secondary);
+        }
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--color-surface-primary);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+        .demo-code {
+            background: var(--color-surface-tertiary);
+            padding: 0.5rem;
+            border-radius: var(--border-radius-md);
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            width: 100%;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Primary Button System - Design Tokens Implementation</h1>
+
+    <div class="demo-section">
+        <h2>Base Primary Buttons</h2>
+        <div class="demo-grid">
+            <div class="demo-item">
+                <button class="btn-primary">Standard Button</button>
+                <code class="demo-code">class="btn-primary"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-sm">Small Button</button>
+                <code class="demo-code">class="btn-primary btn-primary-sm"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-lg">Large Button</button>
+                <code class="demo-code">class="btn-primary btn-primary-lg"</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Width Variants</h2>
+        <div class="demo-grid">
+            <div class="demo-item" style="grid-column: 1 / -1;">
+                <button class="btn-primary btn-primary-full">Full Width Button</button>
+                <code class="demo-code">class="btn-primary btn-primary-full"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-auto">Auto Width</button>
+                <code class="demo-code">class="btn-primary btn-primary-auto"</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Text-Only Buttons (Recommended)</h2>
+        <div class="demo-grid">
+            <div class="demo-item">
+                <button class="btn-primary">Action Button</button>
+                <code class="demo-code">class="btn-primary"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary">Send Message</button>
+                <code class="demo-code">class="btn-primary"</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Button Variants</h2>
+        <div class="demo-grid">
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-outline">Outline Button</button>
+                <code class="demo-code">class="btn-primary btn-primary-outline"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-ghost">Ghost Button</button>
+                <code class="demo-code">class="btn-primary btn-primary-ghost"</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Loading State</h2>
+        <div class="demo-grid">
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-loading">Loading...</button>
+                <code class="demo-code">class="btn-primary btn-primary-loading"</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Disabled State</h2>
+        <div class="demo-grid">
+            <div class="demo-item">
+                <button class="btn-primary" disabled>Disabled Button</button>
+                <code class="demo-code">class="btn-primary" disabled</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Compound Classes</h2>
+        <div class="demo-grid">
+            <div class="demo-item" style="grid-column: 1 / -1;">
+                <button class="btn-primary btn-primary-lg btn-primary-full">Large Full Width</button>
+                <code class="demo-code">class="btn-primary btn-primary-lg btn-primary-full"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-sm btn-primary-outline">Small Outline</button>
+                <code class="demo-code">class="btn-primary btn-primary-sm btn-primary-outline"</code>
+            </div>
+
+            <div class="demo-item">
+                <button class="btn-primary btn-primary-lg btn-primary-ghost">Add Item</button>
+                <code class="demo-code">class="btn-primary btn-primary-lg btn-primary-ghost"</code>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Usage Examples</h2>
+        <pre><code><!-- Basic usage -->
+&lt;button class="btn-primary"&gt;Click me&lt;/button&gt;
+
+<!-- Text-only button -->
+&lt;button class="btn-primary"&gt;
+  Submit Form
+&lt;/button&gt;
+
+<!-- Full width responsive -->
+&lt;button class="btn-primary btn-primary-full btn-primary-lg"&gt;
+  Get Started
+&lt;/button&gt;
+
+<!-- Loading state with JavaScript -->
+&lt;button class="btn-primary"
+        [class.btn-primary-loading]="isLoading"
+        [disabled]="isLoading"&gt;
+  {{ isLoading ? 'Processing...' : 'Submit' }}
+&lt;/button&gt;</code></pre>
+    </div>
+
+    <div class="demo-section">
+        <h2>Accessibility Features</h2>
+        <ul>
+            <li>✅ Minimum 44px touch target on mobile</li>
+            <li>✅ Focus ring with 2px outline offset</li>
+            <li>✅ Respects prefers-reduced-motion</li>
+            <li>✅ Proper disabled states</li>
+            <li>✅ Touch-optimized tap highlighting</li>
+            <li>✅ Keyboard navigation support</li>
+        </ul>
+    </div>
+
+    <div class="demo-section">
+        <h2>Design Tokens Used</h2>
+        <ul>
+            <li><code>--color-primary</code> - Background color</li>
+            <li><code>--color-text-inverse</code> - Text color</li>
+            <li><code>--border-radius-xl</code> - Border radius</li>
+            <li><code>--duration-normal</code> - Transition duration</li>
+            <li><code>--easing-smooth</code> - Transition easing</li>
+            <li><code>--font-weight-semibold</code> - Font weight</li>
+            <li><code>--spacing-3, --spacing-4</code> - Padding</li>
+            <li><code>--opacity-50</code> - Disabled state</li>
+        </ul>
+    </div>
+</body>
+</html>

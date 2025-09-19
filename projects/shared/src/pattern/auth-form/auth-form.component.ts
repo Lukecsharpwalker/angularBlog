@@ -11,11 +11,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthStore } from '../../core/auth/public-api';
 import { AuthFormService } from './auth-form.service';
 import { AuthFormControls, AuthFormConfig } from './auth-form.interface';
+import { IconComponent } from '../icon-system';
 
 @Component({
   selector: 'shared-auth-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, IconComponent],
   providers: [AuthFormService],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',

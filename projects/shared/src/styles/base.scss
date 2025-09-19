@@ -1,0 +1,38 @@
+@layer reset, primeng;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'tailwindcss/utilities';
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  @apply text-3xl font-bold mt-4 mb-1;
+}
+
+h2 {
+  @apply text-2xl font-bold mt-4 mb-1;
+}
+
+h3 {
+  @apply text-xl font-bold mt-4 mb-1;
+}
+
+h4 {
+  @apply text-lg font-bold mt-2 mb-1;
+}
+
+.tittle {
+  @apply text-4xl font-bold my-2;
+}
+
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-duration: var(--duration-200);
+  transition-timing-function: var(--easing-in-out);
+}
