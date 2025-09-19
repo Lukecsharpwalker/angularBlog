@@ -1,6 +1,6 @@
 import { Injectable, ViewContainerRef, DestroyRef, afterNextRender } from '@angular/core';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
-import { CodeBlockModalComponent } from './code-block-modal/code-block-modal.component';
+import { CodeBlockModalComponent } from './post/code-block-modal/code-block-modal.component';
 
 @Injectable()
 export class PostService {

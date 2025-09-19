@@ -13,14 +13,14 @@ import { Router } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { ReaderApiService } from '../../../core';
-import { CommentsComponent } from '../comments/comments.component';
-import { AddCommentComponent } from '../add-comment/add-comment.component';
+import { CommentsComponent } from './comments/comments.component';
+import { AddCommentComponent } from './add-comment/add-comment.component';
 import { PostStore } from '../post.store';
-import { CommentsStore } from '../comments.store';
 import { SocialShareService } from './social-share.service';
 import { PostService } from '../post.service';
 import { Post } from 'shared';
 import { IconComponent } from '@shared/pattern/icon-system';
+import { CommentsStore } from './comments.store';
 
 @Component({
   selector: 'web-post',
@@ -29,7 +29,14 @@ import { IconComponent } from '@shared/pattern/icon-system';
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommentsComponent, AddCommentComponent, DatePipe, HighlightModule, NgOptimizedImage, IconComponent],
+  imports: [
+    CommentsComponent,
+    AddCommentComponent,
+    DatePipe,
+    HighlightModule,
+    NgOptimizedImage,
+    IconComponent,
+  ],
 })
 export class PostComponent implements OnInit {
   protected readonly id = input.required<string>();

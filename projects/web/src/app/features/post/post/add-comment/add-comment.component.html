@@ -1,5 +1,4 @@
 <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-  <!-- Comment Input -->
   <div class="mb-4">
     <textarea
       id="content"
@@ -9,8 +8,7 @@
       placeholder="Share your thoughts about this article..."
       [class.border-red-400]="commentForm.get('content')?.touched && commentForm.get('content')?.invalid"
     ></textarea>
-    
-    <!-- Character counter and validation -->
+
     <div class="flex justify-between items-center mt-2">
       <div class="flex items-center gap-2">
         <div class="text-xs text-primary/50">
@@ -20,8 +18,7 @@
           <div class="w-2 h-2 bg-green-500 rounded-full"></div>
         }
       </div>
-      
-      <!-- Validation Message -->
+
       @if (commentForm.get('content')?.touched && commentForm.get('content')?.errors) {
         <div class="text-sm text-red-500">
           Comment is required
@@ -30,7 +27,6 @@
     </div>
   </div>
 
-  <!-- Submit Button -->
   <div class="flex justify-end">
     <button
       type="submit"

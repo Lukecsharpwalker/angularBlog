@@ -54,7 +54,7 @@
     <div class="max-w-md mx-auto text-center glass-effect-strong border border-red-200 rounded-xl p-8 shadow-lg">
 
       <h2 class="text-2xl font-bold text-red-600 mb-2 flex items-center justify-center gap-2">
-        <app-icon name="error" size="sm"></app-icon>
+        <app-icon name="error" size="sm" />
         Error Loading Post
       </h2>
       <p class="text-gray-600 mb-6">{{ error() }}</p>
@@ -112,14 +112,14 @@
         <div class="sticky top-36">
           <div class="backdrop-blur-sm bg-white/70 border border-white/40 rounded-xl p-6 shadow-lg hover:bg-white/80 transition-colors duration-300">
             <h2 class="text-lg font-bold mb-4 text-primary flex items-center gap-2">
-              <app-icon name="info" size="sm" aria-hidden="true"></app-icon>
+              <app-icon name="info" size="sm" aria-hidden="true" />
               Article Information
             </h2>
 
             <div class="space-y-4">
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="category" size="xs"></app-icon>
+                  <app-icon name="category" size="xs" />
                   Category
                 </span>
                 <span class="px-3 py-1 bg-secondary/90 text-white rounded-lg text-sm font-medium shadow-sm">
@@ -128,7 +128,7 @@
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="time" size="xs"></app-icon>
+                  <app-icon name="time" size="xs" />
                   Updated
                 </span>
                 <time class="text-primary text-sm" [dateTime]="post()?.updated">
@@ -137,14 +137,14 @@
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="author" size="xs"></app-icon>
+                  <app-icon name="author" size="xs" />
                   Author
                 </span>
                 <span class="text-primary font-medium">{{ post()?.author?.username }}</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="clock" size="xs"></app-icon>
+                  <app-icon name="clock" size="xs" />
                   Read Time
                 </span>
                 <span class="px-3 py-1 bg-tertiary/80 text-primary rounded-lg text-sm font-medium">
@@ -153,7 +153,7 @@
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="difficulty" size="xs"></app-icon>
+                  <app-icon name="difficulty" size="xs" />
                   Difficulty
                 </span>
                 <div class="flex gap-1" aria-label="Difficulty level: 3 out of 4 stars">
@@ -212,7 +212,7 @@
         <div class="space-y-6">
           <section class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-xl p-6 shadow-lg" aria-labelledby="add-comment-heading">
             <h3 id="add-comment-heading" class="text-xl font-bold text-primary mb-4 flex items-center gap-2">
-              <app-icon name="comment" size="sm"></app-icon>
+              <app-icon name="comment" size="sm" />
               Add Comment
             </h3>
             <web-add-comment [postId]="id()"/>
@@ -222,7 +222,7 @@
             <section class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-xl overflow-hidden shadow-lg" aria-labelledby="comments-heading">
               <div class="p-6 border-b border-white/30">
                 <h3 id="comments-heading" class="text-xl font-bold text-primary flex items-center gap-2">
-                  <app-icon name="comments" size="sm"></app-icon>
+                  <app-icon name="comments" size="sm" />
                   Comments
                 </h3>
               </div>
@@ -236,7 +236,7 @@
                 <div class="w-2 h-2 bg-secondary/20 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
               </div>
               <p class="text-primary/70 flex items-center gap-2">
-                <app-icon name="loading" size="sm"></app-icon>
+                <app-icon name="loading" size="sm" />
                 Loading comments...
               </p>
             </div>
@@ -250,7 +250,7 @@
     <div class="max-w-md mx-auto text-center bg-quaternary/80 backdrop-blur-sm border border-tertiary rounded-xl p-8 shadow-lg">
 
       <h2 class="text-2xl font-bold text-primary mb-2 flex items-center justify-center gap-2">
-        <app-icon name="search" size="sm"></app-icon>
+        <app-icon name="search" size="sm" />
         Post Not Found
       </h2>
       <p class="text-primary/70 mb-6">The article you're looking for doesn't exist or has been moved.</p>

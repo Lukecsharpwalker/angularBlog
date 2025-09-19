@@ -12,6 +12,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { LoginComponent } from '../login/login.component';
+import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 
 @Component({
   selector: 'web-navbar',
@@ -33,10 +34,12 @@ export class NavbarComponent {
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
   private destroyRef = inject(DestroyRef);
+  private cookieConsentService = inject(CookieConsentService);
 
   constructor() {
     this.initializeNavHeight();
     this.initializeScrollDetection();
+    this.initializeCookieConsent();
   }
 
   signIn(): void {
@@ -79,6 +82,14 @@ export class NavbarComponent {
       this.destroyRef.onDestroy(() => {
         window.removeEventListener('scroll', scrollHandler);
       });
+    });
+  }
+
+  private initializeCookieConsent(): void {
+    afterNextRender(async () => {
+      if (this.cookieConsentService.needsConsent()) {
+        await this.cookieConsentService.showConsentDialog(this.viewContainerRef);
+      }
     });
   }
 }

@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { Comment } from '@shared/core/supabase';
-import { ReaderApiService } from '../../../core/blog/reader-api.service';
+import { HasRoleDirective, ReaderApiService } from '../../../../core';
 import { CommentsStore } from '../comments.store';
-import { HasRoleDirective } from '../../../core/auth/has-role.directive';
+import { Comment } from 'shared';
 
 @Component({
   selector: 'web-comments',
@@ -13,7 +12,7 @@ import { HasRoleDirective } from '../../../core/auth/has-role.directive';
   imports: [HasRoleDirective],
 })
 export class CommentsComponent {
-  readonly comments = input<Comment[]>();
+  readonly comments = input<Comment[] | undefined>();
   readonly postId = input.required<string>();
 
   private commentsStore = inject(CommentsStore);
