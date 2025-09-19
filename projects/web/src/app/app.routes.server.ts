@@ -1,5 +1,5 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { getPrerenderParams } from './core/utils/prerender-params';
+import { getPrerenderParams } from './core';
 
 export const serverRoutes: ServerRoute[] = [
   {
