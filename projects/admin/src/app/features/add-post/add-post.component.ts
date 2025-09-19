@@ -54,9 +54,7 @@ import { ProcessedPostData } from './processed-post-data.interface';
   encapsulation: ViewEncapsulation.None,
 })
 export class AddPostComponent implements OnInit {
-  viewContainerRef = inject(ViewContainerRef);
-
-  blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
+  protected blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl('', {
       validators: [Validators.required],
       nonNullable: true,
@@ -83,6 +81,7 @@ export class AddPostComponent implements OnInit {
   protected readonly isEditMode: Signal<boolean> = computed(() => !!this.postId());
   protected readonly addPostStore = inject(AddPostStore);
 
+  private viewContainerRef = inject(ViewContainerRef);
   private readonly quill: Signal<QuillEditorComponent> =
     viewChild.required<QuillEditorComponent>('quill');
   private dialogService = inject(DynamicDialogService<AddImageForm>);

@@ -28,7 +28,6 @@ import { Tag } from 'shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagMultiSelectComponent implements ControlValueAccessor {
-  readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
   readonly allTags = input.required<Tag[]>();
 
   protected readonly selectedTags = signal<Tag[]>([]);
@@ -45,6 +44,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
     );
   });
 
+  private readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
   private elementRef = inject(ElementRef);
   private onChange: ((value: Tag[]) => void) | null = null;
   private onTouched: (() => void) | null = null;
