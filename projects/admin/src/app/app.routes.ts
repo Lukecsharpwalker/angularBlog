@@ -21,6 +21,10 @@ export const routes: Routes = [
         path: 'posts',
         loadChildren: () => import('./features/add-post/add-post.routes'),
       },
+      {
+        path: 'dsg',
+        loadComponent: () => import('@shared/pattern/design-system').then(m => m.DesignTokensDemoComponent),
+      },
     ],
   },
   {

@@ -1,20 +1,21 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthFormComponent, AuthFormConfig } from '@shared/pattern/auth-form';
+import { IconComponent } from '@shared/pattern/icon-system';
 
 @Component({
   selector: 'admin-login',
   standalone: true,
-  imports: [AuthFormComponent],
+  imports: [AuthFormComponent, IconComponent],
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
   readonly authFormConfig: AuthFormConfig = {
     showGoogleLogin: true,
-    title: 'Welcome Back',
-    subtitle: 'Access your admin dashboard',
-    submitButtonText: 'Sign In',
+    title: 'Welcome Back, Administrator',
+    subtitle: 'Access your premium control center',
+    submitButtonText: 'Enter Dashboard',
     theme: 'admin'
   };
 

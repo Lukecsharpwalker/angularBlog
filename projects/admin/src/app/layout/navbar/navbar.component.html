@@ -1,6 +1,6 @@
-<nav class="fixed top-4 left-4 right-4 z-50 max-w-7xl mx-auto">
+<nav class="fixed top-4 left-4 right-4 z-50 container-wide">
   <div
-    class="bg-white/80 backdrop-blur-xl border border-tertiary/20 rounded-2xl shadow-[0_8px_32px_rgba(18,55,42,0.12)]"
+    class="glass-effect-strong rounded-2xl shadow-[0_8px_32px_rgba(18,55,42,0.12)]"
   >
     <div class="px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -20,8 +20,13 @@
           class="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-xl font-medium text-sm transition-all duration-200 hover:bg-primary/20"
           href="/posts"
         >
-          <span class="w-5 h-5 flex items-center justify-center">📝</span>
           <span>Posts</span>
+        </a>
+        <a
+          class="flex items-center gap-2 px-4 py-2 bg-secondary/10 text-secondary rounded-xl font-medium text-sm transition-all duration-200 hover:bg-secondary/20"
+          href="/dsg"
+        >
+          <span>Design System</span>
         </a>
       </div>
 
@@ -32,10 +37,10 @@
         </div>
         <button
           (click)="logout()"
-          class="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center transition-all duration-200 hover:from-red-600 hover:to-red-700 hover:scale-105 hover:shadow-lg group"
+          class="btn-danger"
           title="Sign out"
         >
-          <span class="text-white transition-transform duration-200 group-hover:scale-110">🚪</span>
+          Logout
         </button>
       </div>
     </div>

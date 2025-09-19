@@ -10,6 +10,7 @@ import {
   Signal,
   viewChild,
   ViewContainerRef,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   FormControl,
@@ -22,7 +23,7 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
 import { Post, Tag } from 'shared';
-import { ModalConfig, DynamicDialogService } from 'shared';
+import { ModalConfig, DynamicDialogService, IconComponent } from 'shared';
 import { PostInsert, PostUpdate } from './post-operations';
 import { PostForm } from './post-form.interface';
 import { AddImageComponent } from './add-image/add-image.component';
@@ -44,11 +45,13 @@ import { ProcessedPostData } from './processed-post-data.interface';
     HighlightModule,
     RouterModule,
     TagMultiSelectComponent,
+    IconComponent,
   ],
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class AddPostComponent implements OnInit {
   viewContainerRef = inject(ViewContainerRef);
