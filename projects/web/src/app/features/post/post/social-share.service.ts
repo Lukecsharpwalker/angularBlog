@@ -4,14 +4,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SocialShareService {
-  
+
   shareOnSocial(platform: 'twitter' | 'linkedin', title: string, url?: string): void {
     const currentUrl = url || window.location.href;
     const encodedUrl = encodeURIComponent(currentUrl);
     const text = encodeURIComponent(`Check out this article: "${title}"`);
-    
+
     let shareUrl = '';
-    
+
     switch (platform) {
       case 'twitter':
         shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${text}`;
@@ -20,7 +20,7 @@ export class SocialShareService {
         shareUrl = `https://linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
         break;
     }
-    
+
     if (shareUrl) {
       window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
     }
@@ -28,13 +28,12 @@ export class SocialShareService {
 
   async copyLink(url?: string): Promise<boolean> {
     const linkToCopy = url || window.location.href;
-    
+
     try {
       await navigator.clipboard.writeText(linkToCopy);
       return true;
     } catch (error) {
       console.error('Failed to copy link:', error);
-      // Fallback for older browsers
       return this.fallbackCopyLink(linkToCopy);
     }
   }

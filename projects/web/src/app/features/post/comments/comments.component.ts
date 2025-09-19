@@ -9,7 +9,6 @@ import { HasRoleDirective } from '../../../core/auth/has-role.directive';
   standalone: true,
   providers: [ReaderApiService, CommentsStore],
   templateUrl: './comments.component.html',
-  styleUrl: './comments.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HasRoleDirective],
 })

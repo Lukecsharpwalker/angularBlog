@@ -1,5 +1,5 @@
 <div class="relative mt-8 pb-4" data-testid="tags-container">
-  <div class="bg-white/60 backdrop-blur-sm p-4 sm:p-5 rounded-2xl relative overflow-hidden shadow-sm">
+  <div class="glass-effect-light p-4 sm:p-5 rounded-2xl relative overflow-hidden shadow-sm">
     <div
       #scrollContainer
       data-testid="tags-scroll-container"
@@ -11,7 +11,7 @@
                [attr.data-tag-name]="tag.name">
             <div
               [style.background-color]="tag.color"
-              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer shadow-sm hover:shadow-md"
+              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center hover-lift-subtle cursor-pointer shadow-sm"
               data-testid="tag-button"
             >
               <img
@@ -34,21 +34,23 @@
 
     <button
       (click)="scrollBy('left')"
-      class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white/90 transition-all duration-300 hidden md:flex items-center justify-center"
+      class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white/90 transition-all duration-300 hidden md:flex items-center justify-center text-gray-600"
       data-testid="scroll-left-button"
+      aria-label="Scroll tags left"
     >
-      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
 
     <button
       (click)="scrollBy('right')"
-      class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white/90 transition-all duration-300 hidden md:flex items-center justify-center"
+      class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white/90 transition-all duration-300 hidden md:flex items-center justify-center text-gray-600"
       data-testid="scroll-right-button"
+      aria-label="Scroll tags right"
     >
-      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
     </button>
   </div>

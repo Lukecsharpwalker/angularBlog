@@ -7,20 +7,20 @@ import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
   standalone: true,
   imports: [NgClass],
   templateUrl: './cookie-consent.component.html',
-  styleUrl: './cookie-consent.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CookieConsentComponent {
-  activeTab: 'consent' | 'details' | 'about' = 'consent';
-  dialogService = inject(DynamicDialogService);
-  cookieGroups = [
+  protected activeTab: 'consent' | 'details' | 'about' = 'consent';
+  protected cookieGroups = [
     {
       name: "Authentication (Mandatory can't be dennied)",
       cookies: ['cookies-consent', 'firebase-heartbeat-database', 'firebaseLocalStorageDb'],
     },
   ];
-  setActiveTab(tab: 'consent' | 'details' | 'about'): void {
+  private dialogService = inject(DynamicDialogService);
+
+  protected setActiveTab(tab: 'consent' | 'details' | 'about'): void {
     this.activeTab = tab;
   }
 }

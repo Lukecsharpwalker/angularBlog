@@ -7,7 +7,7 @@ import { LocalStorageEnum } from './local-storage';
   providedIn: 'root',
 })
 export class CookieConsentService {
-  dialogService = inject(DynamicDialogService);
+  private dialogService = inject(DynamicDialogService);
 
   showCookieConsent(viewContainerRef: ViewContainerRef): void {
     if (!localStorage.getItem(LocalStorageEnum.COOKIES_CONSENT)) {

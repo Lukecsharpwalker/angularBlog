@@ -1,7 +1,7 @@
 import { patchState, signalStore, withMethods, withState, withComputed } from '@ngrx/signals';
 import { inject, computed } from '@angular/core';
 import { Comment } from '@shared/core/supabase';
-import { ReaderApiService } from '../../core/blog/reader-api.service';
+import { ReaderApiService } from '../../core';
 
 interface CommentsState {
   comments: Comment[];
@@ -17,7 +17,7 @@ const initialState: CommentsState = {
 
 export const CommentsStore = signalStore(
   withState(initialState),
-  
+
   withComputed(({ comments }) => ({
     total: computed(() => comments().length),
     hasComments: computed(() => comments().length > 0),
@@ -50,9 +50,9 @@ export const CommentsStore = signalStore(
           patchState(state, { comments, loading: false });
         }
       } catch (error) {
-        patchState(state, { 
-          error: `Failed to add comment: ${typeof error === 'string' ? error : 'Unknown error'}`, 
-          loading: false 
+        patchState(state, {
+          error: `Failed to add comment: ${typeof error === 'string' ? error : 'Unknown error'}`,
+          loading: false
         });
       }
     },

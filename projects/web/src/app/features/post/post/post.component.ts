@@ -6,18 +6,21 @@ import {
   ViewContainerRef,
   input,
   DestroyRef,
+  Signal,
 } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
-import { ReaderApiService } from '../../../core/blog/reader-api.service';
+import { ReaderApiService } from '../../../core';
 import { CommentsComponent } from '../comments/comments.component';
 import { AddCommentComponent } from '../add-comment/add-comment.component';
 import { PostStore } from '../post.store';
 import { CommentsStore } from '../comments.store';
-import { SocialShareService } from '../social-share.service';
+import { SocialShareService } from './social-share.service';
 import { PostService } from '../post.service';
+import { Post } from 'shared';
+import { IconComponent } from '@shared/pattern/icon-system';
 
 @Component({
   selector: 'web-post',
@@ -26,18 +29,19 @@ import { PostService } from '../post.service';
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommentsComponent, AddCommentComponent, DatePipe, HighlightModule, NgOptimizedImage],
+  imports: [CommentsComponent, AddCommentComponent, DatePipe, HighlightModule, NgOptimizedImage, IconComponent],
 })
 export class PostComponent implements OnInit {
-  readonly id = input.required<string>();
-  router = inject(Router);
-  postStore = inject(PostStore);
-  readonly post = this.postStore.post;
-  readonly date = this.postStore.formattedDate;
-  readonly loading = this.postStore.loading;
-  readonly error = this.postStore.error;
-  readonly hasPost = this.postStore.hasPost;
-  readonly postTitle = this.postStore.postTitle;
+  protected readonly id = input.required<string>();
+  protected router = inject(Router);
+  protected postStore = inject(PostStore);
+
+  protected readonly post: Signal<Post | null> = this.postStore.post;
+  protected readonly loading: Signal<boolean> = this.postStore.loading;
+  protected readonly error: Signal<string | null> = this.postStore.error;
+  protected readonly hasPost: Signal<boolean> = this.postStore.hasPost;
+  protected readonly postTitle: Signal<string> = this.postStore.postTitle;
+  protected readonly date: Signal<string> = this.postStore.formattedDate;
 
   private destroyRef = inject(DestroyRef);
   private postService = inject(PostService);
@@ -62,19 +66,11 @@ export class PostComponent implements OnInit {
   }
 
   shareOnSocial(platform: 'twitter' | 'linkedin'): void {
-    const post = this.post();
-    if (!post) return;
-
-    this.socialShareService.shareOnSocial(platform, post.title);
+    this.socialShareService.shareOnSocial(platform, this.postTitle());
   }
 
   async copyLink(): Promise<void> {
-    const success = await this.socialShareService.copyLink();
-    if (success) {
-      console.log('Link copied to clipboard');
-    } else {
-      console.error('Failed to copy link');
-    }
+    await this.socialShareService.copyLink();
   }
 
   loadPost(): void {
