@@ -1,1 +1,1 @@
-export { IconComponent, type IconName, type IconSize } from './icon.component';
+export * from './public-api';

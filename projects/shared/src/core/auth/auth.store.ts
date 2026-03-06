@@ -18,10 +18,12 @@ import {
   OAuthResponse,
 } from '@supabase/supabase-js';
 import { catchError, EMPTY, finalize, from, pipe, switchMap, tap } from 'rxjs';
-import { SupabaseClient } from '../supabase/supabase.client';
+import { SupabaseClient } from '@shared/core/supabase';
+import { Profile } from '../supabase';
 
 interface AuthState {
   session: Session | null;
+  profile: Profile | null;
   loading: boolean;
   error: string | null;
   ready: boolean;
@@ -30,6 +32,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   session: null,
+  profile: null,
   loading: false,
   error: null,
   ready: false,
@@ -47,23 +50,48 @@ export const AuthStore = signalStore(
       return exp ? Date.now() < exp : true;
     }),
     user: computed(() => store.session()?.user ?? null),
+    userProfile: computed(() => store.profile()),
     accessToken: computed(() => store.session()?.access_token ?? null),
   })),
   withMethods((store, supabase: SupabaseClient = inject(SupabaseClient)) => {
     let authSub: { data: { subscription: Subscription } } | null = null;
+
+    const fetchUserProfile = async (userId: string): Promise<void> => {
+      try {
+        const { data: profile, error } = await supabase.getClient
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        if (!error && profile) {
+          patchState(store, { profile });
+        }
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+      }
+    };
 
     return {
       init: async () => {
         if (store.initialized()) return;
         patchState(store, { initialized: true });
 
-        authSub = supabase.authChanges((_: AuthChangeEvent, session: Session | null) => {
+        authSub = supabase.authChanges(async (_: AuthChangeEvent, session: Session | null) => {
           patchState(store, { session, error: null });
+          if (session?.user?.id) {
+            await fetchUserProfile(session.user.id);
+          } else {
+            patchState(store, { profile: null });
+          }
         });
 
         try {
           const current: Session | null = await supabase.getCurrentSession();
           patchState(store, { session: current });
+          if (current?.user?.id) {
+            await fetchUserProfile(current.user.id);
+          }
         } finally {
           patchState(store, { ready: true });
         }
@@ -75,7 +103,7 @@ export const AuthStore = signalStore(
       },
 
       clearError: () => patchState(store, { error: null }),
-      
+
       resetLoadingState: () => patchState(store, { loading: false }),
 
       whenReady: (): Promise<void> =>
@@ -171,7 +199,7 @@ export const AuthStore = signalStore(
           tap((res: { error: AuthError | null }) => {
             if (res.error) throw new Error(res.error.message);
           }),
-          tap(() => patchState(store, { session: null })),
+          tap(() => patchState(store, { session: null, profile: null })),
           finalize(() => patchState(store, { loading: false })),
           catchError((e: unknown) => {
             patchState(store, { error: normalizeAuthError(e, 'Logout failed') });

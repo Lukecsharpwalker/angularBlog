@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthStore } from '@shared/core';
-import { Credentials } from '@shared/core';
-import { AuthFormControls } from '@shared/pattern';
+import { AuthStore, Credentials } from '@shared/core/auth';
+import { AuthFormControls } from '@shared/pattern/auth-form/auth-form.interface';
+
 
 @Injectable()
 export class AuthFormService {

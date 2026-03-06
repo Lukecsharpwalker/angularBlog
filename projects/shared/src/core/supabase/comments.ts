@@ -3,9 +3,9 @@ import { Profile } from './profiles';
 export interface Comment {
   content: string;
   created_at: string | null;
-  id: string;
-  is_deleted: boolean | null;
-  is_reported: boolean | null;
+  id?: string;
+  is_deleted?: boolean | null;
+  is_reported?: boolean | null;
   post_id: string;
   user_id: string | null;
   author: Profile | null;

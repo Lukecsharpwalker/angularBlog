@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   lucideLoader,
@@ -123,7 +123,7 @@ const sizeClasses: Record<IconSize, string> = {
 };
 
 @Component({
-  selector: 'app-icon',
+  selector: 'shared-icon',
   standalone: true,
   imports: [NgIcon],
   providers: [
@@ -167,25 +167,24 @@ const sizeClasses: Record<IconSize, string> = {
     <ng-icon
       [name]="getIconName()"
       [class]="getIconClasses()"
-      [attr.aria-label]="ariaLabel || name">
-    </ng-icon>
+      [attr.aria-label]="ariaLabel() || name()" />
   `
 })
 export class IconComponent {
-  @Input() name!: IconName;
-  @Input() size: IconSize = 'md';
-  @Input() className = '';
-  @Input() ariaLabel?: string;
+  readonly name = input.required<IconName>();
+  readonly size = input<IconSize>('md');
+  readonly className = input<string>('');
+  readonly ariaLabel = input<string | undefined>(undefined);
 
   getIconName(): string {
-    return iconMapping[this.name] || iconMapping['info'];
+    return iconMapping[this.name()] || iconMapping['info'];
   }
 
   getIconClasses(): string {
     const baseClasses = 'inline-block shrink-0';
-    const sizeClass = sizeClasses[this.size];
+    const sizeClass = sizeClasses[this.size()];
 
-    return [baseClasses, sizeClass, this.className]
+    return [baseClasses, sizeClass, this.className()]
       .filter(Boolean)
       .join(' ');
   }

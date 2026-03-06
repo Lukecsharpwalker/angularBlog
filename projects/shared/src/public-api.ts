@@ -1,3 +1,3 @@
-export * from './core';
-export * from './pattern';
-export * from './utils';
+export * from './core/public-api';
+export * from './pattern/public-api';
+export * from './utils/public-api';

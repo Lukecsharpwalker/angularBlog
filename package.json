@@ -37,7 +37,7 @@
     "lint": "npm run lint:projects",
     "lint:fix": "npm run lint:projects -- --fix",
     "lint:all": "ng lint admin && ng lint web && ng lint code-samples-mfe",
-    "lint:all:fix": "ng lint admin --fix && ng lint web --fix && ng lint code-samples-mfe --fix",
+    "lint:all:fix": "ng lint admin --fix; ng lint web --fix; ng lint shared --fix; ng lint code-samples-mfe --fix",
     "lint:boundaries": "eslint --ext .ts,.html projects",
     "lint:projects": "ng lint admin && ng lint web && ng lint code-samples-mfe",
     "lint:admin": "ng lint admin",

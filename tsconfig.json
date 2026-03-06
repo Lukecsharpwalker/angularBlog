@@ -16,36 +16,8 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "paths": {
-      "shared": [
-        "./projects/shared/src/public-api"
-      ],
-      "shared/models": [
-        "./projects/shared/models/public-api"
-      ],
-      "shared/utils": [
-        "./projects/shared/utils/public-api"
-      ],
-      "@shared/*": [
-        "projects/shared/src/*"
-      ],
-      "@shared/core/*": [
-        "projects/shared/src/core/*"
-      ],
-      "@shared/pattern/*": [
-        "projects/shared/src/pattern/*"
-      ],
-      "@shared/models/*": [
-        "projects/shared/src/models/*"
-      ],
-      "@shared/data-access/*": [
-        "projects/shared/src/data-access/*"
-      ],
-      "@shared/utils/*": [
-        "projects/shared/utils/*"
-      ],
-      "@shared/ui/*": [
-        "projects/shared/src/ui/*"
-      ]
+      "@shared/pattern/*": ["projects/shared/src/pattern/*"],
+      "@shared/core/*": ["projects/shared/src/core/*"]
     },
     "importHelpers": true,
     "target": "ES2022",
