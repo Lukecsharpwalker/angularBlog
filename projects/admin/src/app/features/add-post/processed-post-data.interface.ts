@@ -1,4 +1,4 @@
-import { Tag } from 'shared';
+import { Tag } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
 
 export interface ProcessedPostData {

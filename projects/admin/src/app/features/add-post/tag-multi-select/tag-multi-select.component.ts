@@ -11,7 +11,7 @@ import {
   input,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Tag } from 'shared';
+import { Tag } from '@shared/core/supabase';
 
 @Component({
   selector: 'admin-tag-multi-select',
@@ -27,6 +27,7 @@ import { Tag } from 'shared';
   styleUrl: './tag-multi-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+//TODO: Refactor component (CDK overlay?)
 export class TagMultiSelectComponent implements ControlValueAccessor {
   readonly allTags = input.required<Tag[]>();
 

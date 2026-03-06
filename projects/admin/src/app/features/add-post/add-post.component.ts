@@ -22,8 +22,8 @@ import {
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent, Range } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
-import { Post, Tag } from 'shared';
-import { ModalConfig, DynamicDialogService, IconComponent } from 'shared';
+import { Post, Tag } from '@shared/core/supabase';
+import { ModalConfig, DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { PostInsert, PostUpdate } from './post-operations';
 import { PostForm } from './post-form.interface';
 import { AddImageComponent } from './add-image/add-image.component';
@@ -34,6 +34,7 @@ import { AddPostStore } from './add-post.store';
 import { PostFormService } from './post-form.service';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
 import { ProcessedPostData } from './processed-post-data.interface';
+import { IconComponent } from '@shared/pattern/icon-system';
 
 @Component({
   selector: 'admin-add-post',

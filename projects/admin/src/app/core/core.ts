@@ -4,7 +4,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideHighlightOptions } from 'ngx-highlightjs';
 import { provideQuillConfig } from 'ngx-quill/config';
 import hljs from 'highlight.js/lib/core';
-import { SUPABASE_CONFIG } from 'shared';
+import { SUPABASE_CONFIG } from '@shared/core/supabase';
 import { quillToolbarConfig } from './utils/quill-toolbar';
 import { environment } from '../../../../../environments/environment';
 

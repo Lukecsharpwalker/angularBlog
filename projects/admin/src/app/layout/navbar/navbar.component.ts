@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthStore } from 'shared';
+import { AuthStore } from '@shared/core/auth';
 
 @Component({
   selector: 'admin-navbar',
@@ -13,8 +13,6 @@ export class NavbarComponent {
 
   logout(): void {
     this.authStore.logout();
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 100);
+    void this.router.navigate(['/login']);
   }
 }

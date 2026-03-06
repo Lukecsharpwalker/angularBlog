@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
-import { AuthStore } from 'shared';
+import { AuthStore } from '@shared/core/auth';
 import { Roles } from './roles';
 
 export const authAdminGuard: CanMatchFn = async (): Promise<boolean> => {
@@ -15,7 +15,7 @@ export const authAdminGuard: CanMatchFn = async (): Promise<boolean> => {
   if (user?.app_metadata?.['role'] === Roles.ADMIN) {
     return true;
   } else {
-    router.navigate(['/login']);
+    void router.navigate(['/login']);
     return false;
   }
 };

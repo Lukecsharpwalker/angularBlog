@@ -7,7 +7,7 @@
       </div>
       <div class="text-center">
         <h3 class="text-xl font-bold text-primary mb-2 flex items-center gap-2">
-          <app-icon name="loading" size="sm" variant="outline"></app-icon>
+          <shared-icon name="loading" size="sm" />
           Loading Post
         </h3>
         <p class="text-secondary/70">Please wait while we fetch your content...</p>
@@ -36,17 +36,17 @@
               }
             </p>
           </div>
-          
+
           <div class="flex items-center gap-3">
             <div class="px-6 py-3 bg-gradient-to-r from-tertiary/20 to-quaternary/40 rounded-2xl border border-tertiary/30 backdrop-blur-sm">
               @if (isEditMode()) {
                 <span class="text-sm font-bold text-secondary flex items-center gap-2">
-                  <app-icon name="editing" size="sm" variant="outline"></app-icon>
+                  <shared-icon name="editing" size="sm"/>
                   Editing Mode
                 </span>
               } @else {
                 <span class="text-sm font-bold text-secondary flex items-center gap-2">
-                  <app-icon name="draft" size="sm" variant="outline"></app-icon>
+                  <shared-icon name="draft" size="sm" />
                   New Draft
                 </span>
               }
@@ -59,7 +59,7 @@
 
   <main class="px-6 pb-32">
     <form class="container-standard space-y-8" [formGroup]="blogForm" (ngSubmit)="onSubmit()">
-      
+
       <div class="glass-effect rounded-3xl shadow-xl overflow-hidden">
         <div class="bg-gradient-to-r from-primary/5 to-secondary/5 px-8 py-6 border-b border-tertiary/20">
           <h2 class="text-2xl font-bold text-primary flex items-center gap-3">
@@ -92,7 +92,7 @@
 
           <div class="space-y-3">
             <div class="block text-sm font-bold text-primary/90 uppercase tracking-wide flex items-center gap-2">
-              <app-icon name="tag" size="sm" variant="outline"></app-icon>
+              <shared-icon name="tag" size="sm" variant="outline" />
               Tags & Categories
             </div>
             <div class="p-6 bg-gradient-to-br from-quaternary/20 to-tertiary/20 border-2 border-tertiary/20 rounded-2xl min-h-[4rem] backdrop-blur-sm">
@@ -117,11 +117,11 @@
               EDIT
             </span>
             <span class="flex items-center gap-2">
-              <app-icon name="edit" size="sm" variant="outline"></app-icon>
+              <shared-icon name="edit" size="sm" />
               Content Editor
             </span>
           </h2>
-          
+
           <button
             type="button"
             class="btn-secondary"
@@ -147,7 +147,7 @@
     <div class="container-standard">
       <div class="bg-white/90 backdrop-blur-xl border border-tertiary/20 rounded-3xl shadow-2xl p-6">
         <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
-          
+
           <div class="btn-group btn-group-horizontal w-full lg:w-auto">
             <button
               type="submit"
@@ -159,7 +159,7 @@
                 <div class="flex items-center gap-3">
                   <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   <span class="flex items-center gap-2">
-                    <app-icon name="publishing" size="sm" variant="outline"></app-icon>
+                    <shared-icon name="publishing" size="sm" />
                     Publishing...
                   </span>
                 </div>
@@ -182,7 +182,7 @@
                 <div class="flex items-center gap-3">
                   <div class="w-5 h-5 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
                   <span class="flex items-center gap-2">
-                    <app-icon name="saving" size="sm" variant="outline"></app-icon>
+                    <shared-icon name="saving" size="sm" />
                     Saving...
                   </span>
                 </div>
@@ -193,7 +193,7 @@
           </div>
 
           <div class="flex items-center gap-2 text-secondary/60 text-sm">
-            <app-icon name="saved" size="sm" variant="outline"></app-icon>
+            <shared-icon name="saved" size="sm" />
             <span class="italic">All changes saved</span>
           </div>
         </div>
