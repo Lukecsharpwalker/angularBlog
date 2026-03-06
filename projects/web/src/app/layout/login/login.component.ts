@@ -7,9 +7,9 @@ import { AuthFormComponent, AuthFormConfig } from '@shared/pattern/auth-form';
   standalone: true,
   imports: [AuthFormComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+//TODO: Back to separate ht,l but common logic
 export class LoginComponent {
   readonly authFormConfig: AuthFormConfig = {
     showGoogleLogin: true,

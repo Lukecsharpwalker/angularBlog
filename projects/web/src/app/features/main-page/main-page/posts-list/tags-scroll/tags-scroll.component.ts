@@ -11,8 +11,8 @@ import {
   afterNextRender,
   Signal,
 } from '@angular/core';
-import { TagsScrollService } from './tags-scroll.service';
 import { Tag } from '@shared/core/supabase';
+import { TagsScrollService } from './tags-scroll.service';
 
 const SCROLL_AMOUNT = 135;
 const PROGRESS_THRESHOLDS = [33, 66];

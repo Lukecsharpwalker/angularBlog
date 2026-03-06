@@ -1,0 +1,52 @@
+.code-block-theme {
+  pre {
+    line-height: 1.2rem;
+    @apply text-white rounded-lg bg-black border-tertiary p-3;
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    pre {
+      line-height: 1.4rem;
+      @apply p-4;
+
+      code {
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  @media (min-width: 1025px) {
+    pre {
+      line-height: 1.6rem;
+      @apply p-6;
+
+      code {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+pre {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: pre;
+  word-wrap: normal;
+  word-break: normal;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(18, 55, 42, 0.3) transparent;
+}
+
+pre code {
+  padding: 0;
+  border-radius: 0;
+  white-space: pre;
+  word-wrap: normal;
+  word-break: normal;
+}

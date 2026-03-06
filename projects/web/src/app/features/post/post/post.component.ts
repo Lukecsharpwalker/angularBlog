@@ -11,16 +11,18 @@ import {
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
+import { User } from '@supabase/supabase-js';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
+import { IconComponent } from '@shared/pattern/icon-system';
 import { ReaderApiService } from '../../../core';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { PostStore } from '../post.store';
 import { SocialShareService } from './social-share.service';
 import { PostService } from '../post.service';
-import { Post } from 'shared';
-import { IconComponent } from '@shared/pattern/icon-system';
 import { CommentsStore } from './comments.store';
+import { AuthStore } from '@shared/core/auth';
+import { Post } from '@shared/core/supabase';
 
 @Component({
   selector: 'web-post',
@@ -42,6 +44,7 @@ export class PostComponent implements OnInit {
   protected readonly id = input.required<string>();
   protected router = inject(Router);
   protected postStore = inject(PostStore);
+  protected readonly user: Signal<User | null> = inject(AuthStore).user;
 
   protected readonly post: Signal<Post | null> = this.postStore.post;
   protected readonly loading: Signal<boolean> = this.postStore.loading;

@@ -1,0 +1,12 @@
+<div
+  class="w-full h-full max-h-[60vh] max-w-[80vw] md:max-h-[70vh] md:max-w-[90vw] sm:max-h-[80vh] sm:max-w-[95vw] overflow-auto p-0 relative"
+>
+  <!-- eslint-disable-next-line -->
+  <pre
+    [class]="'language-' + data.language + ' hljs code-block'"
+    class="m-0 p-3 sm:p-4 md:p-6 rounded-xl text-[0.75rem] sm:text-[0.85rem] md:text-[0.95rem] leading-5 sm:leading-6 w-full min-h-full box-border overflow-x-auto overflow-y-visible whitespace-pre break-normal font-mono bg-[#1a1a1a] text-[#f8f8f2] text-left cursor-default"
+    (click)="$event.stopPropagation()"
+  >
+    <code [innerHTML]="data.code" class="block text-left"></code>
+  </pre>
+</div>

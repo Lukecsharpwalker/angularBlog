@@ -5,7 +5,9 @@
     </div>
 
     <div class="relative overflow-hidden -mx-4 xl:-mx-48 mb-8">
-      <div class="w-full h-80 md:h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl"></div>
+      <div
+        class="w-full h-80 md:h-96 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl"
+      ></div>
     </div>
 
     <div class="container mx-auto">
@@ -51,10 +53,11 @@
   </div>
 } @else if (error()) {
   <div class="container mx-auto px-4 py-20">
-    <div class="max-w-md mx-auto text-center glass-effect-strong border border-red-200 rounded-xl p-8 shadow-lg">
-
+    <div
+      class="max-w-md mx-auto text-center glass-effect-strong border border-red-200 rounded-xl p-8 shadow-lg"
+    >
       <h2 class="text-2xl font-bold text-red-600 mb-2 flex items-center justify-center gap-2">
-        <app-icon name="error" size="sm" />
+        <shared-icon name="error" size="sm" />
         Error Loading Post
       </h2>
       <p class="text-gray-600 mb-6">{{ error() }}</p>
@@ -80,17 +83,15 @@
   </div>
 } @else if (hasPost()) {
   <div class="sticky top-20 z-40 mb-6 -mx-4 px-4 py-3">
-    <button
-      (click)="goBack()"
-      class="btn-secondary"
-      aria-label="Go back to posts list"
-    >
+    <button (click)="goBack()" class="btn-secondary" aria-label="Go back to posts list">
       Back to Posts
     </button>
   </div>
 
   <div class="relative overflow-hidden -mx-4 xl:-mx-48 mb-8">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-tertiary/30 blur-3xl"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-tertiary/30 blur-3xl"
+    ></div>
     <div class="relative perspective-1000">
       <div class="group hover-lift">
         <img
@@ -101,7 +102,9 @@
           height="1024"
           priority
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        ></div>
       </div>
     </div>
   </div>
@@ -110,25 +113,29 @@
     <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 auto-rows-max">
       <aside class="xl:col-span-1" role="complementary" aria-label="Article information">
         <div class="sticky top-36">
-          <div class="backdrop-blur-sm bg-white/70 border border-white/40 rounded-xl p-6 shadow-lg hover:bg-white/80 transition-colors duration-300">
+          <div
+            class="backdrop-blur-sm bg-white/70 border border-white/40 rounded-xl p-6 shadow-lg hover:bg-white/80 transition-colors duration-300"
+          >
             <h2 class="text-lg font-bold mb-4 text-primary flex items-center gap-2">
-              <app-icon name="info" size="sm" aria-hidden="true" />
+              <shared-icon name="info" size="sm" aria-hidden="true" />
               Article Information
             </h2>
 
             <div class="space-y-4">
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="category" size="xs" />
+                  <shared-icon name="category" size="xs" />
                   Category
                 </span>
-                <span class="px-3 py-1 bg-secondary/90 text-white rounded-lg text-sm font-medium shadow-sm">
+                <span
+                  class="px-3 py-1 bg-secondary/90 text-white rounded-lg text-sm font-medium shadow-sm"
+                >
                   {{ post()?.category }}
                 </span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="time" size="xs" />
+                  <shared-icon name="time" size="xs" />
                   Updated
                 </span>
                 <time class="text-primary text-sm" [dateTime]="post()?.updated">
@@ -137,14 +144,14 @@
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="author" size="xs" />
+                  <shared-icon name="author" size="xs" />
                   Author
                 </span>
                 <span class="text-primary font-medium">{{ post()?.author?.username }}</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="clock" size="xs" />
+                  <shared-icon name="clock" size="xs" />
                   Read Time
                 </span>
                 <span class="px-3 py-1 bg-tertiary/80 text-primary rounded-lg text-sm font-medium">
@@ -153,7 +160,7 @@
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-primary/70 font-medium flex items-center gap-2">
-                  <app-icon name="difficulty" size="xs" />
+                  <shared-icon name="difficulty" size="xs" />
                   Difficulty
                 </span>
                 <div class="flex gap-1" aria-label="Difficulty level: 3 out of 4 stars">
@@ -166,7 +173,12 @@
         </div>
       </aside>
 
-      <main id="main-content" class="xl:col-span-3 animate-fade-in" style="animation-delay: 0.2s;" role="main">
+      <main
+        id="main-content"
+        class="xl:col-span-3 animate-fade-in"
+        style="animation-delay: 0.2s"
+        role="main"
+      >
         <header class="text-center mb-8">
           <h1 class="font-bold text-3xl md:text-5xl text-primary leading-tight mb-4">
             {{ postTitle() }}
@@ -203,40 +215,65 @@
           </button>
         </div>
 
-        <article class="bg-white border border-tertiary rounded-xl p-8 md:p-12 shadow-lg mb-8 code-block-theme">
+        <article
+          class="bg-white border border-tertiary rounded-xl p-8 md:p-12 shadow-lg mb-8 code-block-theme"
+        >
           <div class="max-w-none">
             <div [innerHTML]="post()?.content"></div>
           </div>
         </article>
 
         <div class="space-y-6">
-          <section class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-xl p-6 shadow-lg" aria-labelledby="add-comment-heading">
-            <h3 id="add-comment-heading" class="text-xl font-bold text-primary mb-4 flex items-center gap-2">
-              <app-icon name="comment" size="sm" />
+          <section
+            class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-xl p-6 shadow-lg"
+            aria-labelledby="add-comment-heading"
+          >
+            <h3
+              id="add-comment-heading"
+              class="text-xl font-bold text-primary mb-4 flex items-center gap-2"
+            >
+              <shared-icon name="comment" size="sm" />
               Add Comment
             </h3>
-            <web-add-comment [postId]="id()"/>
+            @if (user()) {
+              <web-add-comment [postId]="id()" />
+            }
           </section>
 
           @defer (on viewport) {
-            <section class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-xl overflow-hidden shadow-lg" aria-labelledby="comments-heading">
+            <section
+              class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-xl overflow-hidden shadow-lg"
+              aria-labelledby="comments-heading"
+            >
               <div class="p-6 border-b border-white/30">
-                <h3 id="comments-heading" class="text-xl font-bold text-primary flex items-center gap-2">
-                  <app-icon name="comments" size="sm" />
+                <h3
+                  id="comments-heading"
+                  class="text-xl font-bold text-primary flex items-center gap-2"
+                >
+                  <shared-icon name="comments" size="sm" />
                   Comments
                 </h3>
               </div>
-              <web-comments [postId]="id()!" [comments]="post()?.comments"/>
+              <web-comments [postId]="id()!" [comments]="post()?.comments" />
             </section>
           } @placeholder {
-            <div class="backdrop-blur-sm bg-white/70 border border-white/40 rounded-xl p-8 text-center shadow-lg" aria-label="Loading comments">
+            <div
+              class="backdrop-blur-sm bg-white/70 border border-white/40 rounded-xl p-8 text-center shadow-lg"
+              aria-label="Loading comments"
+            >
               <div class="flex items-center justify-center gap-2 mb-2">
                 <div class="w-2 h-2 bg-secondary/60 rounded-full animate-pulse"></div>
-                <div class="w-2 h-2 bg-secondary/40 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
-                <div class="w-2 h-2 bg-secondary/20 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                <div
+                  class="w-2 h-2 bg-secondary/40 rounded-full animate-pulse"
+                  style="animation-delay: 0.2s"
+                ></div>
+                <div
+                  class="w-2 h-2 bg-secondary/20 rounded-full animate-pulse"
+                  style="animation-delay: 0.4s"
+                ></div>
               </div>
               <p class="text-primary/70 flex items-center gap-2">
-                <app-icon name="loading" size="sm" />
+                <shared-icon name="loading" size="sm" />
                 Loading comments...
               </p>
             </div>
@@ -247,13 +284,16 @@
   </div>
 } @else {
   <div class="container mx-auto px-4 py-20">
-    <div class="max-w-md mx-auto text-center bg-quaternary/80 backdrop-blur-sm border border-tertiary rounded-xl p-8 shadow-lg">
-
+    <div
+      class="max-w-md mx-auto text-center bg-quaternary/80 backdrop-blur-sm border border-tertiary rounded-xl p-8 shadow-lg"
+    >
       <h2 class="text-2xl font-bold text-primary mb-2 flex items-center justify-center gap-2">
-        <app-icon name="search" size="sm" />
+        <shared-icon name="search" size="sm" />
         Post Not Found
       </h2>
-      <p class="text-primary/70 mb-6">The article you're looking for doesn't exist or has been moved.</p>
+      <p class="text-primary/70 mb-6">
+        The article you're looking for doesn't exist or has been moved.
+      </p>
 
       <button
         (click)="goBack()"

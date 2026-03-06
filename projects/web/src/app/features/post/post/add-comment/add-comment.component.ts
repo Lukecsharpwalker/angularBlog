@@ -4,13 +4,14 @@ import {
   inject,
   input,
   signal,
-  Signal,
   WritableSignal,
 } from '@angular/core';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Comment } from '@shared/core/supabase';
+import { CommentForm } from './add-comment.models';
 import { ReaderApiService } from '../../../../core';
 import { CommentsStore } from '../comments.store';
+import { AuthStore } from '@shared/core/auth';
 
 @Component({
   selector: 'web-add-comment',
@@ -23,7 +24,7 @@ import { CommentsStore } from '../comments.store';
 export class AddCommentComponent {
   readonly postId = input.required<string>();
 
-  protected commentForm: FormGroup = new FormGroup({
+  protected commentForm = new FormGroup<CommentForm>({
     content: new FormControl<string>('', {
       validators: [Validators.required, Validators.maxLength(500)],
       nonNullable: true,
@@ -33,28 +34,27 @@ export class AddCommentComponent {
   protected readonly isSubmitting: WritableSignal<boolean> = signal(false);
 
   private commentsStore = inject(CommentsStore);
+  private authStore = inject(AuthStore);
+  private userId: string = this.authStore.user()!.id;
+
 
   async onSubmit(): Promise<void> {
-    if (this.commentForm.valid && !this.isSubmitting()) {
+   if (this.commentForm.valid && !this.isSubmitting()) {
       this.isSubmitting.set(true);
 
       try {
         const comment: Comment = {
-          ...this.commentForm.value,
-          id: crypto.randomUUID(),
+          content: this.commentForm.controls.content.value,
           created_at: new Date().toISOString(),
-          is_deleted: false,
-          is_reported: false,
-          post_id: this.postId(),
-          user_id: null,
+          user_id: this.userId ?? null,
+          author: this.authStore.userProfile() ?? null,
+          post_id: this.postId()
         };
 
         await this.commentsStore.addComment(this.postId(), comment);
         this.commentForm.reset();
 
-        setTimeout(() => {
-          this.isSubmitting.set(false);
-        }, 500);
+        this.isSubmitting.set(false);
       } catch (error) {
         this.isSubmitting.set(false);
         console.error('Error adding comment:', error);

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { HasRoleDirective, ReaderApiService } from '../../../../core';
 import { CommentsStore } from '../comments.store';
-import { Comment } from 'shared';
+import { Comment } from '@shared/core/supabase';
 
 @Component({
   selector: 'web-comments',
@@ -17,11 +17,11 @@ export class CommentsComponent {
 
   private commentsStore = inject(CommentsStore);
 
-  deleteComment(commentId: string): void {
+  protected deleteComment(commentId: string): void {
     this.commentsStore.deleteComment(commentId, this.postId());
   }
 
-  getRelativeTime(dateString: string): string {
+  protected getRelativeTime(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
     const diffInMs = now.getTime() - date.getTime();

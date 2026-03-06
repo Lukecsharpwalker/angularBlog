@@ -13,7 +13,6 @@ export class PostService {
     destroyRef: DestroyRef
   ): void {
     afterNextRender(() => {
-      setTimeout(() => {
         const processCodeBlocks = (): void => {
           const preElements: NodeListOf<Element> = document.querySelectorAll(
             'pre:not(.modal-code-block)'
@@ -45,7 +44,6 @@ export class PostService {
           this.observer?.disconnect();
           this.processedNodes.clear();
         });
-      }, 100);
     });
   }
 

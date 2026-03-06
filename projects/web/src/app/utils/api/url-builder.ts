@@ -1,4 +1,4 @@
-import { ColumnName, RowOf, TableName } from 'shared';
+import { ColumnName, RowOf, TableName } from '@shared/core/supabase';
 
 //https://postgrest.org/en/stable/references/api/tables_views.html#operators
 type Op =

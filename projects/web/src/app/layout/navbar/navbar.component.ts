@@ -42,7 +42,7 @@ export class NavbarComponent {
     this.initializeCookieConsent();
   }
 
-  signIn(): void {
+  protected signIn(): void {
     this.dynamicDialogService.openDialog<LoginComponent>(
       this.viewContainerRef,
       { title: 'Sign In' },
@@ -50,7 +50,7 @@ export class NavbarComponent {
     );
   }
 
-  toggleMenu(): void {
+  protected toggleMenu(): void {
     this.isMenuOpen.set(!this.isMenuOpen());
 
     if (this.isMenuOpen()) {
@@ -60,7 +60,7 @@ export class NavbarComponent {
     }
   }
 
-  clearSearch(): void {
+  protected clearSearch(): void {
     this.searchQuery.set('');
   }
 
@@ -78,7 +78,6 @@ export class NavbarComponent {
 
       window.addEventListener('scroll', scrollHandler, { passive: true });
 
-      // Clean up event listener when component is destroyed
       this.destroyRef.onDestroy(() => {
         window.removeEventListener('scroll', scrollHandler);
       });

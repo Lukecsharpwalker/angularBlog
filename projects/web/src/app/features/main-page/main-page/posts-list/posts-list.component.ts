@@ -5,7 +5,7 @@ import { PostsStore } from '../../posts.store';
 import { TagsStore } from '../../tags.store';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { TagsScrollComponent } from './tags-scroll/tags-scroll.component';
-import { Post, Tag } from '@shared/core';
+import { Post, Tag } from '@shared/core/supabase';
 
 @Component({
   selector: 'web-posts-list',

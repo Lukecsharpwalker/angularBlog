@@ -19,10 +19,10 @@ export class CookieConsentComponent {
   protected readonly activeView = signal<'banner' | 'details'>('banner');
   protected readonly customConsent = signal<Record<string, boolean>>({});
 
-  private readonly cookieService = inject(CookieConsentService);
+  protected readonly cookieService = inject(CookieConsentService);
+  protected readonly cookieCategories = this.cookieService.cookieCategories;
   private readonly dynamicDialogService = inject(DynamicDialogService);
 
-  protected readonly cookieCategories = this.cookieService.cookieCategories;
 
   constructor() {
     this.initializeCustomConsent();

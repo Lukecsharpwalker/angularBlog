@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Comment, Post, Profile, Tag, PostTag } from 'shared';
+import { Comment, Post, Profile, Tag, PostTag } from '@shared/core/supabase';
 import { createApiUrl } from '../../utils/api/url-builder';
 import { environment } from '../../../../../../environments/environment';
-import { SupabaseClient } from 'shared';
+import { SupabaseClient } from '@shared/core/supabase';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
@@ -79,6 +79,15 @@ export class ReaderApiService {
       .from('profiles')
       .select('*');
     return error ? null : profiles;
+  }
+
+  async getProfileById(userId: string): Promise<Profile | null> {
+    const { data: profile, error } = await this.supabaseClient.getClient
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+    return error ? null : profile;
   }
 
   getTags(): Observable<Tag[] | null> {
