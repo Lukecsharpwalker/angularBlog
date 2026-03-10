@@ -114,11 +114,7 @@
           <div class="absolute inset-0 grain-overlay opacity-5"></div>
           <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent-neon/5"></div>
           <div class="relative z-10">
-            <shared-auth-form
-              [config]="authFormConfig"
-              (loginSuccess)="onLoginSuccess()"
-              (loginSubmit)="onLoginSubmit($event)"
-              (googleLogin)="onGoogleLogin()" />
+            <shared-auth-form />
           </div>
         </div>
       </div>
