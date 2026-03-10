@@ -1,38 +1,29 @@
 import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthStore, Credentials } from '@shared/core/auth';
-import { AuthFormControls } from '@shared/pattern/auth-form/auth-form.interface';
-
+import { AuthStore } from '@shared/core/auth';
+import { AuthFormControls } from './auth-form.interface';
 
 @Injectable()
 export class AuthFormService {
+  readonly loginForm = new FormGroup<AuthFormControls>({
+    email: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+  });
+
   private authStore = inject(AuthStore);
 
-  createLoginForm(): FormGroup<AuthFormControls> {
-    return new FormGroup<AuthFormControls>({
-      email: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.email],
-      }),
-      password: new FormControl<string>('', {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-    });
-  }
-
-  validateAndSubmitLogin(form: FormGroup<AuthFormControls>): boolean {
+  validateAndSubmitLogin(form: FormGroup<AuthFormControls>): void {
     if (form.invalid) {
-      return false;
+      return;
     }
-
-    const credentials: Credentials = form.value as Credentials;
-    this.authStore.loginWithPassword({
-      email: credentials.email,
-      password: credentials.password,
-    });
-
-    return true;
+    console.log('Submitting login form with values:', form.getRawValue());
+    this.authStore.loginWithPassword(form.getRawValue());
   }
 
   loginWithProvider(provider: 'google'): void {
@@ -42,9 +33,5 @@ export class AuthFormService {
 
   clearError(): void {
     this.authStore.clearError();
-  }
-
-  initializeAuth(): void {
-    this.authStore.init();
   }
 }

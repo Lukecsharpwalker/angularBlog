@@ -10,7 +10,6 @@ export interface AuthFormConfig {
   title?: string;
   subtitle?: string;
   submitButtonText?: string;
-  theme?: 'web' | 'admin';
 }
 
 export interface AuthFormEvents {

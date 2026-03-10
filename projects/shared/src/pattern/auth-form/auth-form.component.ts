@@ -1,81 +1,34 @@
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  input, 
-  output, 
-  inject, 
-  effect, 
-  OnInit 
-} from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, output, inject, signal } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AuthStore } from '../../core/auth';
 import { AuthFormService } from './auth-form.service';
-import { AuthFormControls, AuthFormConfig } from './auth-form.interface';
-import { IconComponent } from '../icon-system';
+import { LOGIN_FORM_CONFIG } from './default-login-config';
 
 @Component({
   selector: 'shared-auth-form',
   standalone: true,
-  imports: [ReactiveFormsModule, IconComponent],
+  imports: [ReactiveFormsModule],
   providers: [AuthFormService],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthFormComponent implements OnInit {
-  readonly config = input<AuthFormConfig>({ showGoogleLogin: true, theme: 'web' });
-  
-  readonly loginSuccess = output<void>();
-  readonly loginSubmit = output<{ email: string; password: string }>();
-  readonly googleLogin = output<void>();
+export class AuthFormComponent {
+  protected readonly config = inject(LOGIN_FORM_CONFIG);
+  protected readonly authStore = inject(AuthStore);
+  protected readonly isSubmitted = signal(false);
+  protected readonly form = inject(AuthFormService).loginForm;
 
-  readonly authStore = inject(AuthStore);
-  
-  isSubmitted = false;
-  form!: FormGroup<AuthFormControls>;
-  
   private readonly authFormService = inject(AuthFormService);
 
-  constructor() {
-    this.form = this.authFormService.createLoginForm();
-    
-    effect(() => {
-      if (this.authStore.isAuthenticated() && this.authStore.ready() && !this.authStore.loading()) {
-        this.loginSuccess.emit();
-      }
-    });
-  }
-
-  ngOnInit(): void {
-    this.authFormService.initializeAuth();
-  }
 
   onSubmit(): void {
-    this.isSubmitted = true;
+    this.isSubmitted.set(true);
     this.authFormService.clearError();
-
-    if (this.authFormService.validateAndSubmitLogin(this.form)) {
-      const formValue = this.form.value;
-      this.loginSubmit.emit({
-        email: formValue.email || '',
-        password: formValue.password || ''
-      });
-    }
+    this.authFormService.validateAndSubmitLogin(this.form);
   }
 
   onGoogleLogin(): void {
     this.authFormService.loginWithProvider('google');
-    this.googleLogin.emit();
-  }
-
-  get defaultConfig(): Required<AuthFormConfig> {
-    const currentConfig = this.config();
-    return {
-      showGoogleLogin: currentConfig.showGoogleLogin ?? true,
-      title: currentConfig.title ?? 'Welcome Back',
-      subtitle: currentConfig.subtitle ?? 'Sign in to your account',
-      submitButtonText: currentConfig.submitButtonText ?? 'Sign In',
-      theme: currentConfig.theme ?? 'web'
-    };
   }
 }
