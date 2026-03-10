@@ -1,6 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DynamicDialogService, ModalCloseStatusEnum, ModalStatus } from '@shared/pattern/dynamic-dialog';
-import { AuthFormComponent, AuthFormConfig } from '@shared/pattern/auth-form';
+import { filter, take } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  DynamicDialogService,
+  ModalCloseStatusEnum,
+  ModalStatus,
+} from '@shared/pattern/dynamic-dialog';
+import { AuthFormComponent } from '@shared/pattern/auth-form';
+import { AuthStore } from '@shared/core/auth';
 
 @Component({
   selector: 'web-login',
@@ -9,31 +17,18 @@ import { AuthFormComponent, AuthFormConfig } from '@shared/pattern/auth-form';
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-//TODO: Back to separate ht,l but common logic
 export class LoginComponent {
-  readonly authFormConfig: AuthFormConfig = {
-    showGoogleLogin: true,
-    title: 'Welcome Back',
-    subtitle: 'Sign in to your account',
-    submitButtonText: 'Sign In',
-    theme: 'web'
-  };
-
   private readonly dynamicDialogService = inject(DynamicDialogService);
+  private readonly authStore = inject(AuthStore);
 
-  onLoginSuccess(): void {
-    const status = {
-      closeStatus: ModalCloseStatusEnum.ACCEPTED,
-    } as ModalStatus;
-    this.dynamicDialogService.closeDialog(status);
-  }
-
-  onLoginSubmit(event: { email: string; password: string }): void {
-    // TODO: Implement login logic with event.email and event.password
-    void event;
-  }
-
-  onGoogleLogin(): void {
-    void 0;
+  constructor() {
+    toObservable(this.authStore.isAuthenticated)
+      .pipe(filter(Boolean), take(1), takeUntilDestroyed())
+      .subscribe(() => {
+        const status = {
+          closeStatus: ModalCloseStatusEnum.ACCEPTED,
+        } as ModalStatus;
+        this.dynamicDialogService.closeDialog(status);
+      });
   }
 }
