@@ -18,17 +18,16 @@ export class AuthFormService {
 
   private authStore = inject(AuthStore);
 
-  validateAndSubmitLogin(form: FormGroup<AuthFormControls>): void {
+  async validateAndSubmitLogin(form: FormGroup<AuthFormControls>): Promise<void> {
     if (form.invalid) {
       return;
     }
-    console.log('Submitting login form with values:', form.getRawValue());
-    this.authStore.loginWithPassword(form.getRawValue());
+    await this.authStore.loginWithPassword(form.getRawValue());
   }
 
-  loginWithProvider(provider: 'google'): void {
+  async loginWithProvider(provider: 'google'): Promise<void> {
     this.authStore.clearError();
-    this.authStore.loginWithProvider({ provider });
+    await this.authStore.loginWithProvider(provider);
   }
 
   clearError(): void {
