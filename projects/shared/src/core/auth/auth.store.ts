@@ -9,11 +9,20 @@ import {
 import {
   Provider,
   Session,
+  User,
 } from '@supabase/supabase-js';
 import { SupabaseClient } from '@shared/core/supabase';
 import { Profile } from '../supabase';
 import { Roles } from './roles';
 import { ProfileService } from '../profiles/profile.service';
+
+interface AppMetadata {
+  role?: Roles;
+}
+
+interface UserWithRole extends User {
+  app_metadata: AppMetadata;
+}
 
 interface AuthState {
   session: Session | null;
@@ -44,7 +53,10 @@ export const AuthStore = signalStore(
     user: computed(() => store.session()?.user ?? null),
     userProfile: computed(() => store.profile()),
     accessToken: computed(() => store.session()?.access_token ?? null),
-    userRole: computed(() => store.session()?.user?.app_metadata?.['role'] as Roles | undefined),
+    userRole: computed(() => {
+      const user = store.session()?.user as UserWithRole | undefined;
+      return user?.app_metadata.role;
+    }),
   })),
   withMethods(
     (

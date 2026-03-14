@@ -19,7 +19,7 @@ export class SupabaseClient implements OnDestroy {
   session: Session | null = null;
   readonly sessionSig = signal<Session | null>(null);
   readonly ready = signal(false);
-  
+
   private supabase: SupabaseClientType;
   private sub?: { data: { subscription: { unsubscribe(): void } } };
   private readonly ngZone = inject(NgZone);
