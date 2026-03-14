@@ -23,7 +23,7 @@
           </div>
 
           <button
-            *webHasRole="'Admin'"
+            *webHasRole="Roles.ADMIN"
             (click)="deleteComment(comment.id!)"
             class="btn-danger btn-tertiary-sm opacity-0 group-hover:opacity-100"
             aria-label="Delete comment"

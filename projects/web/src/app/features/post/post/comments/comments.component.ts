@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { HasRoleDirective, ReaderApiService } from '../../../../core';
 import { CommentsStore } from '../comments.store';
 import { Comment } from '@shared/core/supabase';
+import { Roles } from '@shared/core/auth';
 
 @Component({
   selector: 'web-comments',
@@ -14,6 +15,8 @@ import { Comment } from '@shared/core/supabase';
 export class CommentsComponent {
   readonly comments = input<Comment[] | undefined>();
   readonly postId = input.required<string>();
+
+  protected readonly Roles = Roles
 
   private commentsStore = inject(CommentsStore);
 

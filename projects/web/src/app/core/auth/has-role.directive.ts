@@ -1,26 +1,29 @@
-import { Directive, TemplateRef, ViewContainerRef, inject, input, effect } from '@angular/core';
-import { SupabaseClient } from '@shared/core/supabase';
+import {
+  Directive,
+  TemplateRef,
+  ViewContainerRef,
+  inject,
+  input,
+  afterRenderEffect,
+  OnInit,
+} from '@angular/core';
+import { AuthStore } from '@shared/core/auth';
 
 @Directive({
   selector: '[webHasRole]',
   standalone: true,
 })
-export class HasRoleDirective {
-  readonly role = input.required<string>({ alias: 'webHasRole' });
+export class HasRoleDirective implements OnInit {
+  readonly requiredRole = input.required<string>({ alias: 'webHasRole' });
 
   private templateRef = inject(TemplateRef<unknown>);
   private viewContainer = inject(ViewContainerRef);
-  private supabaseClient = inject(SupabaseClient);
+  private authStore = inject(AuthStore);
 
   private hasView = false;
 
-  private _renderEff = effect(() => {
-    const requiredRole = this.role();
-
-    const session = this.supabaseClient.getSession();
-    const userRole = session?.user?.app_metadata?.['role'] as string | undefined;
-
-    const allowed = !!userRole && userRole === requiredRole;
+  ngOnInit() {
+    const allowed = !!this.authStore.userRole() && this.authStore.userRole() === this.requiredRole();
 
     if (allowed) {
       if (!this.hasView) {
@@ -31,5 +34,5 @@ export class HasRoleDirective {
       this.viewContainer.clear();
       this.hasView = false;
     }
-  });
+  }
 }

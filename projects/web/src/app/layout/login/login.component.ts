@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   DynamicDialogService,
   ModalCloseStatusEnum,
+  ModalStatus,
 } from '@shared/pattern/dynamic-dialog';
 import { AuthFormComponent } from '@shared/pattern/auth-form';
 
@@ -16,6 +17,10 @@ export class LoginComponent {
   private readonly dynamicDialogService = inject(DynamicDialogService);
 
   onLoginSuccess(): void {
-    this.dynamicDialogService.close(ModalCloseStatusEnum.Success);
+    const status: ModalStatus = {
+      closeStatus: ModalCloseStatusEnum.CLOSED,
+    };
+    this.dynamicDialogService.closeDialog(status);
   }
 }
+
