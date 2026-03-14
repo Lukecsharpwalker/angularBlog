@@ -1,10 +1,10 @@
-import { provideZonelessChangeDetection } from '@angular/core';
+import { inject, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, Routes, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideHighlightOptions } from 'ngx-highlightjs';
 import { provideQuillConfig } from 'ngx-quill/config';
 import hljs from 'highlight.js/lib/core';
-import { SUPABASE_CONFIG } from '@shared/core/supabase';
+import { SUPABASE_CONFIG, SupabaseClient, supabaseInitializer } from '@shared/core/supabase';
 import { quillToolbarConfig } from './utils/quill-toolbar';
 import { environment } from '../../../../../environments/environment';
 
@@ -25,6 +25,10 @@ export function provideCore({ routes }: CoreOptions) {
         supabaseKey: environment.supabaseKey,
       },
     },
+    provideAppInitializer(() => {
+      const supabaseService = inject(SupabaseClient);
+      return supabaseInitializer(supabaseService)();
+    }),
 
     provideHighlightOptions({
       coreLibraryLoader: () => import('highlight.js/lib/core'),
