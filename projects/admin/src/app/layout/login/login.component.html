@@ -108,13 +108,15 @@
       </div>
     </div>
 
+      <button [routerLink]="['/posts/dbfcd015-390f-4cd6-bb62-f0218354da3e']" >LOOO</button>
+
     <div class="order-1 lg:order-2">
       <div class="max-w-md ml-auto">
         <div class="glass-card-premium rounded-3xl shadow-[0_20px_60px_rgba(18,55,42,0.15)] p-2 relative overflow-hidden hover-lift-subtle depth-shadow-strong pulse-border">
           <div class="absolute inset-0 grain-overlay opacity-5"></div>
           <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent-neon/5"></div>
           <div class="relative z-10">
-            <shared-auth-form />
+            <shared-auth-form (logingSuccess)="onLoginSuccess()" />
           </div>
         </div>
       </div>
