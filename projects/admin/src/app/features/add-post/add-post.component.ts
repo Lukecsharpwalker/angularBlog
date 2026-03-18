@@ -46,7 +46,6 @@ import { IconComponent } from '@shared/pattern/icon-system';
     HighlightModule,
     RouterModule,
     TagMultiSelectComponent,
-    IconComponent,
   ],
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.scss'],

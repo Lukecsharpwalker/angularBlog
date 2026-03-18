@@ -1,48 +1,27 @@
-<nav class="fixed top-4 left-4 right-4 z-50 container-wide">
-  <div
-    class="glass-effect-strong rounded-2xl shadow-[0_8px_32px_rgba(18,55,42,0.12)]"
-  >
-    <div class="px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div
-          class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center"
-        >
-          <span class="text-white text-lg font-bold">A</span>
-        </div>
-        <div>
-          <h1 class="text-lg font-bold text-primary leading-none">angular.fun</h1>
-          <p class="text-xs text-secondary/70 leading-none">Admin Panel</p>
-        </div>
+<nav class="fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-xl border-b border-border-primary z-50">
+  <div class="h-full px-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+        <span class="text-white text-sm font-bold">A</span>
       </div>
+      <div>
+        <h1 class="text-base font-bold text-text-primary leading-none">angular.fun</h1>
+        <p class="text-xs text-text-tertiary leading-none">Admin Panel</p>
+      </div>
+    </div>
 
-      <div class="hidden md:flex items-center gap-2">
-        <a
-          class="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-xl font-medium text-sm transition-all duration-200 hover:bg-primary/20"
-          href="/posts"
-        >
-          <span>Posts</span>
-        </a>
-        <a
-          class="flex items-center gap-2 px-4 py-2 bg-secondary/10 text-secondary rounded-xl font-medium text-sm transition-all duration-200 hover:bg-secondary/20"
-          href="/dsg"
-        >
-          <span>Design System</span>
-        </a>
+    <div class="flex items-center gap-4">
+      <div class="hidden sm:block text-right">
+        <p class="text-sm font-semibold text-text-primary">{{ authStore.user()?.email || 'Admin' }}</p>
+        <p class="text-xs text-text-tertiary">Administrator</p>
       </div>
-
-      <div class="flex items-center gap-3">
-        <div class="hidden sm:block text-right">
-          <p class="text-sm font-semibold text-primary">{{ authStore.user()?.email || 'Admin' }}</p>
-          <p class="text-xs text-secondary/70">Administrator</p>
-        </div>
-        <button
-          (click)="logout()"
-          class="btn-danger"
-          title="Sign out"
-        >
-          Logout
-        </button>
-      </div>
+      <button
+        (click)="logout()"
+        class="btn-secondary px-4 py-2 text-sm"
+        title="Sign out"
+      >
+        Logout
+      </button>
     </div>
   </div>
 </nav>
