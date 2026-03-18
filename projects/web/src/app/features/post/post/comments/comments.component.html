@@ -4,7 +4,7 @@
       <div class="backdrop-blur-sm bg-white/60 hover:bg-white/80 border border-white/30 rounded-lg p-5 transition-all duration-300 hover:shadow-md">
         <div class="flex justify-between items-start gap-4">
           <div class="flex-1">
-            <p class="text-primary mb-3 leading-relaxed font-medium">
+            <p class="mb-3 leading-relaxed font-medium">
               {{ comment.content }}
             </p>
 
@@ -13,10 +13,10 @@
                 <div class="w-8 h-8 bg-gradient-to-br from-secondary to-tertiary rounded-full flex items-center justify-center text-white font-semibold text-xs shadow-sm">
                   {{ comment.author?.username?.charAt(0)?.toUpperCase() }}
                 </div>
-                <span class="font-medium text-primary">{{ comment.author?.username }}</span>
+                <span class="font-medium">{{ comment.author?.username }}</span>
               </div>
-              <span class="text-primary/40">•</span>
-              <time class="text-primary/60" [title]="comment.created_at || ''">
+              <span>•</span>
+              <time [title]="comment.created_at || ''">
                 {{ comment.created_at ? getRelativeTime(comment.created_at) : 'Unknown time' }}
               </time>
             </div>
