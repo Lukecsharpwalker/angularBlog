@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthStore } from '@shared/core/auth';
 import { AuthFormControls } from './auth-form.interface';
+import { Session } from '@supabase/supabase-js';
 
 @Injectable()
 export class AuthFormService {
@@ -18,16 +19,13 @@ export class AuthFormService {
 
   private authStore = inject(AuthStore);
 
-  async validateAndSubmitLogin(form: FormGroup<AuthFormControls>): Promise<void> {
-    if (form.invalid) {
-      return;
-    }
-    await this.authStore.loginWithPassword(form.getRawValue());
+  async validateAndSubmitLogin(form: FormGroup<AuthFormControls>): Promise<Session | void> {
+      return await this.authStore.loginWithPassword(form.getRawValue());
   }
 
   async loginWithProvider(provider: 'google'): Promise<void> {
     this.authStore.clearError();
-    await this.authStore.loginWithProvider(provider);
+    return  this.authStore.loginWithProvider(provider);
   }
 
   clearError(): void {

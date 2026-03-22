@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, output, inject, signal, computed } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  output,
+  inject,
+  signal,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthStore } from '../../core/auth';
 import { AuthFormService } from './auth-form.service';
@@ -14,7 +20,7 @@ import { LOGIN_FORM_CONFIG } from './default-login-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthFormComponent {
-  readonly logingSuccess = output<void>();
+  readonly loginSuccess = output<void>();
   protected readonly config = inject(LOGIN_FORM_CONFIG);
   protected readonly authStore = inject(AuthStore);
   protected readonly isSubmitted = signal(false);
@@ -22,16 +28,19 @@ export class AuthFormComponent {
 
   private readonly authFormService = inject(AuthFormService);
 
-
   async onSubmit(): Promise<void> {
     this.isSubmitted.set(true);
     this.authFormService.clearError();
-    await this.authFormService.validateAndSubmitLogin(this.form);
-    this.logingSuccess.emit();
+    const loginResponse = await this.authFormService.validateAndSubmitLogin(this.form);
+    if (!loginResponse) {
+      this.isSubmitted.set(false);
+      return;
+    }
+    this.loginSuccess.emit();
   }
 
   async onGoogleLogin(): Promise<void> {
     await this.authFormService.loginWithProvider('google');
-    this.logingSuccess.emit();
+    this.loginSuccess.emit();
   }
 }
