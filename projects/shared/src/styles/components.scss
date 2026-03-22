@@ -824,15 +824,6 @@
   }
 }
 
-/* Google Button Fix - Keep Google brand colors on hover */
-.btn-google:hover svg {
-  filter: none !important;
-}
-
-.btn-google:hover svg path {
-  fill: inherit !important;
-}
-
 /* Enhanced visibility for glass cards on light backgrounds */
 .glass-effect {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05);
