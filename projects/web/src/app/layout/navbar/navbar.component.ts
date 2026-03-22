@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { LoginComponent } from '../login/login.component';
 import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
+import { AuthStore } from '@shared/core/auth';
 
 @Component({
   selector: 'web-navbar',
@@ -24,13 +25,15 @@ import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
-  readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
-  readonly isScrolled = signal(false);
-  readonly isMenuOpen = signal(false);
-  readonly navHeight = signal(0);
-  readonly searchQuery = signal('');
+  protected readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
+  protected readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
+  protected readonly isScrolled = signal(false);
+  protected readonly isMenuOpen = signal(false);
+  protected readonly navHeight = signal(0);
+  protected readonly searchQuery = signal('');
+  protected readonly userProfile = inject(AuthStore).profile;
 
+  private readonly authStore = inject(AuthStore);
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
   private destroyRef = inject(DestroyRef);
@@ -48,6 +51,10 @@ export class NavbarComponent {
       { title: 'Sign In' },
       LoginComponent
     );
+  }
+
+  protected logout(): void {
+    this.authStore.logout();
   }
 
   protected toggleMenu(): void {

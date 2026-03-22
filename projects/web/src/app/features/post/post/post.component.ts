@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
-import { HighlightModule } from 'ngx-highlightjs';
 import { User } from '@supabase/supabase-js';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { IconComponent } from '@shared/pattern/icon-system';
@@ -35,7 +34,6 @@ import { Post } from '@shared/core/supabase';
     CommentsComponent,
     AddCommentComponent,
     DatePipe,
-    HighlightModule,
     NgOptimizedImage,
     IconComponent,
   ],
