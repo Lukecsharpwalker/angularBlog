@@ -146,7 +146,7 @@
               <shared-icon name="comment" size="sm" />
               Add Comment
             </h3>
-            @if (user()) {
+            @if (userProfile()) {
               <web-add-comment [postId]="id()" />
             }
           </section>

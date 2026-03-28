@@ -7,11 +7,10 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { Comment } from '@shared/core/supabase';
+import { Comment, SupabaseClient } from '@shared/core/supabase';
 import { CommentForm } from './add-comment.models';
 import { ReaderApiService } from '../../../../core';
 import { CommentsStore } from '../comments.store';
-import { AuthStore } from '@shared/core/auth';
 
 @Component({
   selector: 'web-add-comment',
@@ -34,12 +33,11 @@ export class AddCommentComponent {
   protected readonly isSubmitting: WritableSignal<boolean> = signal(false);
 
   private commentsStore = inject(CommentsStore);
-  private authStore = inject(AuthStore);
-  private userId: string = this.authStore.user()!.id;
-
+  private supabaseClient = inject(SupabaseClient);
+  private userId: string = this.supabaseClient.userProfile()!.id;
 
   async onSubmit(): Promise<void> {
-   if (this.commentForm.valid && !this.isSubmitting()) {
+    if (this.commentForm.valid && !this.isSubmitting()) {
       this.isSubmitting.set(true);
 
       try {
@@ -47,8 +45,13 @@ export class AddCommentComponent {
           content: this.commentForm.controls.content.value,
           created_at: new Date().toISOString(),
           user_id: this.userId ?? null,
-          author: this.authStore.userProfile() ?? null,
-          post_id: this.postId()
+          author: {
+            created_at: 'a',
+            id: 'a',
+            avatar_url: null,
+            username: 's'
+          },
+          post_id: this.postId(),
         };
 
         await this.commentsStore.addComment(this.postId(), comment);
