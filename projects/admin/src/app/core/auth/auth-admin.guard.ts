@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
-import { AuthStore } from '@shared/core/auth';
 import { Roles } from '@shared/core/auth/roles';
+import { SupabaseClient } from '@shared/core/supabase';
 
 export const authAdminGuard: CanMatchFn = (): boolean => {
-  const authStore = inject(AuthStore);
+  const supabaseClient = inject(SupabaseClient);
   const router = inject(Router);
 
-  if (authStore.userRole() === Roles.ADMIN) {
+  if (supabaseClient.userRole() === Roles.ADMIN) {
     return true;
   }
 

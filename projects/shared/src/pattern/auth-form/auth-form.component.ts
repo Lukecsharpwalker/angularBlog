@@ -1,12 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  output,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthStore } from '../../core/auth';
 import { AuthFormService } from './auth-form.service';
 import { LOGIN_FORM_CONFIG } from './default-login-config';
 
@@ -22,21 +15,22 @@ import { LOGIN_FORM_CONFIG } from './default-login-config';
 export class AuthFormComponent {
   readonly loginSuccess = output<void>();
   protected readonly config = inject(LOGIN_FORM_CONFIG);
-  protected readonly authStore = inject(AuthStore);
   protected readonly isSubmitted = signal(false);
   protected readonly form = inject(AuthFormService).loginForm;
 
   private readonly authFormService = inject(AuthFormService);
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     this.isSubmitted.set(true);
     this.authFormService.clearError();
-    const loginResponse = await this.authFormService.validateAndSubmitLogin(this.form);
-    if (!loginResponse) {
-      this.isSubmitted.set(false);
-      return;
-    }
-    this.loginSuccess.emit();
+    this.authFormService.signInWithPassword().subscribe(res => {
+      if (res) {
+        this.loginSuccess.emit();
+      } else {
+        //TODO DALEJ
+        this.isSubmitted.set(false);
+      }
+    });
   }
 
   async onGoogleLogin(): Promise<void> {

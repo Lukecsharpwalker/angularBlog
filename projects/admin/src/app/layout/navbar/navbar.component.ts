@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthStore } from '@shared/core/auth';
+import { SupabaseClient } from '@shared/core/supabase';
 
 @Component({
   selector: 'admin-navbar',
@@ -8,11 +8,12 @@ import { AuthStore } from '@shared/core/auth';
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
-  protected readonly authStore = inject(AuthStore);
+  protected readonly supabaseClient = inject(SupabaseClient);
   private readonly router = inject(Router);
 
   logout(): void {
-    this.authStore.logout();
-    void this.router.navigate(['/login']);
+    this.supabaseClient.signOut().subscribe(() => {
+      void this.router.navigate(['/login']);
+    });
   }
 }

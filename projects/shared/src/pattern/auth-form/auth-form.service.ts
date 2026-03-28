@@ -1,8 +1,9 @@
+import { AuthTokenResponsePassword, Session } from '@supabase/supabase-js';
 import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthStore } from '@shared/core/auth';
+import { Observable } from 'rxjs';
 import { AuthFormControls } from './auth-form.interface';
-import { Session } from '@supabase/supabase-js';
+import { Profile, SupabaseClient } from '@shared/core/supabase';
 
 @Injectable()
 export class AuthFormService {
@@ -16,19 +17,20 @@ export class AuthFormService {
       validators: [Validators.required],
     }),
   });
+  protected readonly supabaseClient = inject(SupabaseClient);
 
-  private authStore = inject(AuthStore);
-
-  async validateAndSubmitLogin(form: FormGroup<AuthFormControls>): Promise<Session | void> {
-      return await this.authStore.loginWithPassword(form.getRawValue());
+  signInWithPassword(): Observable<Profile | null> {
+    return this.supabaseClient.signInWithPassword(
+      this.loginForm.controls.email.value,
+      this.loginForm.controls.password.value
+    );
   }
 
   async loginWithProvider(provider: 'google'): Promise<void> {
-    this.authStore.clearError();
-    return  this.authStore.loginWithProvider(provider);
+    return;
   }
 
   clearError(): void {
-    this.authStore.clearError();
+    return;
   }
 }

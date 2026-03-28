@@ -7,6 +7,7 @@ import hljs from 'highlight.js/lib/core';
 import { SUPABASE_CONFIG, SupabaseClient, supabaseInitializer } from '@shared/core/supabase';
 import { quillToolbarConfig } from './utils/quill-toolbar';
 import { environment } from '../../../../../environments/environment';
+import { firstValueFrom, from, tap } from 'rxjs';
 
 export interface CoreOptions {
   routes: Routes;
@@ -26,8 +27,7 @@ export function provideCore({ routes }: CoreOptions) {
       },
     },
     provideAppInitializer(() => {
-      const supabaseService = inject(SupabaseClient);
-      return supabaseInitializer(supabaseService)();
+      return supabaseInitializer()();
     }),
 
     provideHighlightOptions({

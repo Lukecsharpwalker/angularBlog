@@ -16,6 +16,6 @@ export class LoginComponent {
   private readonly router = inject(Router);
 
   onLoginSuccess(): void {
-    this.router.navigate(['/']);
+    void this.router.navigate(['/posts']);
   }
 }
