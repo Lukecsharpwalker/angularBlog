@@ -5,7 +5,7 @@ set -euo pipefail
 # Creates a single SQL file (supabase/seed/seed.sql)
 #   • pulls current tags from the public REST endpoint
 #   • writes a COPY block for tags
-#   • appends two demo users (normal + Admin) to profiles
+#   • appends two demo users (normal + Admin) to profile
 # Requirements: curl, jq
 # ───────────────────────────────────────────────
 

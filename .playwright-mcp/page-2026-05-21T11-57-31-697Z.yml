@@ -1,0 +1,177 @@
+- generic [ref=e4]:
+  - navigation [ref=e6]:
+    - generic [ref=e7]:
+      - textbox "Search posts..." [ref=e10]
+      - generic [ref=e13] [cursor=pointer]:
+        - heading "Angular.fun" [level=1] [ref=e14]
+        - heading "Bring the fun back to coding" [level=2] [ref=e15]
+      - button "Sign In" [ref=e17] [cursor=pointer]
+  - dialog "Cookie Consent" [ref=e18]:
+    - generic [ref=e20]:
+      - button "Close modal" [ref=e21] [cursor=pointer]:
+        - img [ref=e22]
+      - generic [ref=e25]:
+        - heading "Cookie Consent" [level=3] [ref=e27]
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e34]:
+              - img [ref=e36]
+              - generic [ref=e38]:
+                - heading "We respect your privacy" [level=2] [ref=e39]
+                - paragraph [ref=e40]: We use cookies to improve your browsing experience, analyze site traffic, and deliver personalized content. You can choose which cookies to accept below.
+            - generic [ref=e41]:
+              - button "Reject All" [ref=e42] [cursor=pointer]
+              - button "Customize" [ref=e43] [cursor=pointer]
+              - button "Accept All" [ref=e44] [cursor=pointer]
+          - generic [ref=e45]:
+            - link "Privacy Policy" [ref=e46] [cursor=pointer]:
+              - /url: /privacy-policy
+            - link "Cookie Policy" [ref=e47] [cursor=pointer]:
+              - /url: /cookie-policy
+  - main [ref=e48]:
+    - generic [ref=e51]:
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - heading "Hi I'm Łukasz Jabłoński" [level=1] [ref=e56]:
+            - generic [ref=e57]:
+              - img [ref=e59]:
+                - img [ref=e60]
+              - text: Hi I'm
+            - generic [ref=e64]: Łukasz Jabłoński
+          - paragraph [ref=e65]: I'm a software developer with a passion for web technologies. I'm a big fan of Angular and I'm always looking for new challenges.
+        - img "Łukasz Jabłoński - Software Developer" [ref=e66]
+      - generic [ref=e69]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - img "Angular" [ref=e74] [cursor=pointer]
+            - generic [ref=e75]: Angular
+          - generic [ref=e76]:
+            - img "TypeScript" [ref=e78] [cursor=pointer]
+            - generic [ref=e79]: TypeScript
+          - generic [ref=e80]:
+            - img "JavaScript" [ref=e82] [cursor=pointer]
+            - generic [ref=e83]: JavaScript
+          - generic [ref=e84]:
+            - img "Firebase" [ref=e86] [cursor=pointer]
+            - generic [ref=e87]: Firebase
+          - generic [ref=e88]:
+            - img "Firestore" [ref=e90] [cursor=pointer]
+            - generic [ref=e91]: Firestore
+          - generic [ref=e92]:
+            - img "Node.js" [ref=e94] [cursor=pointer]
+            - generic [ref=e95]: Node.js
+          - generic [ref=e96]:
+            - img "Cloud Computing" [ref=e98] [cursor=pointer]
+            - generic [ref=e99]: Cloud Computing
+          - generic [ref=e100]:
+            - img "SSG/SSR" [ref=e102] [cursor=pointer]
+            - generic [ref=e103]: SSG/SSR
+          - generic [ref=e104]:
+            - img "Web Development" [ref=e106] [cursor=pointer]
+            - generic [ref=e107]: Web Development
+          - generic [ref=e108]:
+            - img "Performance" [ref=e110] [cursor=pointer]
+            - generic [ref=e111]: Performance
+          - generic [ref=e112]:
+            - img "Security" [ref=e114] [cursor=pointer]
+            - generic [ref=e115]: Security
+          - generic [ref=e116]:
+            - img "Deployment" [ref=e118] [cursor=pointer]
+            - generic [ref=e119]: Deployment
+          - generic [ref=e120]:
+            - img "Testing" [ref=e122] [cursor=pointer]
+            - generic [ref=e123]: Testing
+          - generic [ref=e124]:
+            - img "Best Practices" [ref=e126] [cursor=pointer]
+            - generic [ref=e127]: Best Practices
+          - generic [ref=e128]:
+            - img "Tutorials" [ref=e130] [cursor=pointer]
+            - generic [ref=e131]: Tutorials
+          - generic [ref=e132]:
+            - img "HTML" [ref=e134] [cursor=pointer]
+            - generic [ref=e135]: HTML
+          - generic [ref=e136]:
+            - img "CSS" [ref=e138] [cursor=pointer]
+            - generic [ref=e139]: CSS
+        - button "Scroll tags left" [ref=e140] [cursor=pointer]:
+          - img [ref=e141]
+        - button "Scroll tags right" [ref=e143] [cursor=pointer]:
+          - img [ref=e144]
+      - generic [ref=e148]:
+        - article [ref=e150] [cursor=pointer]:
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - generic [ref=e154]: Angular
+              - generic [ref=e156]: Cloud Computing
+              - generic [ref=e158]: Deployment
+              - generic [ref=e160]: Testing
+            - generic [ref=e161]:
+              - 'heading "Super performant Blog App in Angular 19 with SSG SSR and Hydration Part 6: Playwright" [level=2] [ref=e162]'
+              - generic [ref=e163]: This blog post walks through setting up a local Supabase instance with helpful new npm scripts—like schema:pull, db:seed, and start:local—and integrating Playwright via ng add playwright-ng-schematics to enable robust E2E testing with cookie consent handling. It further enhances test reliability by adding custom helpers and a comprehensive Playwright spec that verifies both UI elements and backend tag data, and shows how to conditionally trigger CI workflows when commit messages include “E2E.”
+        - article [ref=e165] [cursor=pointer]:
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - generic [ref=e169]: Angular
+              - generic [ref=e171]: SSG/SSR
+              - generic [ref=e173]: Tutorials
+            - generic [ref=e174]:
+              - 'heading "Super performant Blog App in Angular 19 with SSG SSR and Hydration Part 5: Supbase migration and SignalStore intro!" [level=2] [ref=e175]'
+              - generic [ref=e176]: Just migrated my Angular app from Firestore to Supabase—turned out pretty smooth overall, minus some classic SSR headaches and minor Supabase quirks. Got tables and RLS set up nicely, integrated some NGRX SignalStore action, and even managed environment secrets cleanly with GitHub Actions. Life isn’t always easy, but hey, at least the database looks clean now!
+        - article [ref=e178] [cursor=pointer]:
+          - generic [ref=e179]:
+            - generic [ref=e180]:
+              - generic [ref=e182]: Angular
+              - generic [ref=e184]: Firebase
+              - generic [ref=e186]: Cloud Computing
+              - generic [ref=e188]: SSG/SSR
+            - generic [ref=e189]:
+              - 'heading "Super performant Blog app in Angular 19 (18) with SSG SSR and Hydration — Part 4: Move to Cloud and setup CI/CD with Github Actions" [level=2] [ref=e190]'
+              - generic [ref=e191]: In this chapter, I set up GitHub Actions to deploy my Angular blog to Cloud Run using a JSON key. I ran into a bunch of permission issues, fixed them step by step, and finally got the deployment working. I added unit tests to block bad deploys, and a PR check workflow for better control. It’s now running smoothly, and I’m ready for the next step.
+        - article [ref=e193] [cursor=pointer]:
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e197]: Firebase
+              - generic [ref=e199]: Cloud Computing
+            - generic [ref=e200]:
+              - 'heading "Firebase vs. Supabase vs. Appwrite: A Chill BaaS Showdown for Your Next Project" [level=2] [ref=e201]'
+              - generic [ref=e202]: Choosing the right BaaS can make or break your dev workflow—Firebase excels in simplicity and real-time features, Supabase dominates with SQL power and flexibility, while Appwrite offers full control and language diversity. For quick MVPs or mobile-first apps, Firebase is a solid bet; but if you need relational data or plan to scale, Supabase is the smarter long-term play. Appwrite is the dark horse—perfect for self-hosters and teams wanting full-stack customization without vendor lock-in.
+        - article [ref=e204] [cursor=pointer]:
+          - generic [ref=e205]:
+            - generic [ref=e206]:
+              - generic [ref=e208]: Angular
+              - generic [ref=e210]: Firebase
+              - generic [ref=e212]: Cloud Computing
+              - generic [ref=e214]: SSG/SSR
+            - generic [ref=e215]:
+              - 'heading "Super performant Blog app in Angular 18 with SSG and Hydration — Part 3.5: Dynamic Dialog & Quill Level UP" [level=2] [ref=e216]'
+              - generic [ref=e217]: In this update, we enhanced Dynamic Dialog with generic types (T), making it more flexible for handling different data types. This allows smoother integration of forms and custom components. We also added image insertion with alt text in Quill, improving SEO and accessibility. To boost performance, we optimized syntax highlighting, targeting only HTML, XML, and TypeScript blocks. Finally, we fixed Firebase document size issues and improved Quill’s image handling, ensuring a smoother editing experience. Stay tuned for Part 4, where a major app refactor is coming! 🚀
+        - article [ref=e219] [cursor=pointer]:
+          - generic [ref=e220]:
+            - generic [ref=e221]:
+              - generic [ref=e223]: Angular
+              - generic [ref=e225]: Firebase
+              - generic [ref=e227]: Cloud Computing
+              - generic [ref=e229]: SSG/SSR
+            - generic [ref=e230]:
+              - heading "Honey on my eyes! - super efficient blog app Part 3" [level=2] [ref=e231]
+              - generic [ref=e232]: In Part 3, we focus on admin features, editor improvements, and unsaved data protection. We switched from p-editor to Quill, overcoming issues with highlight.js and server-side rendering. Now, syntax highlighting works smoothly. To prevent data loss, we added a before-unload warning and a CanDeactivate guard, prompting users before leaving unsaved work. A new "Save as Draft" feature lets posts be stored without publishing. Editing posts is now seamless with automatic form population when modifying an existing post. We also fixed heading styles in Tailwind and formatted dates properly from Firebase timestamps. Finally, we extended Quill to support TypeScript syntax highlighting. Another step toward making this blog app powerful and efficient! 🚀 Stay tuned for more!
+        - article [ref=e234] [cursor=pointer]:
+          - generic [ref=e235]:
+            - generic [ref=e236]:
+              - generic [ref=e238]: Angular
+              - generic [ref=e240]: Firebase
+              - generic [ref=e242]: Cloud Computing
+              - generic [ref=e244]: SSG/SSR
+            - generic [ref=e245]:
+              - heading "Consistency is the key - super efficient blog app Part 2" [level=2] [ref=e246]
+              - generic [ref=e247]: In Chapter 2, we refine the project, fix issues, and add new features. We updated Angular to 18.0.6, resolving issues with withEventReplay(). The Admin role is now properly initialized using APP_INITIALIZER. We restructured PostCardComponent into a fully reusable UI component with named slots. A new Role Directive allows flexible user permissions beyond just Admin. For SSG, we implemented auto-generated routes using Firebase functions, though Angular 18.1 will soon handle this natively. We also introduced a GDPR cookie consent popup, storing settings in LocalStorage for now. This chapter was a mix of problem-solving, learning, and fun. Stay tuned for Part 3—more optimizations ahead! 🚀
+        - article [ref=e249] [cursor=pointer]:
+          - generic [ref=e250]:
+            - generic [ref=e251]:
+              - generic [ref=e253]: Angular
+              - generic [ref=e255]: Firebase
+              - generic [ref=e257]: Cloud Computing
+              - generic [ref=e259]: SSG/SSR
+            - generic [ref=e260]:
+              - heading "Let's get started!" [level=2] [ref=e261]
+              - generic [ref=e262]: Let's get started with this Angular app! In the first chapter, we'll create a new project, configure Firebase, and set everything up. The project will be built using Angular 18+ with SSG (Static Site Generation). For hosting, we'll use Firebase's new App Hosting, specifically designed for SSG Angular apps. Our goal is to create an app that will break records on Lighthouse-type benchmarks!

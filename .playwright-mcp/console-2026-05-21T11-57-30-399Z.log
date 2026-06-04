@@ -1,0 +1,19 @@
+[    1104ms] [LOG] Angular is running in development mode. @ http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-N4UX26CD.js?v=e61f5354:11725
+[    1165ms] [ERROR] NavigatorLockAcquireTimeoutError: Acquiring an exclusive Navigator LockManager lock "lock:sb-aqdbdmepncxxuanlymwr-auth-token" immediately failed
+    at http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/@supabase_supabase-js.js?v=e61f5354:14484:19
+    at Generator.next (<anonymous>)
+    at http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-TWWAJFRB.js?v=e61f5354:74:61
+    at new ZoneAwarePromise (http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/zone__js.js?v=e61f5354:2164:23)
+    at __async (http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-TWWAJFRB.js?v=e61f5354:58:10)
+    at http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/@supabase_supabase-js.js?v=e61f5354:14466:20 @ http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/zone__js.js?v=e61f5354:1832
+[    1692ms] [LOG] Angular hydrated 46 component(s) and 463 node(s), 0 component(s) were skipped. Learn more at https://angular.dev/guide/hydration. @ http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-N4UX26CD.js?v=e61f5354:11725
+[  292932ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:4200/@vite/client:864
+[  294369ms] [LOG] Angular is running in development mode. @ http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-N4UX26CD.js?v=e61f5354:11725
+[  294397ms] [ERROR] NavigatorLockAcquireTimeoutError: Acquiring an exclusive Navigator LockManager lock "lock:sb-aqdbdmepncxxuanlymwr-auth-token" immediately failed
+    at http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/@supabase_supabase-js.js?v=e61f5354:14484:19
+    at Generator.next (<anonymous>)
+    at http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-TWWAJFRB.js?v=e61f5354:74:61
+    at new ZoneAwarePromise (http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/zone__js.js?v=e61f5354:2164:23)
+    at __async (http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-TWWAJFRB.js?v=e61f5354:58:10)
+    at http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/@supabase_supabase-js.js?v=e61f5354:14466:20 @ http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/zone__js.js?v=e61f5354:1832
+[  294862ms] [LOG] Angular hydrated 46 component(s) and 463 node(s), 0 component(s) were skipped. Learn more at https://angular.dev/guide/hydration. @ http://localhost:4200/@fs/Users/lukaszjablonski/Desktop/PROJEKTY/AngularBlogApp/.angular/cache/20.1.6/web/vite/deps/chunk-N4UX26CD.js?v=e61f5354:11725

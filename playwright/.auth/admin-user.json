@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:4201",
+      "localStorage": [
+        {
+          "name": "sb-aqdbdmepncxxuanlymwr-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwic3ViIjoiYWRtaW4tMSIsInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc3OTU1Mjk4MX0.mock-signature\",\"refresh_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Nzk2MzkzODF9.mock-signature\",\"token_type\":\"bearer\",\"expires_at\":1779552981,\"expires_in\":86400,\"user\":{\"id\":\"admin-1\",\"email\":\"admin@example.com\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"],\"role\":\"Admin\"},\"user_metadata\":{}}}"
+        }
+      ]
+    }
+  ]
+}

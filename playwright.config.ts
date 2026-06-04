@@ -9,6 +9,10 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+const WEB_URL = process.env['PLAYWRIGHT_WEB_URL'] ?? 'http://localhost:4200';
+const ADMIN_URL = process.env['PLAYWRIGHT_ADMIN_URL'] ?? 'http://localhost:4201';
+
 export default defineConfig({
   testDir: './e2e',
   /* Run tests in files in parallel */
@@ -33,12 +37,42 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'web-setup',
+      testDir: './e2e',
+      testMatch: /auth-web\.setup\.ts$/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? WEB_URL,
+      },
+    },
+    {
+      name: 'admin-setup',
+      testDir: './e2e',
+      testMatch: /auth-admin\.setup\.ts$/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: ADMIN_URL,
+      },
+    },
+    {
+      name: 'local',
+      testDir: './e2e/web',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: WEB_URL,
+        storageState: 'playwright/.auth/web-user.json',
+      },
+      dependencies: ['web-setup'],
+    },
+    {
       name: 'web',
       testDir: './e2e/web',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:4200',
+        baseURL: WEB_URL,
+        storageState: 'playwright/.auth/web-user.json',
       },
+      dependencies: ['web-setup'],
     },
 
     {
@@ -46,62 +80,40 @@ export default defineConfig({
       testDir: './e2e/admin',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:4201',
+        baseURL: ADMIN_URL,
+        storageState: 'playwright/.auth/admin-user.json',
       },
-    },
-
-    {
-      name: 'chromium',
-      testDir: './e2e/web',
-      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['admin-setup'],
     },
 
     {
       name: 'firefox',
       testDir: './e2e/web',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        storageState: 'playwright/.auth/web-user.json',
+      },
+      dependencies: ['web-setup'],
     },
 
     {
       name: 'webkit',
       testDir: './e2e/web',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    {
-      name: 'local',
-      testDir: './e2e/web',
       use: {
-        ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:4200',
+        ...devices['Desktop Safari'],
+        storageState: 'playwright/.auth/web-user.json',
       },
+      dependencies: ['web-setup'],
     },
 
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Configure local web server for testing */
-  webServer: process.env['CI'] ? undefined : {
-    command: 'npm run start:local',
-    url: 'http://localhost:4200',
-    reuseExistingServer: !process.env['CI'],
-  },
+  webServer: process.env['CI']
+    ? undefined
+    : {
+        command: 'npm run start:local',
+        url: 'http://localhost:4200',
+        reuseExistingServer: !process.env['CI'],
+      },
 });

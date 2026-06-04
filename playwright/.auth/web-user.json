@@ -1,0 +1,22 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:4200",
+      "localStorage": [
+        {
+          "name": "cookies-consent",
+          "value": "true"
+        },
+        {
+          "name": "cookie-consent-record",
+          "value": "{\"timestamp\":\"2026-05-22T07:35:58.338Z\",\"version\":\"2.1\",\"categories\":{\"necessary\":true,\"functional\":true,\"analytics\":true,\"marketing\":true},\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.7204.15 Safari/537.36\",\"expiryDate\":\"2026-11-22T08:35:58.338Z\"}"
+        },
+        {
+          "name": "sb-aqdbdmepncxxuanlymwr-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwic3ViIjoidXNlci0xIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJlbWFpbCI6Imx1a2FzekBleGFtcGxlLmNvbSIsImV4cCI6MTc3OTUyMTc1N30.mock-signature\",\"refresh_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Nzk2MDgxNTd9.mock-signature\",\"token_type\":\"bearer\",\"expires_at\":1779521757,\"expires_in\":86400,\"user\":{\"id\":\"user-1\",\"email\":\"lukasz@example.com\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{}}}"
+        }
+      ]
+    }
+  ]
+}
