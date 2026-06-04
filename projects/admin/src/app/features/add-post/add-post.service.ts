@@ -1,15 +1,15 @@
 import { inject, Injectable } from '@angular/core';
-import { Post, Tag, SupabaseClient } from '@shared/core/supabase';
+import { Post, Tag, SUPABASE_CLIENT } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
 
 @Injectable({ providedIn: 'root' })
 export class AddPostService {
-  private supabase = inject(SupabaseClient);
+  private readonly client = inject(SUPABASE_CLIENT);
 
   async addPost(post: PostInsert & { tags?: Tag[] }): Promise<string> {
     const { tags = [], ...postData } = post;
 
-    const { data: inserted, error } = await this.supabase.getClient
+    const { data: inserted, error } = await this.client
       .from('posts')
       .insert(postData)
       .select('id')
@@ -20,7 +20,7 @@ export class AddPostService {
 
     if (tags.length) {
       const rows = tags.map(t => ({ post_id: postId, tag_id: t.id as number }));
-      const { error: relErr } = await this.supabase.getClient
+      const { error: relErr } = await this.client
         .from('post_tags')
         .upsert(rows, { onConflict: 'post_id,tag_id', ignoreDuplicates: true });
       if (relErr) throw relErr;
@@ -30,7 +30,7 @@ export class AddPostService {
   }
 
   async getPostById(id: string): Promise<Post | null> {
-    const { data, error } = await this.supabase.getClient
+    const { data, error } = await this.client
       .from('posts')
       .select(
         `
@@ -52,7 +52,7 @@ export class AddPostService {
     const { tags, ...postData } = post;
 
     if (Object.keys(postData).length) {
-      const { error: postErr } = await this.supabase.getClient
+      const { error: postErr } = await this.client
         .from('posts')
         .update(postData)
         .eq('id', id);
@@ -61,7 +61,7 @@ export class AddPostService {
 
     if (tags === undefined) return;
 
-    const { data: existing, error: fetchErr } = await this.supabase.getClient
+    const { data: existing, error: fetchErr } = await this.client
       .from('post_tags')
       .select('tag_id')
       .eq('post_id', id);
@@ -80,12 +80,12 @@ export class AddPostService {
     const toDelete = [...have].filter(tagId => !want.has(tagId));
 
     if (toInsert.length) {
-      const { error: insErr } = await this.supabase.getClient.from('post_tags').insert(toInsert);
+      const { error: insErr } = await this.client.from('post_tags').insert(toInsert);
       if (insErr) throw insErr;
     }
 
     if (toDelete.length) {
-      const { error: delErr } = await this.supabase.getClient
+      const { error: delErr } = await this.client
         .from('post_tags')
         .delete()
         .eq('post_id', id)
@@ -95,7 +95,7 @@ export class AddPostService {
   }
 
   async getTags(): Promise<Tag[]> {
-    const { data, error } = await this.supabase.getClient.from('tags').select('*');
+    const { data, error } = await this.client.from('tags').select('*');
     if (error) throw error;
     return data ?? [];
   }

@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'admin-root',
   standalone: true,
   imports: [RouterOutlet],
-  template: '<router-outlet/>',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: `<router-outlet />`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {}

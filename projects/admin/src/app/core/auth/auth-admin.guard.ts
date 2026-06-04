@@ -1,16 +1,20 @@
 import { inject } from '@angular/core';
-import { CanMatchFn, Router } from '@angular/router';
-import { Roles } from '@shared/core/auth/roles';
-import { SupabaseClient } from '@shared/core/supabase';
+import { CanMatchFn, Router, UrlTree } from '@angular/router';
+import { map, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Roles, UserService } from '@shared/core/auth';
 
-export const authAdminGuard: CanMatchFn = (): boolean => {
-  const supabaseClient = inject(SupabaseClient);
+export const authAdminGuard: CanMatchFn = (): Observable<boolean | UrlTree> => {
+  const userService = inject(UserService);
   const router = inject(Router);
 
-  if (supabaseClient.userRole() === Roles.ADMIN) {
-    return true;
-  }
-
-  void router.navigate(['/login']);
-  return false;
+  return userService.appUser$.pipe(
+    take(1),
+    map(user => {
+      if (user?.app_metadata.role === Roles.ADMIN) {
+        return true;
+      }
+      return router.createUrlTree(['/login']);
+    })
+  );
 };

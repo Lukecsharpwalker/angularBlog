@@ -98,60 +98,21 @@ export class PostFormService {
 
     const allPreBlocks = tempDiv.querySelectorAll('pre');
     allPreBlocks.forEach(block => {
+      console.log(block);
       const rawText = block.textContent || '';
-      const language = this.detectLanguage(rawText);
+      const language = block.getAttribute('data-language') ?? '';
 
       const codeElement = document.createElement('code');
-      codeElement.className = language;
+      codeElement.classList.add('hljs', language);
       codeElement.innerHTML = hljs.highlight(rawText, { language }).value;
 
       block.innerHTML = '';
       block.appendChild(codeElement);
+      console.log(codeElement);
+
     });
 
     return tempDiv.innerHTML;
   }
 
-  private detectLanguage(code: string): string {
-    const lowerCode = code.toLowerCase();
-
-    if (
-      (lowerCode.includes('name:') && lowerCode.includes('on:')) ||
-      lowerCode.includes('uses:') ||
-      lowerCode.includes('runs-on:')
-    ) {
-      return 'yaml';
-    }
-    if (
-      lowerCode.includes('select') &&
-      (lowerCode.includes('from') ||
-        lowerCode.includes('where') ||
-        lowerCode.includes('insert') ||
-        lowerCode.includes('update'))
-    ) {
-      return 'sql';
-    }
-    if (
-      code.includes('import') &&
-      (code.includes(': ') ||
-        code.includes('interface') ||
-        code.includes('type ') ||
-        code.includes('<T>'))
-    ) {
-      return 'typescript';
-    }
-    if (code.includes('import') && code.includes('test') && code.includes('@playwright')) {
-      return 'typescript';
-    }
-    if (code.includes('import') && (code.includes('=>') || code.includes('function'))) {
-      return 'typescript';
-    }
-    if (code.includes('<') && code.includes('>') && (code.includes('=') || code.includes('</'))) {
-      return 'xml';
-    }
-    if (code.includes('function') || code.includes('const') || code.includes('let')) {
-      return 'javascript';
-    }
-    return 'javascript';
-  }
 }

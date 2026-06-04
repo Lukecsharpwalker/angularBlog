@@ -34,7 +34,6 @@ import { AddPostStore } from './add-post.store';
 import { PostFormService } from './post-form.service';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
 import { ProcessedPostData } from './processed-post-data.interface';
-import { IconComponent } from '@shared/pattern/icon-system';
 
 @Component({
   selector: 'admin-add-post',
@@ -91,6 +90,7 @@ export class AddPostComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.initPostFormIfPostExists();
     await this.initializeQuill();
+    console.log(this.quill())
   }
 
   @HostListener('window:beforeunload', ['$event'])
