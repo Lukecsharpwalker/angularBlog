@@ -16,7 +16,7 @@ import { DYNAMIC_DIALOG_DATA } from './dialog-data.token';
 @Injectable({ providedIn: 'root' })
 export class DynamicDialogService<T> {
   private envInjector = inject(EnvironmentInjector);
-  private componentRef!: ComponentRef<DynamicDialogComponent>;
+  private componentRef!: ComponentRef<DynamicDialogComponent> | undefined;
   private closeRef$ = new Subject<ModalStatus<T>>();
   private injector = inject(Injector);
 
@@ -25,6 +25,10 @@ export class DynamicDialogService<T> {
     modalConfig?: ModalConfig,
     component?: Type<C>
   ): Subject<ModalStatus<T>> {
+    if (this.componentRef) {
+      return this.closeRef$;
+    }
+
     const dialogInjector = Injector.create({
       providers: [{ provide: DYNAMIC_DIALOG_DATA, useValue: modalConfig?.data }],
       parent: this.injector,
@@ -44,7 +48,8 @@ export class DynamicDialogService<T> {
   }
 
   closeDialog(status: ModalStatus<T>) {
-    this.componentRef.destroy();
+    this.componentRef?.destroy();
+    this.componentRef = undefined;
     this.closeRef$.next(status);
   }
 }

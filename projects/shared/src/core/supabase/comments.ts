@@ -1,4 +1,4 @@
-import { Profile } from './profiles';
+import { Profile, ProfileInsert } from './profiles';
 
 export interface Comment {
   content: string;
@@ -8,7 +8,7 @@ export interface Comment {
   is_reported?: boolean | null;
   post_id: string;
   user_id: string | null;
-  author: Profile | null;
+  author: ProfileInsert | null;
 }
 
 export interface CommentInsert {

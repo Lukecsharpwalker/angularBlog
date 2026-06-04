@@ -49,6 +49,10 @@
         {{ config.submitButtonText }}
       </button>
 
+    @if (errorMsg()) {
+      <div class="text-red-600 text-sm mt-2 font-medium">{{ errorMsg() }}</div>
+    }
+
   </form>
 
   @if (config.showGoogleLogin) {

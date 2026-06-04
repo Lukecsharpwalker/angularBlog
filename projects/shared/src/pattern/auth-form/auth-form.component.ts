@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, output, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, inject, signal, WritableSignal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { AuthFormService } from './auth-form.service';
 import { LOGIN_FORM_CONFIG } from './default-login-config';
 
@@ -17,18 +18,21 @@ export class AuthFormComponent {
   protected readonly config = inject(LOGIN_FORM_CONFIG);
   protected readonly isSubmitted = signal(false);
   protected readonly form = inject(AuthFormService).loginForm;
+  protected readonly errorMsg: WritableSignal<string | null> = signal(null);
 
   private readonly authFormService = inject(AuthFormService);
 
   onSubmit(): void {
     this.isSubmitted.set(true);
-    this.authFormService.clearError();
-    this.authFormService.signInWithPassword().subscribe(res => {
-      if (res) {
+
+    this.authFormService.signInWithPassword().pipe(
+      finalize(() => this.isSubmitted.set(false))
+    ).subscribe(res => {
+      if (res.error) {
+        this.authFormService.clearForm();
+        this.errorMsg.set(res.error.message);
+      } if (res.data.user) {
         this.loginSuccess.emit();
-      } else {
-        //TODO DALEJ
-        this.isSubmitted.set(false);
       }
     });
   }

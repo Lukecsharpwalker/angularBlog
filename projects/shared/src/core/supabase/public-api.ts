@@ -7,4 +7,5 @@ export * from './post-tags';
 export * from './posts';
 export * from './profiles';
 export * from './supabase.client';
+export * from './supabase.service';
 export * from './tags';

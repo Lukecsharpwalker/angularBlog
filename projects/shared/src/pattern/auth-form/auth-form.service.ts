@@ -1,14 +1,14 @@
-import { AuthTokenResponsePassword, Session } from '@supabase/supabase-js';
+import { AuthTokenResponsePassword } from '@supabase/supabase-js';
 import { Injectable, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AuthFormControls } from './auth-form.interface';
-import { Profile, SupabaseClient } from '@shared/core/supabase';
+import { AuthService } from '@shared/core/auth';
 
 @Injectable()
 export class AuthFormService {
   readonly loginForm = new FormGroup<AuthFormControls>({
-    email: new FormControl<string>('', {
+    email: new FormControl<string>('a', {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
@@ -17,10 +17,11 @@ export class AuthFormService {
       validators: [Validators.required],
     }),
   });
-  protected readonly supabaseClient = inject(SupabaseClient);
+  protected readonly authService = inject(AuthService);
 
-  signInWithPassword(): Observable<Profile | null> {
-    return this.supabaseClient.signInWithPassword(
+  signInWithPassword(): Observable<AuthTokenResponsePassword> {
+    console.log(this.loginForm);
+    return this.authService.signInWithPassword(
       this.loginForm.controls.email.value,
       this.loginForm.controls.password.value
     );
@@ -30,7 +31,7 @@ export class AuthFormService {
     return;
   }
 
-  clearError(): void {
-    return;
+  clearForm(): void {
+    this.loginForm.reset();
   }
 }
