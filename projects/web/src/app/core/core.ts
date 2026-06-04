@@ -1,15 +1,18 @@
 import { provideRouter, Routes, withComponentInputBinding } from '@angular/router';
 import {
-  inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { supabaseInitializer, SUPABASE_CONFIG, SupabaseClient } from '@shared/core/supabase';
+import {
+  authInitializer,
+  SUPABASE_CONFIG,
+  SUPABASE_CLIENT,
+  createSupabaseClient,
+} from '@shared/core/supabase';
 import { environment } from '../../../../../environments/environment';
-import { firstValueFrom, from, tap } from 'rxjs';
 
 export interface CoreOptions {
   routes: Routes;
@@ -29,8 +32,10 @@ export function provideCore({ routes }: CoreOptions) {
         supabaseKey: environment.supabaseKey,
       },
     },
-    provideAppInitializer(() => {
-      return supabaseInitializer(true)();
-    }),
+    {
+      provide: SUPABASE_CLIENT,
+      useFactory: createSupabaseClient,
+    },
+    provideAppInitializer(authInitializer),
   ];
 }

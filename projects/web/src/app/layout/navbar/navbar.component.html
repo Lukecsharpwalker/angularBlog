@@ -31,9 +31,9 @@
       </div>
     </div>
 
-    @if (userProfile()) {
+    @if (userName()) {
       <div class="flex items-center space-x-4">
-        <span class="text-xs text-gray-700">Hello, xxx</span>
+        <span class="text-xs text-gray-700">Hello, {{userName()}}</span>
         <button
           class="hidden md:inline-block btn btn-primary px-6 py-2 rounded-full
                transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md"

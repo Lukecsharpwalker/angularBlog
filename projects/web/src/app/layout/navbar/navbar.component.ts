@@ -13,7 +13,8 @@ import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { LoginComponent } from '../login/login.component';
 import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
-import { SupabaseClient } from '@shared/core/supabase';
+import { AuthService } from '@shared/core/auth';
+import { ProfileStore } from '../../core';
 
 @Component({
   selector: 'web-navbar',
@@ -31,9 +32,9 @@ export class NavbarComponent {
   protected readonly isMenuOpen = signal(false);
   protected readonly navHeight = signal(0);
   protected readonly searchQuery = signal('');
-  protected readonly userProfile = inject(SupabaseClient).userProfile
+  protected readonly userName = inject(ProfileStore).userName;
 
-  private readonly supabaseClient = inject(SupabaseClient);
+  private readonly authService = inject(AuthService);
   private dynamicDialogService = inject(DynamicDialogService);
   private viewContainerRef = inject(ViewContainerRef);
   private destroyRef = inject(DestroyRef);
@@ -54,7 +55,7 @@ export class NavbarComponent {
   }
 
   protected logout(): void {
-    this.supabaseClient.signOut().subscribe();
+    this.authService.signOut().subscribe();
   }
 
   protected toggleMenu(): void {

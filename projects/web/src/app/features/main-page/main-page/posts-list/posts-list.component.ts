@@ -19,4 +19,5 @@ export class PostsListComponent {
   tagsStore = inject(TagsStore);
   readonly posts: Signal<Post[] | null> = this.postStore.posts;
   readonly tags: Signal<Tag[] | null> = this.tagsStore.tags;
+
 }

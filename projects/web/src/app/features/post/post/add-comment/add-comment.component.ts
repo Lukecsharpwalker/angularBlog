@@ -7,10 +7,10 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { Comment, SupabaseClient } from '@shared/core/supabase';
+import { Comment } from '@shared/core/supabase';
 import { CommentForm } from './add-comment.models';
-import { ReaderApiService } from '../../../../core';
-import { CommentsStore } from '../comments.store';
+import { ProfileStore, ReaderApiService } from '../../../../core';
+import { CommentsStore } from '../comments/comments.store';
 
 @Component({
   selector: 'web-add-comment',
@@ -33,8 +33,7 @@ export class AddCommentComponent {
   protected readonly isSubmitting: WritableSignal<boolean> = signal(false);
 
   private commentsStore = inject(CommentsStore);
-  private supabaseClient = inject(SupabaseClient);
-  private userId: string = this.supabaseClient.userProfile()!.id;
+  private userId = inject(ProfileStore).userId;
 
   async onSubmit(): Promise<void> {
     if (this.commentForm.valid && !this.isSubmitting()) {
@@ -44,7 +43,7 @@ export class AddCommentComponent {
         const comment: Comment = {
           content: this.commentForm.controls.content.value,
           created_at: new Date().toISOString(),
-          user_id: this.userId ?? null,
+          user_id: this.userId() ?? null,
           author: {
             created_at: 'a',
             id: 'a',

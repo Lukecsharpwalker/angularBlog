@@ -1,15 +1,15 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, PendingTasks } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { Comment, Post, Profile, Tag, PostTag } from '@shared/core/supabase';
+import { from, map, Observable } from 'rxjs';
+import { Comment, Post, Profile, Tag, PostTag, SUPABASE_CLIENT } from '@shared/core/supabase';
 import { createApiUrl } from '../../utils/api/url-builder';
 import { environment } from '../../../../../../environments/environment';
-import { SupabaseClient } from '@shared/core/supabase';
+import { pendingUntilEvent } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
-  supabaseClient = inject(SupabaseClient);
-  http = inject(HttpClient);
+  private readonly client = inject(SUPABASE_CLIENT);
+  private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
   private readonly apiKey = environment.supabaseKey;
   private headers = new HttpHeaders({
@@ -17,6 +17,8 @@ export class ReaderApiService {
     Authorization: `Bearer ${this.apiKey}`,
     Accept: 'application/json',
   });
+
+  private pendingTasks = inject(PendingTasks);
 
   getPost(id: string): Observable<Post> {
     const selectQuery = `
@@ -42,7 +44,7 @@ export class ReaderApiService {
   }
 
   async getComments(postId: string): Promise<Comment[]> {
-    const { data: comments, error } = await this.supabaseClient.getClient
+    const { data: comments, error } = await this.client
       .from('comments')
       .select('*')
       .eq('post_id', postId)
@@ -51,38 +53,43 @@ export class ReaderApiService {
   }
 
   async addComment(postId: string, comment: Comment): Promise<void> {
-    await this.supabaseClient.getClient.from('comments').insert({ ...comment, post_id: postId });
+    await this.client.from('comments').insert({ ...comment, post_id: postId });
   }
 
   async deleteComment(commentId: string, postId: string): Promise<void> {
-    await this.supabaseClient.getClient
-      .from('comments')
-      .delete()
-      .eq('id', commentId)
-      .eq('post_id', postId);
+    await this.client.from('comments').delete().eq('id', commentId).eq('post_id', postId);
   }
 
   getPosts(): Observable<Post[]> {
-    const query = createApiUrl('posts')
-      .select('*', 'author:profiles(id,username,avatar_url)', 'post_tags(tags(id,name,color,icon))')
-      .where('is_draft', 'eq', false)
-      .orderBy('created_at', 'desc')
-      .build();
+    return from(
+      this.client
+        .from('posts')
+        .select('*, author:profiles(id,username,avatar_url), post_tags(tags(id,name,color,icon))')
+        .eq('is_draft', false)
+        .order('created_at', { ascending: false })
+    ).pipe(
+      map(x => (x.error ? [] : x.data)),
+      pendingUntilEvent()
+    );
 
-    return this.http.get<Post[]>(`${this.baseUrl}/${query}`, {
-      headers: this.headers,
-    });
+    // const query = createApiUrl('posts')
+    //   .select('*', 'author:profiles(id,username,avatar_url)', 'post_tags(tags(id,name,color,icon))')
+    //   .where('is_draft', 'eq', false)
+    //   .orderBy('created_at', 'desc')
+    //   .build();
+    //
+    // return this.http.get<Post[]>(`${this.baseUrl}/${query}`, {
+    //   headers: this.headers,
+    // });
   }
 
   async getProfiles(): Promise<Profile[] | null> {
-    const { data: profiles, error } = await this.supabaseClient.getClient
-      .from('profiles')
-      .select('*');
+    const { data: profiles, error } = await this.client.from('profiles').select('*');
     return error ? null : profiles;
   }
 
   async getProfileById(userId: string): Promise<Profile | null> {
-    const { data: profile, error } = await this.supabaseClient.getClient
+    const { data: profile, error } = await this.client
       .from('profiles')
       .select('*')
       .eq('id', userId)
@@ -100,7 +107,7 @@ export class ReaderApiService {
   }
 
   async getPostTags(postId: string): Promise<PostTag[] | null> {
-    const { data: postTags, error } = await this.supabaseClient.getClient
+    const { data: postTags, error } = await this.client
       .from('post_tags')
       .select('*, tags(*)')
       .eq('post_id', postId);

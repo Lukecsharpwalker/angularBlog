@@ -127,10 +127,11 @@
         </div>
 
         <article
+
           class="bg-white border border-tertiary rounded-xl p-8 md:p-12 shadow-lg mb-8 code-block-theme"
         >
           <div class="max-w-none">
-            <div [innerHTML]="post()?.content"></div>
+            <div webOpenCodeBlockModal [innerHTML]="safeContent()"></div>
           </div>
         </article>
 
