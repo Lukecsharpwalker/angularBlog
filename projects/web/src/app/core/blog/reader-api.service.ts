@@ -52,10 +52,7 @@ export class ReaderApiService {
         )
         .eq('id', id)
         .single()
-    ).pipe(
-      map(x => (x.error ? null : x.data)),
-      pendingUntilEvent()
-    );
+    ).pipe(map(x => (x.error ? null : x.data)));
   }
 
   getComments(postId: string): Observable<Comment[]> {
@@ -63,7 +60,11 @@ export class ReaderApiService {
 
     if (isPlatformServer(this.platformId)) {
       return from(
-        this.client.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: true })
+        this.client
+          .from('comments')
+          .select('*')
+          .eq('post_id', postId)
+          .order('created_at', { ascending: true })
       ).pipe(
         map(x => (x.error ? [] : x.data)),
         tap(comments => {
@@ -80,11 +81,12 @@ export class ReaderApiService {
     }
 
     return from(
-      this.client.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: true })
-    ).pipe(
-      map(x => (x.error ? [] : x.data)),
-      pendingUntilEvent()
-    );
+      this.client
+        .from('comments')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true })
+    ).pipe(map(x => (x.error ? [] : x.data)));
   }
 
   addComment(postId: string, comment: Comment): Observable<void> {
@@ -95,10 +97,9 @@ export class ReaderApiService {
   }
 
   deleteComment(commentId: string, postId: string): Observable<void> {
-    return from(this.client.from('comments').delete().eq('id', commentId).eq('post_id', postId)).pipe(
-      map(() => void 0),
-      pendingUntilEvent()
-    );
+    return from(
+      this.client.from('comments').delete().eq('id', commentId).eq('post_id', postId)
+    ).pipe(map(() => void 0));
   }
 
   getPosts(): Observable<Post[]> {
@@ -130,10 +131,7 @@ export class ReaderApiService {
         .select('*, author:profiles(id,username,avatar_url), post_tags(tags(id,name,color,icon))')
         .eq('is_draft', false)
         .order('created_at', { ascending: false })
-    ).pipe(
-      map(x => (x.error ? [] : x.data)),
-      pendingUntilEvent()
-    );
+    ).pipe(map(x => (x.error ? [] : x.data)));
   }
 
   getProfiles(): Observable<Profile[] | null> {
@@ -153,36 +151,9 @@ export class ReaderApiService {
       return of(profiles);
     }
 
-    return from(this.client.from('profiles').select('*')).pipe(
-      map(x => (x.error ? null : x.data)),
-      pendingUntilEvent()
-    );
+    return from(this.client.from('profiles').select('*')).pipe(map(x => (x.error ? null : x.data)));
   }
 
-  getProfileById(userId: string): Observable<Profile | null> {
-    const PROFILE_KEY = createProfileKey(userId);
-
-    if (isPlatformServer(this.platformId)) {
-      return from(this.client.from('profiles').select('*').eq('id', userId).single()).pipe(
-        map(x => (x.error ? null : x.data)),
-        tap(profile => {
-          this.transferState.set(PROFILE_KEY, profile);
-        }),
-        pendingUntilEvent()
-      );
-    }
-
-    if (this.transferState.hasKey(PROFILE_KEY)) {
-      const profile = this.transferState.get(PROFILE_KEY, null);
-      this.transferState.remove(PROFILE_KEY);
-      return of(profile);
-    }
-
-    return from(this.client.from('profiles').select('*').eq('id', userId).single()).pipe(
-      map(x => (x.error ? null : x.data)),
-      pendingUntilEvent()
-    );
-  }
 
   getTags(): Observable<Tag[] | null> {
     if (isPlatformServer(this.platformId)) {
@@ -201,10 +172,7 @@ export class ReaderApiService {
       return of(tags);
     }
 
-    return from(this.client.from('tags').select('*')).pipe(
-      map(x => (x.error ? null : x.data)),
-      pendingUntilEvent()
-    );
+    return from(this.client.from('tags').select('*')).pipe(map(x => (x.error ? null : x.data)));
   }
 
   getPostTags(postId: string): Observable<PostTag[] | null> {
@@ -227,8 +195,7 @@ export class ReaderApiService {
     }
 
     return from(this.client.from('post_tags').select('*, tags(*)').eq('post_id', postId)).pipe(
-      map(x => (x.error ? null : x.data)),
-      pendingUntilEvent()
+      map(x => (x.error ? null : x.data))
     );
   }
 }

@@ -83,6 +83,7 @@ export class PostComponent implements OnInit {
 
   loadPost(): void {
     //TODO: Create a routes params service and inject to the store, to remove injectionconext
+    // post about shared service, that info get form Michael
     runInInjectionContext(this.injector, () => {
       this.postStore.getPost(this.id());
     });
