@@ -55,6 +55,15 @@ export default defineConfig({
       },
     },
     {
+      name: 'real-supabase-setup',
+      testDir: './e2e/ssr/auth',
+      testMatch: /auth-real-supabase\.setup\.ts$/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? WEB_URL,
+      },
+    },
+    {
       name: 'local',
       testDir: './e2e/web',
       use: {
@@ -63,6 +72,24 @@ export default defineConfig({
         storageState: 'playwright/.auth/web-user.json',
       },
       dependencies: ['web-setup'],
+    },
+    {
+      name: 'ssr-anonymous',
+      testDir: './e2e/ssr/anonymous',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: WEB_URL,
+      },
+    },
+    {
+      name: 'ssr-auth',
+      testDir: './e2e/ssr/auth',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: WEB_URL,
+        storageState: 'playwright/.auth/web-user-real-supabase.json',
+      },
+      dependencies: ['real-supabase-setup'],
     },
     {
       name: 'web',

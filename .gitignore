@@ -52,6 +52,7 @@ adminSdkConf.json
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/playwright/.auth/web-user-real-supabase.json
 
 #llms
 /llms

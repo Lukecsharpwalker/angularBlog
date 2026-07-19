@@ -1,7 +1,4 @@
-import { Injectable, ViewContainerRef, DestroyRef, afterNextRender } from '@angular/core';
-import hljs from 'highlight.js';
-import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
-import { CodeBlockModalComponent } from './post/code-block-modal/code-block-modal.component';
+import { Injectable, afterNextRender } from '@angular/core';
 
 @Injectable()
 export class PostService {

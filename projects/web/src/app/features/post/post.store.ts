@@ -36,7 +36,7 @@ export const PostStore = signalStore(
         switchMap(id =>
           postService.getPost(id).pipe(
             tapResponse({
-              next: (post: Post) => patchState(store, { post, loading: false }),
+              next: (post: Post | null) => patchState(store, { post, loading: false }),
               error: (err: unknown) =>
                 patchState(store, {
                   error: `Failed to fetch post: ${typeof err === 'string' ? err : 'Unknown error'}`,

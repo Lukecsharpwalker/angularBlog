@@ -6,6 +6,8 @@ import {
   input,
   Signal,
   computed,
+  runInInjectionContext,
+  Injector,
 } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -57,6 +59,7 @@ export class PostComponent implements OnInit {
   private postService = inject(PostService);
   private socialShareService = inject(SocialShareService);
   private sanitizer = inject(DomSanitizer);
+  private injector = inject(Injector);
 
   constructor() {
     this.postService.initializeCodeBlockHandling();
@@ -79,6 +82,9 @@ export class PostComponent implements OnInit {
   }
 
   loadPost(): void {
-    this.postStore.getPost(this.id());
+    //TODO: Create a routes params service and inject to the store, to remove injectionconext
+    runInInjectionContext(this.injector, () => {
+      this.postStore.getPost(this.id());
+    });
   }
 }

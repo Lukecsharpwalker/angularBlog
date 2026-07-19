@@ -1,66 +1,129 @@
-import { inject, Injectable, PendingTasks } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { from, map, Observable } from 'rxjs';
-import { Comment, Post, Profile, Tag, PostTag, SUPABASE_CLIENT } from '@shared/core/supabase';
-import { createApiUrl } from '../../utils/api/url-builder';
-import { environment } from '../../../../../../environments/environment';
+import { inject, Injectable, PLATFORM_ID, TransferState } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
 import { pendingUntilEvent } from '@angular/core/rxjs-interop';
+import { from, map, Observable, of, tap } from 'rxjs';
+import { Comment, Post, PostTag, Profile, SUPABASE_CLIENT, Tag } from '@shared/core/supabase';
+import {
+  createCommentsKey,
+  createPostKey,
+  createPostTagsKey,
+  createProfileKey,
+  TRANSFER_STATE_KEYS,
+} from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
   private readonly client = inject(SUPABASE_CLIENT);
-  private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.supabaseUrl}/rest/v1/`;
-  private readonly apiKey = environment.supabaseKey;
-  private headers = new HttpHeaders({
-    apikey: this.apiKey,
-    Authorization: `Bearer ${this.apiKey}`,
-    Accept: 'application/json',
-  });
+  private readonly transferState = inject(TransferState);
+  private readonly platformId = inject(PLATFORM_ID);
 
-  private pendingTasks = inject(PendingTasks);
+  getPost(id: string): Observable<Post | null> {
+    const POST_KEY = createPostKey(id);
 
-  getPost(id: string): Observable<Post> {
-    const selectQuery = `
-      *,
-      author:profiles(id,username,avatar_url),
-      post_tags!inner(tags(id,name,color,icon)),
-      comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))
-    `
-      .replace(/\s+/g, ' ')
-      .trim();
+    if (isPlatformServer(this.platformId)) {
+      return from(
+        this.client
+          .from('posts')
+          .select(
+            '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon)), comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))'
+          )
+          .eq('id', id)
+          .single()
+      ).pipe(
+        map(x => (x.error ? null : x.data)),
+        tap(post => {
+          this.transferState.set(POST_KEY, post);
+        }),
+        pendingUntilEvent()
+      );
+    }
 
-    const params = new HttpParams().set('select', selectQuery).set('id', `eq.${id}`);
+    if (this.transferState.hasKey(POST_KEY)) {
+      const post = this.transferState.get(POST_KEY, null);
+      this.transferState.remove(POST_KEY);
+      return of(post);
+    }
 
-    const headers = new HttpHeaders({
-      apikey: this.apiKey,
-      Authorization: `Bearer ${this.apiKey}`,
-      Accept: 'application/json',
-    });
-
-    return this.http
-      .get<Post[]>(`${this.baseUrl}posts`, { headers, params })
-      .pipe(map(results => results[0] ?? null));
+    return from(
+      this.client
+        .from('posts')
+        .select(
+          '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon)), comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))'
+        )
+        .eq('id', id)
+        .single()
+    ).pipe(
+      map(x => (x.error ? null : x.data)),
+      pendingUntilEvent()
+    );
   }
 
-  async getComments(postId: string): Promise<Comment[]> {
-    const { data: comments, error } = await this.client
-      .from('comments')
-      .select('*')
-      .eq('post_id', postId)
-      .order('created_at', { ascending: true });
-    return error ? [] : comments;
+  getComments(postId: string): Observable<Comment[]> {
+    const COMMENTS_KEY = createCommentsKey(postId);
+
+    if (isPlatformServer(this.platformId)) {
+      return from(
+        this.client.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: true })
+      ).pipe(
+        map(x => (x.error ? [] : x.data)),
+        tap(comments => {
+          this.transferState.set(COMMENTS_KEY, comments);
+        }),
+        pendingUntilEvent()
+      );
+    }
+
+    if (this.transferState.hasKey(COMMENTS_KEY)) {
+      const comments = this.transferState.get(COMMENTS_KEY, []);
+      this.transferState.remove(COMMENTS_KEY);
+      return of(comments);
+    }
+
+    return from(
+      this.client.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: true })
+    ).pipe(
+      map(x => (x.error ? [] : x.data)),
+      pendingUntilEvent()
+    );
   }
 
-  async addComment(postId: string, comment: Comment): Promise<void> {
-    await this.client.from('comments').insert({ ...comment, post_id: postId });
+  addComment(postId: string, comment: Comment): Observable<void> {
+    return from(this.client.from('comments').insert({ ...comment, post_id: postId })).pipe(
+      map(() => void 0),
+      pendingUntilEvent()
+    );
   }
 
-  async deleteComment(commentId: string, postId: string): Promise<void> {
-    await this.client.from('comments').delete().eq('id', commentId).eq('post_id', postId);
+  deleteComment(commentId: string, postId: string): Observable<void> {
+    return from(this.client.from('comments').delete().eq('id', commentId).eq('post_id', postId)).pipe(
+      map(() => void 0),
+      pendingUntilEvent()
+    );
   }
 
   getPosts(): Observable<Post[]> {
+    if (isPlatformServer(this.platformId)) {
+      return from(
+        this.client
+          .from('posts')
+          .select('*, author:profiles(id,username,avatar_url), post_tags(tags(id,name,color,icon))')
+          .eq('is_draft', false)
+          .order('created_at', { ascending: false })
+      ).pipe(
+        map(x => (x.error ? [] : x.data)),
+        tap(posts => {
+          this.transferState.set(TRANSFER_STATE_KEYS.POSTS, posts);
+        }),
+        pendingUntilEvent()
+      );
+    }
+
+    if (this.transferState.hasKey(TRANSFER_STATE_KEYS.POSTS)) {
+      const posts = this.transferState.get(TRANSFER_STATE_KEYS.POSTS, []);
+      this.transferState.remove(TRANSFER_STATE_KEYS.POSTS);
+      return of(posts);
+    }
+
     return from(
       this.client
         .from('posts')
@@ -71,46 +134,101 @@ export class ReaderApiService {
       map(x => (x.error ? [] : x.data)),
       pendingUntilEvent()
     );
-
-    // const query = createApiUrl('posts')
-    //   .select('*', 'author:profiles(id,username,avatar_url)', 'post_tags(tags(id,name,color,icon))')
-    //   .where('is_draft', 'eq', false)
-    //   .orderBy('created_at', 'desc')
-    //   .build();
-    //
-    // return this.http.get<Post[]>(`${this.baseUrl}/${query}`, {
-    //   headers: this.headers,
-    // });
   }
 
-  async getProfiles(): Promise<Profile[] | null> {
-    const { data: profiles, error } = await this.client.from('profiles').select('*');
-    return error ? null : profiles;
+  getProfiles(): Observable<Profile[] | null> {
+    if (isPlatformServer(this.platformId)) {
+      return from(this.client.from('profiles').select('*')).pipe(
+        map(x => (x.error ? null : x.data)),
+        tap(profiles => {
+          this.transferState.set(TRANSFER_STATE_KEYS.PROFILES, profiles);
+        }),
+        pendingUntilEvent()
+      );
+    }
+
+    if (this.transferState.hasKey(TRANSFER_STATE_KEYS.PROFILES)) {
+      const profiles = this.transferState.get(TRANSFER_STATE_KEYS.PROFILES, null);
+      this.transferState.remove(TRANSFER_STATE_KEYS.PROFILES);
+      return of(profiles);
+    }
+
+    return from(this.client.from('profiles').select('*')).pipe(
+      map(x => (x.error ? null : x.data)),
+      pendingUntilEvent()
+    );
   }
 
-  async getProfileById(userId: string): Promise<Profile | null> {
-    const { data: profile, error } = await this.client
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    return error ? null : profile;
+  getProfileById(userId: string): Observable<Profile | null> {
+    const PROFILE_KEY = createProfileKey(userId);
+
+    if (isPlatformServer(this.platformId)) {
+      return from(this.client.from('profiles').select('*').eq('id', userId).single()).pipe(
+        map(x => (x.error ? null : x.data)),
+        tap(profile => {
+          this.transferState.set(PROFILE_KEY, profile);
+        }),
+        pendingUntilEvent()
+      );
+    }
+
+    if (this.transferState.hasKey(PROFILE_KEY)) {
+      const profile = this.transferState.get(PROFILE_KEY, null);
+      this.transferState.remove(PROFILE_KEY);
+      return of(profile);
+    }
+
+    return from(this.client.from('profiles').select('*').eq('id', userId).single()).pipe(
+      map(x => (x.error ? null : x.data)),
+      pendingUntilEvent()
+    );
   }
 
   getTags(): Observable<Tag[] | null> {
-    const headers = new HttpHeaders({
-      apikey: this.apiKey,
-      Authorization: `Bearer ${this.apiKey}`,
-      Accept: 'application/json',
-    });
-    return this.http.get<Tag[]>(`${this.baseUrl}tags`, { headers });
+    if (isPlatformServer(this.platformId)) {
+      return from(this.client.from('tags').select('*')).pipe(
+        map(x => (x.error ? null : x.data)),
+        tap(tags => {
+          this.transferState.set(TRANSFER_STATE_KEYS.TAGS, tags);
+        }),
+        pendingUntilEvent()
+      );
+    }
+
+    if (this.transferState.hasKey(TRANSFER_STATE_KEYS.TAGS)) {
+      const tags = this.transferState.get(TRANSFER_STATE_KEYS.TAGS, null);
+      this.transferState.remove(TRANSFER_STATE_KEYS.TAGS);
+      return of(tags);
+    }
+
+    return from(this.client.from('tags').select('*')).pipe(
+      map(x => (x.error ? null : x.data)),
+      pendingUntilEvent()
+    );
   }
 
-  async getPostTags(postId: string): Promise<PostTag[] | null> {
-    const { data: postTags, error } = await this.client
-      .from('post_tags')
-      .select('*, tags(*)')
-      .eq('post_id', postId);
-    return error ? null : postTags;
+  getPostTags(postId: string): Observable<PostTag[] | null> {
+    const POST_TAGS_KEY = createPostTagsKey(postId);
+
+    if (isPlatformServer(this.platformId)) {
+      return from(this.client.from('post_tags').select('*, tags(*)').eq('post_id', postId)).pipe(
+        map(x => (x.error ? null : x.data)),
+        tap(postTags => {
+          this.transferState.set(POST_TAGS_KEY, postTags);
+        }),
+        pendingUntilEvent()
+      );
+    }
+
+    if (this.transferState.hasKey(POST_TAGS_KEY)) {
+      const postTags = this.transferState.get(POST_TAGS_KEY, null);
+      this.transferState.remove(POST_TAGS_KEY);
+      return of(postTags);
+    }
+
+    return from(this.client.from('post_tags').select('*, tags(*)').eq('post_id', postId)).pipe(
+      map(x => (x.error ? null : x.data)),
+      pendingUntilEvent()
+    );
   }
 }

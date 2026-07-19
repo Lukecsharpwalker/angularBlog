@@ -42,33 +42,31 @@ export const ProfileStore = signalStore(
       return 'idle' as const;
     }),
   })),
-  withMethods(
-    (store, profileService = inject(ProfileService)) => ({
-      loadProfile: rxMethod<string | null>(
-        pipe(
-          distinctUntilChanged(),
-          tap(() => patchState(store, { loading: true, error: null })),
-          switchMap(id => {
-            if (!id) {
-              patchState(store, { userProfile: null, loading: false });
-              return of(null);
-            }
-            return profileService.getProfile(id).pipe(
-              tapResponse({
-                next: profile => patchState(store, { userProfile: profile, loading: false }),
-                error: (err: unknown) =>
-                  patchState(store, {
-                    userProfile: null,
-                    loading: false,
-                    error: `Failed to fetch profile: ${err instanceof Error ? err.message : String(err)}`,
-                  }),
-              })
-            );
-          })
-        )
-      ),
-    })
-  ),
+  withMethods((store, profileService = inject(ProfileService)) => ({
+    loadProfile: rxMethod<string | null>(
+      pipe(
+        distinctUntilChanged(),
+        tap(() => patchState(store, { loading: true, error: null })),
+        switchMap(id => {
+          if (!id) {
+            patchState(store, { userProfile: null, loading: false });
+            return of(null);
+          }
+          return profileService.getProfile(id).pipe(
+            tapResponse({
+              next: profile => patchState(store, { userProfile: profile, loading: false }),
+              error: (err: unknown) =>
+                patchState(store, {
+                  userProfile: null,
+                  loading: false,
+                  error: `Failed to fetch profile: ${err instanceof Error ? err.message : String(err)}`,
+                }),
+            })
+          );
+        })
+      )
+    ),
+  })),
   withHooks({
     onInit(store, userService = inject(UserService)) {
       store.loadProfile(userService.appUser$.pipe(map(u => u?.id ?? null)));

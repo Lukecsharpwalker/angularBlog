@@ -73,6 +73,7 @@
     "@ng-icons/lucide": "^32.1.0",
     "@ngrx/operators": "^20.0.0",
     "@ngrx/signals": "^20.0.0",
+    "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.105.3",
     "@tailwindcss/line-clamp": "^0.4.4",
     "express": "^5.1.0",

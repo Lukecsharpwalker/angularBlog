@@ -8,7 +8,7 @@ import { CommentsStore } from './comments.store';
 @Component({
   selector: 'web-comments',
   standalone: true,
-  providers: [ReaderApiService, CommentsStore],
+  providers: [ReaderApiService],
   templateUrl: './comments.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HasRoleDirective],
@@ -22,7 +22,7 @@ export class CommentsComponent {
   private commentsStore = inject(CommentsStore);
 
   protected deleteComment(commentId: string): void {
-    this.commentsStore.deleteComment(commentId, this.postId());
+    this.commentsStore.deleteComment({ commentId, postId: this.postId() });
   }
 
   protected getRelativeTime(dateString: string): string {

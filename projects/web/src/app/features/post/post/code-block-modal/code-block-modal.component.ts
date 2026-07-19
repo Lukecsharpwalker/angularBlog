@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { DYNAMIC_DIALOG_DATA } from '@shared/pattern/dynamic-dialog';
 import { CodeBlockModalData } from './code-block-modal.interface';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'web-code-block-modal',
