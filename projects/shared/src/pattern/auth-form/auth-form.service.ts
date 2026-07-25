@@ -27,7 +27,7 @@ export class AuthFormService {
     );
   }
 
-  async loginWithProvider(provider: 'google'): Promise<void> {
+  async loginWithProvider(): Promise<void> {
     return;
   }
 

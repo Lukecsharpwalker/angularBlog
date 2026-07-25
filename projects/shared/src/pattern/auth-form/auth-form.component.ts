@@ -38,7 +38,7 @@ export class AuthFormComponent {
   }
 
   async onGoogleLogin(): Promise<void> {
-    await this.authFormService.loginWithProvider('google');
+    await this.authFormService.loginWithProvider();
     this.loginSuccess.emit();
   }
 }

@@ -1,4 +1,4 @@
-import { Profile, ProfileInsert } from './profiles';
+import { ProfileInsert } from './profiles';
 
 export interface Comment {
   content: string;
