@@ -7,6 +7,7 @@ import { PostForm } from './post-form.interface';
 import { ProcessedPostData } from './processed-post-data.interface';
 import { ADD_POST_CONSTANTS } from './add-post.constants';
 
+//TODO: COMPLETLY REFACTOR THIS CRAP
 @Injectable()
 export class PostFormService {
   processFormForSubmission(

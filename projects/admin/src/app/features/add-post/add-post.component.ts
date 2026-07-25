@@ -52,6 +52,8 @@ import { ProcessedPostData } from './processed-post-data.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
+
+//TODO: COMPLETLY REFACTOR THIS CRAP
 export class AddPostComponent implements OnInit {
   protected blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl('', {
@@ -90,7 +92,7 @@ export class AddPostComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.initPostFormIfPostExists();
     await this.initializeQuill();
-    console.log(this.quill())
+    console.log(this.quill());
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -98,6 +100,7 @@ export class AddPostComponent implements OnInit {
     event.preventDefault();
   }
 
+  //TODO split to two functions. But publish, should navigate to main page, draft should update store and navihate to edit
   protected async onSubmit(isDraft = false): Promise<void> {
     const processedData: ProcessedPostData | null = this.postFormService.processFormForSubmission(
       this.blogForm,

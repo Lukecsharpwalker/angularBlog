@@ -6,27 +6,52 @@ import { PostInsert, PostUpdate } from './post-operations';
 export class AddPostService {
   private readonly client = inject(SUPABASE_CLIENT);
 
-  async addPost(post: PostInsert & { tags?: Tag[] }): Promise<string> {
+  // BUT - we could use a Postgres function (RPC) to handle it in one call:
+  //
+  //   CREATE FUNCTION create_post_with_tags(
+  //     post_data json,
+  //     tag_ids int[]
+  //   ) RETURNS posts AS $$
+  //     -- Insert post
+  //     -- Insert post_tags
+  //     -- Return post with tags
+  //   $$ LANGUAGE plpgsql;
+  //
+  //   Then call it:
+  //   const { data } = await this.client.rpc('create_post_with_tags', {
+  //     post_data: { title, content, ... },
+  //     tag_ids: [1, 2, 3]
+  //   });
+  async addPost(post: PostInsert & { tags?: Tag[] }): Promise<Post> {
     const { tags = [], ...postData } = post;
 
-    const { data: inserted, error } = await this.client
+    const { data: insertedPost, error } = await this.client
       .from('posts')
       .insert(postData)
-      .select('id')
+      .select('*')
       .single();
 
     if (error) throw error;
-    const postId = inserted.id;
 
-    if (tags.length) {
-      const rows = tags.map(t => ({ post_id: postId, tag_id: t.id as number }));
-      const { error: relErr } = await this.client
+    if (tags.length > 0) {
+      const postTagRows = tags.map(tag => ({
+        post_id: insertedPost.id,
+        tag_id: tag.id,
+      }));
+
+      const { data: insertedPostTags, error: tagError } = await this.client
         .from('post_tags')
-        .upsert(rows, { onConflict: 'post_id,tag_id', ignoreDuplicates: true });
-      if (relErr) throw relErr;
+        .insert(postTagRows)
+        .select('tags(*)');
+
+      if (tagError) throw tagError;
+
+      insertedPost.tags = (insertedPostTags ?? []).map(pt => pt.tags);
+    } else {
+      insertedPost.tags = [];
     }
 
-    return postId;
+    return insertedPost satisfies Post;
   }
 
   async getPostById(id: string): Promise<Post | null> {
@@ -52,10 +77,7 @@ export class AddPostService {
     const { tags, ...postData } = post;
 
     if (Object.keys(postData).length) {
-      const { error: postErr } = await this.client
-        .from('posts')
-        .update(postData)
-        .eq('id', id);
+      const { error: postErr } = await this.client.from('posts').update(postData).eq('id', id);
       if (postErr) throw postErr;
     }
 

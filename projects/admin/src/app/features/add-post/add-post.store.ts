@@ -49,8 +49,11 @@ export const AddPostStore = signalStore(
     async addPost(post: PostInsert & { tags?: Tag[] }) {
       patchState(store, { submitting: true, error: null });
       try {
-        await addPostService.addPost(post);
-        patchState(store, { submitting: false });
+        const createdPost = await addPostService.addPost(post);
+        patchState(store, {
+          currentPost: createdPost,
+          submitting: false,
+        });
       } catch (error) {
         patchState(store, {
           error: typeof error === 'string' ? error : 'Failed to create post',
