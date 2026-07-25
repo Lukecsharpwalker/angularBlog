@@ -1,9 +1,9 @@
 <div class="relative mt-8 pb-4" data-testid="tags-container">
-  <div class="glass-effect-light p-4 sm:p-5 rounded-2xl relative overflow-hidden shadow-sm">
+  <div class="glass-effect-light p-4 sm:p-5 rounded-2xl relative shadow-sm">
     <div
       #scrollContainer
       data-testid="tags-scroll-container"
-      class="overflow-x-auto overflow-y-hidden hide-scrollbar whitespace-nowrap scroll-smooth"
+      class="overflow-x-auto overflow-y-hidden py-3 hide-scrollbar whitespace-nowrap scroll-smooth"
     >
       <div class="inline-flex space-x-2 md:space-x-6" data-testid="tags-list">
         @for (tag of tags() || []; track tag.id) {

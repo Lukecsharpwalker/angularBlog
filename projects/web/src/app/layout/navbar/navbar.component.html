@@ -4,8 +4,8 @@
   class="navbar-neon-hover fixed top-0 left-0 right-0 z-10 flex items-center justify-center px-4 py-2 bg-white/70 backdrop-blur-md shadow-lg transition-all duration-500 ease-in-out <!-- Mobile styles (default) --> w-full rounded-none <!-- Medium+ styles --> md:top-5 md:w-[90%] md:mx-auto md:rounded-[2rem] lg:w-[80%] xl:w-[68%]"
   [class.scrolled]="isScrolled()"
 >
-  <div class="flex-1 flex items-center justify-between">
-    <div class="flex items-center">
+  <div class="grid w-full grid-cols-[1fr_auto_1fr] items-center">
+    <div class="flex items-center justify-self-start">
       <button class="btn-tertiary btn-tertiary-sm md:hidden mr-2" (click)="toggleMenu()">
         Menu
       </button>
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="flex-1 flex justify-center">
+    <div class="justify-self-center">
       <div class="flex items-center cursor-pointer text-center" [routerLink]="['/']">
         <div>
           <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
@@ -32,7 +32,7 @@
     </div>
 
     @if (userName()) {
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center justify-self-end space-x-4">
         <span class="text-xs text-gray-700">Hello, {{userName()}}</span>
         <button
           class="hidden md:inline-block btn btn-primary px-6 py-2 rounded-full
@@ -43,7 +43,7 @@
         </button>
       </div>
     } @else {
-      <div class="flex items-center">
+      <div class="flex items-center justify-self-end">
         <button
           class="hidden md:inline-block btn btn-primary px-6 py-2 rounded-full
                transform hover:scale-[1.02] active:scale-[0.98] shadow-sm hover:shadow-md"

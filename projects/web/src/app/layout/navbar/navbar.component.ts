@@ -49,7 +49,7 @@ export class NavbarComponent {
   protected signIn(): void {
     this.dynamicDialogService.openDialog<LoginComponent>(
       this.viewContainerRef,
-      { title: 'Sign In' },
+      undefined,
       LoginComponent
     );
   }

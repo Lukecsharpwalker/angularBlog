@@ -7,7 +7,6 @@ import {
   createCommentsKey,
   createPostKey,
   createPostTagsKey,
-  createProfileKey,
   TRANSFER_STATE_KEYS,
 } from '../utils';
 
