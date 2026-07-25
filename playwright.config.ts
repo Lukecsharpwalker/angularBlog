@@ -1,15 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
-
 const WEB_URL = process.env['PLAYWRIGHT_WEB_URL'] ?? 'http://localhost:4200';
 const ADMIN_URL = process.env['PLAYWRIGHT_ADMIN_URL'] ?? 'http://localhost:4201';
 
@@ -75,7 +65,7 @@ export default defineConfig({
     },
     {
       name: 'ssr-anonymous',
-      testDir: './e2e/ssr/anonymous',
+      testDir: './e2e/web/ssr/anonymous',
       use: {
         ...devices['Desktop Chrome'],
         baseURL: WEB_URL,
@@ -83,7 +73,7 @@ export default defineConfig({
     },
     {
       name: 'ssr-auth',
-      testDir: './e2e/ssr/auth',
+      testDir: './e2e/web/ssr/auth',
       use: {
         ...devices['Desktop Chrome'],
         baseURL: WEB_URL,
