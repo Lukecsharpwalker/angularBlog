@@ -103,7 +103,6 @@
     "@types/pg": "^8.15.2",
     "angular-eslint": "20.1.1",
     "autoprefixer": "^10.4.19",
-    "daisyui": "^4.12.10",
     "esbuild-visualizer": "^0.7.0",
     "eslint": "^9.29.0",
     "eslint-import-resolver-typescript": "^4.4.4",

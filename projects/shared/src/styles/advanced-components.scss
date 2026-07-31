@@ -24,37 +24,6 @@
     @apply text-2xl font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
   }
 
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
-  }
-
-  .hover-glow {
-    @apply transition-all duration-300;
-    &:hover {
-      box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
-    }
-  }
-
-  .btn-primary-modern {
-    @apply relative overflow-hidden transition-all duration-300 transform
-    bg-gradient-to-r from-primary to-secondary text-white font-semibold
-    rounded-xl px-6 py-3 hover:scale-105 hover:shadow-lg;
-
-    &:hover::before {
-      content: '';
-      @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent;
-      animation: shine 0.6s ease-out;
-    }
-
-    &:active {
-      @apply scale-95;
-      animation: ripple 0.3s ease-out;
-    }
-
-    &:disabled {
-      @apply opacity-50 cursor-not-allowed transform-none hover:scale-100;
-    }
-  }
 
   .perspective-1000 {
     perspective: 1000px;
@@ -118,26 +87,6 @@
     }
   }
 
-  @keyframes shine {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  @keyframes ripple {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(0.95);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
