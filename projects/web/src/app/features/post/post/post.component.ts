@@ -56,6 +56,12 @@ export class PostComponent implements OnInit {
     return content ? this.sanitizer.bypassSecurityTrustHtml(content) : '';
   });
 
+  protected readonly tocItems = computed(() => [
+    'Introduction',
+    'Key Features',
+    'Conclusion'
+  ]);
+
   private postService = inject(PostService);
   private socialShareService = inject(SocialShareService);
   private sanitizer = inject(DomSanitizer);
