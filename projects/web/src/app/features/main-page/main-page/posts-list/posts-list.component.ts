@@ -6,11 +6,18 @@ import { TagsStore } from '../../tags.store';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { TagsScrollComponent } from './tags-scroll/tags-scroll.component';
 import { Post, Tag } from '@shared/core/supabase';
+import { FirstPostCardComponent } from './post-card/first-post-card/first-post-card.component';
 
 @Component({
   selector: 'web-posts-list',
   standalone: true,
-  imports: [RouterModule, AboutMeComponent, PostCardComponent, TagsScrollComponent],
+  imports: [
+    RouterModule,
+    AboutMeComponent,
+    PostCardComponent,
+    TagsScrollComponent,
+    FirstPostCardComponent,
+  ],
   templateUrl: './posts-list.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
@@ -19,5 +26,4 @@ export class PostsListComponent {
   tagsStore = inject(TagsStore);
   readonly posts: Signal<Post[] | null> = this.postStore.posts;
   readonly tags: Signal<Tag[] | null> = this.tagsStore.tags;
-
 }

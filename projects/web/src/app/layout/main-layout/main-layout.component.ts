@@ -8,9 +8,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
   imports: [RouterOutlet, NavbarComponent],
   template: `
     <div
-      class="min-h-screen bg-gradient-to-br from-quaternary via-tertiary/20 to-secondary/10 relative"
+      class="min-h-screen relative"
     >
-      <div class="bg-stars fixed inset-0 pointer-events-none"></div>
+      <div class="fixed inset-0 pointer-events-none"></div>
 
       <web-navbar class="relative z-50" />
       <main class="container mx-auto w-11/12 lg:w-10/12 xl:w-8/12 py-8 relative z-10">

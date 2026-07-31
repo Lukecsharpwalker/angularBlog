@@ -1,23 +1,9 @@
 @use "tailwindcss/utilities";
-
-@import "../../shared/src/styles.scss";
-@import "highlight.js/styles/github-dark.css";
+@use "../../shared/src/styles.scss";
+@use "highlight.js/styles/github-dark.css";
 
 body {
   position: relative;
-  background: linear-gradient(135deg, #fbfada66 0%, #7a9e7e80 50%, #12372a 100%);
+  background: #f6f1e7;
   min-height: 100vh;
-}
-
-.bg-stars {
-  z-index: 1;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 1) 0.7px,
-    rgba(255, 255, 255, 0.6) 0.1px,
-    rgba(255, 255, 255, 0.2) 0.2px,
-    transparent 0.3px
-  );
-  background-size: 25px 25px;
-  filter: blur(0.1px) drop-shadow(0 0 0.5px rgba(255, 255, 255, 0.8));
 }
