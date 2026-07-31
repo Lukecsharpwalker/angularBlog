@@ -47,7 +47,7 @@ import { ProcessedPostData } from './processed-post-data.interface';
     TagMultiSelectComponent,
   ],
   templateUrl: './add-post.component.html',
-  styleUrls: ['./add-post.component.scss'],
+  styleUrls: ['./add-post.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

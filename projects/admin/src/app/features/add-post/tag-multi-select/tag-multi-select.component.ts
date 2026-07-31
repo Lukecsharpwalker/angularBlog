@@ -24,7 +24,7 @@ import { Tag } from '@shared/core/supabase';
     },
   ],
   templateUrl: './tag-multi-select.component.html',
-  styleUrl: './tag-multi-select.component.scss',
+  styleUrl: './tag-multi-select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 //TODO: Refactor component (CDK overlay?)

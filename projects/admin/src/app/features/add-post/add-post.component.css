@@ -1,13 +1,13 @@
 .quill-editor-theme {
   .ql-toolbar {
     border: none;
-    border-bottom: 1px solid rgba(173, 188, 159, 0.2);
-    background: white;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-tertiary) 20%, transparent);
+    background: var(--color-surface-1);
     padding: 1rem 1.5rem;
     position: sticky;
     top: 0;
     z-index: 150;
-    box-shadow: 0 2px 8px rgba(18, 55, 42, 0.08);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 8%, transparent);
     backdrop-filter: blur(8px);
 
     .ql-formats {
@@ -36,12 +36,12 @@
       }
 
       &:hover {
-        background: rgba(18, 55, 42, 0.1);
+        background: color-mix(in srgb, var(--color-primary) 10%, transparent);
       }
 
       &.ql-active {
-        background: #12372A;
-        color: white;
+        background: var(--color-primary);
+        color: var(--color-ink-inverse);
       }
     }
 
@@ -51,15 +51,15 @@
     }
 
     .ql-picker.ql-expanded .ql-picker-label {
-      background: #12372A;
-      color: white;
+      background: var(--color-primary);
+      color: var(--color-ink-inverse);
     }
 
     .ql-picker-options {
-      background: white;
-      border: 1px solid rgba(173, 188, 159, 0.3);
+      background: var(--color-surface-1);
+      border: 1px solid color-mix(in srgb, var(--color-tertiary) 30%, transparent);
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(18, 55, 42, 0.1);
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 10%, transparent);
       padding: 0.5rem;
 
       .ql-picker-item {
@@ -67,7 +67,7 @@
         border-radius: 4px;
 
         &:hover {
-          background: rgba(18, 55, 42, 0.1);
+          background: color-mix(in srgb, var(--color-primary) 10%, transparent);
         }
       }
     }
@@ -83,18 +83,18 @@
       padding: 2rem;
       font-size: 1rem;
       line-height: 1.6;
-      color: #436850;
+      color: var(--color-secondary);
       min-height: 400px;
 
       &.ql-blank::before {
-        color: rgba(67, 104, 80, 0.5);
+        color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
         font-style: italic;
         left: 2rem;
         right: 2rem;
       }
 
       h1, h2, h3, h4, h5, h6 {
-        color: #12372A;
+        color: var(--color-primary);
         font-weight: 600;
         margin: 1.5em 0 0.75em;
 
@@ -108,24 +108,24 @@
       }
 
       blockquote {
-        border-left: 4px solid #ADBC9F;
+        border-left: 4px solid var(--color-tertiary);
         padding-left: 1rem;
         margin: 1rem 0;
         font-style: italic;
-        color: rgba(67, 104, 80, 0.8);
+        color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
       }
 
       pre {
-        background: rgba(18, 55, 42, 0.05);
+        background: color-mix(in srgb, var(--color-primary) 5%, transparent);
         padding: 1rem;
         border-radius: 6px;
-        border-left: 4px solid #ADBC9F;
+        border-left: 4px solid var(--color-tertiary);
         overflow-x: auto;
       }
 
       code {
-        background: rgba(173, 188, 159, 0.2);
-        color: #12372A;
+        background: color-mix(in srgb, var(--color-tertiary) 20%, transparent);
+        color: var(--color-primary);
         padding: 0.125rem 0.375rem;
         border-radius: 3px;
         font-size: 0.9em;
@@ -147,9 +147,4 @@
       min-height: 300px;
     }
   }
-}
-
-.post-editor {
-  border: none;
-  border-radius: 0 0 12px 12px;
 }

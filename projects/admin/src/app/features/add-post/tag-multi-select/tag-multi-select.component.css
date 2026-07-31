@@ -1,0 +1,21 @@
+.tag-select-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-tertiary) 30%, transparent) color-mix(in srgb, var(--color-tertiary) 10%, transparent);
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--color-tertiary) 10%, transparent);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-tertiary) 30%, transparent);
+    border-radius: 9999px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-tertiary) 50%, transparent);
+  }
+}

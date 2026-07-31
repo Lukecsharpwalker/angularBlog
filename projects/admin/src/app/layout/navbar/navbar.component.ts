@@ -5,6 +5,7 @@ import { AuthService } from '@shared/core/auth';
 @Component({
   selector: 'admin-navbar',
   standalone: true,
+  imports: [],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {

@@ -3,7 +3,7 @@
     <div class="flex flex-wrap gap-2 mb-3 min-h-8">
       @for (tag of selectedTags(); track tag.id) {
         <div
-          class="inline-flex items-center gap-2 px-3 py-1.5 text-white rounded-full text-sm font-medium cursor-pointer transition-all duration-150 border-none outline-none relative hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(18,55,42,0.2)] focus-visible:shadow-[0_0_0_2px_white,0_0_0_4px_#12372A]"
+          class="inline-flex items-center gap-2 px-3 py-1.5 text-ink-inverse rounded-full text-sm font-medium cursor-pointer transition-all duration-150 border-none outline-hidden relative hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20 focus-visible:shadow-[0_0_0_2px_white,0_0_0_4px_var(--color-primary)]"
           [style.background-color]="tag.color || '#12372A'"
           [style.background]="tag.color && tag.color !== '#12372A' ? tag.color : 'rgba(18, 55, 42, 0.9)'"
           (click)="removeTag(tag)"
@@ -15,7 +15,7 @@
         >
           <span class="leading-none">{{ tag.name }}</span>
           <button
-            class="w-4 h-4 bg-white/20 backdrop-blur-sm border-none text-current cursor-pointer rounded-full flex items-center justify-center text-xs opacity-70 transition-all duration-150 hover:opacity-100 hover:bg-white/30 hover:scale-110"
+            class="w-4 h-4 bg-white/20 backdrop-blur-xs border-none text-current cursor-pointer icon-badge text-xs opacity-70 transition-all duration-150 hover:opacity-100 hover:bg-white/30 hover:scale-110"
             type="button" [attr.aria-label]="'Remove ' + tag.name">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -30,7 +30,7 @@
     <input
       #searchInput
       type="text"
-      class="w-full px-4 py-3 border-2 border-[#adbc9f]/30 rounded-lg text-sm bg-white text-[#12372a] transition-all duration-200 focus:outline-none focus:border-[#12372a] focus:shadow-[0_0_0_3px_rgba(18,55,42,0.1)] placeholder:text-[#436850]/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#adbc9f]/10"
+      class="w-full px-4 py-3 border-2 border-tertiary/30 rounded-lg text-sm bg-surface-1 text-primary transition-all duration-200 focus:outline-hidden focus:border-primary focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_10%,transparent)] placeholder:text-secondary/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-tertiary/10"
       placeholder="Search and add tags..."
       [value]="searchTerm()"
       (input)="onSearchChange($event)"
@@ -46,12 +46,12 @@
 
     @if (isOpen() && !disabled()) {
       <div
-        class="absolute top-full left-0 right-0 z-[1000] mt-1 bg-white border border-[#adbc9f]/30 rounded-lg shadow-[0_4px_12px_rgba(18,55,42,0.15)] max-h-60 overflow-y-auto p-1 animate-[slideDown_0.15s_ease] scrollbar-thin scrollbar-track-[#adbc9f]/10 scrollbar-thumb-[#adbc9f]/30 hover:scrollbar-thumb-[#adbc9f]/50"
+        class="absolute top-full left-0 right-0 z-[1000] mt-1 bg-surface-1 border border-tertiary/30 rounded-lg shadow-lg shadow-primary/15 max-h-60 overflow-y-auto p-1 animate-slide-down tag-select-scroll"
         role="listbox" [attr.aria-label]="'Available tags'">
         @for (tag of filteredTags(); track tag.id) {
           <div
-            class="flex items-center justify-between p-3 rounded-md cursor-pointer transition-all duration-150 text-[#12372a] hover:bg-[#adbc9f]/10 hover:text-[#12372a]"
-            [class]="tag.id === focusedTagId() ? 'bg-[#12372a] text-white' : ''"
+            class="flex items-center justify-between p-3 rounded-md cursor-pointer transition-all duration-150 text-primary hover:bg-tertiary/10 hover:text-primary"
+            [class]="tag.id === focusedTagId() ? 'bg-primary text-ink-inverse' : ''"
             (click)="selectTag(tag)"
             (keydown.enter)="selectTag(tag)"
             (keydown.space)="selectTag(tag)"
@@ -62,18 +62,18 @@
             <div class="flex items-center gap-2 flex-1">
               <span class="text-sm font-medium">{{ tag.name }}</span>
               @if (tag.color) {
-                <div class="w-3 h-3 rounded-full border border-[#adbc9f]/30 flex-shrink-0"
+                <div class="w-3 h-3 rounded-full border border-tertiary/30 shrink-0"
                      [style.background-color]="tag.color"
                      [class]="tag.id === focusedTagId() ? 'border-white' : ''"></div>
               }
             </div>
             <div class="text-xs transition-colors duration-150"
-                 [class]="tag.id === focusedTagId() ? 'text-white' : 'text-[#436850]/60'">
+                 [class]="tag.id === focusedTagId() ? 'text-ink-inverse' : 'text-secondary/60'">
               Add
             </div>
           </div>
         } @empty {
-          <div class="flex flex-col items-center justify-center p-6 text-[#436850]/60 text-center">
+          <div class="flex flex-col items-center justify-center p-6 text-secondary/60 text-center">
             <span class="text-sm italic">No tags found</span>
           </div>
         }
