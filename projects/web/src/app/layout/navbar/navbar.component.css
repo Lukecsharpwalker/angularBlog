@@ -1,0 +1,68 @@
+#navbar {
+  position: sticky;
+  margin: 0 auto;
+  transition: all 0.6s ease-in-out;
+  z-index: 10;
+
+  &.scrolled {
+    top: 0;
+    margin-top: 0;
+    width: 100%;
+    border-radius: 0;
+
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.navbar-neon-hover {
+  position: relative;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow:
+      0 8px 32px color-mix(in srgb, var(--color-primary) 15%, transparent),
+      0 2px 8px color-mix(in srgb, var(--color-secondary) 20%, transparent);
+  }
+
+  &:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-secondary) 60%, transparent),
+      color-mix(in srgb, var(--color-accent) 40%, transparent),
+      color-mix(in srgb, var(--color-secondary) 60%, transparent),
+      transparent
+    );
+    border-radius: 0 0 1rem 1rem;
+    animation: subtle-glow 3s ease-in-out infinite;
+    z-index: -1;
+  }
+}
+
+@keyframes subtle-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-neon-hover {
+    transition: none;
+
+    &:hover::after {
+      animation: none;
+    }
+  }
+}

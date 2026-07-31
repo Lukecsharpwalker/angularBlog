@@ -22,7 +22,7 @@ const PROGRESS_THRESHOLDS = [33, 66];
   imports: [NgOptimizedImage],
   providers: [TagsScrollService],
   templateUrl: './tags-scroll.component.html',
-  styleUrl: './tags-scroll.component.scss',
+  styleUrl: './tags-scroll.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsScrollComponent {

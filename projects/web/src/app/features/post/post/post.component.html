@@ -3,14 +3,14 @@
     @if (post()?.tags && post()!.tags!.length > 0) {
       <div class="flex gap-2 flex-wrap mb-5">
         @for (tag of post()!.tags; track tag.id) {
-          <span class="px-3.5 py-1.5 rounded-full text-[14px] font-semibold bg-[#E7EFDD] text-[#436850]">
+          <span class="px-3.5 py-1.5 rounded-full text-[14px] font-semibold bg-tertiary/30 text-secondary">
             {{ tag.name }}
           </span>
         }
       </div>
     }
 
-    <h1 class="font-bold text-[32px] md:text-[40px] xl:text-[46px] leading-[1.2] mb-6 text-gray-900">
+    <h1 class="font-bold text-[32px] md:text-[40px] xl:text-[46px] leading-[1.2] mb-6 text-ink-1">
       {{ postTitle() }}
     </h1>
 
@@ -23,8 +23,8 @@
         />
       }
       <div>
-        <div class="font-semibold text-[15px] mb-0.5 text-gray-900">{{ post()?.author?.username }}</div>
-        <div class="text-[13px] text-gray-500 flex items-center gap-2">
+        <div class="font-semibold text-[15px] mb-0.5 text-ink-1">{{ post()?.author?.username }}</div>
+        <div class="text-[13px] text-ink-3 flex items-center gap-2">
           <time [dateTime]="post()?.created_at">{{ post()?.created_at | date }}</time>
           <span aria-hidden="true">•</span>
           <span>{{ post()?.readingTime }} min read</span>
@@ -45,13 +45,13 @@
 
     <div class="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
       <main id="main-content" role="main">
-        <article class="bg-white rounded-2xl p-12 mb-8 code-block-theme text-[17px] leading-[1.8] text-gray-800">
+        <article class="bg-surface-1 rounded-2xl p-12 mb-8 code-block-theme text-[17px] leading-[1.8] text-ink-2">
           <div class="max-w-none">
             <div webOpenCodeBlockModal [innerHTML]="safeContent()"></div>
           </div>
         </article>
 
-        <div class="bg-white/80 backdrop-blur-[10px] border border-white/40 rounded-2xl p-6 mb-8">
+        <div class="bg-white/80 backdrop-blur-[10px] glass-panel p-6 mb-8">
           <div class="flex items-center gap-4">
             @if (post()?.author?.avatar_url) {
               <img
@@ -61,15 +61,15 @@
               />
             }
             <div>
-              <h3 class="font-bold text-[18px] mb-1 text-gray-900">{{ post()?.author?.username }}</h3>
-              <p class="text-[14px] text-gray-500">Author</p>
+              <h3 class="font-bold text-[18px] mb-1 text-ink-1">{{ post()?.author?.username }}</h3>
+              <p class="text-[14px] text-ink-3">Author</p>
             </div>
           </div>
         </div>
 
         <div class="space-y-6">
           <section
-            class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-2xl p-6 shadow-sm"
+            class="backdrop-blur-xs bg-white/80 glass-panel p-6 shadow-xs"
             aria-labelledby="add-comment-heading"
           >
             <h3 id="add-comment-heading" class="text-xl font-bold mb-4 flex items-center gap-2">
@@ -83,7 +83,7 @@
 
           @defer (on viewport) {
             <section
-              class="backdrop-blur-sm bg-white/80 border border-white/40 rounded-2xl overflow-hidden shadow-sm"
+              class="backdrop-blur-xs bg-white/80 glass-panel overflow-hidden shadow-xs"
               aria-labelledby="comments-heading"
             >
               <div class="p-6 border-b border-white/30">
@@ -96,7 +96,7 @@
             </section>
           } @placeholder {
             <div
-              class="backdrop-blur-sm bg-white/70 border border-white/40 rounded-2xl p-8 text-center shadow-sm"
+              class="backdrop-blur-xs bg-white/70 glass-panel p-8 text-center shadow-xs"
               aria-label="Loading comments"
             >
               <div class="flex items-center justify-center gap-2 mb-2">
@@ -115,12 +115,12 @@
 
       <aside class="hidden xl:block" role="complementary" aria-label="Article navigation">
         <div class="sticky top-24 space-y-6">
-          <div class="bg-white/70 backdrop-blur-[10px] border border-white/40 rounded-2xl p-5">
-            <h2 class="text-[12px] font-bold mb-4 text-gray-600 uppercase tracking-wider">On this page</h2>
+          <div class="bg-white/70 backdrop-blur-[10px] glass-panel p-5">
+            <h2 class="text-[12px] font-bold mb-4 text-ink-2 uppercase tracking-wider">On this page</h2>
             <nav aria-label="Table of contents">
               <div class="space-y-2 text-[14px]">
                 @for (item of tocItems(); track item) {
-                  <div class="py-1.5 text-gray-700 cursor-pointer hover:text-gray-900 transition-colors">
+                  <div class="py-1.5 text-ink-2 cursor-pointer hover:text-ink-1 transition-colors">
                     {{ item }}
                   </div>
                 }
@@ -128,26 +128,26 @@
             </nav>
           </div>
 
-          <div class="bg-white/70 backdrop-blur-[10px] border border-white/40 rounded-2xl p-5">
-            <h2 class="text-[12px] font-bold mb-4 text-gray-600 uppercase tracking-wider">Share</h2>
+          <div class="bg-white/70 backdrop-blur-[10px] glass-panel p-5">
+            <h2 class="text-[12px] font-bold mb-4 text-ink-2 uppercase tracking-wider">Share</h2>
             <div class="flex flex-col gap-2" role="group" aria-label="Share article">
               <button
+                class="btn btn-tertiary btn-sm w-full text-left text-[14px]"
                 (click)="shareOnSocial('twitter')"
-                class="btn-tertiary btn-tertiary-sm w-full text-left text-[14px]"
                 aria-label="Share article on Twitter"
               >
                 Twitter
               </button>
               <button
+                class="btn btn-tertiary btn-sm w-full text-left text-[14px]"
                 (click)="shareOnSocial('linkedin')"
-                class="btn-tertiary btn-tertiary-sm w-full text-left text-[14px]"
                 aria-label="Share article on LinkedIn"
               >
                 LinkedIn
               </button>
               <button
+                class="btn btn-tertiary btn-sm w-full text-left text-[14px]"
                 (click)="copyLink()"
-                class="btn-tertiary btn-tertiary-sm w-full text-left text-[14px]"
                 aria-label="Copy article link to clipboard"
               >
                 Copy Link
@@ -170,24 +170,24 @@
       }
     </div>
 
-    <div class="w-3/4 h-14 bg-primary/20 rounded mb-6"></div>
+    <div class="w-3/4 h-14 bg-primary/20 rounded-sm mb-6"></div>
 
     <div class="flex items-center gap-3 mb-8">
       <div class="w-12 h-12 bg-secondary/20 rounded-full"></div>
       <div class="space-y-2">
-        <div class="w-32 h-4 bg-primary/15 rounded"></div>
-        <div class="w-40 h-3 bg-primary/10 rounded"></div>
+        <div class="w-32 h-4 bg-primary/15 rounded-sm"></div>
+        <div class="w-40 h-3 bg-primary/10 rounded-sm"></div>
       </div>
     </div>
 
-    <div class="w-full h-[380px] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl mb-10"></div>
+    <div class="w-full h-[380px] bg-linear-to-br from-primary/10 to-secondary/10 rounded-3xl mb-10"></div>
 
     <div class="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
       <div class="space-y-6">
         <div class="bg-white/50 rounded-2xl p-12">
           <div class="space-y-4">
             @for (line of [1, 2, 3, 4, 5, 6, 7, 8]; track line) {
-              <div class="w-full h-4 bg-primary/10 rounded"></div>
+              <div class="w-full h-4 bg-primary/10 rounded-sm"></div>
             }
           </div>
         </div>
@@ -195,20 +195,20 @@
 
       <div class="hidden xl:block">
         <div class="sticky top-24 space-y-6">
-          <div class="bg-white/50 border border-white/40 rounded-2xl p-5">
-            <div class="w-24 h-4 bg-primary/20 rounded mb-4"></div>
+          <div class="bg-white/50 glass-panel p-5">
+            <div class="w-24 h-4 bg-primary/20 rounded-sm mb-4"></div>
             <div class="space-y-2">
               @for (item of [1, 2, 3]; track item) {
-                <div class="w-full h-3 bg-primary/10 rounded"></div>
+                <div class="w-full h-3 bg-primary/10 rounded-sm"></div>
               }
             </div>
           </div>
 
-          <div class="bg-white/50 border border-white/40 rounded-2xl p-5">
-            <div class="w-16 h-4 bg-primary/20 rounded mb-4"></div>
+          <div class="bg-white/50 glass-panel p-5">
+            <div class="w-16 h-4 bg-primary/20 rounded-sm mb-4"></div>
             <div class="space-y-2">
               @for (btn of [1, 2, 3]; track btn) {
-                <div class="w-full h-8 bg-secondary/15 rounded"></div>
+                <div class="w-full h-8 bg-secondary/15 rounded-sm"></div>
               }
             </div>
           </div>
@@ -219,26 +219,26 @@
 } @else if (error()) {
   <div class="container mx-auto px-4 py-20">
     <div
-      class="max-w-md mx-auto text-center glass-effect-strong border border-red-200 rounded-xl p-8 shadow-lg"
+      class="max-w-md mx-auto text-center glass-effect-strong border border-error/40 rounded-xl p-8 shadow-lg"
     >
-      <h2 class="text-2xl font-bold text-red-600 mb-2 flex items-center justify-center gap-2">
+      <h2 class="text-2xl font-bold text-error mb-2 flex items-center justify-center gap-2">
         <shared-icon name="error" size="sm" />
         Error Loading Post
       </h2>
-      <p class="text-gray-600 mb-6">{{ error() }}</p>
+      <p class="text-ink-2 mb-6">{{ error() }}</p>
 
       <div class="space-y-3">
         <button
-          (click)="loadPost()"
           class="btn btn-primary w-full hover-lift"
+          (click)="loadPost()"
           aria-label="Retry loading post"
         >
           Try Again
         </button>
 
         <button
+          class="btn btn-secondary w-full"
           (click)="goBack()"
-          class="btn-secondary btn-secondary-full"
           aria-label="Go back to posts list"
         >
           Back to Posts
@@ -249,7 +249,7 @@
 } @else {
   <div class="container mx-auto px-4 py-20">
     <div
-      class="max-w-md mx-auto text-center bg-quaternary/80 backdrop-blur-sm border border-tertiary rounded-xl p-8 shadow-lg"
+      class="max-w-md mx-auto text-center bg-quaternary/80 backdrop-blur-xs border border-tertiary rounded-xl p-8 shadow-lg"
     >
       <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
         <shared-icon name="search" size="sm" />
@@ -260,8 +260,8 @@
       </p>
 
       <button
-        (click)="goBack()"
         class="btn btn-primary hover-lift"
+        (click)="goBack()"
         aria-label="Return to posts list"
       >
         Return to Posts

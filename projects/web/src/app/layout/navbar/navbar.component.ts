@@ -22,7 +22,7 @@ import { ProfileStore } from '../../core';
   imports: [RouterLink],
   providers: [],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+  styleUrl: './navbar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {

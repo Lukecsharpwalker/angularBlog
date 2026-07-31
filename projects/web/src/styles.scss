@@ -1,9 +1,0 @@
-@use "tailwindcss/utilities";
-@use "../../shared/src/styles.scss";
-@use "highlight.js/styles/github-dark.css";
-
-body {
-  position: relative;
-  background: #f6f1e7;
-  min-height: 100vh;
-}

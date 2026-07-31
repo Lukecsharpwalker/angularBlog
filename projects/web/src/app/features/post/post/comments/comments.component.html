@@ -1,7 +1,7 @@
 <div class="p-6">
   @for (comment of comments(); track comment.id) {
     <div class="comment group mb-6 last:mb-0">
-      <div class="backdrop-blur-sm bg-white/60 hover:bg-white/80 border border-white/30 rounded-lg p-5 transition-all duration-300 hover:shadow-md">
+      <div class="backdrop-blur-xs bg-white/60 hover:bg-white/80 border border-white/30 rounded-lg p-5 transition-all duration-300 hover:shadow-md">
         <div class="flex justify-between items-start gap-4">
           <div class="flex-1">
             <p class="mb-3 leading-relaxed font-medium">
@@ -10,7 +10,7 @@
 
             <div class="flex items-center gap-3 text-sm">
               <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-secondary to-tertiary rounded-full flex items-center justify-center text-white font-semibold text-xs shadow-sm">
+                <div class="w-8 h-8 bg-linear-to-br from-secondary to-tertiary icon-badge text-ink-inverse font-semibold text-xs shadow-xs">
                   {{ comment.author?.username?.charAt(0)?.toUpperCase() }}
                 </div>
                 <span class="font-medium">{{ comment.author?.username }}</span>
@@ -24,8 +24,8 @@
 
           <button
             *webHasRole="Roles.ADMIN"
+            class="btn btn-danger btn-sm opacity-0 group-hover:opacity-100"
             (click)="deleteComment(comment.id!)"
-            class="btn-danger btn-tertiary-sm opacity-0 group-hover:opacity-100"
             aria-label="Delete comment"
           >
             Delete
@@ -34,10 +34,10 @@
 
         <div class="mt-4 pt-3 border-t border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <div class="flex items-center gap-4">
-            <button class="btn-tertiary btn-tertiary-sm">
+            <button class="btn btn-tertiary btn-sm">
               Like
             </button>
-            <button class="btn-tertiary btn-tertiary-sm">
+            <button class="btn btn-tertiary btn-sm">
               Reply
             </button>
           </div>
@@ -45,12 +45,12 @@
       </div>
     </div>
   } @empty {
-    <div class="empty-state glass-effect-light rounded-lg">
-      <div class="empty-state-icon bg-gradient-to-br from-secondary/20 to-tertiary/20 rounded-full flex items-center justify-center text-secondary font-bold text-sm">
+    <div class="flex flex-col items-center justify-center px-4 py-12 text-center glass-effect-light rounded-lg">
+      <div class="mb-4 h-16 w-16 opacity-50 bg-linear-to-br from-secondary/20 to-tertiary/20 icon-badge text-secondary font-bold text-sm">
         CHAT
       </div>
-      <h3 class="empty-state-title">No comments yet</h3>
-      <p class="empty-state-description">Be the first to share your thoughts on this article.</p>
+      <h3 class="mb-2 text-lg font-semibold text-ink-1">No comments yet</h3>
+      <p class="mb-6 text-base text-ink-2">Be the first to share your thoughts on this article.</p>
     </div>
   }
 </div>

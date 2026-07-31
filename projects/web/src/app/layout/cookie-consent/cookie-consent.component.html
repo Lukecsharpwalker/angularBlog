@@ -3,17 +3,17 @@
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div class="flex-1 min-w-0">
         <div class="flex items-start gap-3">
-          <div class="flex-shrink-0 mt-1">
+          <div class="shrink-0 mt-1">
             <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
           </div>
 
           <div class="flex-1 min-w-0">
-            <h2 class="text-lg font-semibold text-gray-900 mb-2">
+            <h2 class="text-lg font-semibold text-ink-1 mb-2">
               We respect your privacy
             </h2>
-            <p class="text-gray-700 text-sm leading-relaxed">
+            <p class="text-ink-2 text-sm leading-relaxed">
               We use cookies to improve your browsing experience, analyze site traffic, and deliver personalized content.
               You can choose which cookies to accept below.
             </p>
@@ -21,12 +21,12 @@
         </div>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-3 lg:flex-shrink-0">
+      <div class="flex flex-col sm:flex-row gap-3 lg:shrink-0">
         <button
           type="button"
           (click)="rejectAll()"
-          class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg
-                 hover:bg-gray-200 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2
+          class="px-6 py-2 text-sm font-medium text-ink-2 bg-surface-2 border border-edge-1 rounded-lg
+                 hover:bg-surface-2 hover:border-edge-2 focus:outline-hidden focus:ring-3 focus:ring-offset-2
                  focus:ring-primary transition-colors duration-200 min-h-[44px]">
           Reject All
         </button>
@@ -34,8 +34,8 @@
         <button
           type="button"
           (click)="showCustomizeOptions()"
-          class="px-6 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg
-                 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2
+          class="px-6 py-2 text-sm font-medium text-primary bg-surface-1 border border-primary rounded-lg
+                 hover:bg-primary hover:text-ink-inverse focus:outline-hidden focus:ring-3 focus:ring-offset-2
                  focus:ring-primary transition-colors duration-200 min-h-[44px]">
           Customize
         </button>
@@ -43,15 +43,15 @@
         <button
           type="button"
           (click)="acceptAll()"
-          class="px-6 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-lg
-                 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2
+          class="px-6 py-2 text-sm font-medium text-ink-inverse bg-primary border border-primary rounded-lg
+                 hover:bg-primary/90 focus:outline-hidden focus:ring-3 focus:ring-offset-2
                  focus:ring-primary transition-colors duration-200 min-h-[44px]">
           Accept All
         </button>
       </div>
     </div>
 
-    <div class="mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-4 text-xs text-gray-500">
+    <div class="mt-4 pt-4 border-t border-edge-1 flex flex-wrap gap-4 text-xs text-ink-3">
       <a href="/privacy-policy" class="hover:text-primary underline">Privacy Policy</a>
       <a href="/cookie-policy" class="hover:text-primary underline">Cookie Policy</a>
     </div>
@@ -62,11 +62,11 @@
   <div class="p-6 max-h-96 overflow-y-auto">
     <div class="mb-6">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold text-gray-900">Cookie Preferences</h2>
+        <h2 class="text-lg font-semibold text-ink-1">Cookie Preferences</h2>
         <button
           type="button"
           (click)="backToBanner()"
-          class="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary rounded-full p-1"
+          class="text-ink-3 hover:text-ink-2 focus:outline-hidden focus:ring-3 focus:ring-primary rounded-full p-1"
           aria-label="Back to banner">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -74,7 +74,7 @@
         </button>
       </div>
 
-      <p class="text-sm text-gray-600 mb-6">
+      <p class="text-sm text-ink-2 mb-6">
         Choose which types of cookies you want to allow. You can change these settings at any time.
       </p>
     </div>
@@ -83,16 +83,16 @@
       <h3 id="cookie-categories-title" class="sr-only">Cookie Categories</h3>
 
       @for (category of cookieCategories(); track category.id) {
-        <div class="border border-gray-200 rounded-lg p-4">
+        <div class="border border-edge-1 rounded-lg p-4">
           <div class="flex items-start justify-between mb-2">
             <div class="flex-1">
-              <h4 class="font-medium text-gray-900">{{ category.name }}</h4>
-              <p class="text-sm text-gray-600 mt-1">{{ category.description }}</p>
+              <h4 class="font-medium text-ink-1">{{ category.name }}</h4>
+              <p class="text-sm text-ink-2 mt-1">{{ category.description }}</p>
             </div>
 
-            <div class="flex-shrink-0 ml-4">
+            <div class="shrink-0 ml-4">
               @if (isCategoryRequired(category)) {
-                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-surface-2 text-ink-1 rounded-sm">
                   Always Active
                 </span>
               } @else {
@@ -103,9 +103,9 @@
                     (change)="updateCategoryConsent(category.id, $any($event.target).checked)"
                     class="sr-only peer"
                     [attr.aria-describedby]="category.id + '-description'">
-                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/25
+                  <div class="w-11 h-6 bg-surface-2 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-primary/25
                               rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white
-                              after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white
+                              after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-1
                               after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
                   </div>
                 </label>
@@ -117,8 +117,8 @@
             <summary class="text-sm text-primary cursor-pointer hover:underline">
               View cookies ({{ category.cookies.length }})
             </summary>
-            <div class="mt-2 pl-4 border-l-2 border-gray-100">
-              <ul class="text-sm text-gray-600 space-y-1">
+            <div class="mt-2 pl-4 border-l-2 border-edge-1">
+              <ul class="text-sm text-ink-2 space-y-1">
                 @for (cookie of category.cookies; track cookie) {
                   <li class="font-mono">{{ cookie }}</li>
                 }
@@ -129,12 +129,12 @@
       }
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
+    <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-edge-1">
       <button
         type="button"
         (click)="backToBanner()"
-        class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg
-               hover:bg-gray-200 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2
+        class="px-6 py-2 text-sm font-medium text-ink-2 bg-surface-2 border border-edge-1 rounded-lg
+               hover:bg-surface-2 hover:border-edge-2 focus:outline-hidden focus:ring-3 focus:ring-offset-2
                focus:ring-primary transition-colors duration-200 min-h-[44px]">
         Cancel
       </button>
@@ -142,8 +142,8 @@
       <button
         type="button"
         (click)="saveCustomPreferences()"
-        class="px-6 py-2 text-sm font-medium text-white bg-primary border border-primary rounded-lg
-               hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2
+        class="px-6 py-2 text-sm font-medium text-ink-inverse bg-primary border border-primary rounded-lg
+               hover:bg-primary/90 focus:outline-hidden focus:ring-3 focus:ring-offset-2
                focus:ring-primary transition-colors duration-200 min-h-[44px]">
         Save Preferences
       </button>

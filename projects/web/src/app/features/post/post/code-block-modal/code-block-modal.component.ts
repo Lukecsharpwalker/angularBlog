@@ -5,7 +5,7 @@ import { CodeBlockModalData } from './code-block-modal.interface';
 @Component({
   selector: 'web-code-block-modal',
   templateUrl: './code-block-modal.component.html',
-  styleUrl: './code-block-modal.component.scss',
+  styleUrl: './code-block-modal.component.css',
   imports: [],
 })
 export class CodeBlockModalComponent {

@@ -1,9 +1,9 @@
 <article
   [routerLink]="['/post', post().id]"
-  class="bg-white shadow-md w-full rounded-lg py-4 md:py-8 overflow-hidden mb-6
+  class="bg-surface-1 shadow-md w-full rounded-lg py-4 md:py-8 overflow-hidden mb-6
          hover-lift-subtle cursor-pointer backface-visibility-hidden antialiased will-change-transform"
 >
-  <div class="bg-white w-full flex flex-col md:flex-row md:pr-4">
+  <div class="bg-surface-1 w-full flex flex-col md:flex-row md:pr-4">
     <div
       class="flex flex-wrap md:flex-col items-start md:basis-2/12 gap-2 px-4 md:px-0">
       @for (tag of post().post_tags; track tag.tags.id; let i = $index) {

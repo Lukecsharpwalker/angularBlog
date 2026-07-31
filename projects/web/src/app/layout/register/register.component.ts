@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent {
