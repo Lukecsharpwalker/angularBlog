@@ -7,7 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss",
+          "style": "css",
           "changeDetection": "OnPush",
           "displayBlock": true
         }
@@ -29,7 +29,7 @@
               }
             ],
             "styles": [
-              "projects/admin/src/styles.scss"
+              "projects/admin/src/styles.css"
             ]
           },
           "configurations": {
@@ -97,7 +97,7 @@
               }
             ],
             "styles": [
-              "projects/admin/src/styles.scss"
+              "projects/admin/src/styles.css"
             ]
           }
         },
@@ -117,7 +117,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss",
+          "style": "css",
           "changeDetection": "OnPush",
           "displayBlock": true
         }
@@ -142,7 +142,7 @@
               }
             ],
             "styles": [
-              "projects/web/src/styles.scss"
+              "projects/web/src/styles.css"
             ],
             "server": "projects/web/src/main.server.ts",
             "outputMode": "server",
@@ -225,7 +225,7 @@
               }
             ],
             "styles": [
-              "projects/web/src/styles.scss"
+              "projects/web/src/styles.css"
             ]
           }
         },
@@ -285,7 +285,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss",
+          "style": "css",
           "changeDetection": "OnPush",
           "displayBlock": true
         }
@@ -307,7 +307,7 @@
               }
             ],
             "styles": [
-              "projects/code-samples-mfe/src/styles.scss"
+              "projects/code-samples-mfe/src/styles.css"
             ]
           },
           "configurations": {
@@ -361,7 +361,7 @@
               }
             ],
             "styles": [
-              "projects/code-samples-mfe/src/styles.scss"
+              "projects/code-samples-mfe/src/styles.css"
             ]
           }
         },

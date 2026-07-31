@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **`/llms/public/app-description.txt`** - Complete application overview, architecture goals, and deployment strategy
 - **`/llms/public/architecture.txt`** - Authoritative enterprise architecture rules and folder structure
 - **`/llms/public/llm-full.txt`** - Comprehensive Angular development guidelines and best practices
+- **`/llms/public/styling.txt`** - Authoritative styling architecture (Tailwind v4, design tokens, per-app theming)
 
 These files contain the definitive project specifications and must be consulted before any architectural decisions or code modifications.
 
@@ -89,7 +90,7 @@ ng serve code-samples-mfe    # Serve code samples micro-frontend
 
 ## Key Technologies & Stack
 
-- **Frontend**: Angular 20, NgRx Signals, Tailwind CSS, DaisyUI, Quill Editor, Highlight.js
+- **Frontend**: Angular 20, NgRx Signals, Tailwind CSS v4, Quill Editor, Highlight.js
 - **Backend**: Supabase (PostgreSQL, Authentication, Storage, Functions)
 - **Testing**: Playwright for E2E, Karma/Jasmine for unit tests
 - **Build**: Angular CLI with esbuild, SSR/SSG capabilities
@@ -154,14 +155,15 @@ ng serve code-samples-mfe    # Serve code samples micro-frontend
 - Standalone + lazy everywhere; **no cross-feature TS imports**.
 - Promote reusable logic “upwards” (from feature → pattern/ui/data-access).
 - Keep guards/interceptors/providers at route-level or in `core/` per app.
-- Tailwind/DaisyUI configuration shared where possible; design tokens in `shared`.
+- Design tokens live in `projects/shared/src/styles/theme.css`; see `llms/public/styling.txt`.
 
 See the [architecture.txt](llms/private/architecture.txt) document for authoritative rules and dependency boundaries.
 
 ### Styling
 
-- Use Tailwind CSS with DaisyUI components
-- Custom color palette: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA)
+- Tailwind CSS v4, CSS-first configuration — no tailwind.config.js; the `@theme` block in `projects/shared/src/styles/theme.css` is the single source of truth
+- Brand palette: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA) — identical in all apps; per-app looks come from overriding semantic variables (`--color-surface` etc.) in each app's `styles.css`
+- No `@apply` outside app entry stylesheets; full rules in `llms/public/styling.txt`
 - Monitor CSS bundle size with budget limits in angular.json
 
 ### Type Safety
