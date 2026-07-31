@@ -10,7 +10,7 @@ import { LOGIN_FORM_CONFIG } from './default-login-config';
   imports: [ReactiveFormsModule],
   providers: [AuthFormService],
   templateUrl: './auth-form.component.html',
-  styleUrl: './auth-form.component.scss',
+  styleUrl: './auth-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthFormComponent {

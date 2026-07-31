@@ -1,0 +1,217 @@
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+@utility btn-sm {
+  min-height: 32px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+}
+
+@utility btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-ink-inverse);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-primary-hover);
+      transform: scale(1.02);
+    }
+  }
+}
+
+@utility btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-primary);
+      color: var(--color-ink-inverse);
+      transform: scale(1.02);
+    }
+  }
+}
+
+@utility btn-tertiary {
+  background-color: transparent;
+  color: var(--color-primary);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+@utility btn-danger {
+  background-color: var(--color-error);
+  color: var(--color-ink-inverse);
+
+  &:focus-visible {
+    outline-color: var(--color-error);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-error-hover);
+      transform: scale(1.02);
+    }
+  }
+}
+
+@utility glass-panel {
+  border: 1px solid rgb(255 255 255 / 0.4);
+  border-radius: 1rem;
+}
+
+@utility form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-surface-1);
+  border: 2px solid var(--color-edge-1);
+  border-radius: 0.75rem;
+  color: var(--color-ink-1);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &::placeholder {
+    color: var(--color-ink-3);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+}
+
+@utility icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(infinity * 1px);
+}
+
+@utility glass-effect-strong {
+  background-color: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / 0.4);
+}
+
+@utility glass-effect-light {
+  background-color: rgb(255 255 255 / 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(255 255 255 / 0.2);
+}
+
+@utility glass-card-dialog {
+  background-color: rgb(255 255 255 / 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgb(255 255 255 / 0.3);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 0.15);
+}
+
+@utility glass-overlay-dialog {
+  background: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(12px);
+}
+
+@utility grain-overlay {
+  background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.15) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+@utility hover-lift {
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+@utility hover-lift-subtle {
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+      0 12px 40px color-mix(in srgb, var(--color-primary) 10%, transparent),
+      0 4px 12px color-mix(in srgb, var(--color-primary) 5%, transparent);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+

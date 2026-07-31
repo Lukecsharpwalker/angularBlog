@@ -8,7 +8,7 @@
 >
   <div class="absolute inset-0 glass-overlay-dialog animate-fade-in"></div>
 
-  <div class="relative max-w-md w-full transform-gpu animate-scale-in perspective-1000 modal-container"
+  <div class="relative max-w-md w-full transform-gpu animate-scale-in perspective-[1000px] modal-container"
        [class.code-modal]="modalConfig()?.title?.includes('Code')"
        [class.cookie-consent-modal]="modalConfig()?.title?.includes('Cookie')"
        (click)="$event.stopPropagation()"
@@ -18,9 +18,9 @@
     <button
       (click)="closeDialog(); $event.stopPropagation()"
       type="button"
-      class="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-white shadow-lg hover:bg-red-50 transition-all duration-200 hover:scale-110 flex items-center justify-center group border-2 border-gray-200 hover:border-red-300 z-50 cursor-pointer"
+      class="absolute -top-2 -right-2 w-10 h-10 icon-badge bg-surface-1 shadow-lg hover:bg-error/10 transition-all duration-200 hover:scale-110 group border-2 border-edge-1 hover:border-error/40 z-50 cursor-pointer"
       aria-label="Close modal">
-      <svg class="w-5 h-5 text-gray-500 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-5 h-5 text-ink-3 group-hover:text-error transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
@@ -35,12 +35,12 @@
             <h3 class="text-lg" id="modal-title">
               {{ modalConfig()?.title }}
             </h3>
-            <div class="mx-auto mt-3 w-96 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-60"></div>
+            <div class="mx-auto mt-3 w-96 h-px bg-linear-to-r from-transparent via-edge-2 to-transparent opacity-60"></div>
           </div>
         }
 
         @if (modalConfig()?.content) {
-          <div class="mb-6 text-gray-700">
+          <div class="mb-6 text-ink-2">
             {{ modalConfig()?.content }}
           </div>
         }
@@ -51,12 +51,12 @@
       </div>
 
       @if (modalConfig()?.primaryButton || modalConfig()?.secondaryButton) {
-        <div class="px-8 pb-6 btn-group btn-group-end relative z-10">
+        <div class="px-8 pb-6 flex items-center gap-3 justify-end relative z-10">
           @if (modalConfig()?.secondaryButton) {
             <button
               (click)="closeDialog(ModalCloseStatusEnum.REJECTED)"
               type="button"
-              class="btn-tertiary"
+              class="btn btn-tertiary"
             >
               {{ modalConfig()?.secondaryButton }}
             </button>

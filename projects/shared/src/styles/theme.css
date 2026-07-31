@@ -1,0 +1,64 @@
+@theme {
+  --color-primary: #12372A;
+  --color-secondary: #436850;
+  --color-tertiary: #ADBC9F;
+  --color-quaternary: #FBFADA;
+  --color-accent: #FF6B35;
+
+  --color-surface: #ffffff;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f8fafc;
+
+  --color-ink-1: #1e293b;
+  --color-ink-2: #475569;
+  --color-ink-3: #64748b;
+  --color-ink-inverse: #ffffff;
+
+  --color-edge-1: #e2e8f0;
+  --color-edge-2: #cbd5e1;
+
+  --color-primary-hover: color-mix(in srgb, #12372A 90%, black);
+
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-error-hover: color-mix(in srgb, #ef4444 90%, black);
+  --color-info: #3b82f6;
+
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-scale-in: scale-in 0.3s ease-out;
+  --animate-slide-down: slide-down 0.15s ease;
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

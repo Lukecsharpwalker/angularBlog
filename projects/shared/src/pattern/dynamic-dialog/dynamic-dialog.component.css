@@ -1,4 +1,3 @@
-/* Special styling for code modals */
 .modal-container.code-modal {
   max-width: none;
   width: auto;
@@ -6,7 +5,6 @@
   max-width: 95vw;
 }
 
-/* Mobile responsiveness for code modals */
 @media (max-width: 768px) {
   .modal-container.code-modal {
     max-width: 98vw;
@@ -14,7 +12,6 @@
   }
 }
 
-/* Desktop and large screens - allow code modals to be bigger */
 @media (min-width: 1024px) {
   .modal-container.code-modal {
     max-width: 85vw;
@@ -22,7 +19,6 @@
   }
 }
 
-/* Cookie consent modal styling */
 .modal-container.cookie-consent-modal {
   max-width: none;
   width: auto;
@@ -30,7 +26,6 @@
   max-width: 90vw;
 }
 
-/* Mobile responsiveness for cookie consent modals */
 @media (max-width: 640px) {
   .modal-container.cookie-consent-modal {
     max-width: 95vw;
@@ -38,7 +33,6 @@
   }
 }
 
-/* Tablet screens */
 @media (min-width: 641px) and (max-width: 1023px) {
   .modal-container.cookie-consent-modal {
     max-width: 80vw;
@@ -46,7 +40,6 @@
   }
 }
 
-/* Desktop and large screens - optimal width for cookie consent */
 @media (min-width: 1024px) {
   .modal-container.cookie-consent-modal {
     max-width: 70vw;
