@@ -104,6 +104,8 @@ export class PostFormService {
       const language = block.getAttribute('data-language') ?? '';
 
       const codeElement = document.createElement('code');
+      //TODO: try to refactor this to avoid using no-restricted-syntax, maybe use a different approach to add classes
+      // eslint-disable-next-line no-restricted-syntax
       codeElement.classList.add('hljs', language);
       codeElement.innerHTML = hljs.highlight(rawText, { language }).value;
 

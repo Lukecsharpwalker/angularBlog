@@ -1,11 +1,10 @@
 @import "tailwindcss" source(none);
-@source "./app";
-@source "../../shared/src";
-@import "../../shared/src/styles/theme.css";
-@import "../../shared/src/styles/base.css";
 @import "../../shared/src/styles/utilities.css";
 @import "quill/dist/quill.core.css";
 @import "quill/dist/quill.snow.css";
+@import "../../shared/src/styles/theme.css";
+@source "./app";
+@source "../../shared/src";
 
 body {
   min-height: 100vh;

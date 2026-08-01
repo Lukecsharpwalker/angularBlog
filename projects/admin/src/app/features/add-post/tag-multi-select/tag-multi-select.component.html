@@ -3,7 +3,7 @@
     <div class="flex flex-wrap gap-2 mb-3 min-h-8">
       @for (tag of selectedTags(); track tag.id) {
         <div
-          class="inline-flex items-center gap-2 px-3 py-1.5 text-ink-inverse rounded-full text-sm font-medium cursor-pointer transition-all duration-150 border-none outline-hidden relative hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20 focus-visible:shadow-[0_0_0_2px_white,0_0_0_4px_var(--color-primary)]"
+          class="inline-flex items-center gap-2 px-3 py-1.5 text-ink-inverse rounded-full text-sm font-medium cursor-pointer transition-all duration-150 border-none relative hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20 focus-ring"
           [style.background-color]="tag.color || '#12372A'"
           [style.background]="tag.color && tag.color !== '#12372A' ? tag.color : 'rgba(18, 55, 42, 0.9)'"
           (click)="removeTag(tag)"
@@ -15,7 +15,7 @@
         >
           <span class="leading-none">{{ tag.name }}</span>
           <button
-            class="w-4 h-4 bg-white/20 backdrop-blur-xs border-none text-current cursor-pointer icon-badge text-xs opacity-70 transition-all duration-150 hover:opacity-100 hover:bg-white/30 hover:scale-110"
+            class="icon-badge w-4 h-4 bg-white/20 backdrop-blur-xs border-none text-current cursor-pointer text-xs opacity-70 transition-all duration-150 hover:opacity-100 hover:bg-white/30 hover:scale-110"
             type="button" [attr.aria-label]="'Remove ' + tag.name">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -30,7 +30,7 @@
     <input
       #searchInput
       type="text"
-      class="w-full px-4 py-3 border-2 border-tertiary/30 rounded-lg text-sm bg-surface-1 text-primary transition-all duration-200 focus:outline-hidden focus:border-primary focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary)_10%,transparent)] placeholder:text-secondary/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-tertiary/10"
+      class="w-full px-4 py-3 border-2 border-tertiary/30 rounded-lg text-sm bg-surface-1 text-primary transition-all duration-200 focus:border-primary focus-ring placeholder:text-secondary/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-tertiary/10"
       placeholder="Search and add tags..."
       [value]="searchTerm()"
       (input)="onSearchChange($event)"
@@ -46,7 +46,7 @@
 
     @if (isOpen() && !disabled()) {
       <div
-        class="absolute top-full left-0 right-0 z-[1000] mt-1 bg-surface-1 border border-tertiary/30 rounded-lg shadow-lg shadow-primary/15 max-h-60 overflow-y-auto p-1 animate-slide-down tag-select-scroll"
+        class="absolute top-full left-0 right-0 z-50 mt-1 bg-surface-1 border border-tertiary/30 rounded-lg shadow-lg shadow-primary/15 max-h-60 overflow-y-auto p-1 animate-slide-down tag-select-scroll"
         role="listbox" [attr.aria-label]="'Available tags'">
         @for (tag of filteredTags(); track tag.id) {
           <div
