@@ -1,16 +1,16 @@
 @if (hasPost()) {
-  <div class="container mx-auto px-4 max-w-[1200px]">
+  <div class="container mx-auto px-4 max-w-300">
     @if (post()?.tags && post()!.tags!.length > 0) {
       <div class="flex gap-2 flex-wrap mb-5">
         @for (tag of post()!.tags; track tag.id) {
-          <span class="px-3.5 py-1.5 rounded-full text-[14px] font-semibold bg-tertiary/30 text-secondary">
+          <span class="px-3.5 py-1.5 rounded-full text-sm font-semibold bg-tertiary/30 text-secondary">
             {{ tag.name }}
           </span>
         }
       </div>
     }
 
-    <h1 class="font-bold text-[32px] md:text-[40px] xl:text-[46px] leading-[1.2] mb-6 text-ink-1">
+    <h1 class="font-bold text-hero leading-tight mb-6 text-ink-1">
       {{ postTitle() }}
     </h1>
 
@@ -23,8 +23,8 @@
         />
       }
       <div>
-        <div class="font-semibold text-[15px] mb-0.5 text-ink-1">{{ post()?.author?.username }}</div>
-        <div class="text-[13px] text-ink-3 flex items-center gap-2">
+        <div class="font-semibold text-sm mb-0.5 text-ink-1">{{ post()?.author?.username }}</div>
+        <div class="text-xs text-ink-3 flex items-center gap-2">
           <time [dateTime]="post()?.created_at">{{ post()?.created_at | date }}</time>
           <span aria-hidden="true">•</span>
           <span>{{ post()?.readingTime }} min read</span>
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="relative overflow-hidden rounded-[24px] mb-10 h-[380px]">
+    <div class="relative overflow-hidden rounded-3xl mb-10 h-95">
       <img
         class="w-full h-full object-cover"
         [ngSrc]="date() + '-post.webp'"
@@ -45,13 +45,13 @@
 
     <div class="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
       <main id="main-content" role="main">
-        <article class="bg-surface-1 rounded-2xl p-12 mb-8 code-block-theme text-[17px] leading-[1.8] text-ink-2">
+        <article class="bg-surface-1 rounded-2xl p-12 mb-8 text-lg leading-normal text-ink-2">
           <div class="max-w-none">
             <div webOpenCodeBlockModal [innerHTML]="safeContent()"></div>
           </div>
         </article>
 
-        <div class="bg-white/80 backdrop-blur-[10px] glass-panel p-6 mb-8">
+        <div class="bg-white/80 backdrop-blur-md glass-panel p-6 mb-8">
           <div class="flex items-center gap-4">
             @if (post()?.author?.avatar_url) {
               <img
@@ -61,8 +61,8 @@
               />
             }
             <div>
-              <h3 class="font-bold text-[18px] mb-1 text-ink-1">{{ post()?.author?.username }}</h3>
-              <p class="text-[14px] text-ink-3">Author</p>
+              <h3 class="font-bold text-lg mb-1 text-ink-1">{{ post()?.author?.username }}</h3>
+              <p class="text-sm text-ink-3">Author</p>
             </div>
           </div>
         </div>
@@ -115,10 +115,10 @@
 
       <aside class="hidden xl:block" role="complementary" aria-label="Article navigation">
         <div class="sticky top-24 space-y-6">
-          <div class="bg-white/70 backdrop-blur-[10px] glass-panel p-5">
-            <h2 class="text-[12px] font-bold mb-4 text-ink-2 uppercase tracking-wider">On this page</h2>
+          <div class="bg-white/70 backdrop-blur-md glass-panel p-5">
+            <h2 class="text-xs font-bold mb-4 text-ink-2 uppercase tracking-wider">On this page</h2>
             <nav aria-label="Table of contents">
-              <div class="space-y-2 text-[14px]">
+              <div class="space-y-2 text-sm">
                 @for (item of tocItems(); track item) {
                   <div class="py-1.5 text-ink-2 cursor-pointer hover:text-ink-1 transition-colors">
                     {{ item }}
@@ -128,25 +128,25 @@
             </nav>
           </div>
 
-          <div class="bg-white/70 backdrop-blur-[10px] glass-panel p-5">
-            <h2 class="text-[12px] font-bold mb-4 text-ink-2 uppercase tracking-wider">Share</h2>
+          <div class="bg-white/70 backdrop-blur-md glass-panel p-5">
+            <h2 class="text-xs font-bold mb-4 text-ink-2 uppercase tracking-wider">Share</h2>
             <div class="flex flex-col gap-2" role="group" aria-label="Share article">
               <button
-                class="btn btn-tertiary btn-sm w-full text-left text-[14px]"
+                class="btn btn-tertiary btn-sm w-full text-left text-sm"
                 (click)="shareOnSocial('twitter')"
                 aria-label="Share article on Twitter"
               >
                 Twitter
               </button>
               <button
-                class="btn btn-tertiary btn-sm w-full text-left text-[14px]"
+                class="btn btn-tertiary btn-sm w-full text-left text-sm"
                 (click)="shareOnSocial('linkedin')"
                 aria-label="Share article on LinkedIn"
               >
                 LinkedIn
               </button>
               <button
-                class="btn btn-tertiary btn-sm w-full text-left text-[14px]"
+                class="btn btn-tertiary btn-sm w-full text-left text-sm"
                 (click)="copyLink()"
                 aria-label="Copy article link to clipboard"
               >
@@ -180,7 +180,7 @@
       </div>
     </div>
 
-    <div class="w-full h-[380px] bg-linear-to-br from-primary/10 to-secondary/10 rounded-3xl mb-10"></div>
+    <div class="w-full h-95 bg-linear-to-br from-primary/10 to-secondary/10 rounded-3xl mb-10"></div>
 
     <div class="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
       <div class="space-y-6">

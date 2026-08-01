@@ -13,20 +13,19 @@ import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { IconComponent } from '@shared/pattern/icon-system';
+import { Post } from '@shared/core/supabase';
 import { ProfileStore, ReaderApiService } from '../../../core';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { PostStore } from '../post.store';
 import { SocialShareService } from './social-share.service';
-import { PostService } from '../post.service';
-import { Post } from '@shared/core/supabase';
 import { CommentsStore } from './comments/comments.store';
 import { OpenCodeBlockModalDirective } from './open-code-block-modal.directive';
 
 @Component({
   selector: 'web-post',
   standalone: true,
-  providers: [ReaderApiService, DatePipe, PostStore, CommentsStore, PostService],
+  providers: [ReaderApiService, DatePipe, PostStore, CommentsStore],
   templateUrl: './post.component.html',
   styleUrl: './post.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,14 +61,9 @@ export class PostComponent implements OnInit {
     'Conclusion'
   ]);
 
-  private postService = inject(PostService);
   private socialShareService = inject(SocialShareService);
   private sanitizer = inject(DomSanitizer);
   private injector = inject(Injector);
-
-  constructor() {
-    this.postService.initializeCodeBlockHandling();
-  }
 
   ngOnInit(): void {
     this.loadPost();

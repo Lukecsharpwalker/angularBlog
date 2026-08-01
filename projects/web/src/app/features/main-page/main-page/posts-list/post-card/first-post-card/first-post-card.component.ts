@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
-import { Post } from '@shared/core/supabase';
 import { RouterLink } from '@angular/router';
+import { Post } from '@shared/core/supabase';
 
 @Component({
   selector: 'web-first-post-card',

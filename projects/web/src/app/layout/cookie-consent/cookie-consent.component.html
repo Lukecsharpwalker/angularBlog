@@ -1,5 +1,5 @@
 @if (activeView() === 'banner') {
-  <div class="p-6">
+  <div class="p-6 w-full max-w-2xl">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div class="flex-1 min-w-0">
         <div class="flex items-start gap-3">
@@ -25,27 +25,21 @@
         <button
           type="button"
           (click)="rejectAll()"
-          class="px-6 py-2 text-sm font-medium text-ink-2 bg-surface-2 border border-edge-1 rounded-lg
-                 hover:bg-surface-2 hover:border-edge-2 focus:outline-hidden focus:ring-3 focus:ring-offset-2
-                 focus:ring-primary transition-colors duration-200 min-h-[44px]">
+          class="btn px-6 py-2 rounded-lg text-ink-2 bg-surface-2 border border-edge-1 hover:border-edge-2">
           Reject All
         </button>
 
         <button
           type="button"
           (click)="showCustomizeOptions()"
-          class="px-6 py-2 text-sm font-medium text-primary bg-surface-1 border border-primary rounded-lg
-                 hover:bg-primary hover:text-ink-inverse focus:outline-hidden focus:ring-3 focus:ring-offset-2
-                 focus:ring-primary transition-colors duration-200 min-h-[44px]">
+          class="btn btn-secondary px-6 py-2 rounded-lg">
           Customize
         </button>
 
         <button
           type="button"
           (click)="acceptAll()"
-          class="px-6 py-2 text-sm font-medium text-ink-inverse bg-primary border border-primary rounded-lg
-                 hover:bg-primary/90 focus:outline-hidden focus:ring-3 focus:ring-offset-2
-                 focus:ring-primary transition-colors duration-200 min-h-[44px]">
+          class="btn btn-primary px-6 py-2 rounded-lg">
           Accept All
         </button>
       </div>
@@ -59,14 +53,14 @@
 }
 
 @if (activeView() === 'details') {
-  <div class="p-6 max-h-96 overflow-y-auto">
+  <div class="p-6 max-h-96 overflow-y-auto w-full max-w-2xl">
     <div class="mb-6">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-ink-1">Cookie Preferences</h2>
         <button
           type="button"
           (click)="backToBanner()"
-          class="text-ink-3 hover:text-ink-2 focus:outline-hidden focus:ring-3 focus:ring-primary rounded-full p-1"
+          class="icon-badge w-8 h-8 text-ink-3 hover:text-ink-2 hover:bg-tertiary/10 transition-colors"
           aria-label="Back to banner">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -97,6 +91,7 @@
                 </span>
               } @else {
                 <label class="relative inline-flex items-center cursor-pointer">
+                  //TODO: task #78 - create a custom toggle switch component to replace this code
                   <input
                     type="checkbox"
                     [checked]="getCategoryConsent(category.id)"
@@ -105,8 +100,8 @@
                     [attr.aria-describedby]="category.id + '-description'">
                   <div class="w-11 h-6 bg-surface-2 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-primary/25
                               rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white
-                              after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-1
-                              after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                              after:absolute after:top-0.5 after:left-0.5 after:bg-surface-1
+                              after:rounded-full after:h-5 after:w-5 after:transition-all">
                   </div>
                 </label>
               }
@@ -133,18 +128,14 @@
       <button
         type="button"
         (click)="backToBanner()"
-        class="px-6 py-2 text-sm font-medium text-ink-2 bg-surface-2 border border-edge-1 rounded-lg
-               hover:bg-surface-2 hover:border-edge-2 focus:outline-hidden focus:ring-3 focus:ring-offset-2
-               focus:ring-primary transition-colors duration-200 min-h-[44px]">
+        class="btn px-6 py-2 rounded-lg text-ink-2 bg-surface-2 border border-edge-1 hover:border-edge-2">
         Cancel
       </button>
 
       <button
         type="button"
         (click)="saveCustomPreferences()"
-        class="px-6 py-2 text-sm font-medium text-ink-inverse bg-primary border border-primary rounded-lg
-               hover:bg-primary/90 focus:outline-hidden focus:ring-3 focus:ring-offset-2
-               focus:ring-primary transition-colors duration-200 min-h-[44px]">
+        class="btn btn-primary px-6 py-2 rounded-lg">
         Save Preferences
       </button>
     </div>

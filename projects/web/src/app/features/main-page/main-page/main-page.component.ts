@@ -6,7 +6,6 @@ import { PostsListComponent } from './posts-list/posts-list.component';
   standalone: true,
   imports: [PostsListComponent],
   templateUrl: './main-page.component.html',
-  styleUrl: './main-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPageComponent {}
