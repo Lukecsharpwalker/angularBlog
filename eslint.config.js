@@ -1,9 +1,23 @@
 // @ts-check
+const path = require('path');
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const boundaries = require('eslint-plugin-boundaries');
 const importPlugin = require('eslint-plugin-import');
+const tailwindcss = require('eslint-plugin-tailwindcss');
+
+const tailwindCssConfigPath = path.resolve(__dirname, 'projects/web/src/styles.css');
+const tailwindSettings = {
+  tailwindcss: {
+    cssConfigPath: tailwindCssConfigPath,
+  },
+};
+const tailwindClassnameWhitelist = [
+  'tag-select-scroll',
+  'hide-scrollbar',
+  'quill-editor-theme',
+];
 
 module.exports = tseslint.config(
   {
@@ -33,8 +47,10 @@ module.exports = tseslint.config(
     plugins: {
       boundaries,
       import: importPlugin,
+      tailwindcss,
     },
     settings: {
+      ...tailwindSettings,
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
@@ -112,6 +128,19 @@ module.exports = tseslint.config(
     rules: {
       '@angular-eslint/prefer-standalone': 'error',
       '@angular-eslint/prefer-signals': 'warn',
+      'tailwindcss/no-custom-classname': ['warn', { whitelist: tailwindClassnameWhitelist }],
+      'tailwindcss/no-arbitrary-value': 'warn',
+      'no-restricted-syntax': [
+        'warn',
+        {
+          selector: "CallExpression[callee.property.name='add'][callee.object.property.name='classList']",
+          message: 'Do not add CSS classes from TypeScript. Styling belongs in templates or component stylesheets, not classList.add().',
+        },
+        {
+          selector: "CallExpression[callee.property.name='remove'][callee.object.property.name='classList']",
+          message: 'Do not remove CSS classes from TypeScript. Styling belongs in templates or component stylesheets, not classList.remove().',
+        },
+      ],
       'import/order': [
         'error',
         {
@@ -253,9 +282,17 @@ module.exports = tseslint.config(
   {
     files: ['**/*.html'],
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
+    plugins: {
+      tailwindcss,
+    },
+    settings: {
+      ...tailwindSettings,
+    },
     rules: {
       '@angular-eslint/template/prefer-control-flow': 'error',
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      'tailwindcss/no-custom-classname': ['warn', { whitelist: tailwindClassnameWhitelist }],
+      'tailwindcss/no-arbitrary-value': 'warn',
     },
   },
   {

@@ -58,7 +58,7 @@ fi
 
 echo "✅ Single project commit validation passed"
 
-staged_ts_html=$(echo "$staged_files" | grep -E '\.(ts|html)$' | grep -v '\.spec\.ts$')
+staged_ts_html=$(echo "$staged_files" | grep -E '\.(ts|html)$' | grep -v '\.spec\.ts$' || true)
 if [ -n "$staged_ts_html" ]; then
   echo "$staged_ts_html" | xargs npx eslint
   if [ $? -ne 0 ]; then
@@ -67,7 +67,7 @@ if [ -n "$staged_ts_html" ]; then
   fi
 fi
 
-staged_css=$(echo "$staged_files" | grep -E '\.css$')
+staged_css=$(echo "$staged_files" | grep -E '\.css$' || true)
 if [ -n "$staged_css" ]; then
   echo "$staged_css" | xargs npx stylelint
   if [ $? -ne 0 ]; then

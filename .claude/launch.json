@@ -8,6 +8,12 @@
       "port": 4300
     },
     {
+      "name": "web-local",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ng", "serve", "web", "--configuration=local", "--port", "4200"],
+      "port": 4200
+    },
+    {
       "name": "admin",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["ng", "serve", "admin", "--port", "4201"],

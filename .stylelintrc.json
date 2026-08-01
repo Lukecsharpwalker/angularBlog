@@ -1,0 +1,31 @@
+{
+  "extends": ["stylelint-config-tailwindcss"],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "ignoreFiles": ["**/dist/**", "**/node_modules/**", "**/*.min.css"],
+  "overrides": [
+    {
+      "files": ["**/theme.css"],
+      "rules": {
+        "scale-unlimited/declaration-strict-value": null
+      }
+    }
+  ],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      ["/^color$/", "background-color", "border-color", "border-top-color", "outline-color"],
+      {
+        "ignoreValues": [
+          "transparent",
+          "currentColor",
+          "inherit",
+          "initial",
+          "unset",
+          "none",
+          "white",
+          "black"
+        ],
+        "expandShorthand": true
+      }
+    ]
+  }
+}
