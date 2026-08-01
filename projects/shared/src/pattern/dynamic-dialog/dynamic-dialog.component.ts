@@ -20,7 +20,6 @@ import { ModalCloseStatusEnum, ModalStatus } from './modal-status';
   imports: [],
   providers: [],
   templateUrl: './dynamic-dialog.component.html',
-  styleUrl: './dynamic-dialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicDialogComponent<C = unknown> implements OnInit {

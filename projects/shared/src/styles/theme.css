@@ -5,7 +5,7 @@
   --color-quaternary: #FBFADA;
   --color-accent: #FF6B35;
 
-  --color-surface: #ffffff;
+  --color-surface: #f6f1e7;
   --color-surface-1: #ffffff;
   --color-surface-2: #f8fafc;
 
@@ -24,6 +24,15 @@
   --color-error: #ef4444;
   --color-error-hover: color-mix(in srgb, #ef4444 90%, black);
   --color-info: #3b82f6;
+
+  --width-80vw: 80vw;
+
+  --container-95vw: 95vw;
+
+  --height-60vh: 60vh;
+  --height-70vh: 70vh;
+  --height-80vh: 80vh;
+  --height-95vh: 95vh;
 
   --animate-fade-in: fade-in 0.5s ease-out;
   --animate-scale-in: scale-in 0.3s ease-out;

@@ -1,3 +1,7 @@
+@utility text-hero {
+  font-size: clamp(2rem, 1.6374rem + 1.547vw, 2.875rem);
+}
+
 @utility btn {
   display: inline-flex;
   align-items: center;
@@ -35,6 +39,20 @@
     &:active {
       transform: none;
     }
+  }
+}
+
+@utility spinner {
+  border-radius: calc(infinity * 1px);
+  animation: spin 1s linear infinite;
+}
+
+@utility focus-ring {
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 }
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Get list of staged files
-staged_files=$(git diff --cached --name-only)
+# Get list of staged files (exclude deleted files, they can't be linted)
+staged_files=$(git diff --cached --name-only --diff-filter=d)
 
 # Define project directories
 web_pattern="^projects/web/"
@@ -57,3 +57,23 @@ if [ $project_types -gt 1 ]; then
 fi
 
 echo "✅ Single project commit validation passed"
+
+staged_ts_html=$(echo "$staged_files" | grep -E '\.(ts|html)$' | grep -v '\.spec\.ts$')
+if [ -n "$staged_ts_html" ]; then
+  echo "$staged_ts_html" | xargs npx eslint
+  if [ $? -ne 0 ]; then
+    echo "❌ ESLint found errors in staged files. Fix them before committing."
+    exit 1
+  fi
+fi
+
+staged_css=$(echo "$staged_files" | grep -E '\.css$')
+if [ -n "$staged_css" ]; then
+  echo "$staged_css" | xargs npx stylelint
+  if [ $? -ne 0 ]; then
+    echo "❌ Stylelint found errors in staged files. Fix them before committing."
+    exit 1
+  fi
+fi
+
+echo "✅ Lint checks passed"
