@@ -17,13 +17,12 @@
   --color-edge-1: #e2e8f0;
   --color-edge-2: #cbd5e1;
 
-  --color-primary-hover: color-mix(in srgb, #12372A 90%, black);
+  --color-primary-hover: color-mix(in srgb, var(--color-primary) 90%, black);
 
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
-  --color-error-hover: color-mix(in srgb, #ef4444 90%, black);
-  --color-info: #3b82f6;
+  --color-error-hover: color-mix(in srgb, var(--color-error) 90%, black);
 
   --width-80vw: 80vw;
 
