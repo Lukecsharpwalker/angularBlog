@@ -21,7 +21,6 @@
           "options": {
             "browser": "projects/admin/src/main.ts",
             "tsConfig": "projects/admin/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -89,7 +88,6 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/admin/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -134,7 +132,6 @@
               "zone.js"
             ],
             "tsConfig": "projects/web/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -217,7 +214,6 @@
               "zone.js/testing"
             ],
             "tsConfig": "projects/web/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -299,7 +295,6 @@
           "options": {
             "browser": "projects/code-samples-mfe/src/main.ts",
             "tsConfig": "projects/code-samples-mfe/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -353,7 +348,6 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/code-samples-mfe/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
