@@ -1,3 +1,5 @@
+/* TODO: consider @utility - near-identical scrollbar block in
+   tags-scroll.component.css and code-block-modal.component.css */
 .tag-select-scroll {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--color-tertiary) 30%, transparent) color-mix(in srgb, var(--color-tertiary) 10%, transparent);
