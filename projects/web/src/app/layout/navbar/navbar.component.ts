@@ -84,6 +84,8 @@ export class NavbarComponent {
         this.isScrolled.set(window.scrollY > 0);
       };
 
+      scrollHandler();
+
       window.addEventListener('scroll', scrollHandler, { passive: true });
 
       this.destroyRef.onDestroy(() => {

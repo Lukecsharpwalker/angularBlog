@@ -12,17 +12,6 @@ import { Post } from '@shared/core/supabase';
 export class FirstPostCardComponent {
   readonly post = input.required<Post>();
 
-  private readonly tagColors = [
-    'bg-[#E7EFDD] text-[#2F5D4A]',
-    'bg-[#F0E7DA] text-[#9C6A3C]',
-    'bg-[#EDE6E0] text-[#6B7A4E]',
-    'bg-tertiary/40 text-secondary',
-  ];
-
-  protected getTagColorClass(index: number): string {
-    return this.tagColors[index % this.tagColors.length];
-  }
-
   protected getPostImageUrl(): string {
     const createdAt = new Date(this.post().created_at!);
     const year = createdAt.getFullYear();

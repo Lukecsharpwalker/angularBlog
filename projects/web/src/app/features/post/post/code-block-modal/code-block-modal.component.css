@@ -4,6 +4,8 @@
   height: 100%;
 }
 
+/* TODO: consider @utility - near-identical scrollbar block in
+   tags-scroll.component.css and tag-multi-select.component.css */
 .code-block {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   scrollbar-width: thin;

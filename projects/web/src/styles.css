@@ -13,6 +13,34 @@ body {
   color: var(--color-ink-1);
 }
 
+article ol,
+article ul {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+}
+
+article li[data-list='checked'],
+article li[data-list='unchecked'] {
+  list-style: none;
+}
+
+article li[data-list='checked']::before,
+article li[data-list='unchecked']::before {
+  display: inline-block;
+  width: 1.25rem;
+  margin-left: -1.25rem;
+  color: var(--color-ink-2);
+}
+
+article li[data-list='checked']::before {
+  content: '\2611';
+}
+
+article li[data-list='unchecked']::before {
+  content: '\2610';
+}
+
 article pre:not(.code-block) {
   overflow-x: auto;
   overflow-y: hidden;

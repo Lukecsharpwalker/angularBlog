@@ -1,3 +1,5 @@
+/* TODO: consider @utility - near-identical scrollbar block in
+   tag-multi-select.component.css and code-block-modal.component.css */
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

@@ -27,7 +27,6 @@ import { OpenCodeBlockModalDirective } from './open-code-block-modal.directive';
   standalone: true,
   providers: [ReaderApiService, DatePipe, PostStore, CommentsStore],
   templateUrl: './post.component.html',
-  styleUrl: './post.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommentsComponent,
