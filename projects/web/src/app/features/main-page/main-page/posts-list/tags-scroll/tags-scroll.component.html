@@ -34,22 +34,22 @@
 
     <button
       (click)="scrollBy('left')"
-      class="icon-badge absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-xs shadow-xs hover:bg-white/90 transition-all duration-300 hidden md:flex text-ink-2"
+      class="icon-badge group absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-xs shadow-xs border-2 border-edge-1 hover:bg-secondary/10 hover:border-secondary/40 hover:scale-110 transition-all duration-200 hidden md:flex text-ink-2 cursor-pointer"
       data-testid="scroll-left-button"
       aria-label="Scroll tags left"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4 group-hover:text-secondary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
 
     <button
       (click)="scrollBy('right')"
-      class="icon-badge absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-xs shadow-xs hover:bg-white/90 transition-all duration-300 hidden md:flex text-ink-2"
+      class="icon-badge group absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-xs shadow-xs border-2 border-edge-1 hover:bg-secondary/10 hover:border-secondary/40 hover:scale-110 transition-all duration-200 hidden md:flex text-ink-2 cursor-pointer"
       data-testid="scroll-right-button"
       aria-label="Scroll tags right"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4 group-hover:text-secondary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
     </button>
