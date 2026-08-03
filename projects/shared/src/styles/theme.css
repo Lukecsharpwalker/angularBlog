@@ -18,6 +18,7 @@
   --color-edge-2: #cbd5e1;
 
   --color-primary-hover: color-mix(in srgb, var(--color-primary) 90%, black);
+  --color-btn-outline-border: color-mix(in srgb, var(--color-tertiary) 60%, white);
 
   --color-success: #10b981;
   --color-warning: #f59e0b;

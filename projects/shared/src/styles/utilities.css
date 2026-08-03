@@ -76,15 +76,15 @@
 }
 
 @utility btn-secondary {
-  background-color: transparent;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  background-color: var(--color-white);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-btn-outline-border);
+  backdrop-filter: blur(4px);
 
   @media (hover: hover) {
     &:hover {
-      background-color: var(--color-primary);
-      color: var(--color-ink-inverse);
-      transform: scale(1.02);
+      background-color: color-mix(in srgb, var(--color-tertiary) 25%, white);
+      border-color: var(--color-secondary);
     }
   }
 }
@@ -106,8 +106,10 @@
 }
 
 @utility btn-danger {
-  background-color: var(--color-error);
-  color: var(--color-ink-inverse);
+  background-color: color-mix(in srgb, var(--color-error) 8%, white);
+  color: color-mix(in srgb, var(--color-error) 75%, black);
+  border: 1px solid color-mix(in srgb, var(--color-error) 30%, white);
+  backdrop-filter: blur(4px);
 
   &:focus-visible {
     outline-color: var(--color-error);
@@ -115,8 +117,8 @@
 
   @media (hover: hover) {
     &:hover {
-      background-color: var(--color-error-hover);
-      transform: scale(1.02);
+      background-color: color-mix(in srgb, var(--color-error) 16%, white);
+      border-color: color-mix(in srgb, var(--color-error) 40%, white);
     }
   }
 }
