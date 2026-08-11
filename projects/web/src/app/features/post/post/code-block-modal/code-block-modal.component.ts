@@ -6,6 +6,7 @@ import { CodeBlockModalData } from './code-block-modal.interface';
   selector: 'web-code-block-modal',
   templateUrl: './code-block-modal.component.html',
   styleUrl: './code-block-modal.component.css',
+  host: { class: 'block size-full' },
   imports: [],
 })
 export class CodeBlockModalComponent {

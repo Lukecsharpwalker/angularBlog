@@ -22,13 +22,11 @@
       </div>
     </div>
 
-    <div class="justify-self-center">
-      <div class="flex items-center cursor-pointer text-center" [routerLink]="['/']">
-        <div>
-          <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
-          <h2 class="text-xs sm:text-sm mt-0 pt-0">Bring the fun back to coding</h2>
-        </div>
-      </div>
+    <div class="justify-self-center text-center">
+      <a routerLink="/" class="focus-ring block">
+        <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
+        <h2 class="text-xs sm:text-sm mt-0 pt-0">Bring the fun back to coding</h2>
+      </a>
     </div>
 
     @if (userName()) {

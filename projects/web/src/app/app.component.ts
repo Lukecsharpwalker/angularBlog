@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MainLayoutComponent} from "./layout/main-layout/main-layout.component";
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 
 @Component({
   selector: 'web-root',

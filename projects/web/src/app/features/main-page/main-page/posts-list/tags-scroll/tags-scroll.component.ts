@@ -1,4 +1,3 @@
-import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -19,15 +18,19 @@ const PROGRESS_THRESHOLDS = [33, 66];
 
 @Component({
   selector: 'web-tags-scroll',
-  imports: [NgOptimizedImage],
   providers: [TagsScrollService],
   templateUrl: './tags-scroll.component.html',
-  styleUrl: './tags-scroll.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagsScrollComponent {
   readonly scroll = viewChild<ElementRef<HTMLElement>>('scrollContainer');
   readonly tags = input.required<Tag[] | null>();
+
+  readonly tagCells = computed(() =>
+    (this.tags() ?? []).map(tag => ({ ...tag, iconUrl: `url('/tags/${tag.icon}')` }))
+  );
+
+  //TODO: REFACTOR, refactor logic, and put logic into service and computed into store, and use store in component
   readonly activeDotClasses: Signal<string[]> = computed(() => {
     const activeIndex = this.scrollService.activeDotIndex();
     const dotCount = PROGRESS_THRESHOLDS.length + 1;

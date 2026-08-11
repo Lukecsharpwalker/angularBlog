@@ -1,11 +1,19 @@
 // @ts-check
+const path = require("path");
 const tseslint = require("typescript-eslint");
 const rootConfig = require("../../eslint.config.js");
+
+const tailwindSettings = {
+  tailwindcss: {
+    cssConfigPath: path.resolve(__dirname, "src/styles.css"),
+  },
+};
 
 module.exports = tseslint.config(
   ...rootConfig,
   {
     files: ["**/*.ts"],
+    settings: tailwindSettings,
     rules: {
       "@angular-eslint/directive-selector": [
         "error",
@@ -27,6 +35,7 @@ module.exports = tseslint.config(
   },
   {
     files: ["**/*.html"],
+    settings: tailwindSettings,
     rules: {},
   }
 );

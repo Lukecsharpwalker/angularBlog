@@ -1,13 +1,12 @@
-import { Component, input } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'web-label',
   standalone: true,
-  imports: [NgStyle],
   templateUrl: './label.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LabelComponent {
-  readonly text = input<string>('Label');
-  readonly color = input<string>('#000000');
+  readonly text = input.required<string>();
+  readonly color = input.required<string>();
 }

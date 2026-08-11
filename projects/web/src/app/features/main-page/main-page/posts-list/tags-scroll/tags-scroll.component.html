@@ -3,25 +3,23 @@
     <div
       #scrollContainer
       data-testid="tags-scroll-container"
-      class="overflow-x-auto overflow-y-hidden py-3 hide-scrollbar whitespace-nowrap scroll-smooth"
+      class="overflow-x-auto overflow-y-hidden py-3 no-scrollbar whitespace-nowrap scroll-smooth"
     >
       <div class="inline-flex space-x-2 md:space-x-6" data-testid="tags-list">
-        @for (tag of tags() || []; track tag.id) {
+        @for (tag of tagCells(); track tag.id) {
           <div class="flex flex-col items-center w-20 md:w-24 group transform-gpu backface-hidden" data-testid="tag-item"
-               [attr.data-tag-name]="tag.name">
+               [attr.data-tag-name]="tag.name"
+               [style.--tag-color]="tag.color"
+               [style.--tag-icon]="tag.iconUrl">
             <div
-              [style.background-color]="tag.color"
-              class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center hover-lift-subtle cursor-pointer shadow-xs"
+              class="tag-tile w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center hover-lift-subtle cursor-pointer shadow-xs"
               data-testid="tag-button"
             >
-              <img
-                ngSrc="tags/{{ tag.icon }}"
-                [alt]="tag.name"
-                class="w-7 h-7 md:w-8 md:h-8 transform-gpu"
-                width="32"
-                height="32"
+              <span
+                class="tag-glyph w-7 h-7 md:w-8 md:h-8 transform-gpu"
                 data-testid="tag-icon"
-              />
+                aria-hidden="true"
+              ></span>
             </div>
             <span
               class="mt-2 text-center text-ink-2 text-xs md:text-sm font-medium leading-tight"
