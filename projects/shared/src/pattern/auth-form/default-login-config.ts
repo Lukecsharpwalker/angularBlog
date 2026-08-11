@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Provider } from '@angular/core';
 import { AuthFormConfig } from './auth-form.interface';
 
 
@@ -15,3 +15,8 @@ export const LOGIN_FORM_CONFIG = new InjectionToken<AuthFormConfig>(
     factory: () => DEFAULT_LOGIN_CONFIG,
   }
 );
+
+export const provideLoginFormConfig = (config: AuthFormConfig): Provider => ({
+  provide: LOGIN_FORM_CONFIG,
+  useValue: { ...DEFAULT_LOGIN_CONFIG, ...config },
+});

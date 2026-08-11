@@ -20,6 +20,7 @@ export class DynamicDialogService<T> {
   private closeRef$ = new Subject<ModalStatus<T>>();
   private injector = inject(Injector);
 
+  //TODO: For now need to use with take(1) to avoid memory leak. Need to find a better way to handle this. By service?
   openDialog<C>(
     viewContainerRef: ViewContainerRef,
     modalConfig?: ModalConfig,

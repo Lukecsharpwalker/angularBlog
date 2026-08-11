@@ -33,7 +33,12 @@ import {
   lucideChevronDown,
   lucideX,
   lucideMenu,
-  lucideLock
+  lucideLock,
+  lucideTrash2,
+  lucidePlus,
+  lucideBell,
+  lucideImage,
+  lucideArrowLeft
 } from '@ng-icons/lucide';
 
 export type IconName =
@@ -71,7 +76,12 @@ export type IconName =
   | 'chevron-down'
   | 'close'
   | 'menu'
-  | 'lock';
+  | 'lock'
+  | 'trash'
+  | 'plus'
+  | 'bell'
+  | 'image'
+  | 'arrow-left';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
@@ -110,7 +120,12 @@ const iconMapping: Record<IconName, string> = {
   'chevron-down': 'lucideChevronDown',
   'close': 'lucideX',
   'menu': 'lucideMenu',
-  'lock': 'lucideLock'
+  'lock': 'lucideLock',
+  'trash': 'lucideTrash2',
+  'plus': 'lucidePlus',
+  'bell': 'lucideBell',
+  'image': 'lucideImage',
+  'arrow-left': 'lucideArrowLeft'
 };
 
 const sizeClasses: Record<IconSize, string> = {
@@ -160,7 +175,12 @@ const sizeClasses: Record<IconSize, string> = {
       lucideChevronDown,
       lucideX,
       lucideMenu,
-      lucideLock
+      lucideLock,
+      lucideTrash2,
+      lucidePlus,
+      lucideBell,
+      lucideImage,
+      lucideArrowLeft
     })
   ],
   template: `

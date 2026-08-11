@@ -17,7 +17,7 @@
   --color-edge-1: #e2e8f0;
   --color-edge-2: #cbd5e1;
 
-  --color-primary-hover: color-mix(in srgb, var(--color-primary) 90%, black);
+  --color-primary-hover: color-mix(in srgb, var(--color-primary) 88%, white);
   --color-btn-outline-border: color-mix(in srgb, var(--color-tertiary) 60%, white);
 
   --color-success: #10b981;
@@ -32,6 +32,7 @@
   --height-60vh: 60vh;
   --height-70vh: 70vh;
   --height-80vh: 80vh;
+  --height-90vh: 90vh;
   --height-95vh: 95vh;
 
   --animate-fade-in: fade-in 0.5s ease-out;

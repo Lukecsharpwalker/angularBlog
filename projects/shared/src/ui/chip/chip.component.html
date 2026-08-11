@@ -1,0 +1,9 @@
+<div
+  [style.--tag-color]="color() || null"
+  [class.tag-outline]="variant() === 'outline'"
+  [class.tag-tint]="variant() === 'tint'"
+  class="chip"
+>
+  <span>{{ text() }}</span>
+  <ng-content />
+</div>

@@ -5,7 +5,7 @@ import { Tag } from './tags';
 
 export interface Post {
   content: string;
-  created_at: Date | null;
+  created_at: string | null;
   description: string;
   id: string;
   is_draft: boolean;
