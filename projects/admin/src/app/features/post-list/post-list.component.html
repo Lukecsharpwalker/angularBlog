@@ -1,0 +1,122 @@
+<div class="flex items-end justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-3xl font-extrabold text-primary tracking-tight mb-1">Posts</h1>
+    <p class="text-sm text-ink-3">Manage everything published on angular.fun</p>
+  </div>
+
+  <a [routerLink]="newPostRoute" class="btn btn-primary btn-sm">
+    <span>New post</span>
+  </a>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+  <admin-stat-card label="Total posts" [value]="posts().length" hint="Placeholder data" />
+  <admin-stat-card
+    label="Published"
+    [value]="publishedCount()"
+    [hint]="publishedShare() + '% of total'"
+  />
+  <admin-stat-card label="Drafts" [value]="draftCount()" hint="Awaiting review" hintTone="accent" />
+  <admin-stat-card label="Comments" value="—" hint="Not tracked yet" hintTone="danger" />
+</div>
+
+<admin-panel-card>
+  <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-edge-1">
+    <div class="flex gap-2" role="group" aria-label="Filter posts by status">
+      @for (option of statusFilters; track option.value) {
+        <admin-filter-chip
+          [label]="option.label"
+          [selected]="option.value === statusFilter()"
+          (activate)="statusFilter.set(option.value)"
+        />
+      }
+    </div>
+
+    <span class="hidden sm:block text-sm font-semibold text-ink-3">Sorted by newest</span>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-3xl border-collapse">
+      <thead>
+        <tr class="border-b border-edge-1 text-left section-label">
+          <th scope="col" class="px-6 py-3 font-extrabold">Title</th>
+          <th scope="col" class="px-6 py-3 font-extrabold">Tags</th>
+          <th scope="col" class="px-6 py-3 font-extrabold">Status</th>
+          <th scope="col" class="px-6 py-3 font-extrabold">Date</th>
+          <th scope="col" class="px-6 py-3 font-extrabold">Views</th>
+          <th scope="col" class="px-6 py-3 font-extrabold">
+            <span class="sr-only">Actions</span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (post of visiblePosts(); track post.id) {
+          <tr class="border-b border-edge-1 last:border-b-0">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3 min-w-0">
+                <span
+                  class="flex items-center justify-center w-11 h-8.5 shrink-0 rounded-lg bg-nav-active text-primary text-xs font-extrabold"
+                  aria-hidden="true"
+                >
+                  {{ post.title.charAt(0) }}
+                </span>
+                <span class="truncate text-sm font-bold text-primary">{{ post.title }}</span>
+              </div>
+            </td>
+
+            <td class="px-6 py-4">
+              <div class="flex flex-wrap gap-1.5">
+                @for (tag of post.tags; track tag.id) {
+                  <shared-chip [text]="tag.name" [color]="tag.color" />
+                }
+              </div>
+            </td>
+
+            <td class="px-6 py-4">
+              <admin-status-chip [isDraft]="post.is_draft" />
+            </td>
+
+            <td class="px-6 py-4 text-sm font-semibold text-ink-3">
+              {{ post.created_at | date: 'mediumDate' }}
+            </td>
+
+            <td class="px-6 py-4 text-sm font-bold text-ink-2">
+              @if (post.views > 0) {
+                {{ post.views | number }}
+              } @else {
+                —
+              }
+            </td>
+
+            <td class="px-6 py-4">
+              <div class="flex items-center justify-end gap-3 text-ink-3">
+                <a
+                  [routerLink]="[postRoute, post.id]"
+                  class="icon-badge w-8 h-8 transition-colors duration-200 hover:bg-nav-active hover:text-secondary"
+                  [attr.aria-label]="'Edit ' + post.title"
+                >
+                  <shared-icon name="edit" size="sm" />
+                </a>
+                <button
+                  type="button"
+                  class="icon-badge w-8 h-8 cursor-pointer transition-colors duration-200 hover:bg-draft-bg hover:text-danger"
+                  [attr.aria-label]="'Delete ' + post.title"
+                  (click)="confirmDelete(post)"
+                >
+                  <shared-icon name="trash" size="sm" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-sm text-ink-3">
+              No posts match this filter.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</admin-panel-card>

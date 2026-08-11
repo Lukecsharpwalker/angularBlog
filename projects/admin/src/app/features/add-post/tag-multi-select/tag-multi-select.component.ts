@@ -1,17 +1,20 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
+  ElementRef,
   forwardRef,
   inject,
   signal,
   computed,
   HostListener,
-  ElementRef,
-  viewChild,
   input,
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedPosition } from '@angular/cdk/overlay';
 import { Tag } from '@shared/core/supabase';
+import { ChipComponent } from '@shared/ui/chip';
 
 @Component({
   selector: 'admin-tag-multi-select',
@@ -24,11 +27,12 @@ import { Tag } from '@shared/core/supabase';
     },
   ],
   templateUrl: './tag-multi-select.component.html',
-  styleUrl: './tag-multi-select.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block' },
+  imports: [ChipComponent, CdkConnectedOverlay, CdkOverlayOrigin],
 })
-//TODO: Refactor component (CDK overlay?)
 export class TagMultiSelectComponent implements ControlValueAccessor {
+  // TODO: REfactor with signal forms
   readonly allTags = input.required<Tag[]>();
 
   protected readonly selectedTags = signal<Tag[]>([]);
@@ -37,6 +41,13 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
   protected readonly disabled = signal(false);
   protected readonly focusedTagId = signal<number | null>(null);
 
+  //TODO: test if singal woulnd't update this
+  protected readonly overlayPositions: ConnectedPosition[] = [
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
+    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
+  ];
+
+  //TODO: Maybe some set?
   protected readonly filteredTags = computed(() => {
     const search = this.searchTerm().toLowerCase();
     const selected = this.selectedTags();
@@ -45,10 +56,16 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
     );
   });
 
-  private readonly searchInput = viewChild.required<ElementRef<HTMLInputElement>>('searchInput');
-  private elementRef = inject(ElementRef);
+  private readonly connectedOverlay = viewChild(CdkConnectedOverlay);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly destroyRef = inject(DestroyRef);
   private onChange: ((value: Tag[]) => void) | null = null;
   private onTouched: (() => void) | null = null;
+
+  constructor() {
+    //TODO: In Angular 22 use https://angular.dev/guide/aria/multiselect
+    this.keepOverlayAlignedWithInput();
+  }
 
   writeValue(value: Tag[] | null): void {
     this.selectedTags.set(value || []);
@@ -70,6 +87,7 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     this.searchTerm.set(value);
+    this.isOpen.set(true);
   }
 
   protected onInputFocus(): void {
@@ -78,36 +96,23 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
   }
 
   protected onInputBlur(): void {
-    setTimeout(() => {
-      this.isOpen.set(false);
-      this.onTouched?.();
-    }, 150);
+    this.isOpen.set(false);
+    this.focusedTagId.set(null);
+    this.onTouched?.();
   }
 
   protected selectTag(tag: Tag): void {
-    if (!this.selectedTags().find(t => t.id === tag.id)) {
-      this.selectedTags.update(tags => [...tags, tag]);
-      this.onChange?.(this.selectedTags());
-      this.onTouched?.();
+    this.selectedTags.update(tags => [...tags, tag]);
+    this.onChange?.(this.selectedTags());
+    this.onTouched?.();
 
-      this.searchTerm.set('');
-      this.searchInput().nativeElement.value = '';
-      this.isOpen.set(true);
-
-      setTimeout(() => {
-        this.searchInput().nativeElement.focus();
-      }, 0);
-    }
+    this.searchTerm.set('');
   }
 
   protected removeTag(tag: Tag): void {
     this.selectedTags.update(tags => tags.filter(t => t.id !== tag.id));
     this.onChange?.(this.selectedTags());
     this.onTouched?.();
-  }
-
-  protected isTagSelected(tag: Tag): boolean {
-    return this.selectedTags().some(t => t.id === tag.id);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -121,14 +126,14 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
       case 'ArrowDown': {
         event.preventDefault();
         const nextIndex = currentIndex < filtered.length - 1 ? currentIndex + 1 : 0;
-        this.focusedTagId.set(filtered[nextIndex]?.id || null);
+        this.focusedTagId.set(filtered[nextIndex]?.id ?? null);
         break;
       }
 
       case 'ArrowUp': {
         event.preventDefault();
         const prevIndex = currentIndex > 0 ? currentIndex - 1 : filtered.length - 1;
-        this.focusedTagId.set(filtered[prevIndex]?.id || null);
+        this.focusedTagId.set(filtered[prevIndex]?.id ?? null);
         break;
       }
 
@@ -144,15 +149,19 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
       case 'Escape':
         event.preventDefault();
         this.isOpen.set(false);
-        this.searchInput().nativeElement.blur();
+        this.focusedTagId.set(null);
         break;
     }
   }
 
-  @HostListener('document:click', ['$event'])
-  protected onDocumentClick(event: Event): void {
-    if (!this.elementRef.nativeElement.contains(event.target as Node)) {
-      this.isOpen.set(false);
-    }
+  // When user selects a tag, we want to keep the overlay aligned with the input field.
+  // After select input field drifts down and overlay position is not updated.
+  private keepOverlayAlignedWithInput(): void {
+    const resizeObserver = new ResizeObserver(() =>
+      this.connectedOverlay()?.overlayRef?.updatePosition()
+    );
+
+    resizeObserver.observe(this.elementRef.nativeElement);
+    this.destroyRef.onDestroy(() => resizeObserver.disconnect());
   }
 }

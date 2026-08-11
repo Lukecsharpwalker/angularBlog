@@ -1,18 +1,11 @@
 import { inject } from '@angular/core';
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { Post, Tag } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
 import { AddPostService } from './add-post.service';
 
 interface AddPostState {
-  currentPost: Post | null;
+  post: Post | null;
   loading: boolean;
   error: string | null;
   submitting: boolean;
@@ -20,7 +13,7 @@ interface AddPostState {
 }
 
 const initialState: AddPostState = {
-  currentPost: null,
+  post: null,
   loading: false,
   error: null,
   submitting: false,
@@ -29,15 +22,12 @@ const initialState: AddPostState = {
 
 export const AddPostStore = signalStore(
   withState(initialState),
-  withComputed(store => ({
-    availableTags: () => store.tags(),
-  })),
   withMethods((store, addPostService = inject(AddPostService)) => ({
     async loadPost(id: string) {
       patchState(store, { loading: true, error: null });
       try {
         const post = await addPostService.getPostById(id);
-        patchState(store, { currentPost: post, loading: false });
+        patchState(store, { post: post, loading: false });
       } catch (error) {
         patchState(store, {
           error: typeof error === 'string' ? error : 'Failed to load post',
@@ -51,7 +41,7 @@ export const AddPostStore = signalStore(
       try {
         const createdPost = await addPostService.addPost(post);
         patchState(store, {
-          currentPost: createdPost,
+          post: createdPost,
           submitting: false,
         });
       } catch (error) {
@@ -85,8 +75,6 @@ export const AddPostStore = signalStore(
         });
       }
     },
-
-    clearError: () => patchState(store, { error: null }),
   })),
   withHooks({
     async onInit(store) {

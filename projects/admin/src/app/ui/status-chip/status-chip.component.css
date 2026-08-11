@@ -1,0 +1,9 @@
+:host([data-state='draft']) {
+  background-color: var(--color-draft-bg);
+  color: var(--color-draft-text);
+}
+
+:host([data-state='published']) {
+  background-color: var(--color-tag-green-bg);
+  color: var(--color-outline-text);
+}

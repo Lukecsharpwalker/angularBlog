@@ -1,0 +1,7 @@
+<div class="bg-surface-1 border border-edge-1 rounded-2xl px-6 py-5">
+  <p class="text-sm font-semibold text-ink-3 mb-2.5">{{ label() }}</p>
+  <p class="text-3xl font-extrabold text-primary tracking-tight">{{ value() }}</p>
+  @if (hint()) {
+    <p [attr.data-hint-tone]="hintTone()" class="text-xs font-bold mt-1.5">{{ hint() }}</p>
+  }
+</div>

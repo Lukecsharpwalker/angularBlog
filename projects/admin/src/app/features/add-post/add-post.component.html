@@ -1,166 +1,186 @@
 @if (addPostStore.loading()) {
   <div class="fixed inset-0 bg-black/20 backdrop-blur-xs z-50 flex items-center justify-center">
-    <div class="bg-surface-1 rounded-lg p-6 shadow-lg">
+    <div class="bg-surface-1 rounded-2xl p-6 shadow-card">
       <div class="flex flex-col items-center gap-3">
         <div class="relative">
-          <div class="w-10 h-10 border-4 border-edge-1 rounded-full"></div>
-          <div class="spinner absolute inset-0 w-10 h-10 border-4 border-primary border-t-transparent"></div>
+          <div class="size-10 border-4 border-edge-1 rounded-full"></div>
+          <div
+            class="spinner absolute inset-0 size-10 border-4 border-primary border-t-transparent"
+          ></div>
         </div>
         <div class="text-center">
-          <h3 class="font-semibold">Loading Post</h3>
-          <p class="text-sm text-ink-2">Please wait...</p>
+          <h3 class="font-semibold text-ink-1">Loading post</h3>
+          <p class="text-sm text-ink-3">Please wait…</p>
         </div>
       </div>
     </div>
   </div>
 }
 
-<div class="max-w-4xl mx-auto">
-  <header class="mb-6">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold">
+<form [formGroup]="blogForm">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div class="flex items-center gap-4">
+      <a routerLink="/posts" class="flex items-center gap-2 text-sm font-semibold text-secondary">
+        <shared-icon name="arrow-left" size="sm" />
+        <span>Back</span>
+      </a>
+      <span class="text-sm text-ink-3">
         @if (isEditMode()) {
-          Edit Post
+          Editing an existing post
         } @else {
-          Create New Post
+          New draft
         }
-      </h1>
-
-      <div class="flex items-center gap-2 px-3 py-1 bg-surface-1 border border-edge-1 rounded-full text-xs">
-        @if (isEditMode()) {
-          <div class="w-2 h-2 bg-warning rounded-full"></div>
-          <span>Editing</span>
-        } @else {
-          <div class="w-2 h-2 bg-success rounded-full"></div>
-          <span>Draft</span>
-        }
-      </div>
+      </span>
     </div>
-  </header>
 
-  <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
-    <div class="bg-surface-1 border border-edge-1 rounded-lg overflow-clip mb-20">
-      <div class="p-6 space-y-6">
-        <div>
-          <label for="title" class="block text-sm font-medium mb-2">
-            Title
-          </label>
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        (click)="onSubmit(true)"
+        [disabled]="blogForm.invalid || addPostStore.submitting()"
+      >
+        @if (addPostStore.submitting()) {
+          <span class="spinner size-3 border-2 border-current border-t-transparent"></span>
+          <span>Saving…</span>
+        } @else {
+          <span>Save draft</span>
+        }
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        [disabled]="blogForm.invalid || addPostStore.submitting()"
+        (click)="onSubmit(false)"
+      >
+        @if (addPostStore.submitting()) {
+          <span class="spinner size-3 border-2 border-current border-t-transparent"></span>
+          <span>Publishing…</span>
+        } @else if (isEditMode()) {
+          <span>Update post</span>
+        } @else {
+          <span>Publish</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+    <div class="flex flex-col gap-5 min-w-0 xl:col-span-8">
+      <admin-panel-card>
+        <div class="p-6">
+          <label for="title" class="sr-only">Title</label>
           <input
             id="title"
             type="text"
             formControlName="title"
-            placeholder="Enter your post title..."
-            class="w-full px-3 py-2 text-lg font-semibold border-b-2 border-edge-1 focus:border-primary focus:outline-hidden"
+            placeholder="Post title"
+            class="w-full text-3xl font-extrabold text-primary tracking-tight placeholder:text-ink-3 focus:outline-hidden"
           />
-          @if (blogForm.controls.title.invalid && (blogForm.controls.title.dirty || blogForm.controls.title.touched)) {
-            <p class="text-xs text-error mt-1 flex items-center gap-1">
-              <svg class="w-3 h-3 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill="currentColor" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/>
-              </svg>
-              Title is required
-            </p>
+          @if (
+            blogForm.controls.title.invalid &&
+            (blogForm.controls.title.dirty || blogForm.controls.title.touched)
+          ) {
+            <p class="text-xs text-error mt-2">Title is required</p>
           }
         </div>
+      </admin-panel-card>
 
-        <div>
-          <label for="description" class="block text-sm font-medium mb-2">
-            Description
-          </label>
+      <admin-panel-card>
+        <div class="p-6">
+          <label for="description" class="block section-label mb-3"> Excerpt </label>
           <textarea
             id="description"
             formControlName="description"
-            placeholder="Enter a brief description..."
+            placeholder="A short summary shown in post lists…"
+            [maxlength]="ADD_POST_CONSTANTS.DESCRIPTION_MAX_LENGTH"
             rows="3"
-            class="w-full px-3 py-2 border-2 border-edge-1 rounded-lg focus:border-primary focus:outline-hidden resize-none"
+            class="form-input resize-none"
           ></textarea>
-        </div>
-
-        <div class="border-t border-edge-1 pt-6">
-          <span class="block text-sm font-medium mb-2">Tags</span>
-          <div class="p-3 bg-surface-2 border border-edge-1 rounded-sm">
-            <admin-tag-multi-select
-              [allTags]="addPostStore.availableTags()"
-              formControlName="tags"
-            />
-          </div>
-          @if (blogForm.controls.tags.invalid && (blogForm.controls.tags.dirty || blogForm.controls.tags.touched)) {
-            <p class="text-xs text-error mt-1 flex items-center gap-1">
-              <svg class="w-3 h-3 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill="currentColor" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/>
-              </svg>
-              At least one tag is required
-            </p>
+          @if (
+            blogForm.controls.description.invalid &&
+            (blogForm.controls.description.dirty || blogForm.controls.description.touched)
+          ) {
+            <p class="text-xs text-error mt-2">Description is required</p>
           }
         </div>
+      </admin-panel-card>
 
-        <div class="border-t border-edge-1 pt-6">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium">Content</span>
-            <button
-              type="button"
-              class="btn btn-secondary btn-sm"
-              (click)="insertImage()"
-              [disabled]="addPostStore.submitting()"
-            >
-              Add Image
-            </button>
-          </div>
-
-          <div class="quill-editor-theme -mx-6">
-            <quill-editor
-              #quill
-              formControlName="content"
-              class="border-none rounded-b-xl min-h-100"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-
-  <div class="fixed bottom-0 left-60 right-0 bg-surface-1 border-t border-edge-1 z-40">
-    <div class="max-w-4xl mx-auto px-6 py-2">
-      <div class="flex items-center justify-between">
-        <span class="text-xs text-ink-3">All changes saved</span>
-
-        <div class="flex items-center gap-3">
+      <admin-panel-card>
+        <div
+          class="flex items-center justify-between gap-4 bg-surface-2 border-b border-edge-1 px-5 py-3"
+        >
+          <span class="section-label">Content</span>
           <button
             type="button"
             class="btn btn-secondary btn-sm"
-            (click)="onSubmit(true)"
-            [disabled]="blogForm.invalid || addPostStore.submitting()"
+            (click)="insertImage()"
+            [disabled]="addPostStore.submitting()"
           >
-            @if (addPostStore.submitting()) {
-              <div class="flex items-center gap-2">
-                <div class="spinner w-3 h-3 border-2 border-current border-t-transparent"></div>
-                <span>Saving...</span>
-              </div>
-            } @else {
-              Save Draft
-            }
-          </button>
-
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            [disabled]="blogForm.invalid || addPostStore.submitting()"
-            (click)="onSubmit(false)"
-          >
-            @if (addPostStore.submitting()) {
-              <div class="flex items-center gap-2">
-                <div class="spinner w-3 h-3 border-2 border-ink-inverse border-t-transparent"></div>
-                <span>Publishing...</span>
-              </div>
-            } @else {
-              @if (isEditMode()) {
-                Update Post
-              } @else {
-                Publish Post
-              }
-            }
+            <shared-icon name="image" size="sm" />
+            <span>Add image</span>
           </button>
         </div>
-      </div>
+
+        <div class="quill-editor-theme">
+          @if (quillReady()) {
+            <quill-editor formControlName="content" class="border-none min-h-100" />
+          }
+        </div>
+      </admin-panel-card>
     </div>
+
+    <aside class="flex flex-col gap-5 min-w-0 xl:col-span-4">
+      <admin-panel-card>
+        <div class="p-5">
+          <p class="section-label mb-3">Status</p>
+          <admin-status-chip [isDraft]="blogForm.controls.is_draft.value" class="chip-full" />
+
+          @if (blogForm.controls.created_at.value) {
+            <p class="mt-4 text-sm text-ink-3">
+              {{ blogForm.controls.created_at.value | date: 'mediumDate' }}
+            </p>
+          }
+        </div>
+      </admin-panel-card>
+
+      <admin-panel-card>
+        <div class="p-5">
+          <p class="section-label mb-3">Cover image</p>
+          <div
+            class="flex items-center justify-center h-32 rounded-xl bg-surface-2 border border-edge-1 text-ink-3"
+          >
+            <shared-icon name="image" size="lg" />
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm w-full mt-3"
+            (click)="insertImage()"
+            [disabled]="addPostStore.submitting()"
+          >
+            Replace image
+          </button>
+        </div>
+      </admin-panel-card>
+
+      <admin-panel-card>
+        <div class="p-5">
+          <p class="section-label mb-3">Tags</p>
+          <admin-tag-multi-select [allTags]="addPostStore.tags()" formControlName="tags" />
+          @if (
+            blogForm.controls.tags.invalid &&
+            (blogForm.controls.tags.dirty || blogForm.controls.tags.touched)
+          ) {
+            <p class="text-xs text-error mt-2">At least one tag is required</p>
+          }
+        </div>
+      </admin-panel-card>
+
+      <button type="button" class="btn btn-danger btn-sm w-full" [disabled]="!isEditMode()">
+        <shared-icon name="trash" size="sm" />
+        <span>Delete post</span>
+      </button>
+    </aside>
   </div>
-</div>
+</form>

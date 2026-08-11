@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Post, Tag, SUPABASE_CLIENT } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AddPostService {
   private readonly client = inject(SUPABASE_CLIENT);
 

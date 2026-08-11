@@ -1,10 +1,11 @@
-<div class="min-h-screen bg-linear-to-br from-surface-2 via-tertiary/10 to-secondary/10">
-  <admin-navbar />
+<div class="flex min-h-screen bg-surface">
   <admin-sidenav />
 
-  <main class="pt-16 pl-60">
-    <div class="p-8">
+  <div class="flex flex-col flex-1">
+    <admin-navbar />
+
+    <main class="flex-1 p-7">
       <router-outlet />
-    </div>
-  </main>
+    </main>
+  </div>
 </div>

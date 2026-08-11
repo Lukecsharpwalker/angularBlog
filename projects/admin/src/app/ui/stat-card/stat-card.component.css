@@ -1,0 +1,15 @@
+[data-hint-tone='positive'] {
+  color: var(--color-success);
+}
+
+[data-hint-tone='neutral'] {
+  color: var(--color-ink-3);
+}
+
+[data-hint-tone='accent'] {
+  color: var(--color-accent);
+}
+
+[data-hint-tone='danger'] {
+  color: var(--color-danger);
+}

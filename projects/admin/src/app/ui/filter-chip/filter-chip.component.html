@@ -1,0 +1,8 @@
+<button
+  type="button"
+  [attr.aria-pressed]="selected()"
+  class="chip chip-lg focus-ring cursor-pointer"
+  (click)="activate.emit()"
+>
+  {{ label() }}
+</button>

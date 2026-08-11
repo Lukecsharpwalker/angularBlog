@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
@@ -8,5 +8,6 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, SidenavComponent],
   templateUrl: './main-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayoutComponent {}

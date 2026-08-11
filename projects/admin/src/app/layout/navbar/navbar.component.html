@@ -1,27 +1,25 @@
-<nav class="fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-xl border-b border-edge-1 z-50">
-  <div class="h-full px-6 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 bg-linear-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
-        <span class="text-ink-inverse text-sm font-bold">A</span>
-      </div>
-      <div>
-        <h1 class="text-base font-bold text-ink-1 leading-none">angular.fun</h1>
-        <p class="text-xs text-ink-3 leading-none">Admin Panel</p>
+<header
+  class="flex items-center justify-between gap-6 bg-surface-1 border-b border-edge-1 px-7 py-3.5"
+>
+  <div
+    class="flex items-center gap-2.5 w-70 max-w-full bg-chip border border-edge-1 rounded-full px-4 py-2.5 text-ink-3"
+  >
+    <shared-icon name="search" size="sm" />
+    <span class="text-sm">Search posts, tags…</span>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <shared-icon name="bell" size="md" className="text-ink-3" />
+
+    <div class="flex items-center gap-2.5">
+      <span class="icon-badge w-9 h-9 bg-secondary text-surface text-xs font-extrabold">ŁJ</span>
+      <div class="hidden sm:block leading-tight">
+        <!--        TODO: fix dummy data-->
+        <p class="text-sm font-bold text-primary">Łukasz J.</p>
+        <p class="text-xs text-ink-3">Administrator</p>
       </div>
     </div>
 
-    <div class="flex items-center gap-4">
-      <div class="hidden sm:block text-right">
-<!--        <p class="text-sm font-semibold text-ink-1">{{ authStore.user()?.email || 'Admin' }}</p>-->
-        <p class="text-xs text-ink-3">Administrator</p>
-      </div>
-      <button
-        class="btn btn-secondary btn-sm"
-        (click)="logout()"
-        title="Sign out"
-      >
-        Logout
-      </button>
-    </div>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="logout()">Sign out</button>
   </div>
-</nav>
+</header>
