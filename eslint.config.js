@@ -7,16 +7,27 @@ const boundaries = require('eslint-plugin-boundaries');
 const importPlugin = require('eslint-plugin-import');
 const tailwindcss = require('eslint-plugin-tailwindcss');
 
-const tailwindCssConfigPath = path.resolve(__dirname, 'projects/web/src/styles.css');
+const tailwindCssConfigPath = project =>
+  path.resolve(__dirname, `projects/${project}/src/styles.css`);
 const tailwindSettings = {
   tailwindcss: {
-    cssConfigPath: tailwindCssConfigPath,
+    cssConfigPath: tailwindCssConfigPath('web'),
   },
 };
+const tailwindProjectSettings = project => ({
+  files: [`projects/${project}/src/**/*.ts`, `projects/${project}/src/**/*.html`],
+  settings: {
+    tailwindcss: {
+      cssConfigPath: tailwindCssConfigPath(project),
+    },
+  },
+});
 const tailwindClassnameWhitelist = [
-  'tag-select-scroll',
-  'hide-scrollbar',
+  'nav-link',
   'quill-editor-theme',
+  'code-block',
+  'hljs',
+  'portrait',
 ];
 
 module.exports = tseslint.config(
@@ -31,8 +42,8 @@ module.exports = tseslint.config(
       '**/*.generated.ts',
       '**/*.d.ts',
       '!**/*.spec.d.ts',
-      '*.config.js',
-      '*.config.ts',
+      '**/*.config.js',
+      '**/*.config.ts',
     ],
   },
   {
@@ -67,6 +78,7 @@ module.exports = tseslint.config(
         { type: 'shared-core-supabase', pattern: 'projects/shared/src/core/supabase/**' },
         { type: 'shared-data-access', pattern: 'projects/shared/src/data-access/**' },
         { type: 'shared-models', pattern: 'projects/shared/src/models/**' },
+        { type: 'shared-ui', pattern: 'projects/shared/src/ui/**' },
         { type: 'shared-models-api', mode: 'file', pattern: 'projects/shared/models/public-api.ts' },
         { type: 'shared-utils', pattern: 'projects/shared/src/utils/**' },
         { type: 'shared-utils-api', mode: 'file', pattern: 'projects/shared/src/utils/public-api.ts' },
@@ -208,6 +220,7 @@ module.exports = tseslint.config(
                 'shared-core-supabase',
                 'shared-data-access',
                 'shared-models',
+                'shared-ui',
                 'shared-utils',
               ],
             },
@@ -238,7 +251,7 @@ module.exports = tseslint.config(
             },
             {
               from: 'web-feature',
-              allow: ['web-core', 'web-ui', 'web-pattern', 'web-utils', 'shared-public-api', 'shared-models-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern'],
+              allow: ['web-core', 'web-ui', 'web-pattern', 'web-utils', 'shared-public-api', 'shared-models-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern', 'shared-ui'],
             },
             { from: 'web-feature-routes', allow: ['web-core', 'web-pattern', 'web-feature'] },
             { from: 'web-utils', allow: ['shared-models', 'shared-public-api', 'shared-core', 'shared-core-supabase', 'environment'] },
@@ -246,7 +259,7 @@ module.exports = tseslint.config(
             { from: 'admin-main', allow: ['admin-app'] },
             {
               from: 'admin-app',
-              allow: ['admin-core', 'admin-layout', 'admin-feature-routes', 'shared-public-api'],
+              allow: ['admin-core', 'admin-layout', 'admin-feature-routes', 'admin-feature', 'shared-public-api'],
             },
             { from: 'admin-core', allow: ['shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
             {
@@ -261,7 +274,7 @@ module.exports = tseslint.config(
             { from: 'admin-utils', allow: ['shared-models', 'shared-public-api', 'environment'] },
             {
               from: 'admin-feature',
-              allow: ['admin-core', 'admin-ui', 'admin-pattern', 'admin-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern'],
+              allow: ['admin-core', 'admin-ui', 'admin-pattern', 'admin-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern', 'shared-ui'],
             },
             {
               from: 'admin-feature-routes',
@@ -295,6 +308,9 @@ module.exports = tseslint.config(
       'tailwindcss/no-arbitrary-value': 'warn',
     },
   },
+  tailwindProjectSettings('web'),
+  tailwindProjectSettings('admin'),
+  tailwindProjectSettings('code-samples-mfe'),
   {
     files: ['projects/web/src/**/*.ts'],
     rules: {

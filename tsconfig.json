@@ -17,7 +17,8 @@
     "moduleResolution": "bundler",
     "paths": {
       "@shared/pattern/*": ["projects/shared/src/pattern/*"],
-      "@shared/core/*": ["projects/shared/src/core/*"]
+      "@shared/core/*": ["projects/shared/src/core/*"],
+      "@shared/ui/*": ["projects/shared/src/ui/*"]
     },
     "importHelpers": true,
     "target": "ES2022",
