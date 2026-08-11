@@ -1,8 +1,9 @@
 @import "tailwindcss" source(none);
+@import "../../shared/src/styles/utilities.css";
+@import "../../shared/src/styles/theme.css";
+
 @source "./app";
 @source "../../shared/src";
-@import "../../shared/src/styles/theme.css";
-@import "../../shared/src/styles/utilities.css";
 
 body {
   min-height: 100vh;
