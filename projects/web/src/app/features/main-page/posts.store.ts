@@ -14,7 +14,7 @@ import { Post } from '@shared/core/supabase';
 import { ReaderApiService } from '../../core/blog/reader-api.service';
 
 interface PostsState {
-  posts: Post[] | null;
+  posts: Post[];
   loading: boolean;
   error: string | null;
 }

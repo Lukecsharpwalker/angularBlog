@@ -1,12 +1,18 @@
 <web-about-me/>
 <web-tags-scroll [tags]="tags()"/>
 
-<div class="flex justify-center mt-5">
-  <div class="w-full">
-    <div class="grid">
-      @for (post of posts(); track post.id) {
-        <web-post-card [post]="post"/>
-      }
-    </div>
+<section class="mt-10">
+  <div class="flex items-baseline justify-between mb-5">
+    <h2 class="text-2xl font-bold tracking-tight text-primary">Latest writing</h2>
   </div>
-</div>
+
+  @for (post of posts(); track post.id) {
+    @if ($first) {
+      <web-first-post-card [post]="post"/>
+    } @else {
+      <web-post-card [post]="post"/>
+    }
+  } @empty {
+    <p class="text-ink-3">No posts yet.</p>
+  }
+</section>

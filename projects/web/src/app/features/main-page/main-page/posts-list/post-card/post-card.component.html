@@ -1,33 +1,44 @@
 <article
-  class="bg-surface-1 shadow-md w-full rounded-lg overflow-hidden mb-6 hover-lift-subtle antialiased will-change-transform"
+  class="bg-surface-1 shadow-sm w-full rounded-2xl overflow-hidden mb-4 hover-lift-subtle antialiased will-change-transform"
 >
   <a
     [routerLink]="['/post', post().id]"
     [attr.aria-label]="post().title"
-    class="block py-4 md:py-8 focus-ring"
+    class="flex flex-col md:flex-row gap-4 md:gap-8 py-4 md:py-6 md:pr-8 focus-ring"
   >
-    <div class="bg-surface-1 w-full flex flex-col md:flex-row md:pr-4">
-      <div class="flex flex-wrap md:flex-col items-start md:basis-2/12 gap-2 px-4 md:px-0">
-        @for (tag of post().post_tags; track tag.tags.id; let i = $index) {
-          <!--          TODO: REFACTOR WHEN Adjustin mobile page-->
-          <div class="md:hidden">
-            <shared-chip [text]="tag.tags.name" [color]="tag.tags.color" variant="outline" />
-          </div>
-          @if (i < 4) {
-            <div class="hidden md:block">
-              <web-label [text]="tag.tags.name" [color]="tag.tags.color" />
-            </div>
-          }
-        }
-      </div>
-
-      <div class="flex flex-col md:basis-10/12 px-6 md:px-0">
-        <h2 class="font-bold line-clamp-3 text-xl mt-0 text-center leading-relaxed">
-          {{ post().title }}
-        </h2>
-        <div class="line-clamp-3 xl:line-clamp-4 2xl:line-clamp-5 pt-3 leading-loose">
-          {{ post().description }}
+    <div class="flex flex-wrap md:flex-col items-start gap-2 px-6 md:px-0 md:w-40 md:shrink-0">
+      @for (tag of post().post_tags; track tag.tags.id; let i = $index) {
+        <!--          TODO: REFACTOR WHEN Adjustin mobile page-->
+        <div class="md:hidden">
+          <shared-chip [text]="tag.tags.name" [color]="tag.tags.color" variant="outline" />
         </div>
+        @if (i < 4) {
+          <div class="hidden md:block">
+            <web-label [text]="tag.tags.name" [color]="tag.tags.color" />
+          </div>
+        }
+      }
+    </div>
+
+    <div class="flex flex-1 flex-col items-start gap-3 px-6 md:px-0">
+      <h2 class="text-xl font-bold leading-snug text-primary line-clamp-2">
+        {{ post().title }}
+      </h2>
+
+      <p class="leading-relaxed text-ink-2 line-clamp-3">
+        {{ post().description }}
+      </p>
+
+      <div class="flex items-center gap-4 mt-auto">
+        @if (post().created_at; as createdAt) {
+          <time class="text-sm font-semibold text-ink-3" [attr.datetime]="createdAt">
+            {{ createdAt | date: 'mediumDate' }}
+          </time>
+        }
+        <span class="inline-flex items-center gap-1 text-sm font-bold text-secondary">
+          Read
+          <shared-icon class="flex" name="arrow-right" size="sm" />
+        </span>
       </div>
     </div>
   </a>

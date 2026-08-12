@@ -48,7 +48,6 @@ export class PostComponent implements OnInit {
   protected readonly error: Signal<string | null> = this.postStore.error;
   protected readonly hasPost: Signal<boolean> = this.postStore.hasPost;
   protected readonly postTitle: Signal<string> = this.postStore.postTitle;
-  protected readonly date: Signal<string> = this.postStore.formattedDate;
   protected readonly safeContent = computed(() => {
     const content = this.post()?.content;
     return content ? this.sanitizer.bypassSecurityTrustHtml(content) : '';

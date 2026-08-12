@@ -14,7 +14,7 @@ import { Tag } from '@shared/core/supabase';
 import { ReaderApiService } from '../../core';
 
 interface TagsState {
-  tags: Tag[] | null;
+  tags: Tag[];
   loading: boolean;
   error: string | null;
 }

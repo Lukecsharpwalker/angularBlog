@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Post, Tag } from '@shared/core/supabase';
 import { PostCardComponent } from './post-card/post-card.component';
 import { PostsStore } from '../../posts.store';
 import { TagsStore } from '../../tags.store';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { TagsScrollComponent } from './tags-scroll/tags-scroll.component';
-import { Post, Tag } from '@shared/core/supabase';
 import { FirstPostCardComponent } from './post-card/first-post-card/first-post-card.component';
 
 @Component({
@@ -24,6 +24,6 @@ import { FirstPostCardComponent } from './post-card/first-post-card/first-post-c
 export class PostsListComponent {
   postStore = inject(PostsStore);
   tagsStore = inject(TagsStore);
-  readonly posts: Signal<Post[] | null> = this.postStore.posts;
-  readonly tags: Signal<Tag[] | null> = this.tagsStore.tags;
+  readonly posts: Signal<Post[]> = this.postStore.posts;
+  readonly tags: Signal<Tag[]> = this.tagsStore.tags;
 }

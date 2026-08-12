@@ -35,7 +35,7 @@
     <div class="relative overflow-hidden rounded-3xl mb-10 h-95">
       <img
         class="w-full h-full object-cover"
-        [ngSrc]="date() + '-post.webp'"
+        [ngSrc]="post()?.cover_image!"
         [alt]="postTitle()"
         width="1536"
         height="1024"

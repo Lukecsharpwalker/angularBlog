@@ -6,7 +6,6 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { Post } from '@shared/core/supabase';
 import { ReaderApiService } from '../../core';
-import { formatDateToDDMMYYYY } from '../../utils/date/date-utils';
 
 interface PostState {
   post: Post | null;
@@ -25,7 +24,6 @@ const initialState: PostState = {
 export const PostStore = signalStore(
   withState(initialState),
   withComputed(store => ({
-    formattedDate: computed(() => formatDateToDDMMYYYY(store.post()?.created_at)),
     hasPost: computed(() => store.post() !== null),
     postTitle: computed(() => store.post()?.title ?? ''),
   })),
@@ -49,3 +47,4 @@ export const PostStore = signalStore(
     ),
   }))
 );
+

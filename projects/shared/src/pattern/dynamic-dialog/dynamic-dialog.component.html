@@ -43,6 +43,10 @@
           </div>
         }
 
+        @if (modalConfig()?.image; as image) {
+          <img [src]="image" alt="" class="max-h-80vh max-w-95vw object-contain" />
+        }
+
         <div class="min-h-0">
           <ng-template #dynamicComponentContainer/>
         </div>

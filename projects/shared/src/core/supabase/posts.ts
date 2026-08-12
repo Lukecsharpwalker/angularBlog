@@ -5,6 +5,7 @@ import { Tag } from './tags';
 
 export interface Post {
   content: string;
+  cover_image: string;
   created_at: string | null;
   description: string;
   id: string;

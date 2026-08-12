@@ -38,7 +38,8 @@ import {
   lucidePlus,
   lucideBell,
   lucideImage,
-  lucideArrowLeft
+  lucideArrowLeft,
+  lucideArrowRight
 } from '@ng-icons/lucide';
 
 export type IconName =
@@ -81,7 +82,8 @@ export type IconName =
   | 'plus'
   | 'bell'
   | 'image'
-  | 'arrow-left';
+  | 'arrow-left'
+  | 'arrow-right';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
@@ -125,7 +127,8 @@ const iconMapping: Record<IconName, string> = {
   'plus': 'lucidePlus',
   'bell': 'lucideBell',
   'image': 'lucideImage',
-  'arrow-left': 'lucideArrowLeft'
+  'arrow-left': 'lucideArrowLeft',
+  'arrow-right': 'lucideArrowRight'
 };
 
 const sizeClasses: Record<IconSize, string> = {
@@ -180,7 +183,8 @@ const sizeClasses: Record<IconSize, string> = {
       lucidePlus,
       lucideBell,
       lucideImage,
-      lucideArrowLeft
+      lucideArrowLeft,
+      lucideArrowRight
     })
   ],
   template: `

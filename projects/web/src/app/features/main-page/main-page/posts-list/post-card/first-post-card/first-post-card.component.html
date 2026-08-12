@@ -1,0 +1,50 @@
+<article
+  class="bg-surface-1 shadow-md w-full rounded-3xl overflow-hidden mb-6 hover-lift-subtle antialiased will-change-transform"
+>
+  <a
+    [routerLink]="['/post', post().id]"
+    [attr.aria-label]="post().title"
+    class="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 px-6 py-5 md:px-7 focus-ring"
+  >
+    <div class="flex flex-1 flex-col items-start gap-4 self-stretch">
+      <div class="flex flex-wrap gap-2">
+        @for (tag of post().post_tags; track tag.tags.id) {
+          <shared-chip [text]="tag.tags.name" [color]="tag.tags.color" variant="outline" />
+        }
+      </div>
+
+      <h2 class="text-2xl md:text-3xl font-bold leading-tight text-primary line-clamp-2">
+        {{ post().title }}
+      </h2>
+
+      <p class="max-w-prose leading-relaxed text-ink-2 line-clamp-3">
+        {{ post().description }}
+      </p>
+
+      <div class="flex items-center gap-4 mt-auto">
+        @if (post().created_at; as createdAt) {
+          <time class="text-sm font-semibold text-ink-3" [attr.datetime]="createdAt">
+            {{ createdAt | date: 'mediumDate' }}
+          </time>
+        }
+        <span class="inline-flex items-center gap-1 text-sm font-bold text-secondary">
+          Read
+          <shared-icon class="flex" name="arrow-right" size="sm" />
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="relative w-full md:w-80 shrink-0 aspect-3/2 overflow-hidden rounded-2xl bg-linear-to-br from-tertiary/40 to-quaternary"
+    >
+      <img
+        class="object-cover"
+        [ngSrc]="post().cover_image!"
+        [alt]="post().title"
+        fill
+        priority
+        sizes="(min-width: 768px) 20rem, 100vw"
+      />
+    </div>
+  </a>
+</article>

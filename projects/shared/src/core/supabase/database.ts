@@ -87,6 +87,7 @@ export interface Database {
       posts: {
         Row: {
           content: string
+          cover_image: string
           created_at: string | null
           description: string
           id: string
@@ -96,6 +97,7 @@ export interface Database {
         }
         Insert: {
           content: string
+          cover_image?: string
           created_at?: string | null
           description: string
           id?: string
@@ -105,6 +107,7 @@ export interface Database {
         }
         Update: {
           content?: string
+          cover_image?: string
           created_at?: string | null
           description?: string
           id?: string
