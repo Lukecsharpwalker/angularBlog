@@ -16,6 +16,7 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
 import { Post } from '@shared/core/supabase';
+import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { IconComponent } from '@shared/pattern/icon-system';
 import { PanelCardComponent } from '../../ui/panel-card';
 import { TagMultiSelectComponent } from './tag-multi-select/tag-multi-select.component';
@@ -54,6 +55,7 @@ export class AddPostComponent implements OnInit {
   protected readonly quillReady = signal(false);
 
   private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly dynamicDialogService = inject(DynamicDialogService<never>);
 
   ngOnInit(): void {
     this.initializeQuill().then(() => {
@@ -77,6 +79,13 @@ export class AddPostComponent implements OnInit {
 
   protected insertImage(): void {
     this.postFormService.insertImage(this.viewContainerRef);
+  }
+
+  protected openCoverImagePreview(coverImage: string): void {
+    this.dynamicDialogService.openDialog(this.viewContainerRef, {
+      title: 'Cover image',
+      image: coverImage,
+    });
   }
 
   private async initializeQuill(): Promise<void> {

@@ -15,6 +15,7 @@ export interface PostForm {
   is_draft: FormControl<boolean>;
   created_at: FormControl<string | null>;
   description: FormControl<string>;
+  cover_image: FormControl<string>;
   tags: FormControl<Tag[]>;
 }
 
@@ -33,7 +34,11 @@ export class PostFormService {
     }),
     created_at: new FormControl<string | null>(null),
     description: new FormControl<string>('', {
-      validators: [Validators.required, Validators.maxLength(150)],
+      validators: [Validators.required, Validators.maxLength(ADD_POST_CONSTANTS.DESCRIPTION_MAX_LENGTH)],
+      nonNullable: true,
+    }),
+    cover_image: new FormControl<string>('', {
+      validators: [Validators.required],
       nonNullable: true,
     }),
     is_draft: new FormControl(true, { nonNullable: true }),

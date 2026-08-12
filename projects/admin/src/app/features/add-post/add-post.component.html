@@ -147,20 +147,40 @@
 
       <admin-panel-card>
         <div class="p-5">
-          <p class="section-label mb-3">Cover image</p>
+          <label for="cover-image" class="block section-label mb-3">Cover image</label>
           <div
-            class="flex items-center justify-center h-32 rounded-xl bg-surface-2 border border-edge-1 text-ink-3"
+            class="flex items-center justify-center h-32 rounded-xl bg-surface-2 border border-edge-1 text-ink-3 overflow-hidden"
           >
-            <shared-icon name="image" size="lg" />
+            @if (blogForm.controls.cover_image.value; as coverImage) {
+              <button
+                type="button"
+                class="size-full cursor-zoom-in focus-ring"
+                [attr.aria-label]="'Open cover image: ' + (blogForm.controls.title.value || 'preview')"
+                (click)="openCoverImagePreview(coverImage)"
+              >
+                <img
+                  [src]="coverImage"
+                  [alt]="blogForm.controls.title.value || 'Cover image preview'"
+                  class="size-full object-cover"
+                />
+              </button>
+            } @else {
+              <shared-icon name="image" size="lg" />
+            }
           </div>
-          <button
-            type="button"
-            class="btn btn-secondary btn-sm w-full mt-3"
-            (click)="insertImage()"
-            [disabled]="addPostStore.submitting()"
-          >
-            Replace image
-          </button>
+          <input
+            id="cover-image"
+            type="url"
+            formControlName="cover_image"
+            placeholder="https://example.com/cover-image.png"
+            class="form-input mt-3"
+          />
+          @if (
+            blogForm.controls.cover_image.invalid &&
+            (blogForm.controls.cover_image.dirty || blogForm.controls.cover_image.touched)
+          ) {
+            <p class="text-xs text-error mt-2">Cover image is required</p>
+          }
         </div>
       </admin-panel-card>
 

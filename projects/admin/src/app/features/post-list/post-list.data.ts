@@ -10,6 +10,8 @@ const TESTING: Tag = { id: 14, name: 'Testing', color: '#4285F4', icon: 'testing
 
 const emptyPostFields = {
   content: '',
+  cover_image:
+    'https://aqdbdmepncxxuanlymwr.supabase.co/storage/v1/object/public/covers/ChatGPT%20Image%2011%20sie%202026,%2020_53_29.png',
   description: '',
   user_id: '',
   post_tags: [],
