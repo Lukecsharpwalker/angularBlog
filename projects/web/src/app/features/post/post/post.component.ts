@@ -1,89 +1,97 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Injector,
   OnInit,
-  inject,
-  input,
   Signal,
   computed,
+  inject,
+  input,
   runInInjectionContext,
-  Injector,
 } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { IconComponent } from '@shared/pattern/icon-system';
+import { AvatarComponent } from '@shared/ui/avatar';
+import { ChipComponent } from '@shared/ui/chip';
+import { TableOfContents } from '@shared/core/blog';
 import { Post } from '@shared/core/supabase';
-import { ProfileStore, ReaderApiService } from '../../../core';
+import { ProfileStore } from '../../../core';
 import { CommentsComponent } from './comments/comments.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { PostStore } from '../post.store';
-import { SocialShareService } from './social-share.service';
 import { CommentsStore } from './comments/comments.store';
-import { OpenCodeBlockModalDirective } from './open-code-block-modal.directive';
+import { AuthorCardComponent } from './author-card/author-card.component';
+import { PostContentComponent } from './post-content/post-content.component';
+import { PostLoadingPlaceholderComponent } from './post-loading-placeholder/post-loading-placeholder.component';
+import { SocialShareComponent } from './social-share/social-share.component';
+import { TableOfContentsComponent } from './table-of-contents/table-of-contents.component';
+import { readingTimeMinutes } from './post-content/reading-time';
 
 @Component({
   selector: 'web-post',
   standalone: true,
-  providers: [ReaderApiService, DatePipe, PostStore, CommentsStore],
+  providers: [PostStore, CommentsStore],
   templateUrl: './post.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommentsComponent,
     AddCommentComponent,
+    AuthorCardComponent,
+    AvatarComponent,
+    ChipComponent,
+    CommentsComponent,
     DatePipe,
-    NgOptimizedImage,
     IconComponent,
-    OpenCodeBlockModalDirective,
+    NgOptimizedImage,
+    PostContentComponent,
+    PostLoadingPlaceholderComponent,
+    RouterLink,
+    SocialShareComponent,
+    TableOfContentsComponent,
   ],
 })
 export class PostComponent implements OnInit {
   protected readonly id = input.required<string>();
-  protected router = inject(Router);
-  protected postStore = inject(PostStore);
+
+  protected readonly postStore = inject(PostStore);
+  protected readonly commentsStore = inject(CommentsStore);
   protected readonly userProfile = inject(ProfileStore).userProfile;
 
   protected readonly post: Signal<Post | null> = this.postStore.post;
   protected readonly loading: Signal<boolean> = this.postStore.loading;
   protected readonly error: Signal<string | null> = this.postStore.error;
-  protected readonly hasPost: Signal<boolean> = this.postStore.hasPost;
   protected readonly postTitle: Signal<string> = this.postStore.postTitle;
-  protected readonly safeContent = computed(() => {
-    const content = this.post()?.content;
-    return content ? this.sanitizer.bypassSecurityTrustHtml(content) : '';
-  });
+  protected readonly commentCount = this.commentsStore.total;
 
-  protected readonly tocItems = computed(() => [
-    'Introduction',
-    'Key Features',
-    'Conclusion'
-  ]);
+  protected readonly readingTime = computed(() => readingTimeMinutes(this.post()?.content));
 
-  private socialShareService = inject(SocialShareService);
-  private sanitizer = inject(DomSanitizer);
-  private injector = inject(Injector);
+  //TODO: Create real TOC from quill delta
+  protected readonly tocItems: Signal<TableOfContents[]> = computed(() =>
+    Array.from({ length: 6 }, (_, index) => ({
+      id: `heading-${index + 1}`,
+      title: `Heading ${index + 1}`,
+      level: 2,
+      children: [],
+    }))
+  );
+
+  private readonly router = inject(Router);
+  private readonly injector = inject(Injector);
 
   ngOnInit(): void {
     this.loadPost();
   }
 
-  goBack(): void {
+  protected goBack(): void {
     this.router.navigate(['']);
   }
 
-  shareOnSocial(platform: 'twitter' | 'linkedin'): void {
-    this.socialShareService.shareOnSocial(platform, this.postTitle());
-  }
-
-  async copyLink(): Promise<void> {
-    await this.socialShareService.copyLink();
-  }
-
-  loadPost(): void {
+  protected loadPost(): void {
     //TODO: Create a routes params service and inject to the store, to remove injectionconext
     // post about shared service, that info get form Michael
     runInInjectionContext(this.injector, () => {
       this.postStore.getPost(this.id());
+      this.commentsStore.loadComments(this.id());
     });
   }
 }

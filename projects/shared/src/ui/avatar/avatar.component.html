@@ -1,0 +1,12 @@
+@if (displayImageUrl(); as imageUrl) {
+  <img
+    [src]="imageUrl"
+    [alt]="name() || 'Avatar'"
+    class="w-full h-full object-cover object-top"
+    (error)="showInitials()"
+  />
+} @else {
+  <span class="flex items-center justify-center w-full h-full font-bold" aria-hidden="true">
+    {{ initials() }}
+  </span>
+}

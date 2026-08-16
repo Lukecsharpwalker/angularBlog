@@ -1,27 +1,21 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { Comment } from '@shared/core/supabase';
 import { CommentForm } from './add-comment.models';
-import { ProfileStore, ReaderApiService } from '../../../../core';
+import { ProfileStore } from '../../../../core';
 import { CommentsStore } from '../comments/comments.store';
 
 @Component({
   selector: 'web-add-comment',
   standalone: true,
   imports: [ReactiveFormsModule],
-  providers: [ReaderApiService],
   templateUrl: './add-comment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCommentComponent {
   readonly postId = input.required<string>();
+
+  protected readonly commentsStore = inject(CommentsStore);
+  protected readonly isSubmitting = this.commentsStore.submitting;
 
   protected commentForm = new FormGroup<CommentForm>({
     content: new FormControl<string>('', {
@@ -30,31 +24,24 @@ export class AddCommentComponent {
     }),
   });
 
-  protected readonly isSubmitting: WritableSignal<boolean> = signal(false);
+  private readonly userId = inject(ProfileStore).userId;
 
-  private commentsStore = inject(CommentsStore);
-  private userId = inject(ProfileStore).userId;
 
-  onSubmit(): void {
-    if (this.commentForm.valid && !this.isSubmitting()) {
-      this.isSubmitting.set(true);
+  protected async onSubmit(): Promise<void> {
+    const userId = this.userId();
 
-      const comment: Comment = {
-        content: this.commentForm.controls.content.value,
-        created_at: new Date().toISOString(),
-        user_id: this.userId() ?? null,
-        author: {
-          created_at: 'a',
-          id: 'a',
-          avatar_url: null,
-          username: 's'
-        },
-        post_id: this.postId(),
-      };
+    if (this.commentForm.invalid || !userId || this.isSubmitting()) {
+      return;
+    }
+    //Refactor to return status, not just True
+    const commentAdded = await this.commentsStore.addComment({
+      content: this.commentForm.controls.content.value,
+      user_id: userId,
+      post_id: this.postId(),
+    });
 
-      this.commentsStore.addComment({ postId: this.postId(), comment });
+    if (commentAdded) {
       this.commentForm.reset();
-      this.isSubmitting.set(false);
     }
   }
 }

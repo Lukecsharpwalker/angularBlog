@@ -39,7 +39,10 @@ import {
   lucideBell,
   lucideImage,
   lucideArrowLeft,
-  lucideArrowRight
+  lucideArrowRight,
+  lucideLink,
+  lucideTwitter,
+  lucideLinkedin,
 } from '@ng-icons/lucide';
 
 export type IconName =
@@ -83,61 +86,67 @@ export type IconName =
   | 'bell'
   | 'image'
   | 'arrow-left'
-  | 'arrow-right';
+  | 'arrow-right'
+  | 'link'
+  | 'twitter'
+  | 'linkedin';
 
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 const iconMapping: Record<IconName, string> = {
-  'loading': 'lucideLoader',
-  'editing': 'lucidePencil',
-  'draft': 'lucideFileText',
-  'publishing': 'lucideRocket',
-  'saving': 'lucideSave',
-  'saved': 'lucideCheck',
-  'info': 'lucideInfo',
-  'tag': 'lucideTag',
-  'edit': 'lucidePencilLine',
-  'category': 'lucideFolderOpen',
-  'time': 'lucideClock',
-  'author': 'lucideUser',
-  'clock': 'lucideClock',
-  'difficulty': 'lucideChartBar',
-  'comment': 'lucideMessageSquare',
-  'comments': 'lucideMessageCircle',
-  'error': 'lucideCircleAlert',
-  'search': 'lucideSearch',
-  'wave': 'lucideWaves',
-  'home': 'lucideHouse',
-  'user': 'lucideUser',
-  'settings': 'lucideSettings',
-  'like': 'lucideHeart',
-  'share': 'lucideShare',
-  'bookmark': 'lucideBookmark',
-  'star': 'lucideStar',
-  'calendar': 'lucideCalendar',
-  'eye': 'lucideEye',
+  loading: 'lucideLoader',
+  editing: 'lucidePencil',
+  draft: 'lucideFileText',
+  publishing: 'lucideRocket',
+  saving: 'lucideSave',
+  saved: 'lucideCheck',
+  info: 'lucideInfo',
+  tag: 'lucideTag',
+  edit: 'lucidePencilLine',
+  category: 'lucideFolderOpen',
+  time: 'lucideClock',
+  author: 'lucideUser',
+  clock: 'lucideClock',
+  difficulty: 'lucideChartBar',
+  comment: 'lucideMessageSquare',
+  comments: 'lucideMessageCircle',
+  error: 'lucideCircleAlert',
+  search: 'lucideSearch',
+  wave: 'lucideWaves',
+  home: 'lucideHouse',
+  user: 'lucideUser',
+  settings: 'lucideSettings',
+  like: 'lucideHeart',
+  share: 'lucideShare',
+  bookmark: 'lucideBookmark',
+  star: 'lucideStar',
+  calendar: 'lucideCalendar',
+  eye: 'lucideEye',
   'chevron-left': 'lucideChevronLeft',
   'chevron-right': 'lucideChevronRight',
   'chevron-up': 'lucideChevronUp',
   'chevron-down': 'lucideChevronDown',
-  'close': 'lucideX',
-  'menu': 'lucideMenu',
-  'lock': 'lucideLock',
-  'trash': 'lucideTrash2',
-  'plus': 'lucidePlus',
-  'bell': 'lucideBell',
-  'image': 'lucideImage',
+  close: 'lucideX',
+  menu: 'lucideMenu',
+  lock: 'lucideLock',
+  trash: 'lucideTrash2',
+  plus: 'lucidePlus',
+  bell: 'lucideBell',
+  image: 'lucideImage',
   'arrow-left': 'lucideArrowLeft',
-  'arrow-right': 'lucideArrowRight'
+  'arrow-right': 'lucideArrowRight',
+  link: 'lucideLink',
+  twitter: 'lucideTwitter',
+  linkedin: 'lucideLinkedin',
 };
 
 const sizeClasses: Record<IconSize, string> = {
-  'xs': 'w-3 h-3',
-  'sm': 'w-4 h-4',
-  'md': 'w-5 h-5',
-  'lg': 'w-6 h-6',
-  'xl': 'w-8 h-8',
-  '2xl': 'w-10 h-10'
+  xs: 'w-3 h-3',
+  sm: 'w-4 h-4',
+  md: 'w-5 h-5',
+  lg: 'w-6 h-6',
+  xl: 'w-8 h-8',
+  '2xl': 'w-10 h-10',
 };
 
 @Component({
@@ -184,15 +193,19 @@ const sizeClasses: Record<IconSize, string> = {
       lucideBell,
       lucideImage,
       lucideArrowLeft,
-      lucideArrowRight
-    })
+      lucideArrowRight,
+      lucideLink,
+      lucideTwitter,
+      lucideLinkedin,
+    }),
   ],
   template: `
     <ng-icon
       [name]="getIconName()"
       [class]="getIconClasses()"
-      [attr.aria-label]="ariaLabel() || name()" />
-  `
+      [attr.aria-label]="ariaLabel() || name()"
+    />
+  `,
 })
 export class IconComponent {
   readonly name = input.required<IconName>();
@@ -208,8 +221,6 @@ export class IconComponent {
     const baseClasses = 'inline-block shrink-0';
     const sizeClass = sizeClasses[this.size()];
 
-    return [baseClasses, sizeClass, this.className()]
-      .filter(Boolean)
-      .join(' ');
+    return [baseClasses, sizeClass, this.className()].filter(Boolean).join(' ');
   }
 }

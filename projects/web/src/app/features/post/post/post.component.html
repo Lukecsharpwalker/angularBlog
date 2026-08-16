@@ -1,221 +1,90 @@
-@if (hasPost()) {
-  <div class="container mx-auto px-4 max-w-300">
-    @if (post()?.tags && post()!.tags!.length > 0) {
+@if (post(); as post) {
+  <div class="mx-auto max-w-5xl px-4 md:px-10">
+    <a
+      routerLink="/"
+      class="inline-flex items-center gap-2 mt-8 mb-6 text-sm font-bold text-secondary focus-ring"
+    >
+      <shared-icon class="flex" name="arrow-left" size="sm" />
+      All posts
+    </a>
+
+    @if (post.post_tags.length) {
       <div class="flex gap-2 flex-wrap mb-5">
-        @for (tag of post()!.tags; track tag.id) {
-          <span class="px-3.5 py-1.5 rounded-full text-sm font-semibold bg-tertiary/30 text-secondary">
-            {{ tag.name }}
-          </span>
+        @for (tag of post.post_tags; track tag.tags.id) {
+          <shared-chip [text]="tag.tags.name" [color]="tag.tags.color" variant="outline" />
         }
       </div>
     }
 
-    <h1 class="font-bold text-hero leading-tight mb-6 text-ink-1">
-      {{ postTitle() }}
+    <h1 class="text-hero font-bold leading-tight tracking-tight text-primary text-balance mb-6">
+      {{ post.title }}
     </h1>
 
     <div class="flex items-center gap-3.5 mb-8">
-      @if (post()?.author?.avatar_url) {
-        <img
-          [src]="post()!.author!.avatar_url"
-          [alt]="post()?.author?.username || 'Author'"
-          class="w-12 h-12 rounded-full object-cover"
-        />
-      }
+      <shared-avatar
+        [name]="post.author?.username"
+        [imageUrl]="post.author?.avatar_url"
+        size="md"
+      />
       <div>
-        <div class="font-semibold text-sm mb-0.5 text-ink-1">{{ post()?.author?.username }}</div>
-        <div class="text-xs text-ink-3 flex items-center gap-2">
-          <time [dateTime]="post()?.created_at">{{ post()?.created_at | date }}</time>
-          <span aria-hidden="true">•</span>
-          <span>{{ post()?.readingTime }} min read</span>
+        <div class="font-bold text-sm mb-0.5 text-secondary">{{ post.author?.username }}</div>
+        <div class="text-xs font-semibold text-ink-3 flex items-center gap-2">
+          @if (post.created_at; as createdAt) {
+            <time [attr.datetime]="createdAt">{{ createdAt | date: 'mediumDate' }}</time>
+            <span aria-hidden="true">·</span>
+          }
+          <span>{{ readingTime() }} min read</span>
         </div>
       </div>
     </div>
 
-    <div class="relative overflow-hidden rounded-3xl mb-10 h-95">
+    <div class="relative overflow-hidden rounded-3xl mb-10 h-95 shadow-lg">
       <img
-        class="w-full h-full object-cover"
-        [ngSrc]="post()?.cover_image!"
-        [alt]="postTitle()"
-        width="1536"
-        height="1024"
+        class="object-cover"
+        [ngSrc]="post.cover_image"
+        [alt]="post.title"
+        fill
         priority
+        sizes="(min-width: 1024px) 64rem, 100vw"
       />
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
-      <main id="main-content" role="main">
-        <article class="bg-surface-1 rounded-2xl p-12 mb-8 text-lg leading-normal text-ink-2">
-          <div class="max-w-none">
-            <div class="break-words" webOpenCodeBlockModal [innerHTML]="safeContent()"></div>
-          </div>
-        </article>
+    <div class="flex flex-col lg:flex-row gap-12 items-start">
+      <main id="main-content" class="flex-1 min-w-0 w-full">
+        <web-post-content [content]="post.content" />
 
-        <div class="bg-white/80 backdrop-blur-md glass-panel p-6 mb-8">
-          <div class="flex items-center gap-4">
-            @if (post()?.author?.avatar_url) {
-              <img
-                [src]="post()!.author!.avatar_url"
-                [alt]="post()?.author?.username || 'Author'"
-                class="w-16 h-16 rounded-full object-cover"
-              />
-            }
-            <div>
-              <h3 class="font-bold text-lg mb-1 text-ink-1">{{ post()?.author?.username }}</h3>
-              <p class="text-sm text-ink-3">Author</p>
-            </div>
-          </div>
+        <div class="mt-12 pt-8 border-t border-edge-1">
+          <web-post-author-card [author]="post.author" />
         </div>
 
-        <div class="space-y-6">
-          <section
-            class="backdrop-blur-xs bg-white/80 glass-panel p-6 shadow-xs"
-            aria-labelledby="add-comment-heading"
-          >
-            <h3 id="add-comment-heading" class="text-xl font-bold mb-4 flex items-center gap-2">
-              <shared-icon name="comment" size="sm" />
-              Add Comment
-            </h3>
-            @if (userProfile()) {
-              <web-add-comment [postId]="id()" />
-            }
-          </section>
+        <section class="mt-12 pt-8 border-t border-edge-1" aria-labelledby="comments-heading">
+          <h2 id="comments-heading" class="text-xl font-bold text-primary mb-5">
+            {{ commentCount() }} comments
+          </h2>
 
-          @defer (on viewport) {
-            <section
-              class="backdrop-blur-xs bg-white/80 glass-panel overflow-hidden shadow-xs"
-              aria-labelledby="comments-heading"
-            >
-              <div class="p-6 border-b border-white/30">
-                <h3 id="comments-heading" class="text-xl font-bold flex items-center gap-2">
-                  <shared-icon name="comments" size="sm" />
-                  Comments
-                </h3>
-              </div>
-              <web-comments [postId]="id()!" [comments]="post()?.comments" />
-            </section>
-          } @placeholder {
-            <div
-              class="backdrop-blur-xs bg-white/70 glass-panel p-8 text-center shadow-xs"
-              aria-label="Loading comments"
-            >
-              <div class="flex items-center justify-center gap-2 mb-2">
-                <div class="w-2 h-2 bg-secondary/60 rounded-full animate-pulse"></div>
-                <div class="w-2 h-2 bg-secondary/40 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
-                <div class="w-2 h-2 bg-secondary/20 rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
-              </div>
-              <p class="flex items-center gap-2">
-                <shared-icon name="loading" size="sm" />
-                Loading comments...
-              </p>
+          <web-comments [postId]="id()" />
+
+          @if (userProfile()) {
+            <div class="card mt-6">
+              <web-add-comment [postId]="id()" />
             </div>
           }
-        </div>
+        </section>
       </main>
 
-      <aside class="hidden xl:block" role="complementary" aria-label="Article navigation">
-        <div class="sticky top-24 space-y-6">
-          <div class="bg-white/70 backdrop-blur-md glass-panel p-5">
-            <h2 class="text-xs font-bold mb-4 text-ink-2 uppercase tracking-wider">On this page</h2>
-            <nav aria-label="Table of contents">
-              <div class="space-y-2 text-sm">
-                @for (item of tocItems(); track item) {
-                  <div class="py-1.5 text-ink-2 cursor-pointer hover:text-ink-1 transition-colors">
-                    {{ item }}
-                  </div>
-                }
-              </div>
-            </nav>
-          </div>
-
-          <div class="bg-white/70 backdrop-blur-md glass-panel p-5">
-            <h2 class="text-xs font-bold mb-4 text-ink-2 uppercase tracking-wider">Share</h2>
-            <div class="flex flex-col gap-2" role="group" aria-label="Share article">
-              <button
-                class="btn btn-tertiary btn-sm w-full text-left text-sm"
-                (click)="shareOnSocial('twitter')"
-                aria-label="Share article on Twitter"
-              >
-                Twitter
-              </button>
-              <button
-                class="btn btn-tertiary btn-sm w-full text-left text-sm"
-                (click)="shareOnSocial('linkedin')"
-                aria-label="Share article on LinkedIn"
-              >
-                LinkedIn
-              </button>
-              <button
-                class="btn btn-tertiary btn-sm w-full text-left text-sm"
-                (click)="copyLink()"
-                aria-label="Copy article link to clipboard"
-              >
-                Copy Link
-              </button>
-            </div>
-          </div>
+      <aside
+        class="hidden lg:sticky lg:top-24 lg:block lg:w-64 lg:shrink-0 lg:self-start"
+        aria-label="Article navigation"
+      >
+        <div class="space-y-6">
+          <web-table-of-contents [items]="tocItems()" />
+          <web-social-share [title]="postTitle()" />
         </div>
       </aside>
     </div>
   </div>
 } @else if (loading()) {
-  <div class="container mx-auto px-4 max-w-6xl opacity-60 animate-pulse">
-    <div class="mb-6">
-      <div class="w-32 h-10 bg-primary/20 rounded-lg"></div>
-    </div>
-
-    <div class="flex gap-2 mb-5">
-      @for (tag of [1, 2, 3]; track tag) {
-        <div class="w-20 h-7 bg-tertiary/30 rounded-full"></div>
-      }
-    </div>
-
-    <div class="w-3/4 h-14 bg-primary/20 rounded-sm mb-6"></div>
-
-    <div class="flex items-center gap-3 mb-8">
-      <div class="w-12 h-12 bg-secondary/20 rounded-full"></div>
-      <div class="space-y-2">
-        <div class="w-32 h-4 bg-primary/15 rounded-sm"></div>
-        <div class="w-40 h-3 bg-primary/10 rounded-sm"></div>
-      </div>
-    </div>
-
-    <div class="w-full h-95 bg-linear-to-br from-primary/10 to-secondary/10 rounded-3xl mb-10"></div>
-
-    <div class="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-10">
-      <div class="space-y-6">
-        <div class="bg-white/50 rounded-2xl p-12">
-          <div class="space-y-4">
-            @for (line of [1, 2, 3, 4, 5, 6, 7, 8]; track line) {
-              <div class="w-full h-4 bg-primary/10 rounded-sm"></div>
-            }
-          </div>
-        </div>
-      </div>
-
-      <div class="hidden xl:block">
-        <div class="sticky top-24 space-y-6">
-          <div class="bg-white/50 glass-panel p-5">
-            <div class="w-24 h-4 bg-primary/20 rounded-sm mb-4"></div>
-            <div class="space-y-2">
-              @for (item of [1, 2, 3]; track item) {
-                <div class="w-full h-3 bg-primary/10 rounded-sm"></div>
-              }
-            </div>
-          </div>
-
-          <div class="bg-white/50 glass-panel p-5">
-            <div class="w-16 h-4 bg-primary/20 rounded-sm mb-4"></div>
-            <div class="space-y-2">
-              @for (btn of [1, 2, 3]; track btn) {
-                <div class="w-full h-8 bg-secondary/15 rounded-sm"></div>
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <web-post-loading-placeholder />
 } @else if (error()) {
   <div class="container mx-auto px-4 py-20">
     <div
@@ -247,20 +116,17 @@
     </div>
   </div>
 } @else {
-  <div class="container mx-auto px-4 py-20">
-    <div
-      class="max-w-md mx-auto text-center bg-quaternary/80 backdrop-blur-xs border border-tertiary rounded-xl p-8 shadow-lg"
-    >
-      <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
-        <shared-icon name="search" size="sm" />
-        Post Not Found
-      </h2>
-      <p class="mb-6">
-        The article you're looking for doesn't exist or has been moved.
-      </p>
+  <div class="mx-auto max-w-md px-4 py-20">
+    <div class="card card-lg text-center">
+      <div class="icon-badge size-12 mx-auto mb-4 bg-tertiary/25 text-secondary">
+        <shared-icon name="search" size="lg" />
+      </div>
+      <h2 class="text-2xl font-bold text-primary mb-2">Post not found</h2>
+      <p class="text-ink-3 mb-6">The article you're looking for doesn't exist or has been moved.</p>
 
       <button
-        class="btn btn-primary hover-lift"
+        type="button"
+        class="btn btn-primary"
         (click)="goBack()"
         aria-label="Return to posts list"
       >

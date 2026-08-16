@@ -2,16 +2,12 @@ import { inject, Injectable, PLATFORM_ID, TransferState } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { pendingUntilEvent } from '@angular/core/rxjs-interop';
 import { from, map, Observable, of, tap } from 'rxjs';
-import { Comment, Post, PostTag, Profile, SUPABASE_CLIENT, Tag } from '@shared/core/supabase';
-import {
-  createCommentsKey,
-  createPostKey,
-  createPostTagsKey,
-  TRANSFER_STATE_KEYS,
-} from '../utils';
+import { Comment, CommentInsert, Post, SUPABASE_CLIENT, Tag } from '@shared/core/supabase';
+import { createCommentsKey, createPostKey, TRANSFER_STATE_KEYS } from '../utils';
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
+  //TODO: change pendingUntilEvent to Promise equivalent
   private readonly client = inject(SUPABASE_CLIENT);
   private readonly transferState = inject(TransferState);
   private readonly platformId = inject(PLATFORM_ID);
@@ -24,12 +20,16 @@ export class ReaderApiService {
         this.client
           .from('posts')
           .select(
-            '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon)), comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))'
+            '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon))'
           )
           .eq('id', id)
+          .limit(1)
           .single()
       ).pipe(
-        map(x => (x.error ? null : x.data)),
+        map(({ data, error }) => {
+          if (error) throw error;
+          return data;
+        }),
         tap(post => {
           this.transferState.set(POST_KEY, post);
         }),
@@ -47,11 +47,17 @@ export class ReaderApiService {
       this.client
         .from('posts')
         .select(
-          '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon)), comments(id,content,created_at,is_deleted,is_reported,author:profiles(id,username,avatar_url))'
+          '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon))'
         )
         .eq('id', id)
+        .limit(1)
         .single()
-    ).pipe(map(x => (x.error ? null : x.data)));
+    ).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return data;
+      })
+    );
   }
 
   getComments(postId: string): Observable<Comment[]> {
@@ -61,9 +67,12 @@ export class ReaderApiService {
       return from(
         this.client
           .from('comments')
-          .select('*')
+          .select(
+            'id,content,created_at,is_deleted,is_reported,post_id,user_id,author:profiles(id,username,avatar_url)'
+          )
           .eq('post_id', postId)
           .order('created_at', { ascending: true })
+          .overrideTypes<Comment[], { merge: false }>()
       ).pipe(
         map(x => (x.error ? [] : x.data)),
         tap(comments => {
@@ -82,23 +91,41 @@ export class ReaderApiService {
     return from(
       this.client
         .from('comments')
-        .select('*')
+        .select(
+          'id,content,created_at,is_deleted,is_reported,post_id,user_id,author:profiles(id,username,avatar_url)'
+        )
         .eq('post_id', postId)
         .order('created_at', { ascending: true })
+        .overrideTypes<Comment[], { merge: false }>()
     ).pipe(map(x => (x.error ? [] : x.data)));
   }
 
-  addComment(postId: string, comment: Comment): Observable<void> {
-    return from(this.client.from('comments').insert({ ...comment, post_id: postId })).pipe(
-      map(() => void 0),
-      pendingUntilEvent()
+  addComment(comment: CommentInsert): Observable<Comment> {
+    return from(
+      this.client
+        .from('comments')
+        .insert(comment)
+        .select(
+          'id,content,created_at,is_deleted,is_reported,post_id,user_id,author:profiles(id,username,avatar_url)'
+        )
+        .single()
+        .overrideTypes<Comment, { merge: false }>()
+    ).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return data;
+      })
     );
   }
 
   deleteComment(commentId: string, postId: string): Observable<void> {
     return from(
       this.client.from('comments').delete().eq('id', commentId).eq('post_id', postId)
-    ).pipe(map(() => void 0));
+    ).pipe(
+      map(({ error }) => {
+        if (error) throw error;
+      })
+    );
   }
 
   getPosts(): Observable<Post[]> {
@@ -133,27 +160,6 @@ export class ReaderApiService {
     ).pipe(map(x => (x.error ? [] : x.data)));
   }
 
-  getProfiles(): Observable<Profile[] | null> {
-    if (isPlatformServer(this.platformId)) {
-      return from(this.client.from('profiles').select('*')).pipe(
-        map(x => (x.error ? null : x.data)),
-        tap(profiles => {
-          this.transferState.set(TRANSFER_STATE_KEYS.PROFILES, profiles);
-        }),
-        pendingUntilEvent()
-      );
-    }
-
-    if (this.transferState.hasKey(TRANSFER_STATE_KEYS.PROFILES)) {
-      const profiles = this.transferState.get(TRANSFER_STATE_KEYS.PROFILES, null);
-      this.transferState.remove(TRANSFER_STATE_KEYS.PROFILES);
-      return of(profiles);
-    }
-
-    return from(this.client.from('profiles').select('*')).pipe(map(x => (x.error ? null : x.data)));
-  }
-
-
   getTags(): Observable<Tag[] | null> {
     if (isPlatformServer(this.platformId)) {
       return from(this.client.from('tags').select('*')).pipe(
@@ -172,29 +178,5 @@ export class ReaderApiService {
     }
 
     return from(this.client.from('tags').select('*')).pipe(map(x => (x.error ? null : x.data)));
-  }
-
-  getPostTags(postId: string): Observable<PostTag[] | null> {
-    const POST_TAGS_KEY = createPostTagsKey(postId);
-
-    if (isPlatformServer(this.platformId)) {
-      return from(this.client.from('post_tags').select('*, tags(*)').eq('post_id', postId)).pipe(
-        map(x => (x.error ? null : x.data)),
-        tap(postTags => {
-          this.transferState.set(POST_TAGS_KEY, postTags);
-        }),
-        pendingUntilEvent()
-      );
-    }
-
-    if (this.transferState.hasKey(POST_TAGS_KEY)) {
-      const postTags = this.transferState.get(POST_TAGS_KEY, null);
-      this.transferState.remove(POST_TAGS_KEY);
-      return of(postTags);
-    }
-
-    return from(this.client.from('post_tags').select('*, tags(*)').eq('post_id', postId)).pipe(
-      map(x => (x.error ? null : x.data))
-    );
   }
 }

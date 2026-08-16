@@ -1,0 +1,29 @@
+<div class="card mt-6">
+  <h2 class="text-xs font-bold mb-4 text-ink-3 uppercase tracking-wider">Share</h2>
+  <div class="flex gap-2" role="group" aria-label="Share article">
+    <button
+      type="button"
+      class="btn btn-icon"
+      (click)="shareOnSocial('twitter')"
+      aria-label="Share article on X"
+    >
+      <shared-icon class="flex" name="twitter" size="lg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-icon"
+      (click)="shareOnSocial('linkedin')"
+      aria-label="Share article on LinkedIn"
+    >
+      <shared-icon class="flex" name="linkedin" size="lg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-icon"
+      (click)="copyLink()"
+      aria-label="Copy article link to clipboard"
+    >
+      <shared-icon class="flex" name="link" size="lg" />
+    </button>
+  </div>
+</div>

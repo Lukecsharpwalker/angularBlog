@@ -12,6 +12,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start:admin:local-env"],
       "port": 4201
+    },
+    {
+      "name": "web-verify",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ng", "serve", "web", "--configuration=local-env", "--port", "4300"],
+      "port": 4300
     }
   ]
 }

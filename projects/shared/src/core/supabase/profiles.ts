@@ -1,11 +1,9 @@
-import { Roles } from '@shared/core/auth';
 
 export interface Profile {
   avatar_url: string | null
   created_at: string | null
   id: string
   username: string
-  role: Roles | null
 }
 
 export interface ProfileInsert {

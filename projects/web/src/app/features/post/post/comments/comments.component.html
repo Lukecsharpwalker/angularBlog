@@ -1,56 +1,38 @@
-<div class="p-6">
+<div class="space-y-4">
   @for (comment of comments(); track comment.id) {
-    <div class="group mb-6 last:mb-0">
-      <div class="backdrop-blur-xs bg-white/60 hover:bg-white/80 border border-white/30 rounded-lg p-5 transition-all duration-300 hover:shadow-md">
-        <div class="flex justify-between items-start gap-4">
-          <div class="flex-1">
-            <p class="mb-3 leading-relaxed font-medium">
-              {{ comment.content }}
-            </p>
+    <div class="card flex items-start gap-4">
+      <shared-avatar
+        [name]="comment.author?.username"
+        [imageUrl]="comment.author?.avatar_url"
+        size="sm"
+      />
 
-            <div class="flex items-center gap-3 text-sm">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-linear-to-br from-secondary to-tertiary icon-badge text-ink-inverse font-semibold text-xs shadow-xs">
-                  {{ comment.author?.username?.charAt(0)?.toUpperCase() }}
-                </div>
-                <span class="font-medium">{{ comment.author?.username }}</span>
-              </div>
-              <span>•</span>
-              <time [title]="comment.created_at || ''">
-                {{ comment.created_at ? getRelativeTime(comment.created_at) : 'Unknown time' }}
-              </time>
-            </div>
-          </div>
-
-          <button
-            *webHasRole="Roles.ADMIN"
-            class="btn btn-danger btn-sm opacity-0 group-hover:opacity-100"
-            (click)="deleteComment(comment.id!)"
-            aria-label="Delete comment"
-          >
-            Delete
-          </button>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-baseline gap-2.5 mb-1.5">
+          <span class="font-bold text-sm text-primary">{{ comment.author?.username }}</span>
+          <time class="text-xs text-ink-3" [attr.datetime]="comment.created_at">
+            {{ (comment.created_at | date: 'mediumDate') || 'Unknown time' }}
+          </time>
         </div>
 
-        <div class="mt-4 pt-3 border-t border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <div class="flex items-center gap-4">
-            <button class="btn btn-tertiary btn-sm">
-              Like
-            </button>
-            <button class="btn btn-tertiary btn-sm">
-              Reply
-            </button>
-          </div>
-        </div>
+        <p class="text-sm leading-relaxed text-ink-2 break-words">
+          {{ comment.content }}
+        </p>
       </div>
+
+      <button
+        *webHasRole="Roles.ADMIN"
+        class="btn btn-danger btn-sm shrink-0"
+        (click)="deleteComment(comment.id)"
+        aria-label="Delete comment"
+      >
+        Delete
+      </button>
     </div>
   } @empty {
-    <div class="flex flex-col items-center justify-center px-4 py-12 text-center glass-effect-light rounded-lg">
-      <div class="mb-4 h-16 w-16 opacity-50 bg-linear-to-br from-secondary/20 to-tertiary/20 icon-badge text-secondary font-bold text-sm">
-        CHAT
-      </div>
-      <h3 class="mb-2 text-lg font-semibold text-ink-1">No comments yet</h3>
-      <p class="mb-6 text-base text-ink-2">Be the first to share your thoughts on this article.</p>
+    <div class="card px-4 py-10 text-center">
+      <h3 class="mb-1 font-bold text-primary">No comments yet</h3>
+      <p class="text-sm text-ink-3">Be the first to share your thoughts on this article.</p>
     </div>
   }
 </div>

@@ -1,0 +1,51 @@
+<div class="mx-auto max-w-5xl px-4 md:px-10 opacity-60 animate-pulse" aria-hidden="true">
+  <div class="w-24 h-5 bg-primary/15 rounded-sm mt-8 mb-6"></div>
+
+  <div class="flex gap-2 mb-5">
+    @for (tag of tags; track tag) {
+      <div class="w-20 h-7 bg-tertiary/30 rounded-full"></div>
+    }
+  </div>
+
+  <div class="w-3/4 h-14 bg-primary/20 rounded-sm mb-6"></div>
+
+  <div class="flex items-center gap-3 mb-8">
+    <div class="w-12 h-12 bg-secondary/20 rounded-full"></div>
+    <div class="space-y-2">
+      <div class="w-32 h-4 bg-primary/15 rounded-sm"></div>
+      <div class="w-40 h-3 bg-primary/10 rounded-sm"></div>
+    </div>
+  </div>
+
+  <div class="w-full h-95 bg-linear-to-br from-primary/10 to-secondary/10 rounded-3xl mb-10"></div>
+
+  <div class="flex flex-col lg:flex-row gap-12 items-start">
+    <div class="flex-1 min-w-0 w-full space-y-4">
+      @for (line of lines; track line) {
+        <div class="w-full h-4 bg-primary/10 rounded-sm"></div>
+      }
+    </div>
+
+    <div class="hidden lg:sticky lg:top-24 lg:block lg:w-64 lg:shrink-0 lg:self-start">
+      <div class="space-y-6">
+        <div class="card">
+          <div class="w-24 h-4 bg-primary/20 rounded-sm mb-4"></div>
+          <div class="space-y-2">
+            @for (item of tocItems; track item) {
+              <div class="w-full h-3 bg-primary/10 rounded-sm"></div>
+            }
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="w-16 h-4 bg-primary/20 rounded-sm mb-4"></div>
+          <div class="flex gap-2">
+            @for (button of shareButtons; track button) {
+              <div class="size-12 bg-secondary/15 rounded-xl"></div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

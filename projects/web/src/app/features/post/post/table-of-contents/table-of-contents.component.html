@@ -1,0 +1,18 @@
+<div class="card">
+  <h2 class="text-xs font-bold mb-4 text-ink-3 uppercase tracking-wider">On this page</h2>
+  <nav aria-label="Table of contents">
+    <ul class="space-y-1">
+      @for (item of items(); track item.id) {
+        <li>
+          <a
+            [href]="'#' + item.id"
+            class="block border-l-2 pl-3 py-1.5 text-sm transition-colors focus-ring"
+            [attr.data-toc-active]="$first"
+          >
+            {{ item.title }}
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+</div>

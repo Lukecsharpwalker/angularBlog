@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
 import { AddPostComponent } from './add-post.component';
-import { AddPostStore } from './add-post.store';
 import { AddPostService } from './add-post.service';
-import { PostFormService } from './post-form.service';
 import { ADMIN_PATH } from '../../core/routing/admin-routes';
 
 export default [
   {
     path: '',
-    providers: [AddPostStore, AddPostService, PostFormService],
+    providers: [AddPostService],
     children: [
       {
         path: '',

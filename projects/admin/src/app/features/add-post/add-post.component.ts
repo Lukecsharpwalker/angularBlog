@@ -11,7 +11,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { HighlightModule } from 'ngx-highlightjs';
 import { QuillEditorComponent } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
@@ -41,21 +41,24 @@ import { ADD_POST_CONSTANTS } from './add-post.constants';
     PanelCardComponent,
     StatusChipComponent,
   ],
+  providers: [AddPostStore, PostFormService],
   templateUrl: './add-post.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddPostComponent implements OnInit {
   //TODO: Refactor, postId should be handled by router signal store, and this component should take computed id
   protected readonly postId = input<string | undefined>();
-  protected readonly isEditMode: Signal<boolean> = computed(() => !!this.postId());
   protected readonly addPostStore = inject(AddPostStore);
+  protected readonly isEditMode: Signal<boolean> = computed(() => !!this.addPostStore.postId());
   protected readonly postFormService = inject(PostFormService);
+  protected readonly location = inject(Location);
   protected readonly blogForm: FormGroup<PostForm> = this.postFormService.blogForm;
   protected readonly ADD_POST_CONSTANTS = ADD_POST_CONSTANTS;
   protected readonly quillReady = signal(false);
 
   private readonly viewContainerRef = inject(ViewContainerRef);
-  private readonly dynamicDialogService = inject(DynamicDialogService<never>);
+  private readonly dynamicDialogService = inject(DynamicDialogService);
+
 
   ngOnInit(): void {
     this.initializeQuill().then(() => {
@@ -74,7 +77,15 @@ export class AddPostComponent implements OnInit {
   }
 
   protected async onSubmit(asDraft = false): Promise<void> {
-    await this.postFormService.submitPost(asDraft, this.postId());
+    //TODO: withEvent singal store will fit here [POST] [Topic]
+    this.postFormService.processPost(asDraft);
+    const payload = this.blogForm.getRawValue();
+
+    await (this.addPostStore.postId()
+      ? this.addPostStore.updatePost(this.addPostStore.postId()!, payload)
+      : this.addPostStore.addPost(payload));
+
+    this.location.replaceState(`/post/${this.addPostStore.postId()}`);
   }
 
   protected insertImage(): void {

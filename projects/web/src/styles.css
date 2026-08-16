@@ -1,7 +1,7 @@
-@import "tailwindcss" source(none);
-@import "highlight.js/styles/base16/espresso.css";
-@import "../../shared/src/styles/utilities.css";
-@import "../../shared/src/styles/theme.css";
+@import 'tailwindcss' source(none);
+@import 'highlight.js/styles/base16/espresso.css';
+@import '../../shared/src/styles/utilities.css';
+@import '../../shared/src/styles/theme.css';
 
 @source "./app";
 @source "../../shared/src";
@@ -18,6 +18,23 @@ article ul {
   list-style: revert;
   margin: revert;
   padding: revert;
+}
+
+[data-post-content] h2 {
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--color-primary);
+  margin: 2.5rem 0 1rem;
+}
+
+[data-post-content] h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-primary);
+  margin: 2rem 0 0.75rem;
 }
 
 article blockquote {

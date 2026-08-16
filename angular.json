@@ -27,9 +27,7 @@
                 "input": "projects/admin/public"
               }
             ],
-            "styles": [
-              "projects/admin/src/styles.css"
-            ]
+            "styles": ["projects/admin/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -94,18 +92,13 @@
                 "input": "projects/admin/public"
               }
             ],
-            "styles": [
-              "projects/admin/src/styles.css"
-            ]
+            "styles": ["projects/admin/src/styles.css"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/admin/**/*.ts",
-              "projects/admin/**/*.html"
-            ],
+            "lintFilePatterns": ["projects/admin/**/*.ts", "projects/admin/**/*.html"],
             "eslintConfig": "projects/admin/eslint.config.js"
           }
         }
@@ -128,9 +121,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/web/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/web/tsconfig.app.json",
             "assets": [
               {
@@ -138,9 +129,7 @@
                 "input": "projects/web/public"
               }
             ],
-            "styles": [
-              "projects/web/src/styles.css"
-            ],
+            "styles": ["projects/web/src/styles.css"],
             "server": "projects/web/src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -195,7 +184,7 @@
               "buildTarget": "web:build:development"
             },
             "local": {
-              "buildTarget": "web:build:development"
+              "buildTarget": "web:build:local-env"
             },
             "local-env": {
               "buildTarget": "web:build:local-env"
@@ -209,10 +198,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/web/tsconfig.spec.json",
             "assets": [
               {
@@ -220,18 +206,13 @@
                 "input": "projects/web/public"
               }
             ],
-            "styles": [
-              "projects/web/src/styles.css"
-            ]
+            "styles": ["projects/web/src/styles.css"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/web/**/*.ts",
-              "projects/web/**/*.html"
-            ],
+            "lintFilePatterns": ["projects/web/**/*.ts", "projects/web/**/*.html"],
             "eslintConfig": "projects/web/eslint.config.js"
           }
         }
@@ -259,19 +240,13 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/shared/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/shared/**/*.ts",
-              "projects/shared/**/*.html"
-            ],
+            "lintFilePatterns": ["projects/shared/**/*.ts", "projects/shared/**/*.html"],
             "eslintConfig": "projects/shared/eslint.config.js"
           }
         }
@@ -301,9 +276,7 @@
                 "input": "projects/code-samples-mfe/public"
               }
             ],
-            "styles": [
-              "projects/code-samples-mfe/src/styles.css"
-            ]
+            "styles": ["projects/code-samples-mfe/src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -354,9 +327,7 @@
                 "input": "projects/code-samples-mfe/public"
               }
             ],
-            "styles": [
-              "projects/code-samples-mfe/src/styles.css"
-            ]
+            "styles": ["projects/code-samples-mfe/src/styles.css"]
           }
         },
         "lint": {

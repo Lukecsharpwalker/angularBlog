@@ -1,14 +1,14 @@
-import { ProfileInsert } from './profiles';
+import { Profile } from './profiles';
 
 export interface Comment {
   content: string;
   created_at: string | null;
-  id?: string;
+  id: string;
   is_deleted?: boolean | null;
   is_reported?: boolean | null;
   post_id: string;
   user_id: string | null;
-  author: ProfileInsert | null;
+  author: Profile | null;
 }
 
 export interface CommentInsert {
@@ -18,7 +18,7 @@ export interface CommentInsert {
   is_deleted?: boolean | null;
   is_reported?: boolean | null;
   post_id: string;
-  user_id?: string | null;
+  user_id: string;
 }
 
 export interface CommentUpdate {
@@ -27,8 +27,8 @@ export interface CommentUpdate {
   id?: string;
   is_deleted?: boolean | null;
   is_reported?: boolean | null;
-  post_id?: string;
-  user_id?: string | null;
+  post_id: string;
+  user_id: string;
 }
 
 export type CommentRelationships = [

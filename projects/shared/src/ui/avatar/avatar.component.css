@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  flex: none;
+  overflow: hidden;
+  background-color: var(--color-secondary);
+  color: var(--color-ink-inverse);
+}
+
+:host([data-size='sm']) {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 0.875rem;
+}
+
+:host([data-size='md']) {
+  width: 3rem;
+  height: 3rem;
+  font-size: 0.875rem;
+}
+
+:host([data-size='lg']) {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.25rem;
+}
+
+:host([data-type='rounded']) {
+  border-radius: calc(infinity * 1px);
+}
+
+:host([data-type='square-rounded']) {
+  border-radius: 1rem;
+}

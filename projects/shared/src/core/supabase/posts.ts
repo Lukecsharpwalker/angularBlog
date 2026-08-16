@@ -15,13 +15,11 @@ export interface Post {
   author?: Profile;
   post_tags: PostTagList[];
   tags: Tag[];
-  comments: Comment[];
+  comments?: Comment[];
   category: string | null;
   updated: string | null;
-  readingTime: number | null;
   tableOfContents: [];
 }
-
 
 export type PostRelationships = [
   {

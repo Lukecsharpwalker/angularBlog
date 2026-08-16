@@ -5,7 +5,6 @@ import { filter, map, take } from 'rxjs/operators';
 import { Post, Tag } from '@shared/core/supabase';
 import { DynamicDialogService, ModalCloseStatusEnum } from '@shared/pattern/dynamic-dialog';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
-import { AddPostStore } from './add-post.store';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 
@@ -19,8 +18,9 @@ export interface PostForm {
   tags: FormControl<Tag[]>;
 }
 
-//TODO: COMPLETLY REFACTOR THIS CRAP, partialy done, prepare an router signal store to handle id, and handle redirect after save
+//TODO: COMPLETLY REFACTOR THIS (already less) CRAP, partialy done, prepare an router signal store to handle id, and handle redirect after save
 //Forms types from supabase types
+//From move to FORM service, and process, move to post process service
 @Injectable()
 export class PostFormService {
   readonly blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
@@ -48,23 +48,16 @@ export class PostFormService {
     }),
   });
 
-  private readonly addPostStore = inject(AddPostStore);
   private readonly dialogService = inject(DynamicDialogService<AddImageForm>);
 
-  //TODO split to two functions. But publish, should navigate to main page, draft should update store and navihate to edit
-  async submitPost(asDraft: boolean, postId?: string): Promise<void> {
+
+  processPost(asDraft: boolean): void {
     this.applyContentProcessing();
     this.normalizeNonBreakingSpaces();
     this.setDraftStatus(asDraft);
 
     const createdAt = this.blogForm.controls.created_at;
     createdAt.setValue(asDraft ? null : (createdAt.value ?? new Date().toISOString()));
-
-    const payload = this.blogForm.getRawValue();
-
-    await (postId
-      ? this.addPostStore.updatePost(postId, payload)
-      : this.addPostStore.addPost(payload));
   }
 
   insertImage(viewContainerRef: ViewContainerRef): void {

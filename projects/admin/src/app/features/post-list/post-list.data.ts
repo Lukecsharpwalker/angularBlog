@@ -18,7 +18,6 @@ const emptyPostFields = {
   comments: [],
   category: null,
   updated: null,
-  readingTime: null,
   tableOfContents: [] as [],
 };
 

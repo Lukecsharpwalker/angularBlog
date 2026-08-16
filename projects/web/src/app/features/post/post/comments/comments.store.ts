@@ -1,29 +1,30 @@
-import { patchState, signalStore, withMethods, withState, withComputed } from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { addEntity, removeEntity, setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { inject, computed } from '@angular/core';
-import { pipe, switchMap, tap } from 'rxjs';
+import { firstValueFrom, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { Comment } from '@shared/core/supabase';
+import { Comment, CommentInsert } from '@shared/core/supabase';
 import { ReaderApiService } from '../../../../core';
 
 interface CommentsState {
-  comments: Comment[];
   loading: boolean;
+  submitting: boolean;
   error: string | null;
 }
 
 const initialState: CommentsState = {
-  comments: [],
   loading: false,
+  submitting: false,
   error: null,
 };
 
 export const CommentsStore = signalStore(
   withState(initialState),
+  withEntities<Comment>(),
 
-  withComputed(({ comments }) => ({
-    total: computed(() => comments().length),
-    hasComments: computed(() => comments().length > 0),
+  withComputed(({ entities }) => ({
+    total: computed(() => entities().length),
   })),
 
   withMethods((state, commentsService = inject(ReaderApiService)) => ({
@@ -33,10 +34,10 @@ export const CommentsStore = signalStore(
         switchMap(postId =>
           commentsService.getComments(postId).pipe(
             tapResponse({
-              next: comments => patchState(state, { comments, loading: false }),
+              next: comments => patchState(state, setAllEntities(comments), { loading: false }),
               error: (error: unknown) =>
                 patchState(state, {
-                  error: `Failed to fetch comments: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                  error: `Failed to fetch comments: ${(error as Error)?.message ?? 'Unknown error'}`,
                   loading: false,
                 }),
             })
@@ -45,36 +46,32 @@ export const CommentsStore = signalStore(
       )
     ),
 
-    addComment: rxMethod<{ postId: string; comment: Comment }>(
-      pipe(
-        tap(() => patchState(state, { loading: true, error: null })),
-        switchMap(({ postId, comment }) =>
-          commentsService.addComment(postId, comment).pipe(
-            switchMap(() => commentsService.getComments(postId)),
-            tapResponse({
-              next: comments => patchState(state, { comments, loading: false }),
-              error: (error: unknown) =>
-                patchState(state, {
-                  error: `Failed to add comment: ${error instanceof Error ? error.message : 'Unknown error'}`,
-                  loading: false,
-                }),
-            })
-          )
-        )
-      )
-    ),
+    async addComment(comment: CommentInsert): Promise<boolean> {
+      patchState(state, { submitting: true, error: null });
+
+      try {
+        const addedComment = await firstValueFrom(commentsService.addComment(comment));
+        patchState(state, addEntity(addedComment), { submitting: false });
+        return true;
+      } catch (error: unknown) {
+        patchState(state, {
+          error: `Failed to add comment: ${(error as Error)?.message ?? 'Unknown error'}`,
+          submitting: false,
+        });
+        return false;
+      }
+    },
 
     deleteComment: rxMethod<{ commentId: string; postId: string }>(
       pipe(
         tap(() => patchState(state, { loading: true, error: null })),
         switchMap(({ commentId, postId }) =>
           commentsService.deleteComment(commentId, postId).pipe(
-            switchMap(() => commentsService.getComments(postId)),
             tapResponse({
-              next: comments => patchState(state, { comments, loading: false }),
+              next: () => patchState(state, removeEntity(commentId), { loading: false }),
               error: (error: unknown) =>
                 patchState(state, {
-                  error: `Failed to delete comment: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                  error: `Failed to delete comment: ${(error as Error)?.message ?? 'Unknown error'}`,
                   loading: false,
                 }),
             })

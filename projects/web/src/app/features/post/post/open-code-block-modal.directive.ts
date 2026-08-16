@@ -17,7 +17,7 @@ export class OpenCodeBlockModalDirective {
       return;
     }
 
-    const preElement = target.closest('pre:not(.modal-code-block)');
+    const preElement = target.closest('pre');
     if (!preElement) {
       return;
     }

@@ -1,5 +1,5 @@
-import { inject } from '@angular/core';
-import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
+import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { Post, Tag } from '@shared/core/supabase';
 import { PostInsert, PostUpdate } from './post-operations';
 import { AddPostService } from './add-post.service';
@@ -22,6 +22,9 @@ const initialState: AddPostState = {
 
 export const AddPostStore = signalStore(
   withState(initialState),
+  withComputed(({ post }) => ({
+    postId: computed(() => post()?.id),
+  })),
   withMethods((store, addPostService = inject(AddPostService)) => ({
     async loadPost(id: string) {
       patchState(store, { loading: true, error: null });

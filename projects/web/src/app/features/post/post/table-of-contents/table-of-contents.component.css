@@ -1,0 +1,14 @@
+[data-toc-active='true'] {
+  border-color: var(--color-primary);
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+[data-toc-active='false'] {
+  border-color: var(--color-edge-1);
+  color: var(--color-ink-3);
+}
+
+[data-toc-active='false']:hover {
+  color: var(--color-secondary);
+}
