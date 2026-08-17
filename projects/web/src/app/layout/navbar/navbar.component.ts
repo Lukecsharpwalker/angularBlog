@@ -15,11 +15,12 @@ import { LoginComponent } from '../login/login.component';
 import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 import { AuthService } from '@shared/core/auth';
 import { ProfileStore } from '../../core';
+import { IconComponent } from '@shared/pattern/icon-system';
 
 @Component({
   selector: 'web-navbar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, IconComponent],
   providers: [],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
