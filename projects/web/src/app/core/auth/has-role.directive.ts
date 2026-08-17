@@ -5,8 +5,10 @@ import {
   inject,
   input,
   OnInit,
+  DestroyRef,
 } from '@angular/core';
-import { SupabaseService } from '@shared/core/supabase';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserService } from '@shared/core/auth';
 
 @Directive({
   selector: '[webHasRole]',
@@ -17,22 +19,21 @@ export class HasRoleDirective implements OnInit {
 
   private templateRef = inject(TemplateRef<unknown>);
   private viewContainer = inject(ViewContainerRef);
-  private supabaseClient = inject(SupabaseService);
+  private userService = inject(UserService);
+  private destroyRef = inject(DestroyRef);
 
-  private hasView = false;
+  private isViewCreated = false;
 
   ngOnInit() {
-    const allowed = true;
-      // !!this.supabaseClient.userRole() && this.supabaseClient.userRole() === this.requiredRole();
-
-    if (allowed) {
-      if (!this.hasView) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-        this.hasView = true;
+    this.userService.userRole$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(userRoles => {
+      const allowed = userRoles && userRoles === this.requiredRole();
+      if (!allowed || this.isViewCreated) {
+        this.viewContainer.clear();
+        this.isViewCreated = false;
+        return;
       }
-    } else if (this.hasView) {
-      this.viewContainer.clear();
-      this.hasView = false;
-    }
+      this.viewContainer.createEmbeddedView(this.templateRef);
+      this.isViewCreated = true;
+    });
   }
 }

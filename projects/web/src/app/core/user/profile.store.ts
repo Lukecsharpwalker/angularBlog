@@ -10,18 +10,20 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { distinctUntilChanged, map, of, pipe, switchMap, tap } from 'rxjs';
-import { UserService } from '@shared/core/auth';
+import { distinctUntilChanged, of, pipe, switchMap, tap } from 'rxjs';
+import { Roles, UserService } from '@shared/core/auth';
 import { ProfileService } from '@shared/core/profile/profile.service';
 import { Profile } from '@shared/core/supabase/profiles';
+import { UserWithRole } from '@shared/core/auth/user.model';
 
 interface ProfileState {
   userProfile: Profile | null;
   loading: boolean;
   error: string | null;
+  role: Roles | null;
 }
 
-const initialState: ProfileState = { userProfile: null, loading: false, error: null };
+const initialState: ProfileState = { userProfile: null, loading: false, error: null, role: null };
 
 export const ProfileStore = signalStore(
   { providedIn: 'root' },
@@ -31,10 +33,10 @@ export const ProfileStore = signalStore(
     _userService: inject(UserService),
   })),
   withComputed(({ userProfile, loading, error }) => ({
+    //TODO: Refactor XD
     userName: computed(() => userProfile()?.username),
     userId: computed(() => userProfile()?.id),
     isLoaded: computed(() => userProfile() !== null),
-    hasError: computed(() => error() !== null),
     status: computed(() => {
       if (loading()) return 'loading' as const;
       if (error()) return 'error' as const;
@@ -43,22 +45,28 @@ export const ProfileStore = signalStore(
     }),
   })),
   withMethods((store, profileService = inject(ProfileService)) => ({
-    loadProfile: rxMethod<string | null>(
+    loadProfile: rxMethod<UserWithRole | null>(
       pipe(
         distinctUntilChanged(),
         tap(() => patchState(store, { loading: true, error: null })),
-        switchMap(id => {
-          if (!id) {
-            patchState(store, { userProfile: null, loading: false });
+        switchMap(user => {
+          if (!user) {
+            patchState(store, { userProfile: null, loading: false, role: null });
             return of(null);
           }
-          return profileService.getProfile(id).pipe(
+          return profileService.getProfile(user.id).pipe(
             tapResponse({
-              next: profile => patchState(store, { userProfile: profile, loading: false }),
+              next: profile =>
+                patchState(store, {
+                  userProfile: profile,
+                  loading: false,
+                  role: user.app_metadata.role,
+                }),
               error: (err: unknown) =>
                 patchState(store, {
                   userProfile: null,
                   loading: false,
+                  role: null,
                   error: `Failed to fetch profile: ${err instanceof Error ? err.message : String(err)}`,
                 }),
             })
@@ -69,7 +77,7 @@ export const ProfileStore = signalStore(
   })),
   withHooks({
     onInit(store, userService = inject(UserService)) {
-      store.loadProfile(userService.appUser$.pipe(map(u => u?.id ?? null)));
+      store.loadProfile(userService.appUser$);
     },
   })
 );
