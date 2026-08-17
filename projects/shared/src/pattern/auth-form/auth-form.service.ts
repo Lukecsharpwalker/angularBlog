@@ -20,7 +20,6 @@ export class AuthFormService {
   protected readonly authService = inject(AuthService);
 
   signInWithPassword(): Observable<AuthTokenResponsePassword> {
-    console.log(this.loginForm);
     return this.authService.signInWithPassword(
       this.loginForm.controls.email.value,
       this.loginForm.controls.password.value
