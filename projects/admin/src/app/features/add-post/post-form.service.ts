@@ -23,7 +23,7 @@ export interface PostForm {
 //From move to FORM service, and process, move to post process service
 @Injectable()
 export class PostFormService {
-  readonly blogForm: FormGroup<PostForm> = new FormGroup<PostForm>({
+  readonly addPostForm: FormGroup<PostForm> = new FormGroup<PostForm>({
     title: new FormControl('', {
       validators: [Validators.required],
       nonNullable: true,
@@ -56,7 +56,7 @@ export class PostFormService {
     this.normalizeNonBreakingSpaces();
     this.setDraftStatus(asDraft);
 
-    const createdAt = this.blogForm.controls.created_at;
+    const createdAt = this.addPostForm.controls.created_at;
     createdAt.setValue(asDraft ? null : (createdAt.value ?? new Date().toISOString()));
   }
 
@@ -79,33 +79,33 @@ export class PostFormService {
         const { src, alt } = form;
         //TODO: convert to ngSrc directive, but for now, just add max-width style to the image tag
         const imgTag = `<img src="${src}" alt="${alt}" style="${ADD_POST_CONSTANTS.IMAGE_MAX_WIDTH_STYLE}">`;
-        const content = this.blogForm.controls.content;
+        const content = this.addPostForm.controls.content;
 
         content.setValue(content.value + imgTag);
       });
   }
 
   initializeFormWithPost(post: Post): void {
-    this.blogForm.patchValue(post);
+    this.addPostForm.patchValue(post);
   }
 
   private applyContentProcessing(): void {
     const processedContent = this.extractAndHighlightAllCodeBlocks(
-      this.blogForm.controls.content.value
+      this.addPostForm.controls.content.value
     );
     //TODO: Refactor, do not mutate form value directly, pass content to POST from var not from form control
-    this.blogForm.controls.content.setValue(processedContent);
+    this.addPostForm.controls.content.setValue(processedContent);
   }
 
   //TODO: Refactor, I think this could be done onPaste
   private normalizeNonBreakingSpaces(): void {
-    const rawContent = this.blogForm.controls.content.value;
+    const rawContent = this.addPostForm.controls.content.value;
     const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');
-    this.blogForm.controls.content.setValue(cleanedContent);
+    this.addPostForm.controls.content.setValue(cleanedContent);
   }
 
   private setDraftStatus(asDraft: boolean): void {
-    this.blogForm.controls.is_draft.setValue(asDraft);
+    this.addPostForm.controls.is_draft.setValue(asDraft);
   }
 
   private extractAndHighlightAllCodeBlocks(htmlContent: string): string {

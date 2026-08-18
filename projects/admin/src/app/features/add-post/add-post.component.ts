@@ -52,7 +52,7 @@ export class AddPostComponent implements OnInit {
   protected readonly isEditMode: Signal<boolean> = computed(() => !!this.addPostStore.postId());
   protected readonly postFormService = inject(PostFormService);
   protected readonly location = inject(Location);
-  protected readonly blogForm: FormGroup<PostForm> = this.postFormService.blogForm;
+  protected readonly addPostForm: FormGroup<PostForm> = this.postFormService.addPostForm;
   protected readonly ADD_POST_CONSTANTS = ADD_POST_CONSTANTS;
   protected readonly quillReady = signal(false);
 
@@ -71,7 +71,7 @@ export class AddPostComponent implements OnInit {
   //TODO: Refactor, already task created
   @HostListener('window:beforeunload', ['$event'])
   protected handleBeforeUnload(event: BeforeUnloadEvent) {
-    if (this.blogForm.dirty) {
+    if (this.addPostForm.dirty) {
       event.preventDefault();
     }
   }
@@ -79,7 +79,7 @@ export class AddPostComponent implements OnInit {
   protected async onSubmit(asDraft = false): Promise<void> {
     //TODO: withEvent singal store will fit here [POST] [Topic]
     this.postFormService.processPost(asDraft);
-    const payload = this.blogForm.getRawValue();
+    const payload = this.addPostForm.getRawValue();
 
     await (this.addPostStore.postId()
       ? this.addPostStore.updatePost(this.addPostStore.postId()!, payload)

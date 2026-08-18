@@ -1,3 +1,4 @@
+<!--TODO: Handle all loading / error states-->
 @if (addPostStore.loading()) {
   <div class="fixed inset-0 bg-black/20 backdrop-blur-xs z-50 flex items-center justify-center">
     <div class="bg-surface-1 rounded-2xl p-6 shadow-card">
@@ -17,7 +18,7 @@
   </div>
 }
 
-<form [formGroup]="blogForm">
+<form [formGroup]="addPostForm">
   <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
     <div class="flex items-center gap-4">
       <a routerLink="/posts" class="flex items-center gap-2 text-sm font-semibold text-secondary">
@@ -38,7 +39,7 @@
         type="button"
         class="btn btn-secondary btn-sm"
         (click)="onSubmit(true)"
-        [disabled]="blogForm.invalid || addPostStore.submitting()"
+        [disabled]="addPostForm.invalid || addPostStore.submitting()"
       >
         @if (addPostStore.submitting()) {
           <span class="spinner size-3 border-2 border-current border-t-transparent"></span>
@@ -51,7 +52,7 @@
       <button
         type="button"
         class="btn btn-primary btn-sm"
-        [disabled]="blogForm.invalid || addPostStore.submitting()"
+        [disabled]="addPostForm.invalid || addPostStore.submitting()"
         (click)="onSubmit(false)"
       >
         @if (addPostStore.submitting()) {
@@ -79,8 +80,8 @@
             class="w-full text-3xl font-extrabold text-primary tracking-tight placeholder:text-ink-3 focus:outline-hidden"
           />
           @if (
-            blogForm.controls.title.invalid &&
-            (blogForm.controls.title.dirty || blogForm.controls.title.touched)
+            addPostForm.controls.title.invalid &&
+            (addPostForm.controls.title.dirty || addPostForm.controls.title.touched)
           ) {
             <p class="text-xs text-error mt-2">Title is required</p>
           }
@@ -99,8 +100,8 @@
             class="form-input resize-none"
           ></textarea>
           @if (
-            blogForm.controls.description.invalid &&
-            (blogForm.controls.description.dirty || blogForm.controls.description.touched)
+            addPostForm.controls.description.invalid &&
+            (addPostForm.controls.description.dirty || addPostForm.controls.description.touched)
           ) {
             <p class="text-xs text-error mt-2">Description is required</p>
           }
@@ -125,7 +126,7 @@
 
         <div class="quill-editor-theme">
           @if (quillReady()) {
-            <quill-editor formControlName="content" class="border-none min-h-100" />
+            <quill-editor #quill formControlName="content" class="border-none min-h-100" />
           }
         </div>
       </admin-panel-card>
@@ -135,11 +136,11 @@
       <admin-panel-card>
         <div class="p-5">
           <p class="section-label mb-3">Status</p>
-          <admin-status-chip [isDraft]="blogForm.controls.is_draft.value" class="chip-full" />
+          <admin-status-chip [isDraft]="addPostForm.controls.is_draft.value" class="chip-full" />
 
-          @if (blogForm.controls.created_at.value) {
+          @if (addPostForm.controls.created_at.value) {
             <p class="mt-4 text-sm text-ink-3">
-              {{ blogForm.controls.created_at.value | date: 'mediumDate' }}
+              {{ addPostForm.controls.created_at.value | date: 'mediumDate' }}
             </p>
           }
         </div>
@@ -151,16 +152,16 @@
           <div
             class="flex items-center justify-center h-32 rounded-xl bg-surface-2 border border-edge-1 text-ink-3 overflow-hidden"
           >
-            @if (blogForm.controls.cover_image.value; as coverImage) {
+            @if (addPostForm.controls.cover_image.value; as coverImage) {
               <button
                 type="button"
                 class="size-full cursor-zoom-in focus-ring"
-                [attr.aria-label]="'Open cover image: ' + (blogForm.controls.title.value || 'preview')"
+                [attr.aria-label]="'Open cover image: ' + (addPostForm.controls.title.value || 'preview')"
                 (click)="openCoverImagePreview(coverImage)"
               >
                 <img
                   [src]="coverImage"
-                  [alt]="blogForm.controls.title.value || 'Cover image preview'"
+                  [alt]="addPostForm.controls.title.value || 'Cover image preview'"
                   class="size-full object-cover"
                 />
               </button>
@@ -172,12 +173,12 @@
             id="cover-image"
             type="url"
             formControlName="cover_image"
-            placeholder="https://example.com/cover-image.png"
+            placeholder="cover image url"
             class="form-input mt-3"
           />
           @if (
-            blogForm.controls.cover_image.invalid &&
-            (blogForm.controls.cover_image.dirty || blogForm.controls.cover_image.touched)
+            addPostForm.controls.cover_image.invalid &&
+            (addPostForm.controls.cover_image.dirty || addPostForm.controls.cover_image.touched)
           ) {
             <p class="text-xs text-error mt-2">Cover image is required</p>
           }
@@ -189,8 +190,8 @@
           <p class="section-label mb-3">Tags</p>
           <admin-tag-multi-select [allTags]="addPostStore.tags()" formControlName="tags" />
           @if (
-            blogForm.controls.tags.invalid &&
-            (blogForm.controls.tags.dirty || blogForm.controls.tags.touched)
+            addPostForm.controls.tags.invalid &&
+            (addPostForm.controls.tags.dirty || addPostForm.controls.tags.touched)
           ) {
             <p class="text-xs text-error mt-2">At least one tag is required</p>
           }
