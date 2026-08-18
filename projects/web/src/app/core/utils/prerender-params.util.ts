@@ -4,7 +4,7 @@
  * Fetches published post IDs from Supabase for Angular SSR prerendering.
  * Used by app.routes.server.ts to generate static routes.
  */
-//TODO: USE SSR WITH CACHE
+//TODO: USE SSR WITH CACHE (DELETE THIS)
 
 export async function getPrerenderParams(): Promise<{ id: string }[]> {
   try {
