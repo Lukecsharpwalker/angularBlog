@@ -42,7 +42,7 @@
     [cdkConnectedOverlayOrigin]="origin"
     [cdkConnectedOverlayOpen]="isOpen() && !disabled()"
     [cdkConnectedOverlayWidth]="originEl.offsetWidth"
-    [cdkConnectedOverlayPositions]="overlayPositions"
+    [cdkConnectedOverlayPositions]="overlayPositions()"
   >
     <div
       class="w-full bg-surface-1 border border-tertiary/30 rounded-lg shadow-lg shadow-primary/15 max-h-60 overflow-y-auto p-1 animate-slide-down no-scrollbar"

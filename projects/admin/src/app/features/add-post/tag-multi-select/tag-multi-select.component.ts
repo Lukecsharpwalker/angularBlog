@@ -10,6 +10,7 @@ import {
   HostListener,
   input,
   viewChild,
+  WritableSignal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedPosition } from '@angular/cdk/overlay';
@@ -32,7 +33,7 @@ import { ChipComponent } from '@shared/ui/chip';
   imports: [ChipComponent, CdkConnectedOverlay, CdkOverlayOrigin],
 })
 export class TagMultiSelectComponent implements ControlValueAccessor {
-  // TODO: REfactor with signal forms
+  // TODO: REfactor with signal forms, AS FIRST. PRIORITY
   readonly allTags = input.required<Tag[]>();
 
   protected readonly selectedTags = signal<Tag[]>([]);
@@ -41,11 +42,14 @@ export class TagMultiSelectComponent implements ControlValueAccessor {
   protected readonly disabled = signal(false);
   protected readonly focusedTagId = signal<number | null>(null);
 
+
   //TODO: test if singal woulnd't update this
-  protected readonly overlayPositions: ConnectedPosition[] = [
+  //Tested, with button click, changing this signal, is updating postion, but now working with seltect tags, need to inwestigate
+  protected readonly overlayPositions: WritableSignal<ConnectedPosition[]> = signal([
     { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
     { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 },
-  ];
+  ]);
+
 
   //TODO: Maybe some set?
   protected readonly filteredTags = computed(() => {
