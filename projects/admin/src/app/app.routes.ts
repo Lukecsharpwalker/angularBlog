@@ -3,10 +3,9 @@ import { authAdminGuard } from './core/auth/auth-admin.guard';
 import { ADMIN_PATH, ADMIN_ROUTE } from './core/routing/admin-routes';
 
 export const routes: Routes = [
-  //TODO: Refactor - this matches before the guarded '' route below, so an already authenticated admin landing on '/' always sees the login screen; gate it on auth state or redirect to /posts and let the guard bounce anonymous users
   {
     path: '',
-    redirectTo: ADMIN_ROUTE.login,
+    redirectTo: ADMIN_ROUTE.posts,
     pathMatch: 'full',
   },
   {
@@ -29,9 +28,8 @@ export const routes: Routes = [
       },
     ],
   },
-  //TODO: Refactor - a typo'd URL should land on a 404 page (or /posts when authenticated), not silently on the sign in screen, which reads as a session timeout
   {
     path: '**',
-    redirectTo: ADMIN_ROUTE.login,
+    redirectTo: ADMIN_ROUTE.posts,
   },
 ];
