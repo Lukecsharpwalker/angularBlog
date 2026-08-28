@@ -2,9 +2,9 @@ import { inject, Injectable, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import hljs from 'highlight.js/lib/core';
 import { filter, map, take } from 'rxjs/operators';
+import { QuillEditorComponent } from 'ngx-quill';
 import { Post, Tag } from '@shared/core/supabase';
 import { DynamicDialogService, ModalCloseStatusEnum } from '@shared/pattern/dynamic-dialog';
-import { QuillEditorComponent } from 'ngx-quill';
 import { TableOfContents } from '@shared/core/toc';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
 import { AddImageComponent } from './add-image/add-image.component';
@@ -96,7 +96,12 @@ export class PostFormService {
     this.addPostForm.patchValue(post);
   }
 
-  //TODO: Refactor, I think this could be done onPaste
+  /**
+   * Normalize non-breaking spaces in the content to regular spaces.
+   * This is a Quill issue, a lot of tickets on the repo.
+   * But still shouldn't mutate from control.
+   * Fix is to save as an object not html
+   */
   private normalizeNonBreakingSpaces(): void {
     const rawContent = this.addPostForm.controls.content.value;
     const cleanedContent = rawContent.replace(/(&nbsp;|\u00A0)/g, ' ');
