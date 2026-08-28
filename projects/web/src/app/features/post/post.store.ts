@@ -23,6 +23,7 @@ export const PostStore = signalStore(
 
   withComputed(({ post }) => ({
     postTitle: computed(() => post()?.title ?? ''),
+    tableOfContents: computed(() => post()!.table_of_contents_sorted),
   })),
 
   withMethods((store, postService = inject(ReaderApiService)) => ({

@@ -1,20 +1,19 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Injector,
-  OnInit,
-  Signal,
   computed,
   inject,
+  Injector,
   input,
+  OnInit,
   runInInjectionContext,
+  Signal,
 } from '@angular/core';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { IconComponent } from '@shared/pattern/icon-system';
 import { AvatarComponent } from '@shared/ui/avatar';
 import { ChipComponent } from '@shared/ui/chip';
-import { TableOfContents } from '@shared/core/blog';
 import { Post } from '@shared/core/supabase';
 import { ProfileStore } from '../../../core';
 import { CommentsComponent } from './comments/comments.component';
@@ -60,20 +59,12 @@ export class PostComponent implements OnInit {
   protected readonly post: Signal<Post | null> = this.postStore.post;
   protected readonly loading: Signal<boolean> = this.postStore.loading;
   protected readonly error: Signal<string | null> = this.postStore.error;
+  protected readonly tocItems = this.postStore.tableOfContents;
   protected readonly postTitle: Signal<string> = this.postStore.postTitle;
+
   protected readonly commentCount = this.commentsStore.total;
 
   protected readonly readingTime = computed(() => readingTimeMinutes(this.post()?.content));
-
-  //TODO: Create real TOC from quill delta
-  protected readonly tocItems: Signal<TableOfContents[]> = computed(() =>
-    Array.from({ length: 6 }, (_, index) => ({
-      id: `heading-${index + 1}`,
-      title: `Heading ${index + 1}`,
-      level: 2,
-      children: [],
-    }))
-  );
 
   private readonly router = inject(Router);
   private readonly injector = inject(Injector);
@@ -83,7 +74,7 @@ export class PostComponent implements OnInit {
   }
 
   protected goBack(): void {
-    this.router.navigate(['']);
+    void this.router.navigate(['']);
   }
 
   protected loadPost(): void {

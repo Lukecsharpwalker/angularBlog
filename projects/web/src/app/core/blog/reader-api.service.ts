@@ -20,7 +20,7 @@ export class ReaderApiService {
         this.client
           .from('posts')
           .select(
-            '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon))'
+            '*, table_of_contents_sorted, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon))'
           )
           .eq('id', id)
           .limit(1)
@@ -47,7 +47,7 @@ export class ReaderApiService {
       this.client
         .from('posts')
         .select(
-          '*, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon))'
+          '*, table_of_contents_sorted, author:profiles(id,username,avatar_url), post_tags!inner(tags(id,name,color,icon))'
         )
         .eq('id', id)
         .limit(1)

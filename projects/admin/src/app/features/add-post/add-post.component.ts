@@ -8,6 +8,7 @@ import {
   OnInit,
   signal,
   Signal,
+  viewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,6 +48,7 @@ import { ADD_POST_CONSTANTS } from './add-post.constants';
 })
 export class AddPostComponent implements OnInit {
   //TODO: Refactor, postId should be handled by router signal store, and this component should take computed id
+  protected readonly quill = viewChild.required<QuillEditorComponent>('quill');
   protected readonly postId = input<string | undefined>();
   protected readonly addPostStore = inject(AddPostStore);
   protected readonly isEditMode: Signal<boolean> = computed(() => !!this.addPostStore.postId());
@@ -58,7 +60,6 @@ export class AddPostComponent implements OnInit {
 
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly dynamicDialogService = inject(DynamicDialogService);
-
 
   ngOnInit(): void {
     this.initializeQuill().then(() => {
@@ -78,7 +79,7 @@ export class AddPostComponent implements OnInit {
 
   protected async onSubmit(asDraft = false): Promise<void> {
     //TODO: withEvent singal store will fit here [POST] [Topic]
-    this.postFormService.processPost(asDraft);
+    this.postFormService.processPost(asDraft, this.quill());
     const payload = this.addPostForm.getRawValue();
 
     await (this.addPostStore.postId()

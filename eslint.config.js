@@ -28,6 +28,7 @@ const tailwindClassnameWhitelist = [
   'code-block',
   'hljs',
   'portrait',
+  'toc-link',
 ];
 
 module.exports = tseslint.config(

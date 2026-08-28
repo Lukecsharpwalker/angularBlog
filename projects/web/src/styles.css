@@ -20,6 +20,10 @@ article ul {
   padding: revert;
 }
 
+[data-post-content] :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 80px;
+}
+
 [data-post-content] h2 {
   font-size: 1.625rem;
   font-weight: 800;

@@ -4,10 +4,13 @@ import hljs from 'highlight.js/lib/core';
 import { filter, map, take } from 'rxjs/operators';
 import { Post, Tag } from '@shared/core/supabase';
 import { DynamicDialogService, ModalCloseStatusEnum } from '@shared/pattern/dynamic-dialog';
+import { QuillEditorComponent } from 'ngx-quill';
+import { TableOfContents } from '@shared/core/toc';
 import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 
+//TODO: Forms types from supabase types
 export interface PostForm {
   title: FormControl<string>;
   content: FormControl<string>;
@@ -16,10 +19,10 @@ export interface PostForm {
   description: FormControl<string>;
   cover_image: FormControl<string>;
   tags: FormControl<Tag[]>;
+  table_of_contents: FormControl<TableOfContents>;
 }
 
 //TODO: COMPLETLY REFACTOR THIS (already less) CRAP, partialy done, prepare an router signal store to handle id, and handle redirect after save
-//Forms types from supabase types
 //From move to FORM service, and process, move to post process service
 @Injectable()
 export class PostFormService {
@@ -34,7 +37,10 @@ export class PostFormService {
     }),
     created_at: new FormControl<string | null>(null),
     description: new FormControl<string>('', {
-      validators: [Validators.required, Validators.maxLength(ADD_POST_CONSTANTS.DESCRIPTION_MAX_LENGTH)],
+      validators: [
+        Validators.required,
+        Validators.maxLength(ADD_POST_CONSTANTS.DESCRIPTION_MAX_LENGTH),
+      ],
       nonNullable: true,
     }),
     cover_image: new FormControl<string>('', {
@@ -46,20 +52,21 @@ export class PostFormService {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    table_of_contents: new FormControl<TableOfContents>({}, { nonNullable: true }),
   });
 
   private readonly dialogService = inject(DynamicDialogService<AddImageForm>);
 
-
-  processPost(asDraft: boolean): void {
-    this.applyContentProcessing();
+  processPost(asDraft: boolean, quill: QuillEditorComponent): void {
+    this.createToc(quill);
+    //TODO: Refactor, do not mutate form value directly, pass content to POST from var not from form control
+    this.extractAndHighlightAllCodeBlocks(this.addPostForm.controls.content.value);
     this.normalizeNonBreakingSpaces();
     this.setDraftStatus(asDraft);
-
-    const createdAt = this.addPostForm.controls.created_at;
-    createdAt.setValue(asDraft ? null : (createdAt.value ?? new Date().toISOString()));
+    this.setCreatedAtForPublish(asDraft);
   }
 
+  //TODO: Refactor - not mutate control, use Quill Delta
   insertImage(viewContainerRef: ViewContainerRef): void {
     this.dialogService
       .openDialog<AddImageComponent>(
@@ -89,14 +96,6 @@ export class PostFormService {
     this.addPostForm.patchValue(post);
   }
 
-  private applyContentProcessing(): void {
-    const processedContent = this.extractAndHighlightAllCodeBlocks(
-      this.addPostForm.controls.content.value
-    );
-    //TODO: Refactor, do not mutate form value directly, pass content to POST from var not from form control
-    this.addPostForm.controls.content.setValue(processedContent);
-  }
-
   //TODO: Refactor, I think this could be done onPaste
   private normalizeNonBreakingSpaces(): void {
     const rawContent = this.addPostForm.controls.content.value;
@@ -108,7 +107,15 @@ export class PostFormService {
     this.addPostForm.controls.is_draft.setValue(asDraft);
   }
 
-  private extractAndHighlightAllCodeBlocks(htmlContent: string): string {
+  private setCreatedAtForPublish(asDraft: boolean): void {
+    const createdAt = asDraft
+      ? null
+      : (this.addPostForm.controls.created_at.value ?? new Date().toISOString());
+
+    this.addPostForm.controls.created_at.setValue(createdAt);
+  }
+
+  private extractAndHighlightAllCodeBlocks(htmlContent: string): void {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
 
@@ -126,6 +133,40 @@ export class PostFormService {
       block.appendChild(codeElement);
     });
 
-    return tempDiv.innerHTML;
+    this.addPostForm.controls.content.setValue(tempDiv.innerHTML);
+  }
+
+  //Used Quill eachline() to get all lines.
+  //Then filtered of headers only.
+  //Used Record with quill index as a key, to be sure it's always properly ordered from top to bottom.
+  private createToc(quill: QuillEditorComponent): void {
+    const toc: TableOfContents = {};
+    let quillIndex = 0;
+
+    quill.quillEditor.getContents()?.eachLine((line, attributes, index) => {
+      const id = line.ops
+        .map(x => x.insert)
+        .join('')
+        .trim()
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+
+      if (attributes['header']) {
+        const rec: Record<string, unknown> = {
+          id,
+        };
+        quill.quillEditor.formatLine(quillIndex, 0, rec, 'user');
+        toc[index] = {
+          content: line.ops.map(x => x.insert).join(''),
+          header: attributes['header'] as number,
+          id,
+        };
+        //Remove id if header is removed, to avoid duplicate ids in the document
+      } else if (attributes['id']) {
+        quill.quillEditor.formatLine(quillIndex, 0, 'id', false, 'user');
+      }
+      quillIndex += line.length() + 1;
+    });
+    this.addPostForm.controls.table_of_contents.setValue(toc);
   }
 }

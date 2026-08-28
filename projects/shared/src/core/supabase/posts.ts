@@ -1,3 +1,4 @@
+import { TableOfContents, TableOfContentsElement } from '@shared/core/toc';
 import { Profile } from './profiles';
 import { PostTagList } from './post-tags';
 import { Comment } from './comments';
@@ -18,7 +19,8 @@ export interface Post {
   comments?: Comment[];
   category: string | null;
   updated: string | null;
-  tableOfContents: [];
+  table_of_contents: TableOfContents;
+  table_of_contents_sorted?: TableOfContentsElement[];
 }
 
 export type PostRelationships = [
