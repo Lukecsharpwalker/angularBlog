@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ViewContainerRef,
   computed,
   inject,
   signal,
+  ViewContainerRef,
 } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -47,7 +47,7 @@ export class PostListComponent {
   ] as const;
 
   protected readonly statusFilter = signal<PostStatusFilter>('all');
-  protected readonly posts = signal<PostListRow[]>(PLACEHOLDER_POSTS);
+  protected readonly posts = signal<PostListRow[]>(PLACEHOLDER_POSTS as PostListRow[]);
 
   protected readonly publishedCount = computed(
     () => this.posts().filter(post => !post.is_draft).length

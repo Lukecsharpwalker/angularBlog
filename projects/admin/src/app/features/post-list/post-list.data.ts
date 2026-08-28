@@ -18,10 +18,9 @@ const emptyPostFields = {
   comments: [],
   category: null,
   updated: null,
-  tableOfContents: [] as [],
 };
 
-export const PLACEHOLDER_POSTS: PostListRow[] = [
+export const PLACEHOLDER_POSTS: Partial<PostListRow>[] = [
   {
     ...emptyPostFields,
     id: 'placeholder-1',
