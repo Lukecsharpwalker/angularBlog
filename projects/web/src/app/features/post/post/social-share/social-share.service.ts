@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 
+export type SharePlatform = 'twitter' | 'linkedin';
+
 @Injectable()
 export class SocialShareService {
-  shareOnSocial(platform: 'twitter' | 'linkedin', title: string): void {
-    const currentUrl = window.location.href;
-    const encodedUrl = encodeURIComponent(currentUrl);
-    const text = encodeURIComponent(`Check out this article: "${title}"`);
+  shareOnSocial(platform: SharePlatform): void {
+    const encodedUrl = encodeURIComponent(window.location.href);
 
     let shareUrl = '';
 
     switch (platform) {
       case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${text}`;
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}`;
         break;
       case 'linkedin':
         shareUrl = `https://linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
@@ -22,11 +22,8 @@ export class SocialShareService {
       window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=400');
     }
   }
-
+  /** LLMs forcing to handle error here, but if someone block copy, then copy is blocked */
   async copyLink(): Promise<void> {
-    const linkToCopy = window.location.href;
-
-    //TODO: test error, how it behave on error
-    return await navigator.clipboard.writeText(linkToCopy);
+    return await navigator.clipboard.writeText(window.location.href);
   }
 }

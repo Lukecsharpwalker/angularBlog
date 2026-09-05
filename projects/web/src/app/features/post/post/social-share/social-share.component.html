@@ -1,29 +1,64 @@
-<div class="card mt-6">
+<ng-template #shareActions let-labelled="labelled">
+  <button
+    type="button"
+    [class]="labelled ? 'btn btn-secondary btn-sm h-11 gap-1.5 rounded-full' : 'btn btn-icon'"
+    aria-label="Share article on X"
+    (click)="shareOn('twitter')"
+  >
+    <span class="text-lg font-bold leading-none">X</span>
+  </button>
+
+  <button
+    type="button"
+    [class]="labelled ? 'btn btn-secondary btn-sm h-11 gap-1.5 rounded-full' : 'btn btn-icon'"
+    aria-label="Share article on LinkedIn"
+    (click)="shareOn('linkedin')"
+  >
+    <shared-icon class="flex" name="linkedin" [size]="labelled ? 'sm' : 'lg'" />
+    @if (labelled) {
+      LinkedIn
+    }
+  </button>
+
+  <button
+    type="button"
+    [class]="labelled ? 'btn btn-secondary btn-sm h-11 gap-1.5 rounded-full' : 'btn btn-icon'"
+    aria-label="Copy article link to clipboard"
+    (click)="copyLink()"
+  >
+    <shared-icon class="flex" name="link" [size]="labelled ? 'sm' : 'lg'" />
+    @if (labelled) {
+      Copy link
+    }
+  </button>
+</ng-template>
+
+<div class="card mt-6 hidden lg:block">
   <h2 class="text-xs font-bold mb-4 text-ink-3 uppercase tracking-wider">Share</h2>
   <div class="flex gap-2" role="group" aria-label="Share article">
-    <button
-      type="button"
-      class="btn btn-icon"
-      (click)="shareOnSocial('twitter')"
-      aria-label="Share article on X"
-    >
-      <shared-icon class="flex" name="twitter" size="lg" />
-    </button>
-    <button
-      type="button"
-      class="btn btn-icon"
-      (click)="shareOnSocial('linkedin')"
-      aria-label="Share article on LinkedIn"
-    >
-      <shared-icon class="flex" name="linkedin" size="lg" />
-    </button>
-    <button
-      type="button"
-      class="btn btn-icon"
-      (click)="copyLink()"
-      aria-label="Copy article link to clipboard"
-    >
-      <shared-icon class="flex" name="link" size="lg" />
-    </button>
+    <ng-container *ngTemplateOutlet="shareActions; context: { labelled: false }" />
   </div>
 </div>
+
+<button
+  type="button"
+  [attr.aria-expanded]="shareMenuOpen()"
+  aria-controls="share-menu-panel"
+  class="btn btn-secondary btn-sm h-11 gap-1.5 rounded-full lg:hidden"
+  [class.text-primary]="shareMenuOpen()"
+  (click)="toggleShareMenu()"
+>
+  <shared-icon class="flex" name="share" size="sm" />
+  Share
+</button>
+
+@if (shareMenuOpen()) {
+  <div
+    class="absolute inset-x-0 bottom-full flex items-center justify-center gap-2 border-t border-edge-1 bg-surface-1 px-4 py-3 lg:hidden"
+    id="share-menu-panel"
+    role="group"
+    aria-label="Share article"
+  >
+    <ng-container *ngTemplateOutlet="shareActions; context: { labelled: true }" />
+  </div>
+}

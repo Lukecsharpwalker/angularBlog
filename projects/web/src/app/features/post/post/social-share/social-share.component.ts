@@ -1,25 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { IconComponent } from '@shared/pattern/icon-system';
-import { SocialShareService } from './social-share.service';
+import { SharePlatform, SocialShareService } from './social-share.service';
 
 @Component({
   selector: 'web-social-share',
   standalone: true,
-  imports: [IconComponent],
+  imports: [IconComponent, NgTemplateOutlet],
   providers: [SocialShareService],
   templateUrl: './social-share.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'contents' },
 })
 export class SocialShareComponent {
-  readonly title = input.required<string>();
+  protected readonly shareMenuOpen = signal(false);
 
-  private readonly socialShareService = inject(SocialShareService);
+  private readonly socialShare = inject(SocialShareService);
 
-  protected shareOnSocial(platform: 'twitter' | 'linkedin'): void {
-    this.socialShareService.shareOnSocial(platform, this.title());
+  protected toggleShareMenu(): void {
+    this.shareMenuOpen.update(open => !open);
   }
 
-  protected async copyLink(): Promise<void> {
-    await this.socialShareService.copyLink();
+  protected shareOn(platform: SharePlatform): void {
+    this.socialShare.shareOnSocial(platform);
+    this.shareMenuOpen.set(false);
+  }
+
+  protected copyLink(): void {
+    void this.socialShare.copyLink();
+    this.shareMenuOpen.set(false);
   }
 }
