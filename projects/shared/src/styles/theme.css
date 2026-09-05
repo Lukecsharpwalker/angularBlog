@@ -1,9 +1,9 @@
 @theme {
-  --color-primary: #12372A;
+  --color-primary: #12372a;
   --color-secondary: #436850;
-  --color-tertiary: #ADBC9F;
-  --color-quaternary: #FBFADA;
-  --color-accent: #FF6B35;
+  --color-tertiary: #adbc9f;
+  --color-quaternary: #fbfada;
+  --color-accent: #ff6b35;
 
   --color-surface: #f6f1e7;
   --color-surface-1: #ffffff;
@@ -34,9 +34,13 @@
   --height-80vh: 80vh;
   --height-90vh: 90vh;
   --height-95vh: 95vh;
+  --height-90dvh: 90dvh;
+
+  --spacing-safe-bottom: calc(1rem + env(safe-area-inset-bottom));
 
   --animate-fade-in: fade-in 0.5s ease-out;
   --animate-scale-in: scale-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.25s cubic-bezier(0.32, 0.72, 0, 1);
   --animate-slide-down: slide-down 0.15s ease;
 
   @keyframes slide-down {
@@ -46,6 +50,15 @@
     }
     to {
       opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
       transform: translateY(0);
     }
   }
