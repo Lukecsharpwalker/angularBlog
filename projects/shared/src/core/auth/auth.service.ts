@@ -27,13 +27,13 @@ export class AuthService {
   signInWithProvider(provider: Provider) {
     return this.client.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: window.location.href },
     });
   }
 
   signOut() {
     return from(this.client.auth.signOut()).pipe(
-      tap((res) => {
+      tap(res => {
         if (!res.error) {
           this.userService.setAppUser(null);
         }

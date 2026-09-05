@@ -1,8 +1,8 @@
 import { AuthTokenResponsePassword } from '@supabase/supabase-js';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { AuthFormControls } from './auth-form.interface';
+import { AuthFormControls, OAuthProviderId } from './auth-form.model';
 import { AuthService } from '@shared/core/auth';
 
 @Injectable()
@@ -26,8 +26,8 @@ export class AuthFormService {
     );
   }
 
-  async loginWithProvider(): Promise<void> {
-    return;
+  async loginWithProvider(provider: OAuthProviderId): Promise<void> {
+    await this.authService.signInWithProvider(provider);
   }
 
   clearForm(): void {

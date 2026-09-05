@@ -5,15 +5,17 @@ export interface AuthFormControls {
   password: FormControl<string>;
 }
 
+export type OAuthProviderId = 'google' | 'github' | 'linkedin_oidc';
+
 export interface AuthFormConfig {
-  showGoogleLogin?: boolean;
+  oauthProviders?: OAuthProviderId[];
   title?: string;
   subtitle?: string;
   submitButtonText?: string;
 }
 
-export interface AuthFormEvents {
-  loginSuccess: void;
-  loginSubmit: { email: string; password: string };
-  googleLogin: void;
-}
+export const OAUTH_PROVIDER_LABELS: Record<OAuthProviderId, string> = {
+  google: 'Google',
+  github: 'GitHub',
+  linkedin_oidc: 'LinkedIn',
+};
