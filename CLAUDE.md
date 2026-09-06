@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## MOST IMPORTANT: Always read the LLM context files in `/llms/` before making any code changes or refactor proposals.
 
 ### Essential LLM Context Files
+
 - **`/llms/public/app-description.txt`** - Complete application overview, architecture goals, and deployment strategy
 - **`/llms/public/architecture.txt`** - Authoritative enterprise architecture rules and folder structure
 - **`/llms/public/llm-full.txt`** - Comprehensive Angular development guidelines and best practices
@@ -16,13 +17,52 @@ These files contain the definitive project specifications and must be consulted 
 
 **ZERO TOLERANCE POLICY**: Do not add comments, explanations, or documentation inside any code files. This includes:
 
-- // single line comments
-- /* block comments */
-- /** JSDoc comments */
-- <!-- HTML comments -->
-- # Any other comment syntax
+- `// single line comments`
+- `/* block comments */`
+- `/** JSDoc comments */`
+- `<!-- HTML comments -->`
+- `# Any other comment syntax`
 
 Use PR comments for discussions instead. Code must be self-explanatory through naming and structure.
+
+## MOST IMPORTANT: CLASS MEMBER ORDERING - EVERY FILE YOU TOUCH
+
+**Two axes at once.** Applying only one of them fails either lint or review.
+
+**Outer axis - visibility.** Enforced by `@typescript-eslint/member-ordering` in `eslint.config.js`:
+
+```
+public -> protected -> private
+```
+
+**Inner axis - member kind.** Applies _inside_ each visibility block:
+
+```
+inputs -> outputs -> queries (viewChild / contentChild) -> injects -> state (signal / computed)
+```
+
+Separate each kind group with one blank line. Fields first, then constructor, then methods.
+
+```ts
+export class NavbarComponent {
+  protected readonly userName = inject(ProfileStore).userName;
+
+  protected readonly openPanel = signal<NavbarPanel | null>(null);
+  protected readonly searchQuery = signal('');
+
+  protected readonly menuOpen = computed(() => this.openPanel() === 'menu');
+  protected readonly overlayOpen = computed(() => this.openPanel() !== null);
+
+  private readonly menuToggleButton = viewChild<ElementRef<HTMLButtonElement>>('menuToggleButton');
+  private readonly searchToggleButton =
+    viewChild<ElementRef<HTMLButtonElement>>('searchToggleButton');
+
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly authService = inject(AuthService);
+}
+```
+
+This applies to **every file you touch**, not only new ones. A field you add lands in its correct group immediately - never appended wherever it happens to be needed.
 
 ## Project Overview
 
@@ -83,7 +123,7 @@ npm run db:seed              # Initialize database with seed data
 
 ```bash
 ng serve admin               # Serve admin project (when refactored)
-ng serve web                 # Serve web project (when refactored)  
+ng serve web                 # Serve web project (when refactored)
 ng build shared              # Build shared library
 ng serve code-samples-mfe    # Serve code samples micro-frontend
 ```
@@ -247,5 +287,3 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 - ~~Current: Single app in `/src`~~ → **Completed**
 - ✅ **Active**: Separate projects in `/projects/` with shared libraries
 - Architecture guidance available in `/llms/private/architecture.txt`
-
-
