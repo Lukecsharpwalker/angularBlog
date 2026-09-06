@@ -11,7 +11,6 @@ import { ADMIN_ROUTE } from '../../core/routing/admin-routes';
   templateUrl: './login.component.html',
   providers: [
     provideLoginFormConfig({
-      showGoogleLogin: false,
       title: 'Admin sign in',
       subtitle: 'Restricted to editors and administrators.',
       submitButtonText: 'Sign in',

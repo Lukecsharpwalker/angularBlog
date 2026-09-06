@@ -6,7 +6,7 @@ import { QuillEditorComponent } from 'ngx-quill';
 import { Post, Tag } from '@shared/core/supabase';
 import { DynamicDialogService, ModalCloseStatusEnum } from '@shared/pattern/dynamic-dialog';
 import { TableOfContents } from '@shared/core/toc';
-import { ADD_POST_CONSTANTS, MODAL_CONFIG_DEFAULTS } from './add-post.constants';
+import { ADD_POST_CONSTANTS } from './add-post.constants';
 import { AddImageComponent } from './add-image/add-image.component';
 import { AddImageForm } from './add-image/add-image-controls.interface';
 
@@ -71,7 +71,7 @@ export class PostFormService {
     this.dialogService
       .openDialog<AddImageComponent>(
         viewContainerRef,
-        MODAL_CONFIG_DEFAULTS.ADD_IMAGE,
+        { title: 'Add Image', size: 'casual', primaryButton: 'Insert', secondaryButton: 'Cancel' },
         AddImageComponent
       )
       .pipe(
