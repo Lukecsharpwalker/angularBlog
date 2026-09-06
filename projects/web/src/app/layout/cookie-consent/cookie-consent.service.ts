@@ -1,10 +1,10 @@
-import { Injectable, signal, computed, inject, ViewContainerRef } from '@angular/core';
+import { computed, inject, Injectable, signal, ViewContainerRef } from '@angular/core';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import {
-  LocalStorageEnum,
-  CookieCategory,
   ConsentRecord,
-  CookieCategoryEnum
+  CookieCategory,
+  CookieCategoryEnum,
+  LocalStorageEnum,
 } from './local-storage';
 
 declare global {
@@ -24,29 +24,29 @@ export class CookieConsentService {
       name: 'Essential Cookies',
       description: 'Required for basic website functionality and security.',
       required: true,
-      cookies: ['cookie-consent-record', 'session-id', 'csrf-token']
+      cookies: ['cookie-consent-record', 'session-id', 'csrf-token'],
     },
     {
       id: CookieCategoryEnum.FUNCTIONAL,
       name: 'Functional Cookies',
       description: 'Remember your preferences and settings.',
       required: false,
-      cookies: ['language-preference', 'theme-preference', 'accessibility-settings']
+      cookies: ['language-preference', 'theme-preference', 'accessibility-settings'],
     },
     {
       id: CookieCategoryEnum.ANALYTICS,
       name: 'Analytics Cookies',
       description: 'Help us understand how visitors use our website.',
       required: false,
-      cookies: ['_ga', '_ga_*', '_gid', 'amplitude-*']
+      cookies: ['_ga', '_ga_*', '_gid', 'amplitude-*'],
     },
     {
       id: CookieCategoryEnum.MARKETING,
       name: 'Marketing Cookies',
       description: 'Used to deliver relevant advertisements.',
       required: false,
-      cookies: ['_fbp', '_fbc', 'ads-data', 'retargeting-pixels']
-    }
+      cookies: ['_fbp', '_fbc', 'ads-data', 'retargeting-pixels'],
+    },
   ]);
   readonly hasValidConsent = computed(() => {
     const record = this.getConsentRecord();
@@ -76,7 +76,7 @@ export class CookieConsentService {
 
     this.dynamicDialogService.openDialog(
       viewContainerRef,
-      { title: 'Cookie Consent' },
+      { title: 'Cookie Consent', variant: 'sheet' },
       CookieConsentComponent
     );
   }
@@ -141,7 +141,7 @@ export class CookieConsentService {
       version: this.CONSENT_VERSION,
       categories,
       userAgent: navigator.userAgent,
-      expiryDate: expiryDate.toISOString()
+      expiryDate: expiryDate.toISOString(),
     };
 
     localStorage.setItem(LocalStorageEnum.CONSENT_RECORD, JSON.stringify(consentRecord));
@@ -175,7 +175,7 @@ export class CookieConsentService {
   private manageAnalyticsCookies(allowed: boolean): void {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('consent', 'update', {
-        analytics_storage: allowed ? 'granted' : 'denied'
+        analytics_storage: allowed ? 'granted' : 'denied',
       });
     }
   }
@@ -185,7 +185,7 @@ export class CookieConsentService {
       window.gtag('consent', 'update', {
         ad_storage: allowed ? 'granted' : 'denied',
         ad_user_data: allowed ? 'granted' : 'denied',
-        ad_personalization: allowed ? 'granted' : 'denied'
+        ad_personalization: allowed ? 'granted' : 'denied',
       });
     }
   }
@@ -193,7 +193,7 @@ export class CookieConsentService {
   private manageFunctionalCookies(allowed: boolean): void {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('consent', 'update', {
-        functionality_storage: allowed ? 'granted' : 'denied'
+        functionality_storage: allowed ? 'granted' : 'denied',
       });
     }
   }
