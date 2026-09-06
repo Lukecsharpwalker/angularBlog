@@ -1,0 +1,7 @@
+:host(.docked) a {
+  transform: translateX(calc(-1 * max(100vw / 24, (100vw - 40rem) / 2))) rotate(-360deg);
+}
+
+:host(.docked) button {
+  transform: translateX(max(100vw / 24, (100vw - 40rem) / 2));
+}

@@ -1,5 +1,4 @@
 import {
-  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -11,11 +10,10 @@ import {
 import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { LoginComponent } from '../login/login.component';
-import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 import { AuthService } from '@shared/core/auth';
 import { ProfileStore } from '../../core';
 import { IconComponent } from '@shared/pattern/icon-system';
-import { SharedFocusDirective } from '@shared/pattern/shared-focus';
+import { AutofocusDirective } from './autofocus.directive';
 import { ObserveScrolledDirective } from './observe-scrolled.directive';
 
 type NavbarPanel = 'menu' | 'search';
@@ -23,7 +21,7 @@ type NavbarPanel = 'menu' | 'search';
 @Component({
   selector: 'web-navbar',
   standalone: true,
-  imports: [RouterLink, IconComponent, SharedFocusDirective, ObserveScrolledDirective],
+  imports: [RouterLink, IconComponent, AutofocusDirective, ObserveScrolledDirective],
   providers: [],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
@@ -48,11 +46,6 @@ export class NavbarComponent {
   private readonly authService = inject(AuthService);
   private readonly dynamicDialogService = inject(DynamicDialogService);
   private readonly viewContainerRef = inject(ViewContainerRef);
-  private readonly cookieConsentService = inject(CookieConsentService);
-
-  constructor() {
-    this.initializeCookieConsent();
-  }
 
   protected signIn(): void {
     this.dynamicDialogService.openDialog<LoginComponent>(
@@ -90,13 +83,5 @@ export class NavbarComponent {
     if (!this.host.nativeElement.contains(target as Node)) {
       this.openPanel.set(null);
     }
-  }
-
-  private initializeCookieConsent(): void {
-    afterNextRender(async () => {
-      if (this.cookieConsentService.needsConsent()) {
-        await this.cookieConsentService.showConsentDialog(this.viewContainerRef);
-      }
-    });
   }
 }

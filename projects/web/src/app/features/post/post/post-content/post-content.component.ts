@@ -1,12 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { OpenCodeBlockModalDirective } from '../open-code-block-modal.directive';
+import { OpenCodeBlockModalDirective } from './open-code-block-modal.directive';
 
 @Component({
   selector: 'web-post-content',
@@ -23,5 +17,4 @@ export class PostContentComponent {
   });
 
   private readonly sanitizer = inject(DomSanitizer);
-
 }
