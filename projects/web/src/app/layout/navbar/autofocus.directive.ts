@@ -1,11 +1,11 @@
 import { afterNextRender, Directive, ElementRef, inject } from '@angular/core';
 
 @Directive({
-  selector: '[sharedFocus]',
+  selector: '[webAutofocus]',
   standalone: true,
 })
 /** Apply on inputs in @if() to trap focus without a timeout(). */
-export class SharedFocusDirective {
+export class AutofocusDirective {
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
 
   constructor() {
