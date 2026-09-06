@@ -22,7 +22,6 @@ export const PostStore = signalStore(
   withState(initialState),
 
   withComputed(({ post }) => ({
-    postTitle: computed(() => post()?.title ?? ''),
     tableOfContents: computed(() => post()!.table_of_contents_sorted),
   })),
 
