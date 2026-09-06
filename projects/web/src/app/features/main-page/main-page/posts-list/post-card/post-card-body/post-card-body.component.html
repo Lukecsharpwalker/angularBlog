@@ -1,0 +1,20 @@
+<h3 class="text-xl font-bold leading-snug text-primary line-clamp-2">
+  {{ title() }}
+</h3>
+
+<p class="leading-relaxed text-ink-2 line-clamp-3">
+  {{ description() }}
+</p>
+
+<div class="flex items-center gap-4 mt-auto">
+  @if (createdAt(); as createdAt) {
+    <time class="text-sm font-semibold text-ink-3" [attr.datetime]="createdAt">
+      {{ createdAt | date: 'mediumDate' }}
+    </time>
+  }
+
+  <span class="inline-flex items-center gap-1 text-sm font-bold text-secondary">
+    Read
+    <shared-icon class="flex" name="arrow-right" size="sm" />
+  </span>
+</div>

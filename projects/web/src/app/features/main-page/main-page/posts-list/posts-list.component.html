@@ -10,7 +10,7 @@
     @if ($first) {
       <web-first-post-card [post]="post"/>
     } @else {
-      <web-post-card [post]="post"/>
+      <web-basic-post-card [post]="post"/>
     }
   } @empty {
     <p class="text-ink-3">No posts yet.</p>

@@ -1,0 +1,13 @@
+:host([data-featured='true']) h3 {
+  line-height: 1.25;
+}
+
+@media (width >= 48rem) {
+  :host([data-featured='true']) {
+    gap: calc(var(--spacing) * 4);
+  }
+
+  :host([data-featured='true']) h3 {
+    font-size: var(--text-3xl);
+  }
+}

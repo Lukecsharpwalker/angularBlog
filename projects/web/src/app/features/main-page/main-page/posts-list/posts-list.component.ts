@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Post, Tag } from '@shared/core/supabase';
-import { PostCardComponent } from './post-card/post-card.component';
+import { BasicPostCardComponent } from './post-card/basic-post-card/basic-post-card.component';
 import { PostsStore } from '../../posts.store';
 import { TagsStore } from '../../tags.store';
 import { AboutMeComponent } from './about-me/about-me.component';
@@ -14,7 +14,7 @@ import { FirstPostCardComponent } from './post-card/first-post-card/first-post-c
   imports: [
     RouterModule,
     AboutMeComponent,
-    PostCardComponent,
+    BasicPostCardComponent,
     TagsScrollComponent,
     FirstPostCardComponent,
   ],

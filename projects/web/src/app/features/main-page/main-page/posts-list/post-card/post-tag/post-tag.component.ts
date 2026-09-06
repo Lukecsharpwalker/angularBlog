@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'web-label',
-  standalone: true,
-  templateUrl: './label.component.html',
+  selector: 'web-post-tag',
+  templateUrl: './post-tag.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LabelComponent {
+export class PostTagComponent {
   readonly text = input.required<string>();
   readonly color = input.required<string>();
 }

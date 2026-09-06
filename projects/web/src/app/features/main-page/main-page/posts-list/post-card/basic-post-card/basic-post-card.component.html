@@ -1,0 +1,23 @@
+<article class="card shadow-sm overflow-hidden mb-4 hover-lift-subtle antialiased">
+  <a
+    [routerLink]="['/post', post().id]"
+    [attr.aria-label]="post().title"
+    class="flex flex-col md:flex-row gap-4 md:gap-8 py-4 md:py-6 md:pr-8 focus-ring"
+  >
+    <div
+      class="post-tag-list flex flex-wrap md:flex-col items-start gap-2 px-6 md:px-0 md:w-40 md:shrink-0"
+    >
+      @for (tag of post().tags; track tag.id) {
+        <web-post-tag [text]="tag.name" [color]="tag.color" />
+      }
+    </div>
+
+    <div class="flex flex-1 flex-col items-start gap-3 px-6 md:px-0">
+      <web-post-card-body
+        [title]="post().title"
+        [description]="post().description"
+        [createdAt]="post().created_at"
+      />
+    </div>
+  </a>
+</article>
