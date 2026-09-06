@@ -125,6 +125,13 @@ article pre:not(.code-block) code {
   --color-tag-edge: #e8e1cf;
   --color-code-surface: #0a1b13;
   --color-code-surface-hover: #12231b;
+
+  --color-like: #dc2626;
+
+  --spacing-navbar-offset: 4.5rem;
+  --spacing-safe-bottom-bar: calc(1.5rem + env(safe-area-inset-bottom));
+
+  --transition-property-padding: padding;
 }
 
 @utility tag-tile {
@@ -152,5 +159,13 @@ article pre:not(.code-block) code {
 
   @supports (color: oklch(from red l c h)) {
     background-color: oklch(from var(--tag-color) 0.5 min(c, 0.12) h);
+  }
+}
+
+@utility post-tag-list {
+  @media (width >= 48rem) {
+    & > *:nth-child(n + 5) {
+      display: none;
+    }
   }
 }
