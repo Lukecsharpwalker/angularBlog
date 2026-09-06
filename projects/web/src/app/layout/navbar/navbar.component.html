@@ -1,73 +1,122 @@
 <nav
-  #navbar
   id="navbar"
-  class="sticky top-0 left-0 right-0 z-10 flex items-center justify-center px-4 py-2 bg-white/70 backdrop-blur-md shadow-lg transition-all duration-500 ease-in-out w-full rounded-none md:top-5 md:w-9/10 md:mx-auto md:rounded-4xl lg:w-4/5 xl:w-17/25"
-  [class.scrolled]="isScrolled()"
+  webObserveScrolled
+  class="sticky top-0 left-0 right-0 flex w-full items-center justify-center rounded-none bg-surface px-4 py-3 md:top-5 md:mx-auto md:w-9/10 md:rounded-4xl md:bg-white/70 md:py-2 md:shadow-lg md:backdrop-blur-md lg:w-4/5 xl:w-17/25"
 >
   <div class="grid w-full grid-cols-3 items-center">
     <div class="flex items-center justify-self-start">
-      <button class="btn btn-secondary btn-sm md:hidden mr-2" (click)="toggleMenu()">
+      <button
+        #menuToggleButton
+        type="button"
+        class="flex size-10 items-center justify-center rounded-full border border-edge-1 bg-surface-1 text-secondary focus-ring md:hidden"
+        [attr.aria-expanded]="openPanel() === 'menu'"
+        aria-controls="mobile-menu-panel"
+        [attr.aria-label]="openPanel() === 'menu' ? 'Close menu' : 'Open menu'"
+        (click)="togglePanel('menu')"
+      >
         <shared-icon class="flex" name="menu" size="sm" />
-
       </button>
 
       <div class="hidden md:block">
         <input
           type="text"
           placeholder="Search..."
-          class="px-4 py-2 form-input resize-none
-                 rounded-full max-w-64"
+          aria-label="Search articles"
+          class="form-input max-w-64 resize-none rounded-full px-4 py-2"
         />
       </div>
     </div>
 
-    <div class="justify-self-center text-center">
-      <a routerLink="/" class="focus-ring block">
-        <h1 class="text-lg font-bold mb-0 pb-0">Angular.fun</h1>
-        <h2 class="text-xs sm:text-sm mt-0 pt-0">Bring the fun back to coding</h2>
-      </a>
-    </div>
+    <a routerLink="/" class="block justify-self-center text-center focus-ring">
+      <span
+        class="block text-base font-bold leading-tight text-primary md:text-lg md:leading-7 md:text-ink-1"
+      >
+        Angular.fun
+      </span>
+      <span
+        class="block whitespace-nowrap text-xs font-semibold leading-tight text-primary md:text-sm md:font-normal md:leading-5 md:text-ink-1"
+      >
+        Bring the fun back to coding
+      </span>
+    </a>
 
-    @if (userName()) {
-      <div class="flex items-center justify-self-end space-x-4">
-        <span class="text-xs text-ink-2">Hello, {{userName()}}</span>
-        <button
-          class="btn btn-primary hidden md:inline-block px-6 py-2 rounded-full shadow-xs hover:shadow-md"
-          (click)="logout()"
-        >
-          Sign Out
-        </button>
-      </div>
-    } @else {
-      <div class="flex items-center justify-self-end">
-        <button
-          class="btn btn-primary hidden md:inline-block px-6 py-2 rounded-full shadow-xs hover:shadow-md"
-          (click)="signIn()"
-        >
-          Sign In
-        </button>
-      </div>
-    }
+    <div class="flex items-center justify-self-end">
+      <button
+        #searchToggleButton
+        type="button"
+        class="flex size-10 items-center justify-center rounded-full border border-edge-1 bg-surface-1 text-secondary focus-ring md:hidden"
+        [attr.aria-expanded]="openPanel() === 'search'"
+        aria-controls="mobile-search-panel"
+        aria-label="Search"
+        (click)="togglePanel('search')"
+      >
+        <shared-icon class="flex" name="search" size="sm" />
+      </button>
+
+      @if (userName(); as userName) {
+        <div class="hidden items-center space-x-4 md:flex">
+          <span class="text-xs text-ink-2">Hello, {{ userName }}</span>
+          <button
+            type="button"
+            class="btn btn-primary rounded-full px-6 py-2 shadow-xs hover:shadow-md"
+            (click)="logout()"
+          >
+            Sign Out
+          </button>
+        </div>
+      } @else {
+        <div class="hidden items-center md:flex">
+          <button
+            type="button"
+            class="btn btn-primary rounded-full px-6 py-2 shadow-xs hover:shadow-md"
+            (click)="signIn()"
+          >
+            Sign In
+          </button>
+        </div>
+      }
+    </div>
   </div>
 
-  @if (isMenuOpen()) {
-    <div
-      #mobileMenu
-      class="absolute left-0 w-full bg-white/90 transition-all duration-500 ease-in-out p-4 md:hidden"
-    >
-      <div class="flex flex-col items-start space-y-4">
+  @switch (openPanel()) {
+    @case ('search') {
+      <div
+        id="mobile-search-panel"
+        class="absolute top-full left-0 w-full border-b border-edge-1 bg-surface p-4 shadow-lg transition-all duration-500 ease-in-out md:hidden"
+      >
         <input
+          sharedFocus
           type="text"
-          placeholder="Search ..."
-          class="w-full px-4 py-3 form-input rounded-xl"
+          placeholder="Search articles…"
+          aria-label="Search articles"
+          class="form-input rounded-full"
         />
-        <button
-          class="btn btn-primary w-full py-3 px-4 rounded-xl"
-          (click)="signIn()"
-        >
-          Sign In
-        </button>
       </div>
-    </div>
+    }
+    @case ('menu') {
+      <div
+        id="mobile-menu-panel"
+        class="absolute top-full left-0 w-full border-b border-edge-1 bg-surface p-4 shadow-lg transition-all duration-500 ease-in-out md:hidden"
+      >
+        <div class="flex flex-col items-stretch gap-3">
+          <a
+            routerLink="/"
+            class="btn btn-secondary w-full rounded-full"
+            (click)="togglePanel('menu')"
+          >
+            Home
+          </a>
+          @if (userName()) {
+            <button type="button" class="btn btn-primary w-full rounded-full" (click)="logout()">
+              Sign Out
+            </button>
+          } @else {
+            <button type="button" class="btn btn-primary w-full rounded-full" (click)="signIn()">
+              Sign In
+            </button>
+          }
+        </div>
+      </div>
+    }
   }
 </nav>

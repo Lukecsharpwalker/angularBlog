@@ -1,13 +1,12 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
-  ViewContainerRef,
+  ElementRef,
   inject,
   signal,
   viewChild,
-  afterNextRender,
-  ElementRef,
-  DestroyRef,
+  ViewContainerRef,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
@@ -16,41 +15,49 @@ import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 import { AuthService } from '@shared/core/auth';
 import { ProfileStore } from '../../core';
 import { IconComponent } from '@shared/pattern/icon-system';
+import { SharedFocusDirective } from '@shared/pattern/shared-focus';
+import { ObserveScrolledDirective } from './observe-scrolled.directive';
+
+type NavbarPanel = 'menu' | 'search';
 
 @Component({
   selector: 'web-navbar',
   standalone: true,
-  imports: [RouterLink, IconComponent],
+  imports: [RouterLink, IconComponent, SharedFocusDirective, ObserveScrolledDirective],
   providers: [],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.z-30]': 'openPanel() !== null',
+    '(document:keydown.escape)': 'closePanelAndRestoreFocusToMenuItem()',
+    '(document:click)': 'closePanelOnOutsideClick($event.target)',
+  },
 })
 export class NavbarComponent {
-  protected readonly navbar = viewChild<ElementRef<HTMLElement>>('navbar');
-  protected readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
-  protected readonly isScrolled = signal(false);
-  protected readonly isMenuOpen = signal(false);
-  protected readonly navHeight = signal(0);
-  protected readonly searchQuery = signal('');
   protected readonly userName = inject(ProfileStore).userName;
 
+  protected readonly openPanel = signal<NavbarPanel | null>(null);
+  protected readonly searchQuery = signal('');
+
+  private readonly menuToggleButton = viewChild<ElementRef<HTMLButtonElement>>('menuToggleButton');
+  private readonly searchToggleButton =
+    viewChild<ElementRef<HTMLButtonElement>>('searchToggleButton');
+
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly authService = inject(AuthService);
-  private dynamicDialogService = inject(DynamicDialogService);
-  private viewContainerRef = inject(ViewContainerRef);
-  private destroyRef = inject(DestroyRef);
-  private cookieConsentService = inject(CookieConsentService);
+  private readonly dynamicDialogService = inject(DynamicDialogService);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly cookieConsentService = inject(CookieConsentService);
 
   constructor() {
-    this.initializeNavHeight();
-    this.initializeScrollDetection();
     this.initializeCookieConsent();
   }
 
   protected signIn(): void {
     this.dynamicDialogService.openDialog<LoginComponent>(
       this.viewContainerRef,
-      undefined,
+      { variant: 'casual' },
       LoginComponent
     );
   }
@@ -59,40 +66,30 @@ export class NavbarComponent {
     this.authService.signOut().subscribe();
   }
 
-  protected toggleMenu(): void {
-    this.isMenuOpen.set(!this.isMenuOpen());
-
-    if (this.isMenuOpen()) {
-      setTimeout(() => {
-        this.mobileMenu()?.nativeElement.style.setProperty('top', `${this.navHeight()}px`);
-      }, 1);
-    }
+  protected togglePanel(panel: NavbarPanel): void {
+    this.openPanel.update(open => (open === panel ? null : panel));
   }
 
   protected clearSearch(): void {
     this.searchQuery.set('');
   }
 
-  private initializeNavHeight(): void {
-    afterNextRender(() => {
-      this.navHeight.set(this.navbar()?.nativeElement.scrollHeight ?? 0);
-    });
+  protected closePanelAndRestoreFocusToMenuItem(): void {
+    const panel = this.openPanel();
+    if (!panel) {
+      return;
+    }
+
+    this.openPanel.set(null);
+
+    const toggleButton = panel === 'menu' ? this.menuToggleButton() : this.searchToggleButton();
+    toggleButton?.nativeElement.focus();
   }
 
-  private initializeScrollDetection(): void {
-    afterNextRender(() => {
-      const scrollHandler = () => {
-        this.isScrolled.set(window.scrollY > 0);
-      };
-
-      scrollHandler();
-
-      window.addEventListener('scroll', scrollHandler, { passive: true });
-
-      this.destroyRef.onDestroy(() => {
-        window.removeEventListener('scroll', scrollHandler);
-      });
-    });
+  protected closePanelOnOutsideClick(target: EventTarget | null): void {
+    if (!this.host.nativeElement.contains(target as Node)) {
+      this.openPanel.set(null);
+    }
   }
 
   private initializeCookieConsent(): void {
