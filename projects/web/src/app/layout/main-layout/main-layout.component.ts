@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component, inject, ViewContainerRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
+import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 
 @Component({
   selector: 'web-main-layout',
@@ -20,4 +21,19 @@ import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
     </div>
   `,
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent {
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly cookieConsentService = inject(CookieConsentService);
+
+  constructor() {
+    this.initializeCookieConsent();
+  }
+
+  private initializeCookieConsent(): void {
+    afterNextRender(async () => {
+      if (this.cookieConsentService.needsConsent()) {
+        await this.cookieConsentService.showConsentDialog(this.viewContainerRef);
+      }
+    });
+  }
+}
