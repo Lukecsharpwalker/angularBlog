@@ -1,4 +1,4 @@
-import { Directive, HostListener, ViewContainerRef, inject } from '@angular/core';
+import { Directive, HostListener, inject, ViewContainerRef } from '@angular/core';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { CodeBlockModalComponent } from './code-block-modal/code-block-modal.component';
 
@@ -34,6 +34,7 @@ export class OpenCodeBlockModalDirective {
       this.viewContainerRef,
       {
         title: 'Code',
+        variant: 'immersive',
         primaryButton: 'Close',
         data: { code, language },
       },
