@@ -4,18 +4,23 @@
       <div class="flex-1 min-w-0">
         <div class="flex items-start gap-3">
           <div class="shrink-0 mt-1">
-            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            <svg
+              class="w-6 h-6 text-primary"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
             </svg>
           </div>
 
           <div class="flex-1 min-w-0">
-            <h2 class="text-lg font-semibold text-ink-1 mb-2">
-              We respect your privacy
-            </h2>
+            <h2 class="text-lg font-semibold text-ink-1 mb-2">We respect your privacy</h2>
             <p class="text-ink-2 text-sm leading-relaxed">
-              We use cookies to improve your browsing experience, analyze site traffic, and deliver personalized content.
-              You can choose which cookies to accept below.
+              We use cookies to improve your browsing experience, analyze site traffic, and deliver
+              personalized content. You can choose which cookies to accept below.
             </p>
           </div>
         </div>
@@ -25,21 +30,20 @@
         <button
           type="button"
           (click)="rejectAll()"
-          class="btn px-6 py-2 rounded-lg text-ink-2 bg-surface-2 border border-edge-1 hover:border-edge-2">
+          class="btn px-6 py-2 rounded-lg text-ink-2 bg-surface-2 border border-edge-1 hover:border-edge-2"
+        >
           Reject All
         </button>
 
         <button
           type="button"
           (click)="showCustomizeOptions()"
-          class="btn btn-secondary px-6 py-2 rounded-lg">
+          class="btn btn-secondary px-6 py-2 rounded-lg"
+        >
           Customize
         </button>
 
-        <button
-          type="button"
-          (click)="acceptAll()"
-          class="btn btn-primary px-6 py-2 rounded-lg">
+        <button type="button" (click)="acceptAll()" class="btn btn-primary px-6 py-2 rounded-lg">
           Accept All
         </button>
       </div>
@@ -53,7 +57,7 @@
 }
 
 @if (activeView() === 'details') {
-  <div class="p-6 max-h-96 overflow-y-auto w-full max-w-2xl">
+  <div class="p-6 w-full max-w-2xl">
     <div class="mb-6">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-ink-1">Cookie Preferences</h2>
@@ -61,9 +65,15 @@
           type="button"
           (click)="backToBanner()"
           class="icon-badge w-8 h-8 text-ink-3 hover:text-ink-2 hover:bg-tertiary/10 transition-colors"
-          aria-label="Back to banner">
+          aria-label="Back to banner"
+        >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -86,23 +96,24 @@
 
             <div class="shrink-0 ml-4">
               @if (isCategoryRequired(category)) {
-                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-surface-2 text-ink-1 rounded-sm">
+                <span
+                  class="inline-flex items-center px-2 py-1 text-xs font-medium bg-surface-2 text-ink-1 rounded-sm"
+                >
                   Always Active
                 </span>
               } @else {
                 <label class="relative inline-flex items-center cursor-pointer">
-                  //TODO: task #78 - create a custom toggle switch component to replace this code
+                  <!-- TODO: task #78 - create a custom toggle switch component to replace this code -->
                   <input
                     type="checkbox"
                     [checked]="getCategoryConsent(category.id)"
                     (change)="updateCategoryConsent(category.id, $any($event.target).checked)"
                     class="sr-only peer"
-                    [attr.aria-describedby]="category.id + '-description'">
-                  <div class="w-11 h-6 bg-surface-2 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-primary/25
-                              rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white
-                              after:absolute after:top-0.5 after:left-0.5 after:bg-surface-1
-                              after:rounded-full after:h-5 after:w-5 after:transition-all">
-                  </div>
+                    [attr.aria-describedby]="category.id + '-description'"
+                  />
+                  <div
+                    class="w-11 h-6 bg-surface-2 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-primary/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:absolute after:top-0.5 after:left-0.5 after:bg-surface-1 after:rounded-full after:h-5 after:w-5 after:transition-all"
+                  ></div>
                 </label>
               }
             </div>
@@ -128,14 +139,16 @@
       <button
         type="button"
         (click)="backToBanner()"
-        class="btn px-6 py-2 rounded-lg text-ink-2 bg-surface-2 border border-edge-1 hover:border-edge-2">
+        class="btn px-6 py-2 rounded-lg text-ink-2 bg-surface-2 border border-edge-1 hover:border-edge-2"
+      >
         Cancel
       </button>
 
       <button
         type="button"
         (click)="saveCustomPreferences()"
-        class="btn btn-primary px-6 py-2 rounded-lg">
+        class="btn btn-primary px-6 py-2 rounded-lg"
+      >
         Save Preferences
       </button>
     </div>
