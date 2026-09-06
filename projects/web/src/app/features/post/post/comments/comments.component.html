@@ -1,6 +1,6 @@
 <div class="space-y-4">
   @for (comment of comments(); track comment.id) {
-    <div class="card flex items-start gap-4">
+    <div class="card card-padded flex items-start gap-4">
       <shared-avatar
         [name]="comment.author?.username"
         [imageUrl]="comment.author?.avatar_url"
