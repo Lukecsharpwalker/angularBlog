@@ -243,12 +243,12 @@ module.exports = tseslint.config(
             { from: 'web-core', allow: ['web-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
             {
               from: 'web-layout',
-              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-public-api', 'shared-core'],
+              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-ui', 'shared-public-api', 'shared-core'],
             },
             { from: 'web-ui', allow: ['shared-models', 'shared-models-api'] },
             {
               from: 'web-pattern',
-              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-public-api', 'shared-core'],
+              allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-ui', 'shared-public-api', 'shared-core'],
             },
             {
               from: 'web-feature',
@@ -265,12 +265,12 @@ module.exports = tseslint.config(
             { from: 'admin-core', allow: ['shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
             {
               from: 'admin-layout',
-              allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-public-api', 'shared-core'],
+              allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-ui', 'shared-public-api', 'shared-core'],
             },
             { from: 'admin-ui', allow: ['shared-models', 'shared-models-api'] },
             {
               from: 'admin-pattern',
-              allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-public-api'],
+              allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-ui', 'shared-public-api'],
             },
             { from: 'admin-utils', allow: ['shared-models', 'shared-public-api', 'environment'] },
             {
@@ -286,7 +286,7 @@ module.exports = tseslint.config(
             { from: 'mfe-app', allow: ['mfe-core', 'mfe-feature-routes', 'shared-public-api'] },
             { from: 'mfe-core', allow: ['shared-public-api'] },
             { from: 'mfe-ui', allow: ['shared-models', 'shared-models-api'] },
-            { from: 'mfe-feature', allow: ['mfe-core', 'mfe-ui', 'shared-public-api'] },
+            { from: 'mfe-feature', allow: ['mfe-core', 'mfe-ui', 'shared-pattern', 'shared-ui', 'shared-public-api'] },
             { from: 'mfe-feature-routes', allow: ['mfe-core', 'mfe-feature'] },
           ],
         },
