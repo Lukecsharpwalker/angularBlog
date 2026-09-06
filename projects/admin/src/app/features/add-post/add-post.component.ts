@@ -96,6 +96,7 @@ export class AddPostComponent implements OnInit {
   protected openCoverImagePreview(coverImage: string): void {
     this.dynamicDialogService.openDialog(this.viewContainerRef, {
       title: 'Cover image',
+      variant: 'casual',
       image: coverImage,
     });
   }
