@@ -71,7 +71,12 @@ export class PostFormService {
     this.dialogService
       .openDialog<AddImageComponent>(
         viewContainerRef,
-        { title: 'Add Image', size: 'casual', primaryButton: 'Insert', secondaryButton: 'Cancel' },
+        {
+          title: 'Add Image',
+          variant: 'casual',
+          primaryButton: 'Insert',
+          secondaryButton: 'Cancel',
+        },
         AddImageComponent
       )
       .pipe(
