@@ -6,7 +6,6 @@ import { AuthService, UserService } from '@shared/core/auth';
 import { ProfileService } from '@shared/core/profile/profile.service';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
 import { ProfileStore } from '../../core';
-import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 import { NavbarComponent } from './navbar.component';
 
 describe('NavbarComponent', () => {
@@ -16,10 +15,6 @@ describe('NavbarComponent', () => {
     },
     dynamicDialogService: {
       openDialog: jasmine.createSpy('openDialog').and.returnValue(new Subject()),
-    },
-    cookieConsentService: {
-      needsConsent: jasmine.createSpy('needsConsent').and.returnValue(false),
-      showConsentDialog: jasmine.createSpy('showConsentDialog').and.returnValue(Promise.resolve()),
     },
   });
 
@@ -40,7 +35,6 @@ describe('NavbarComponent', () => {
           provideRouter([]),
           { provide: AuthService, useValue: mocks.authService },
           { provide: DynamicDialogService, useValue: mocks.dynamicDialogService },
-          { provide: CookieConsentService, useValue: mocks.cookieConsentService },
           { provide: ProfileStore, useValue: profileStoreMock },
         ],
       }).compileComponents();
@@ -84,7 +78,6 @@ describe('NavbarComponent', () => {
           provideRouter([]),
           { provide: AuthService, useValue: mocks.authService },
           { provide: DynamicDialogService, useValue: mocks.dynamicDialogService },
-          { provide: CookieConsentService, useValue: mocks.cookieConsentService },
           { provide: UserService, useValue: userServiceMock },
           { provide: ProfileService, useValue: profileServiceMock },
         ],
