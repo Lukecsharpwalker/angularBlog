@@ -34,9 +34,13 @@
   --height-80vh: 80vh;
   --height-90vh: 90vh;
   --height-95vh: 95vh;
+  --height-50dvh: 50dvh;
+  --height-85dvh: 85dvh;
   --height-90dvh: 90dvh;
 
   --spacing-safe-bottom: calc(1rem + env(safe-area-inset-bottom));
+
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
 
   --animate-fade-in: fade-in 0.5s ease-out;
   --animate-scale-in: scale-in 0.3s ease-out;
