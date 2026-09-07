@@ -13,9 +13,7 @@ declare global {
   }
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class CookieConsentService {
   readonly consentGiven = signal<Record<string, boolean>>({});
   readonly cookieCategories = signal<CookieCategory[]>([

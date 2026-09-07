@@ -8,6 +8,7 @@ import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
   selector: 'web-main-layout',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, BottomNavComponent],
+  providers: [CookieConsentService],
   template: `
     <div class="min-h-screen relative">
       <div class="fixed inset-0 pointer-events-none"></div>
