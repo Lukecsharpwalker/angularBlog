@@ -13,9 +13,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 These files contain the definitive project specifications and must be consulted before any architectural decisions or code modifications.
 
-## MOST IMPORTANT: NEVER WRITE ANY COMMENTS IN CODE - ABSOLUTELY FORBIDDEN
+## MOST IMPORTANT: AGENTS MUST NOT ADD COMMENTS TO CODE
 
-**ZERO TOLERANCE POLICY**: Do not add comments, explanations, or documentation inside any code files. This includes:
+This rule applies to comments added by AI agents. Agents must not add new comments, explanations, or documentation inside code files. This includes:
 
 - `// single line comments`
 - `/* block comments */`
@@ -23,7 +23,9 @@ These files contain the definitive project specifications and must be consulted 
 - `<!-- HTML comments -->`
 - `# Any other comment syntax`
 
-Use PR comments for discussions instead. Code must be self-explanatory through naming and structure.
+This is not a repository-wide ban on comments. Existing comments, including user-written comments and comments copied from external code, are allowed. Preserve them unless the user requests a change. During review, do not report the presence of comments as a violation of this rule or demand their removal. A staged or unstaged diff does not establish who authored a comment.
+
+Agents should put their explanations in review messages or PR discussions and use clear naming and structure in code.
 
 ## MOST IMPORTANT: CLASS MEMBER ORDERING - EVERY FILE YOU TOUCH
 
@@ -66,16 +68,9 @@ This applies to **every file you touch**, not only new ones. A field you add lan
 
 ## Project Overview
 
-This is **angular.fun** - a modern Angular 20+ blog application with Supabase backend. The project is currently a monolithic structure in `/src` but is being refactored into a multi-project workspace with micro-frontends and shared libraries.
+This is **angular.fun** - a modern Angular 20+ blog application with Supabase backend, built as a multi-project workspace with micro-frontends and shared libraries.
 
-### Current Architecture
-
-- **Main App**: `/src/app` - Monolithic structure containing both reader and admin functionality
-- **Reader**: `/src/app/reader` - Public blog with SSG/SSR capabilities
-- **Admin**: `/src/app/admin` - Admin panel with CSR for content management
-- **Shared**: `/src/app/shared` - Common components, services, models, and stores
-
-### Target Architecture (Multi-Project Workspace)
+### Architecture
 
 - **projects/web**: Public blog with hybrid rendering (SSG for articles, SSR for home)
 - **projects/admin**: Pure CSR admin panel for Firebase Hosting
@@ -142,7 +137,7 @@ ng serve code-samples-mfe    # Serve code samples micro-frontend
 
 - Use NgRx SignalStore for all state management
 - Feature-scoped stores in individual feature directories
-- Shared stores in `/src/app/shared/stores` -> refactor to `/projects/shared/src/data-access/stores` in new architecture
+- Shared stores in `projects/shared/src/data-access/stores`
 
 ### Component Structure
 
@@ -168,8 +163,7 @@ ng serve code-samples-mfe    # Serve code samples micro-frontend
 
 ### File Organization
 
-- The legacy monolith remains under `/src` until migration is complete — **do not modify** unless explicitly approved.
-- The target workspace lives under `/projects` and `/projects/shared`.
+- The workspace lives under `/projects` and `/projects/shared`.
 
 **Apps**
 
@@ -209,14 +203,14 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 ### Type Safety
 
 - Strict TypeScript configuration enabled
-- Supabase types generated in `/src/app/types/supabase/` -> refactor to `/projects/shared/src/models/supabase/`
+- Supabase types generated in `projects/shared/src/models/supabase/`
 - Use proper interfaces for all data models
 
 ### Code Style
 
-- **CRITICAL**: NEVER ADD ANY COMMENTS IN CODE FILES - ZERO TOLERANCE
-- Code must be self-documenting through clear naming and structure only
-- No explanatory text inside TypeScript, HTML, CSS, or any other code files
+- Agents must not add new comments or explanatory text to code files.
+- Use clear naming and structure for agent-written code.
+- Existing comments are allowed; do not flag or remove them merely because they are comments.
 
 ### Environment Configuration
 
@@ -279,11 +273,3 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 - **Admin**: Firebase Hosting (CSR)
 - **Code Samples MFE**: Firebase Hosting (MFE)
 - **Assets**: Supabase Storage CDN
-
-## Migration Status
-
-✅ **Migration Complete**: The project has been successfully migrated from monolithic structure to multi-project workspace:
-
-- ~~Current: Single app in `/src`~~ → **Completed**
-- ✅ **Active**: Separate projects in `/projects/` with shared libraries
-- Architecture guidance available in `/llms/private/architecture.txt`
