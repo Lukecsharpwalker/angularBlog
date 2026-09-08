@@ -12,9 +12,9 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 These files contain the definitive project specifications and must be consulted before any architectural decisions or code modifications.
 
-## MOST IMPORTANT: NEVER WRITE ANY COMMENTS IN CODE - ABSOLUTELY FORBIDDEN
+## MOST IMPORTANT: AGENTS MUST NOT ADD COMMENTS TO CODE
 
-**ZERO TOLERANCE POLICY**: Do not add comments, explanations, or documentation inside any code files. This includes:
+This rule applies to comments added by AI agents. Agents must not add new comments, explanations, or documentation inside code files. This includes:
 
 - // single line comments
 - /* block comments */
@@ -22,7 +22,9 @@ These files contain the definitive project specifications and must be consulted 
 - <!-- HTML comments -->
 - # Any other comment syntax
 
-Use PR comments for discussions instead. Code must be self-explanatory through naming and structure.
+This is not a repository-wide ban on comments. Existing comments, including user-written comments and comments copied from external code, are allowed. Preserve them unless the user requests a change. During review, do not report the presence of comments as a violation of this rule or demand their removal. A staged or unstaged diff does not establish who authored a comment.
+
+Agents should put their explanations in review messages or PR discussions and use clear naming and structure in code.
 
 ## Project Overview
 
@@ -174,9 +176,9 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 
 ### Code Style
 
-- **CRITICAL**: NEVER ADD ANY COMMENTS IN CODE FILES - ZERO TOLERANCE
-- Code must be self-documenting through clear naming and structure only
-- No explanatory text inside TypeScript, HTML, CSS, or any other code files
+- Agents must not add new comments or explanatory text to code files.
+- Use clear naming and structure for agent-written code.
+- Existing comments are allowed; do not flag or remove them merely because they are comments.
 
 ### Environment Configuration
 
