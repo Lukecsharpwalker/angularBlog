@@ -83,14 +83,6 @@
   height: 3rem;
   min-height: 3rem;
   padding: 0;
-  background-color: var(--color-surface-2);
-  color: var(--color-secondary);
-
-  @media (hover: hover) {
-    &:hover {
-      background-color: color-mix(in srgb, var(--color-tertiary) 25%, transparent);
-    }
-  }
 }
 
 @utility btn-primary {
