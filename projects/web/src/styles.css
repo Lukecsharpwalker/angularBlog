@@ -119,6 +119,8 @@ article pre:not(.code-block) code {
 }
 
 @theme {
+  --breakpoint-xs: 22rem;
+
   --color-surface-1: #fffdf6;
   --color-surface-2: #fdfaf1;
 
