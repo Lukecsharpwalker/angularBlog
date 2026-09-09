@@ -1,4 +1,11 @@
-import { inject, Injectable, InjectionToken, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
+import {
+  inject,
+  Injectable,
+  InjectionToken,
+  makeStateKey,
+  PLATFORM_ID,
+  TransferState,
+} from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { SUPABASE_CLIENT } from './supabase.client';
 import { UserService } from '@shared/core/auth';
@@ -36,6 +43,7 @@ export class SupabaseService {
 
     const { data } = await this.client.auth.getSession();
     if (data.session?.user) {
+      //TODO: Write a function mapper
       const user = data.session.user as UserWithRole;
       this.userService.setAppUser(user);
       this.transferState.set(APP_USER_TRANSFER_KEY, user);
