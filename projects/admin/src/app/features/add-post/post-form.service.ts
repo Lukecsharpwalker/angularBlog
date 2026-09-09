@@ -166,11 +166,13 @@ export class PostFormService {
           id,
         };
         quill.quillEditor.formatLine(quillIndex, 0, rec, 'user');
+
         toc[index] = {
           content: line.ops.map(x => x.insert).join(''),
           header: attributes['header'] as number,
           id,
         };
+
         //Remove id if header is removed, to avoid duplicate ids in the document
       } else if (attributes['id']) {
         quill.quillEditor.formatLine(quillIndex, 0, 'id', false, 'user');
