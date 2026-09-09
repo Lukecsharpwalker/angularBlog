@@ -12,6 +12,7 @@ import {
   lucideChevronDown,
   lucideChevronLeft,
   lucideChevronRight,
+  lucideChevronsUp,
   lucideChevronUp,
   lucideCircleAlert,
   lucideClock,
@@ -78,6 +79,7 @@ export type IconName =
   | 'chevron-left'
   | 'chevron-right'
   | 'chevron-up'
+  | 'chevrons-up'
   | 'chevron-down'
   | 'close'
   | 'menu'
@@ -127,6 +129,7 @@ const iconMapping: Record<IconName, string> = {
   'chevron-left': 'lucideChevronLeft',
   'chevron-right': 'lucideChevronRight',
   'chevron-up': 'lucideChevronUp',
+  'chevrons-up': 'lucideChevronsUp',
   'chevron-down': 'lucideChevronDown',
   close: 'lucideX',
   menu: 'lucideMenu',
@@ -186,6 +189,7 @@ const sizeClasses: Record<IconSize, string> = {
       lucideEye,
       lucideChevronLeft,
       lucideChevronRight,
+      lucideChevronsUp,
       lucideChevronUp,
       lucideChevronDown,
       lucideX,
