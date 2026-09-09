@@ -10,22 +10,31 @@ interface PostState {
   post: Post | null;
   loading: boolean;
   error: string | null;
+  activeHeadingId: string | null;
 }
 
 const initialState: PostState = {
   post: null,
   loading: false,
   error: null,
+  activeHeadingId: null,
 };
 
 export const PostStore = signalStore(
   withState(initialState),
 
   withComputed(({ post }) => ({
-    tableOfContents: computed(() => post()!.table_of_contents_sorted),
+    tableOfContents: computed(() => post()?.table_of_contents_sorted ?? []),
+  })),
+
+  withComputed(({ tableOfContents, activeHeadingId }) => ({
+    activeHeading: computed(() => activeHeadingId() ?? tableOfContents()[0]?.id),
+    firstHeading: computed(() => tableOfContents()[0]?.id),
   })),
 
   withMethods((store, postService = inject(ReaderApiService)) => ({
+    setActiveHeading: (activeHeadingId: string) => patchState(store, { activeHeadingId }),
+
     getPost: rxMethod<string>(
       pipe(
         tap(() => patchState(store, { loading: true, error: null })),

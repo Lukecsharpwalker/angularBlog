@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IconComponent } from '@shared/pattern/icon-system';
 import { ObserveDockedDirective } from './observe-docked.directive';
@@ -16,7 +16,5 @@ import { ObserveDockedDirective } from './observe-docked.directive';
   },
 })
 export class PostMobileToolbarComponent {
-  readonly hasContents = input.required<boolean>();
-
   readonly contentsRequested = output<void>();
 }

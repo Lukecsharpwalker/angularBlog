@@ -10,14 +10,12 @@
   <shared-icon class="flex" name="arrow-left" size="sm" />
 </a>
 
-@if (hasContents()) {
-  <button
-    type="button"
-    aria-haspopup="dialog"
-    class="btn btn-secondary btn-sm relative ml-auto min-h-11 gap-2 rounded-full transition-transform duration-1000 ease-out"
-    (click)="contentsRequested.emit()"
-  >
-    <shared-icon class="flex" name="menu" size="sm" />
-    Contents
-  </button>
-}
+<button
+  type="button"
+  aria-haspopup="dialog"
+  class="btn btn-secondary btn-sm relative ml-auto min-h-11 gap-2 rounded-full transition-transform duration-1000 ease-out"
+  (click)="contentsRequested.emit()"
+>
+  <shared-icon class="flex" name="menu" size="sm" />
+  Contents
+</button>

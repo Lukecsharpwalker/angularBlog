@@ -1,71 +1,102 @@
+<!-- Add more granular components, whole layout should be build from components -->
 @if (post(); as post) {
   <div class="mx-auto max-w-5xl px-4 md:px-10">
-    <a
-      routerLink="/"
-      class="inline-flex items-center gap-2 mt-8 mb-6 text-sm font-bold text-secondary focus-ring"
-    >
-      <shared-icon class="flex" name="arrow-left" size="sm" />
-      All posts
-    </a>
+    <web-post-mobile-toolbar (contentsRequested)="openTableOfContents()" />
 
-    @if (post.post_tags.length) {
-      <div class="flex gap-2 flex-wrap mb-5">
-        @for (tag of post.post_tags; track tag.tags.id) {
-          <shared-chip [text]="tag.tags.name" [color]="tag.tags.color" variant="outline" />
-        }
+    <div class="flex flex-col">
+      <a
+        routerLink="/"
+        class="order-1 hidden items-center gap-2 mt-8 mb-6 text-sm font-bold text-secondary focus-ring md:inline-flex"
+      >
+        <shared-icon class="flex" name="arrow-left" size="sm" />
+        All posts
+      </a>
+
+      <div
+        class="relative order-1 h-50 overflow-hidden rounded-3xl mb-6 shadow-lg md:order-3 md:h-95 md:mb-10"
+      >
+        <img
+          class="object-cover"
+          [ngSrc]="post.cover_image"
+          [alt]="post.title"
+          fill
+          priority
+          sizes="(min-width: 1024px) 64rem, 100vw"
+        />
       </div>
-    }
 
-    <h1 class="text-hero font-bold leading-tight tracking-tight text-primary text-balance mb-6">
-      {{ post.title }}
-    </h1>
-
-    <div class="flex items-center gap-3.5 mb-8">
-      <shared-avatar
-        [name]="post.author?.username"
-        [imageUrl]="post.author?.avatar_url"
-        size="md"
-      />
-      <div>
-        <div class="font-bold text-sm mb-0.5 text-secondary">{{ post.author?.username }}</div>
-        <div class="text-xs font-semibold text-ink-3 flex items-center gap-2">
-          @if (post.created_at; as createdAt) {
-            <time [attr.datetime]="createdAt">{{ createdAt | date: 'mediumDate' }}</time>
-            <span aria-hidden="true">·</span>
+      <div class="order-2">
+        <div class="flex gap-2 flex-wrap mb-5">
+          @for (tag of post.tags; track tag.id) {
+            <shared-chip [text]="tag.name" [color]="tag.color" variant="outline" />
           }
-          <span>{{ readingTime() }} min read</span>
+        </div>
+
+        <h1
+          class="text-2xl font-bold leading-tight tracking-tight text-primary text-balance mb-6 md:text-hero"
+        >
+          {{ post.title }}
+        </h1>
+
+        <div
+          class="flex items-center gap-3.5 border-b border-edge-1 pb-6 mb-8 md:border-b-0 md:pb-0"
+        >
+          <shared-avatar
+            [name]="post.author?.username"
+            [imageUrl]="post.author?.avatar_url"
+            size="md"
+          />
+
+          <div>
+            <div class="font-bold text-sm mb-0.5 text-secondary">{{ post.author?.username }}</div>
+            <div class="text-xs font-semibold text-ink-3 flex items-center gap-2">
+              @if (post.created_at; as createdAt) {
+                <time [attr.datetime]="createdAt">{{ createdAt | date: 'mediumDate' }}</time>
+                <span aria-hidden="true">·</span>
+              }
+              <span>{{ readingTime() }} min read</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="relative overflow-hidden rounded-3xl mb-10 h-95 shadow-lg">
-      <img
-        class="object-cover"
-        [ngSrc]="post.cover_image"
-        [alt]="post.title"
-        fill
-        priority
-        sizes="(min-width: 1024px) 64rem, 100vw"
-      />
-    </div>
-
     <div class="flex flex-col lg:flex-row gap-12 items-start">
       <main id="main-content" class="flex-1 min-w-0 w-full">
-        <web-post-content [content]="post.content" />
+        <div
+          class="mb-8 hidden items-center gap-2 md:sticky md:top-navbar-offset md:z-20 md:flex lg:hidden"
+        >
+          <button
+            type="button"
+            aria-haspopup="dialog"
+            class="btn btn-secondary flex-1 justify-between"
+            (click)="openTableOfContents()"
+          >
+            <span class="flex items-center gap-2">
+              <shared-icon class="flex" name="menu" size="sm" />
+              On this page
+            </span>
+            <shared-icon class="flex" name="chevron-right" size="sm" />
+          </button>
+
+          <div class="flex gap-2" role="group" aria-label="Share article">
+            <web-social-share />
+          </div>
+        </div>
+
+        <web-post-content webObserveActiveHeading [content]="post.content" />
 
         <div class="mt-12 pt-8 border-t border-edge-1">
           <web-post-author-card [author]="post.author" />
         </div>
 
-        <section class="mt-12 pt-8 border-t border-edge-1" aria-labelledby="comments-heading">
-          <h2 id="comments-heading" class="text-xl font-bold text-primary mb-5">
-            {{ commentCount() }} comments
-          </h2>
+        <section class="mt-12 pt-8 border-t border-edge-1">
+          <h2 class="text-xl font-bold text-primary mb-5">{{ commentCount() }} comments</h2>
 
           <web-comments [postId]="id()" />
 
           @if (userProfile()) {
-            <div class="card mt-6">
+            <div class="card card-padded mt-6">
               <web-add-comment [postId]="id()" />
             </div>
           }
@@ -75,14 +106,25 @@
       <aside
         class="hidden lg:sticky lg:top-24 lg:block lg:w-64 lg:shrink-0 lg:self-start"
         aria-label="Article navigation"
+        id="table-of-contents-aside-container"
       >
         <div class="space-y-6">
-          <web-table-of-contents [items]="tocItems()!" />
-          <web-social-share [title]="postTitle()" />
+          <div class="card card-padded max-h-80vh overflow-y-auto no-scrollbar">
+            <h2 class="text-xs font-bold mb-4 text-ink-3 uppercase tracking-wider">On this page</h2>
+            <web-table-of-contents />
+          </div>
+          <div class="card card-padded">
+            <h2 class="text-xs font-bold mb-4 text-ink-3 uppercase tracking-wider">Share</h2>
+            <div class="flex gap-2" role="group" aria-label="Share article">
+              <web-social-share />
+            </div>
+          </div>
         </div>
       </aside>
     </div>
   </div>
+
+  <web-post-actions />
 } @else if (loading()) {
   <web-post-loading-placeholder />
 } @else if (error()) {
