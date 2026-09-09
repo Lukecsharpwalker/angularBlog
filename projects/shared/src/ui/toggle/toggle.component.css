@@ -1,0 +1,71 @@
+@layer components {
+  :host {
+    --toggle-width: 3rem;
+    --toggle-height: 1.75rem;
+    --toggle-inset: 0.125rem;
+    --toggle-dir: 1;
+    --toggle-track-bg: var(--color-ink-3);
+    --toggle-track-bg-hover: var(--color-ink-2);
+
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  :host(:dir(rtl)) {
+    --toggle-dir: -1;
+  }
+
+  :host([data-checked]) {
+    --toggle-track-bg: var(--color-primary);
+    --toggle-track-bg-hover: var(--color-primary-hover);
+  }
+
+  :host([data-disabled]) {
+    opacity: 0.5;
+  }
+
+  .toggle-track {
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+    background-color: var(--toggle-track-bg);
+    background-image: linear-gradient(to bottom, rgb(255 255 255 / 0.22), transparent 55%);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.25),
+      inset 0 1px 3px color-mix(in srgb, var(--color-primary) 28%, transparent);
+    transition: background-color 0.2s ease;
+  }
+
+  .toggle-thumb {
+    inset-block-start: var(--toggle-inset);
+    inset-inline-start: var(--toggle-inset);
+    width: calc(var(--toggle-height) - 2 * var(--toggle-inset));
+    height: calc(var(--toggle-height) - 2 * var(--toggle-inset));
+    background-color: var(--color-surface-1);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-primary) 32%, transparent),
+      0 2px 6px color-mix(in srgb, var(--color-primary) 18%, transparent);
+    transition: transform 0.2s var(--ease-sheet);
+  }
+
+  :host([data-checked]) .toggle-thumb {
+    transform: translateX(calc(var(--toggle-dir) * (var(--toggle-width) - var(--toggle-height))));
+  }
+
+  input:focus-visible + .toggle-track {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) {
+    input:enabled:hover + .toggle-track {
+      background-color: var(--toggle-track-bg-hover);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toggle-track,
+    .toggle-thumb {
+      transition: none;
+    }
+  }
+}
