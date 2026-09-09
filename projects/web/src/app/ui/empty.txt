@@ -1,9 +1,0 @@
-# Web UI Components
-
-This folder contains web-specific UI components that are reusable within the web application.
-
-According to BOOK architecture:
-- UI components are standalone presentational components  
-- They communicate via inputs/outputs only
-- They cannot import from core/ (no headless dependencies)
-- They are generic and reusable within this application

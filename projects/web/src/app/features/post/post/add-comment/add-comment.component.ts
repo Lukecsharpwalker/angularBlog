@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentForm } from './add-comment.models';
 import { ProfileStore } from '../../../../core';
 import { CommentsStore } from '../comments/comments.store';
@@ -25,7 +25,6 @@ export class AddCommentComponent {
   });
 
   private readonly userId = inject(ProfileStore).userId;
-
 
   protected async onSubmit(): Promise<void> {
     const userId = this.userId();
