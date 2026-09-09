@@ -91,7 +91,9 @@
           <div class="flex items-start justify-between mb-2">
             <div class="flex-1">
               <h4 class="font-medium text-ink-1">{{ category.name }}</h4>
-              <p class="text-sm text-ink-2 mt-1">{{ category.description }}</p>
+              <p class="text-sm text-ink-2 mt-1" [id]="category.id + '-description'">
+                {{ category.description }}
+              </p>
             </div>
 
             <div class="shrink-0 ml-4">
@@ -102,19 +104,13 @@
                   Always Active
                 </span>
               } @else {
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <!-- TODO: task #78 - create a custom toggle switch component to replace this code -->
-                  <input
-                    type="checkbox"
-                    [checked]="getCategoryConsent(category.id)"
-                    (change)="updateCategoryConsent(category.id, $any($event.target).checked)"
-                    class="sr-only peer"
-                    [attr.aria-describedby]="category.id + '-description'"
-                  />
-                  <div
-                    class="w-11 h-6 bg-surface-2 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-primary/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:absolute after:top-0.5 after:left-0.5 after:bg-surface-1 after:rounded-full after:h-5 after:w-5 after:transition-all"
-                  ></div>
-                </label>
+                <shared-toggle
+                  [label]="category.name"
+                  hideLabel
+                  [checked]="getCategoryConsent(category.id)"
+                  (checkedChange)="updateCategoryConsent(category.id, $event)"
+                  [describedBy]="category.id + '-description'"
+                />
               }
             </div>
           </div>

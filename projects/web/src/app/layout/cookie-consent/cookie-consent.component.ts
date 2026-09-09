@@ -1,17 +1,17 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal
-} from '@angular/core';
-import { DynamicDialogService, ModalCloseStatusEnum, ModalStatus } from '@shared/pattern/dynamic-dialog';
+  DynamicDialogService,
+  ModalCloseStatusEnum,
+  ModalStatus,
+} from '@shared/pattern/dynamic-dialog';
 import { CookieConsentService } from './cookie-consent.service';
-import { CookieCategory } from './local-storage';
+import { CookieCategory } from './cookies.model';
+import { ToggleComponent } from '@shared/ui/toggle';
 
 @Component({
   selector: 'web-cookie-consent',
   standalone: true,
-  imports: [],
+  imports: [ToggleComponent],
   templateUrl: './cookie-consent.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -23,7 +23,6 @@ export class CookieConsentComponent {
   protected readonly cookieCategories = this.cookieService.cookieCategories;
   private readonly dynamicDialogService = inject(DynamicDialogService);
 
-
   constructor() {
     this.initializeCustomConsent();
   }
@@ -31,7 +30,7 @@ export class CookieConsentComponent {
   protected acceptAll(): void {
     this.cookieService.acceptAllCookies();
     const status: ModalStatus = {
-      closeStatus: ModalCloseStatusEnum.ACCEPTED
+      closeStatus: ModalCloseStatusEnum.ACCEPTED,
     };
     this.dynamicDialogService.closeDialog(status);
   }
@@ -39,7 +38,7 @@ export class CookieConsentComponent {
   protected rejectAll(): void {
     this.cookieService.rejectAllCookies();
     const status: ModalStatus = {
-      closeStatus: ModalCloseStatusEnum.REJECTED
+      closeStatus: ModalCloseStatusEnum.REJECTED,
     };
     this.dynamicDialogService.closeDialog(status);
   }
@@ -55,7 +54,7 @@ export class CookieConsentComponent {
   protected saveCustomPreferences(): void {
     this.cookieService.saveCustomConsent(this.customConsent());
     const status: ModalStatus = {
-      closeStatus: ModalCloseStatusEnum.ACCEPTED
+      closeStatus: ModalCloseStatusEnum.ACCEPTED,
     };
     this.dynamicDialogService.closeDialog(status);
   }
@@ -64,7 +63,7 @@ export class CookieConsentComponent {
     const current = this.customConsent();
     this.customConsent.set({
       ...current,
-      [categoryId]: consent
+      [categoryId]: consent,
     });
   }
 

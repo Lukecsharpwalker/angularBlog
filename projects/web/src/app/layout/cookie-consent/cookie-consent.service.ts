@@ -5,7 +5,7 @@ import {
   CookieCategory,
   CookieCategoryEnum,
   LocalStorageEnum,
-} from './local-storage';
+} from './cookies.model';
 
 declare global {
   interface Window {
@@ -158,7 +158,7 @@ export class CookieConsentService {
     if (!stored) return null;
 
     try {
-      return JSON.parse(stored) as ConsentRecord;
+      return JSON.parse(stored) satisfies ConsentRecord;
     } catch {
       return null;
     }
