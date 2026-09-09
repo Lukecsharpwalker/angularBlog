@@ -3,15 +3,15 @@ import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
-  withState,
-  withMethods,
-  withHooks,
   withComputed,
+  withHooks,
+  withMethods,
+  withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { Post } from '@shared/core/supabase';
-import { ReaderApiService } from '../../core/blog/reader-api.service';
+import { ReaderApiService } from '../../core';
 
 interface PostsState {
   posts: Post[];
