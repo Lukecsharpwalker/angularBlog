@@ -29,6 +29,8 @@ const tailwindClassnameWhitelist = [
   'hljs',
   'portrait',
   'toc-link',
+  'toggle-track',
+  'toggle-thumb',
 ];
 
 module.exports = tseslint.config(
@@ -75,7 +77,6 @@ module.exports = tseslint.config(
         { type: 'shared-pattern', pattern: 'projects/shared/src/pattern/**' },
         { type: 'shared-core', pattern: 'projects/shared/src/core/**' },
         { type: 'shared-core-auth', pattern: 'projects/shared/src/core/auth/**' },
-        { type: 'shared-core-blog', pattern: 'projects/shared/src/core/blog/**' },
         { type: 'shared-core-supabase', pattern: 'projects/shared/src/core/supabase/**' },
         { type: 'shared-data-access', pattern: 'projects/shared/src/data-access/**' },
         { type: 'shared-models', pattern: 'projects/shared/src/models/**' },
@@ -200,10 +201,9 @@ module.exports = tseslint.config(
           default: 'disallow',
           rules: [
             { from: 'shared-lib', allow: [] },
-            { from: 'shared-pattern', allow: ['shared-models', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-data-access', 'shared-public-api'] },
+            { from: 'shared-pattern', allow: ['shared-models', 'shared-core', 'shared-core-auth', 'shared-core-supabase', 'shared-data-access', 'shared-public-api'] },
             { from: 'shared-core', allow: ['shared-models'] },
             { from: 'shared-core-auth', allow: ['shared-models', 'shared-core-supabase'] },
-            { from: 'shared-core-blog', allow: ['shared-models', 'shared-core-auth', 'shared-core-supabase'] },
             { from: 'shared-core-supabase', allow: ['shared-models'] },
             { from: 'shared-data-access', allow: ['shared-models'] },
             { from: 'shared-models', allow: [] },
@@ -217,7 +217,6 @@ module.exports = tseslint.config(
                 'shared-pattern',
                 'shared-core',
                 'shared-core-auth',
-                'shared-core-blog',
                 'shared-core-supabase',
                 'shared-data-access',
                 'shared-models',
@@ -240,7 +239,7 @@ module.exports = tseslint.config(
                 'shared-public-api',
               ],
             },
-            { from: 'web-core', allow: ['web-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
+            { from: 'web-core', allow: ['web-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-supabase', 'environment'] },
             {
               from: 'web-layout',
               allow: ['web-core', 'web-ui', 'shared-pattern', 'shared-ui', 'shared-public-api', 'shared-core'],
@@ -252,7 +251,7 @@ module.exports = tseslint.config(
             },
             {
               from: 'web-feature',
-              allow: ['web-core', 'web-ui', 'web-pattern', 'web-utils', 'shared-public-api', 'shared-models-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern', 'shared-ui'],
+              allow: ['web-core', 'web-ui', 'web-pattern', 'web-utils', 'shared-public-api', 'shared-models-api', 'shared-core', 'shared-core-auth', 'shared-core-supabase', 'shared-pattern', 'shared-ui'],
             },
             { from: 'web-feature-routes', allow: ['web-core', 'web-pattern', 'web-feature'] },
             { from: 'web-utils', allow: ['shared-models', 'shared-public-api', 'shared-core', 'shared-core-supabase', 'environment'] },
@@ -262,7 +261,7 @@ module.exports = tseslint.config(
               from: 'admin-app',
               allow: ['admin-core', 'admin-layout', 'admin-feature-routes', 'admin-feature', 'shared-public-api'],
             },
-            { from: 'admin-core', allow: ['shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'environment'] },
+            { from: 'admin-core', allow: ['shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-supabase', 'environment'] },
             {
               from: 'admin-layout',
               allow: ['admin-core', 'admin-ui', 'shared-pattern', 'shared-ui', 'shared-public-api', 'shared-core'],
@@ -275,7 +274,7 @@ module.exports = tseslint.config(
             { from: 'admin-utils', allow: ['shared-models', 'shared-public-api', 'environment'] },
             {
               from: 'admin-feature',
-              allow: ['admin-core', 'admin-ui', 'admin-pattern', 'admin-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-blog', 'shared-core-supabase', 'shared-pattern', 'shared-ui'],
+              allow: ['admin-core', 'admin-ui', 'admin-pattern', 'admin-utils', 'shared-public-api', 'shared-core', 'shared-core-auth', 'shared-core-supabase', 'shared-pattern', 'shared-ui'],
             },
             {
               from: 'admin-feature-routes',
