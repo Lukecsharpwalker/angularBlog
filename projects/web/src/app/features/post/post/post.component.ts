@@ -25,6 +25,7 @@ import { PostStore } from '../post.store';
 import { CommentsStore } from './comments/comments.store';
 import { AuthorCardComponent } from './author-card/author-card.component';
 import { PostContentComponent } from './post-content/post-content.component';
+import { PostErrorComponent } from './post-error/post-error.component';
 import { PostLoadingPlaceholderComponent } from './post-loading-placeholder/post-loading-placeholder.component';
 import { TableOfContentsComponent } from './table-of-contents/table-of-contents.component';
 import { readingTimeMinutes } from './post-content/reading-time';
@@ -53,6 +54,7 @@ import { TableOfContentsDialogComponent } from './table-of-contents/table-of-con
     PostMobileToolbarComponent,
     NgOptimizedImage,
     PostContentComponent,
+    PostErrorComponent,
     PostLoadingPlaceholderComponent,
     RouterLink,
     SocialShareComponent,

@@ -123,39 +123,9 @@
       </aside>
     </div>
   </div>
-
 } @else if (loading()) {
   <web-post-loading-placeholder />
 } @else if (error()) {
-<!--  TODO: extract component-->
-  <div class="container mx-auto px-4 py-20">
-    <div
-      class="max-w-md mx-auto text-center glass-effect-strong border border-error/40 rounded-xl p-8 shadow-lg"
-    >
-      <h2 class="text-2xl font-bold text-error mb-2 flex items-center justify-center gap-2">
-        <shared-icon name="error" size="sm" />
-        Error Loading Post
-      </h2>
-      <p class="text-ink-2 mb-6">{{ error() }}</p>
-
-      <div class="space-y-3">
-        <button
-          class="btn btn-primary w-full hover-lift"
-          (click)="loadPost()"
-          aria-label="Retry loading post"
-        >
-          Try Again
-        </button>
-
-        <button
-          class="btn btn-secondary w-full"
-          (click)="goBack()"
-          aria-label="Go back to posts list"
-        >
-          Back to Posts
-        </button>
-      </div>
-    </div>
-  </div>
+  <web-post-error [error]="error()" (retryRequested)="loadPost()" (backRequested)="goBack()" />
 }
 <web-post-mobile-bottom-actions />
