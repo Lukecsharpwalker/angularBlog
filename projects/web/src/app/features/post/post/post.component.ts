@@ -30,7 +30,7 @@ import { TableOfContentsComponent } from './table-of-contents/table-of-contents.
 import { readingTimeMinutes } from './post-content/reading-time';
 import { PostMobileToolbarComponent } from './post-mobile-toolbar/post-mobile-toolbar.component';
 import { ObserveActiveHeadingDirective } from './observe-active-heading.directive';
-import { PostActionsComponent } from './post-actions/post-actions.component';
+import { PostMobileBottomActionsComponent } from './post-mobile-bottom-actions/post-mobile-bottom-actions.component';
 import { DynamicDialogService, ModalCloseStatusEnum } from '@shared/pattern/dynamic-dialog';
 import { TableOfContentsDialogComponent } from './table-of-contents/table-of-contents-dialog.component';
 
@@ -48,7 +48,7 @@ import { TableOfContentsDialogComponent } from './table-of-contents/table-of-con
     CommentsComponent,
     DatePipe,
     IconComponent,
-    PostActionsComponent,
+    PostMobileBottomActionsComponent,
     ObserveActiveHeadingDirective,
     PostMobileToolbarComponent,
     NgOptimizedImage,

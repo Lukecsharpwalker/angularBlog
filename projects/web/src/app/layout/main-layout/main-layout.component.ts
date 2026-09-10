@@ -1,13 +1,13 @@
 import { afterNextRender, Component, inject, ViewContainerRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
+import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
 import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
 
 @Component({
   selector: 'web-main-layout',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, BottomNavComponent],
+  imports: [RouterOutlet, NavbarComponent, MobileBottomNavComponent],
   providers: [CookieConsentService],
   template: `
     <div class="min-h-screen relative">
@@ -18,7 +18,7 @@ import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
         <router-outlet />
       </main>
 
-      <web-bottom-nav />
+      <web-mobile-bottom-nav />
     </div>
   `,
 })

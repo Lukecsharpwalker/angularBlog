@@ -1,0 +1,83 @@
+<ng-template cdkPortal>
+  <div #portalContent class="relative w-full">
+    <div class="flex w-full items-center gap-2">
+      <button
+        type="button"
+        [attr.aria-pressed]="liked()"
+        aria-label="Like article"
+        class="flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-bold text-like focus-ring"
+        (click)="toggleLike()"
+      >
+        <shared-icon
+          class="flex"
+          name="like"
+          size="md"
+          [className]="liked() ? '[&_svg]:fill-current' : ''"
+        />
+        {{ likeCount() }}
+      </button>
+
+      <button
+        type="button"
+        aria-label="Jump to comments"
+        class="flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-bold text-ink-2 focus-ring"
+        (click)="scrollToComments()"
+      >
+        <shared-icon class="flex" name="comment" size="md" />
+        {{ commentCount() }}
+      </button>
+
+      <button
+        type="button"
+        [attr.aria-pressed]="saved()"
+        class="btn btn-secondary btn-sm ml-auto h-11 gap-1.5 rounded-full"
+        (click)="toggleSaved()"
+      >
+        <shared-icon
+          class="flex"
+          name="bookmark"
+          size="sm"
+          [className]="saved() ? '[&_svg]:fill-current' : ''"
+        />
+        <span class="max-xs:sr-only">{{ saved() ? 'Saved' : 'Save' }}</span>
+      </button>
+
+      <button
+        #shareToggleButton
+        type="button"
+        [attr.aria-expanded]="shareMenuOpen()"
+        aria-controls="share-menu-panel"
+        class="btn btn-secondary btn-sm h-11 gap-1.5 rounded-full"
+        (click)="toggleShareMenu()"
+      >
+        <shared-icon
+          class="flex"
+          [name]="shareMenuOpen() ? 'close' : 'share'"
+          size="sm"
+          aria-hidden="true"
+        />
+        <span class="max-xs:sr-only">Share</span>
+      </button>
+
+      <button
+        type="button"
+        aria-label="Scroll to top"
+        class="btn btn-secondary btn-sm h-11 w-11 rounded-full p-0"
+        (click)="scrollToTop()"
+      >
+        <shared-icon class="flex" name="chevrons-up" size="sm" />
+      </button>
+    </div>
+
+    @if (shareMenuOpen()) {
+      <div
+        class="absolute inset-x-0 bottom-full flex items-center justify-center gap-2 border-t border-edge-1 bg-surface-1 px-4 py-3"
+        id="share-menu-panel"
+        role="group"
+        aria-label="Share article"
+      >
+        <web-social-share (shared)="shareMenuOpen.set(false)" />
+      </div>
+    }
+  </div>
+</ng-template>

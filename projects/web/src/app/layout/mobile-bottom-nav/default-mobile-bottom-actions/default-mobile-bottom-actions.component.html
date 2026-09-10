@@ -1,0 +1,48 @@
+<div class="flex w-full items-center justify-between">
+  <a
+    #homeLinkActive="routerLinkActive"
+    routerLink="/"
+    routerLinkActive
+    ariaCurrentWhenActive="page"
+    [routerLinkActiveOptions]="{ exact: true }"
+    [class.text-primary]="homeLinkActive.isActive"
+    [class.text-tertiary]="!homeLinkActive.isActive"
+    class="flex min-h-11 min-w-11 flex-col items-center gap-1 focus-ring"
+  >
+    <shared-icon class="flex" name="home" size="md" />
+    <span class="text-xs font-bold">Home</span>
+  </a>
+
+  <button
+    type="button"
+    disabled
+    aria-disabled="true"
+    aria-label="Explore (coming soon)"
+    class="flex min-h-11 min-w-11 cursor-not-allowed flex-col items-center gap-1 text-tertiary/60"
+  >
+    <shared-icon class="flex" name="search" size="md" />
+    <span class="text-xs font-medium">Explore</span>
+  </button>
+
+  <button
+    type="button"
+    disabled
+    aria-disabled="true"
+    aria-label="Saved (coming soon)"
+    class="flex min-h-11 min-w-11 cursor-not-allowed flex-col items-center gap-1 text-tertiary/60"
+  >
+    <shared-icon class="flex" name="bookmark" size="md" />
+    <span class="text-xs font-medium">Saved</span>
+  </button>
+
+  <button
+    type="button"
+    disabled
+    aria-disabled="true"
+    aria-label="Profile (coming soon)"
+    class="flex min-h-11 min-w-11 cursor-not-allowed flex-col items-center gap-1 text-tertiary/60"
+  >
+    <shared-icon class="flex" name="user" size="md" />
+    <span class="text-xs font-medium">Profile</span>
+  </button>
+</div>
