@@ -14,7 +14,9 @@ import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
       <div class="fixed inset-0 pointer-events-none"></div>
 
       <web-navbar class="relative z-10" />
-      <main class="container relative mx-auto w-11/12 pt-8 pb-32 md:pb-8 lg:w-10/12 xl:w-8/12">
+      <main
+        class="container relative mx-auto w-11/12 pt-8 pb-32 max-sm:max-w-none md:pb-8 lg:w-10/12 xl:w-8/12"
+      >
         <router-outlet />
       </main>
 
