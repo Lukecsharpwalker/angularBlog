@@ -78,7 +78,7 @@ export class PostListComponent {
     this.dialogService
       .openDialog(this.viewContainerRef, {
         title: 'Delete post',
-        variant: 'casual',
+        variant: 'standard',
         content: `Delete "${post.title}"? This cannot be undone.`,
         primaryButton: 'Delete',
         secondaryButton: 'Cancel',

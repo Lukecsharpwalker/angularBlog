@@ -73,7 +73,7 @@ export class PostFormService {
         viewContainerRef,
         {
           title: 'Add Image',
-          variant: 'casual',
+          variant: 'standard',
           primaryButton: 'Insert',
           secondaryButton: 'Cancel',
         },
