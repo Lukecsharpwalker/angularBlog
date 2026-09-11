@@ -50,7 +50,7 @@ export class NavbarComponent {
   protected signIn(): void {
     this.dynamicDialogService.openDialog<LoginComponent>(
       this.viewContainerRef,
-      { variant: 'casual' },
+      { variant: 'standard' },
       LoginComponent
     );
   }
