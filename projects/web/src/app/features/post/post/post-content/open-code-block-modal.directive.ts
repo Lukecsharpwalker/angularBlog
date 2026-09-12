@@ -33,9 +33,8 @@ export class OpenCodeBlockModalDirective {
     this.dialogService.openDialog(
       this.viewContainerRef,
       {
-        title: 'Code',
         variant: 'immersive',
-        primaryButton: 'Close',
+        transitionSource: preElement,
         data: { code, language },
       },
       CodeBlockModalComponent
