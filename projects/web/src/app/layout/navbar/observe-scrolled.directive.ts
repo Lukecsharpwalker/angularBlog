@@ -18,7 +18,14 @@ export class ObserveScrolledDirective {
 
   private observeScrolling(): void {
     const controller = new AbortController();
-    const update = () => this.scrolled.set(window.scrollY > 0);
+    const update = () => {
+      //Fix for dynamic dialog scroll blocking, it blocks the scroll but set top to 0,
+      //At 0 navbar is a pill so animation to the pill is triggered
+      if (document.documentElement.classList.contains('page-scroll-blocked')) {
+        return;
+      }
+      this.scrolled.set(window.scrollY > 0);
+    };
 
     update();
     window.addEventListener('scroll', update, { passive: true, signal: controller.signal });
