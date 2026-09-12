@@ -1,17 +1,20 @@
-<div class="card card-lg flex items-start gap-5">
+<div
+  class="card card-lg grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-4 max-sm:p-4 sm:items-start sm:gap-x-5 sm:gap-y-1"
+>
   <shared-avatar
+    class="max-sm:size-12 max-sm:text-base sm:row-span-2"
     [name]="author()?.username"
     [imageUrl]="author()?.avatar_url"
     size="lg"
     type="square-rounded"
   />
-  <div class="flex-1 min-w-0">
+  <div class="min-w-0">
     <div class="text-xs font-bold uppercase tracking-wider text-accent mb-1">Written by</div>
-    <h3 class="font-bold text-lg text-primary mb-1">{{ author()?.username }}</h3>
-    <p class="text-sm text-ink-3 leading-relaxed">
-      <!--       TODO: Add author bio to the user model and display it here.-->
-      Software developer and big Angular fan. Writing about the web, one experiment at a time.
-    </p>
+    <h3 class="font-bold text-base leading-snug text-primary sm:text-lg">{{ author()?.username }}</h3>
   </div>
-  <button type="button" class="btn btn-secondary btn-sm shrink-0">Follow</button>
+  <button type="button" class="btn btn-secondary btn-sm">Follow</button>
+  <p class="col-span-3 text-sm text-ink-3 leading-relaxed sm:col-span-1 sm:col-start-2">
+    <!--       TODO: Add author bio to the user model and display it here.-->
+    Software developer and big Angular fan. Writing about the web, one experiment at a time.
+  </p>
 </div>
