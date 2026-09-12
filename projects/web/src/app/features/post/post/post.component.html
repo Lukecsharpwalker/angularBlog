@@ -1,6 +1,6 @@
 <!-- Add more granular components, whole layout should be build from components -->
 @if (post(); as post) {
-  <div class="mx-auto max-w-5xl px-4 md:px-10">
+  <div class="mx-auto max-w-5xl px-4 max-md:-mt-8 md:px-10">
     <web-post-mobile-toolbar (contentsRequested)="openTableOfContents()" />
 
     <div class="flex flex-col">
@@ -39,7 +39,7 @@
         </h1>
 
         <div
-          class="flex items-center gap-3.5 border-b border-edge-1 pb-6 mb-8 md:border-b-0 md:pb-0"
+          class="flex items-center gap-3.5 border-b border-edge-1 pb-6 mb-6 md:border-b-0 md:pb-0 md:mb-8"
         >
           <shared-avatar
             [name]="post.author?.username"
