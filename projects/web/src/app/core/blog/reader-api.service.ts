@@ -7,7 +7,7 @@ import { createCommentsKey, createPostKey, TRANSFER_STATE_KEYS } from '../utils'
 
 @Injectable({ providedIn: 'root' })
 export class ReaderApiService {
-  //TODO: change pendingUntilEvent to Promise equivalent
+  //TODO: change pendingUntilEvent to Promise equivalent | https://github.com/Lukecsharpwalker/angularBlog/issues/122
   private readonly client = inject(SUPABASE_CLIENT);
   private readonly transferState = inject(TransferState);
   private readonly platformId = inject(PLATFORM_ID);

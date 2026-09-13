@@ -1,12 +1,12 @@
 import { computed, inject } from '@angular/core';
 import {
+  patchState,
   signalStore,
   withComputed,
   withHooks,
   withMethods,
   withProps,
   withState,
-  patchState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
@@ -33,7 +33,7 @@ export const ProfileStore = signalStore(
     _userService: inject(UserService),
   })),
   withComputed(({ userProfile, loading, error }) => ({
-    //TODO: Refactor XD
+    //TODO: Refactor XD | https://github.com/Lukecsharpwalker/angularBlog/issues/60
     userName: computed(() => userProfile()?.username),
     userId: computed(() => userProfile()?.id),
     isLoaded: computed(() => userProfile() !== null),

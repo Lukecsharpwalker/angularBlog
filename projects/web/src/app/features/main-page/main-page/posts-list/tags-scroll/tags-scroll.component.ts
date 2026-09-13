@@ -1,14 +1,14 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
-  inject,
-  viewChild,
-  ElementRef,
-  DestroyRef,
-  input,
   computed,
-  afterNextRender,
+  DestroyRef,
+  ElementRef,
+  inject,
+  input,
   Signal,
+  viewChild,
 } from '@angular/core';
 import { Tag } from '@shared/core/supabase';
 import { TagsScrollService } from './tags-scroll.service';
@@ -30,7 +30,7 @@ export class TagsScrollComponent {
     (this.tags() ?? []).map(tag => ({ ...tag, iconUrl: `url('/tags/${tag.icon}')` }))
   );
 
-  //TODO: REFACTOR, refactor logic, and put logic into service and computed into store, and use store in component
+  //TODO: REFACTOR, refactor logic, and put logic into service and computed into store, and use store in component | https://github.com/Lukecsharpwalker/angularBlog/issues/60
   readonly activeDotClasses: Signal<string[]> = computed(() => {
     const activeIndex = this.scrollService.activeDotIndex();
     const dotCount = PROGRESS_THRESHOLDS.length + 1;
@@ -56,5 +56,4 @@ export class TagsScrollComponent {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
-
 }
