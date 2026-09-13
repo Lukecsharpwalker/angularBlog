@@ -6,6 +6,26 @@
 @source "./app";
 @source "../../shared/src";
 
+:root[data-dialog-transition]::view-transition-group(root),
+:root[data-dialog-transition]::view-transition-group(dialog-content) {
+  animation-duration: var(--duration-dialog-open);
+  animation-timing-function: ease-out;
+}
+
+:root[data-dialog-transition]::view-transition-group(dialog-content) {
+  overflow: clip;
+  border-radius: var(--radius-xl);
+  background: var(--color-code-surface);
+}
+
+:root[data-dialog-transition]::view-transition-old(dialog-content),
+:root[data-dialog-transition]::view-transition-new(dialog-content) {
+  width: 100%;
+  height: 100%;
+  object-fit: none;
+  object-position: top left;
+}
+
 body {
   position: relative;
   min-height: 100vh;
@@ -39,6 +59,12 @@ article ul {
   line-height: 1.3;
   color: var(--color-primary);
   margin: 2rem 0 0.75rem;
+}
+
+@media (width < 48rem) {
+  [data-post-content] > :first-child {
+    margin-top: 0;
+  }
 }
 
 article blockquote {
