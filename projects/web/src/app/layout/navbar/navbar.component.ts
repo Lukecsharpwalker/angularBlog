@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DynamicDialogService } from '@shared/pattern/dynamic-dialog';
-import { LoginComponent } from '../login/login.component';
 import { AuthService } from '@shared/core/auth';
 import { ProfileStore } from '../../core';
 import { IconComponent } from '@shared/pattern/icon-system';
@@ -47,8 +46,9 @@ export class NavbarComponent {
   private readonly dynamicDialogService = inject(DynamicDialogService);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
-  protected signIn(): void {
-    this.dynamicDialogService.openDialog<LoginComponent>(
+  protected async signIn(): Promise<void> {
+    const { LoginComponent } = await import('../login/login.component');
+    this.dynamicDialogService.openDialog(
       this.viewContainerRef,
       { variant: 'standard' },
       LoginComponent

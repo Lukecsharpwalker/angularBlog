@@ -2,7 +2,7 @@ import { provideRouter, Routes, withComponentInputBinding } from '@angular/route
 import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
@@ -10,12 +10,7 @@ import {
   withEventReplay,
   withNoIncrementalHydration,
 } from '@angular/platform-browser';
-import {
-  authInitializer,
-  SUPABASE_CONFIG,
-  SUPABASE_CLIENT,
-  createSupabaseClient,
-} from '@shared/core/supabase';
+import { authInitializer, SUPABASE_CONFIG } from '@shared/core/supabase';
 import { environment } from '../../../../../environments/environment';
 
 export interface CoreOptions {
@@ -26,7 +21,7 @@ export function provideCore({ routes }: CoreOptions) {
   return [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withFetch()),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
     {
@@ -35,10 +30,6 @@ export function provideCore({ routes }: CoreOptions) {
         supabaseUrl: environment.supabaseUrl,
         supabaseKey: environment.supabaseKey,
       },
-    },
-    {
-      provide: SUPABASE_CLIENT,
-      useFactory: createSupabaseClient,
     },
     provideAppInitializer(authInitializer),
   ];

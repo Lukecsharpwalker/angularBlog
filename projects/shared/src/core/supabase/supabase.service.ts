@@ -1,5 +1,6 @@
 import {
   inject,
+  injectAsync,
   Injectable,
   InjectionToken,
   makeStateKey,
@@ -7,7 +8,6 @@ import {
   TransferState,
 } from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { SUPABASE_CLIENT } from './supabase.client';
 import { UserService } from '@shared/core/auth';
 import { UserWithRole } from '@shared/core/auth/user.model';
 
@@ -22,7 +22,9 @@ const APP_USER_TRANSFER_KEY = makeStateKey<UserWithRole | null>('app-user');
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
-  private readonly client = inject(SUPABASE_CLIENT);
+  private readonly client = injectAsync(() =>
+    import('@shared/core/supabase/supabase.client').then(m => m.SUPABASE_CLIENT)
+  );
   private readonly platformId = inject(PLATFORM_ID);
   private readonly userService = inject(UserService);
   private readonly transferState = inject(TransferState);
@@ -39,9 +41,10 @@ export class SupabaseService {
   }
 
   private async handleServerSideAuth(): Promise<void> {
-    if (!this.client) return;
+    const client = await this.client();
+    if (!client) return;
 
-    const { data } = await this.client.auth.getSession();
+    const { data } = await client.auth.getSession();
     if (data.session?.user) {
       //TODO: Write a function mapper | https://github.com/Lukecsharpwalker/angularBlog/issues/126
       const user = data.session.user as UserWithRole;
@@ -55,6 +58,10 @@ export class SupabaseService {
   }
 
   private handleClientSideAuth(): void {
+    if (new URL(window.location.href).searchParams.has('code')) {
+      void this.client();
+    }
+
     if (this.transferState.hasKey(APP_USER_TRANSFER_KEY)) {
       const user = this.transferState.get(APP_USER_TRANSFER_KEY, null);
       this.userService.setAppUser(user);
@@ -62,8 +69,8 @@ export class SupabaseService {
       return;
     }
 
-    this.client.auth
-      .getSession()
+    this.client()
+      .then(client => client.auth.getSession())
       .then(({ data: { session }, error }) => {
         if (error) {
           this.userService.setAppUser(null);
