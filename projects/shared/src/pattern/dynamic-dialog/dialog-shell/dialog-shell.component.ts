@@ -89,7 +89,7 @@ export class DialogShellComponent {
     }
   }
 
-  protected onEscape(event: KeyboardEvent): void {
+  protected onEscape(event: Event): void {
     event.stopPropagation();
   }
 

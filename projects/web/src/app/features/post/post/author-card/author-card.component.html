@@ -3,14 +3,16 @@
 >
   <shared-avatar
     class="max-sm:size-12 max-sm:text-base sm:row-span-2"
-    [name]="author()?.username"
-    [imageUrl]="author()?.avatar_url"
+    [name]="$safeNavigationMigration(author()?.username)"
+    [imageUrl]="$safeNavigationMigration(author()?.avatar_url)"
     size="lg"
     type="square-rounded"
   />
   <div class="min-w-0">
     <div class="text-xs font-bold uppercase tracking-wider text-accent mb-1">Written by</div>
-    <h3 class="font-bold text-base leading-snug text-primary sm:text-lg">{{ author()?.username }}</h3>
+    <h3 class="font-bold text-base leading-snug text-primary sm:text-lg">
+      {{ author()?.username }}
+    </h3>
   </div>
   <button type="button" class="btn btn-secondary btn-sm">Follow</button>
   <p class="col-span-3 text-sm text-ink-3 leading-relaxed sm:col-span-1 sm:col-start-2">

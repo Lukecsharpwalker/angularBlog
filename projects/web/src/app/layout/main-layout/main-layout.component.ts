@@ -1,4 +1,10 @@
-import { afterNextRender, Component, inject, ViewContainerRef } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  inject,
+  ViewContainerRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MobileBottomNavComponent } from '../mobile-bottom-nav/mobile-bottom-nav.component';
@@ -9,6 +15,7 @@ import { CookieConsentService } from '../cookie-consent/cookie-consent.service';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, MobileBottomNavComponent],
   providers: [CookieConsentService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="min-h-screen relative">
       <div class="fixed inset-0 pointer-events-none"></div>

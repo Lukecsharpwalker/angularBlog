@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ToggleComponent } from './toggle.component';
 
 @Component({
   imports: [ReactiveFormsModule, ToggleComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form [formGroup]="form">
       <shared-toggle label="Analytics cookies" formControlName="analytics" />

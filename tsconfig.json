@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -16,9 +15,9 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "paths": {
-      "@shared/pattern/*": ["projects/shared/src/pattern/*"],
-      "@shared/core/*": ["projects/shared/src/core/*"],
-      "@shared/ui/*": ["projects/shared/src/ui/*"]
+      "@shared/pattern/*": ["./projects/shared/src/pattern/*"],
+      "@shared/core/*": ["./projects/shared/src/core/*"],
+      "@shared/ui/*": ["./projects/shared/src/ui/*"]
     },
     "importHelpers": true,
     "target": "ES2022",

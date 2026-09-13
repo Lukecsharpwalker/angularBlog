@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Roles, UserService } from '@shared/core/auth';
 import { BehaviorSubject } from 'rxjs';
@@ -7,6 +7,7 @@ import { HasRoleDirective } from './has-role.directive';
 @Component({
   standalone: true,
   imports: [HasRoleDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<button *webHasRole="requiredRole">Delete</button>',
 })
 class TestHostComponent {

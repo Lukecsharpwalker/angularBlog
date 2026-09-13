@@ -5,7 +5,11 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import {
+  provideClientHydration,
+  withEventReplay,
+  withNoIncrementalHydration,
+} from '@angular/platform-browser';
 import {
   authInitializer,
   SUPABASE_CONFIG,
@@ -24,7 +28,7 @@ export function provideCore({ routes }: CoreOptions) {
     provideHttpClient(withFetch()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
     {
       provide: SUPABASE_CONFIG,
       useValue: {

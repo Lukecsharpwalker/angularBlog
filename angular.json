@@ -156,6 +156,9 @@
             "ssr": {
               "entry": "projects/web/src/server.ts"
             },
+            "security": {
+              "allowedHosts": ["localhost"]
+            },
             "prerender": {
               "routesFile": "routes.txt"
             }

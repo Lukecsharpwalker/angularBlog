@@ -79,8 +79,8 @@ export class NavbarComponent {
     toggleButton?.nativeElement.focus();
   }
 
-  protected closePanelOnOutsideClick(target: Node | null): void {
-    if (!this.host.nativeElement.contains(target)) {
+  protected closePanelOnOutsideClick(target: EventTarget | null): void {
+    if (!this.host.nativeElement.contains(target as Node | null)) {
       this.openPanel.set(null);
     }
   }

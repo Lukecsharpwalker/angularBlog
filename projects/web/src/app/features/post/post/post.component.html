@@ -42,8 +42,8 @@
           class="flex items-center gap-3.5 border-b border-edge-1 pb-6 mb-6 md:border-b-0 md:pb-0 md:mb-8"
         >
           <shared-avatar
-            [name]="post.author?.username"
-            [imageUrl]="post.author?.avatar_url"
+            [name]="$safeNavigationMigration(post.author?.username)"
+            [imageUrl]="$safeNavigationMigration(post.author?.avatar_url)"
             size="md"
           />
 

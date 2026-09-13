@@ -2,8 +2,8 @@
   @for (comment of comments(); track comment.id) {
     <div class="card card-padded flex items-start gap-4">
       <shared-avatar
-        [name]="comment.author?.username"
-        [imageUrl]="comment.author?.avatar_url"
+        [name]="$safeNavigationMigration(comment.author?.username)"
+        [imageUrl]="$safeNavigationMigration(comment.author?.avatar_url)"
         size="sm"
       />
 

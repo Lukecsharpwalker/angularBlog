@@ -19,7 +19,7 @@ import { FirstPostCardComponent } from './post-card/first-post-card/first-post-c
     FirstPostCardComponent,
   ],
   templateUrl: './posts-list.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PostsListComponent {
   postStore = inject(PostsStore);

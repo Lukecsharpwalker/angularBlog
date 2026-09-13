@@ -73,10 +73,10 @@ export class PostMobileBottomActionsComponent implements OnInit, OnDestroy {
     this.shareToggleButton()?.nativeElement.focus();
   }
 
-  protected closeShareMenuOnOutsideClick(target: Node | null): void {
+  protected closeShareMenuOnOutsideClick(target: EventTarget | null): void {
     const content = this.portalContent()?.nativeElement;
 
-    if (content && !content.contains(target)) {
+    if (content && !content.contains(target as Node | null)) {
       this.shareMenuOpen.set(false);
     }
   }
