@@ -2,14 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
-  OnInit,
-  Type,
-  ViewContainerRef,
   inject,
   input,
+  OnInit,
+  Type,
   viewChild,
-  HostListener,
+  ViewContainerRef,
 } from '@angular/core';
+import { DialogShellComponent } from './dialog-shell/dialog-shell.component';
 import { DynamicDialogService } from './dynamic-dialog.service';
 import { ModalConfig } from './modal-config';
 import { ModalCloseStatusEnum, ModalStatus } from './modal-status';
@@ -17,51 +17,35 @@ import { ModalCloseStatusEnum, ModalStatus } from './modal-status';
 @Component({
   selector: 'shared-dynamic-dialog',
   standalone: true,
-  imports: [],
-  providers: [],
   templateUrl: './dynamic-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [DialogShellComponent],
 })
 export class DynamicDialogComponent<C = unknown> implements OnInit {
   readonly component = input<Type<C>>();
-  readonly modalConfig = input<ModalConfig>();
+  readonly modalConfig = input.required<ModalConfig>();
 
-  readonly divEl = viewChild.required('dynamicComponentContainer', {
+  protected readonly ModalCloseStatusEnum = ModalCloseStatusEnum;
+
+  private readonly contentContainer = viewChild.required('dynamicComponentContainer', {
     read: ViewContainerRef,
   });
-
-  dynamicDialogService = inject(DynamicDialogService);
-  componentRef?: ComponentRef<C>;
-  ModalCloseStatusEnum = ModalCloseStatusEnum;
+  private readonly dynamicDialogService = inject(DynamicDialogService);
+  private componentRef?: ComponentRef<C>;
 
   ngOnInit(): void {
-    this.createDynamicComponent();
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      this.closeDialog();
+    const component = this.component();
+    if (component) {
+      this.componentRef = this.contentContainer().createComponent(component);
     }
   }
 
-  closeDialog(modalCloseStatus: ModalCloseStatusEnum = ModalCloseStatusEnum.CLOSED) {
-    const status = {
+  closeDialog(modalCloseStatus: ModalCloseStatusEnum = ModalCloseStatusEnum.CLOSED): void {
+    const status: ModalStatus = {
       data: this.componentRef?.instance,
       closeStatus: modalCloseStatus,
-    } as ModalStatus;
+    };
 
     this.dynamicDialogService.closeDialog(status);
-  }
-
-  onOverlayClick() {
-    this.closeDialog();
-  }
-
-  private createDynamicComponent(): void {
-    if (this.divEl() && this.component()) {
-      this.componentRef = this.divEl().createComponent(this.component()!);
-    }
   }
 }

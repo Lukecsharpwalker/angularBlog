@@ -1,29 +1,22 @@
-import {
-  Injectable,
-  EnvironmentInjector,
-  inject,
-  ComponentRef,
-  Type,
-  Injector,
-} from '@angular/core';
-import { ViewContainerRef } from '@angular/core';
+import { ComponentRef, inject, Injectable, Injector, Type, ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DynamicDialogComponent } from './dynamic-dialog.component';
 import { ModalConfig } from './modal-config';
 import { ModalStatus } from './modal-status';
 import { DYNAMIC_DIALOG_DATA } from './dialog-data.token';
+import { PageScrollService } from './page-scroll.service';
 
 @Injectable({ providedIn: 'root' })
 export class DynamicDialogService<T> {
-  private envInjector = inject(EnvironmentInjector);
-  private componentRef!: ComponentRef<DynamicDialogComponent> | undefined;
+  private readonly pageScrollService = inject(PageScrollService);
+
+  private componentRef?: ComponentRef<DynamicDialogComponent>;
   private closeRef$ = new Subject<ModalStatus<T>>();
-  private injector = inject(Injector);
 
   //TODO: For now need to use with take(1) to avoid memory leak. Need to find a better way to handle this. By service?
   openDialog<C>(
     viewContainerRef: ViewContainerRef,
-    modalConfig?: ModalConfig,
+    modalConfig: ModalConfig,
     component?: Type<C>
   ): Subject<ModalStatus<T>> {
     if (this.componentRef) {
@@ -31,20 +24,20 @@ export class DynamicDialogService<T> {
     }
 
     const dialogInjector = Injector.create({
-      providers: [{ provide: DYNAMIC_DIALOG_DATA, useValue: modalConfig?.data }],
-      parent: this.injector,
+      providers: [{ provide: DYNAMIC_DIALOG_DATA, useValue: modalConfig.data }],
+      parent: viewContainerRef.injector,
     });
 
     this.componentRef = viewContainerRef.createComponent(DynamicDialogComponent, {
-      environmentInjector: this.envInjector,
       injector: dialogInjector,
     });
-    if (component) {
-      this.componentRef.setInput('component', component);
-    }
-    if (modalConfig) {
-      this.componentRef.setInput('modalConfig', modalConfig);
-    }
+
+    this.componentRef.setInput('component', component);
+    this.componentRef.setInput('modalConfig', modalConfig);
+
+    this.pageScrollService.blockPageScroll();
+    this.componentRef.onDestroy(() => this.pageScrollService.releasePageScroll());
+
     return this.closeRef$;
   }
 

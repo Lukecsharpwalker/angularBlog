@@ -1,0 +1,80 @@
+@let headerTitle = variant() === 'immersive' ? undefined : title();
+
+<dialog
+  #dialog
+  [attr.aria-labelledby]="headerTitle ? 'modal-title' : null"
+  [attr.aria-label]="headerTitle ? null : title() || ariaLabel()"
+  (cancel)="onCancel($event)"
+>
+  <div
+    data-dialog-backdrop
+    class="absolute inset-0 glass-overlay-dialog pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <div data-dialog-frame class="relative">
+    <button
+      data-dialog-close
+      (click)="dismiss($event)"
+      type="button"
+      class="absolute size-10 rounded-full items-center justify-center bg-surface-1 shadow-lg hover:bg-error/10 transition-all duration-200 hover:scale-110 group border-2 border-edge-1 hover:border-error/40 z-50 cursor-pointer"
+      aria-label="Close modal"
+    >
+      <svg
+        class="size-5 text-ink-3 group-hover:text-error transition-colors"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+
+    <div
+      #dialogCard
+      data-dialog-card
+      class="shadow-2xl relative outline-hidden"
+      [class.glass-card-dialog]="variant() !== 'immersive'"
+      tabindex="-1"
+    >
+      <div class="absolute inset-0 grain-overlay opacity-5 pointer-events-none"></div>
+
+      @if (variant() === 'sheet') {
+        <button
+          sharedVerticalSwipe
+          type="button"
+          class="relative z-10 flex min-h-11 w-full shrink-0 touch-none select-none items-center justify-center md:hidden"
+          [attr.aria-expanded]="expanded()"
+          [attr.aria-label]="expanded() ? 'Collapse dialog' : 'Expand dialog'"
+          (swipeUp)="expanded.set(true)"
+          (swipeDown)="onSwipeDown()"
+          (swipeOffsetPx)="updateDrag($event)"
+          (click)="onHandleClick($event)"
+        >
+          <span class="h-1 w-10 rounded-full bg-edge-2"></span>
+        </button>
+      }
+
+      <div data-dialog-body class="relative z-10">
+        @if (headerTitle) {
+          <div class="text-center mb-6 shrink-0">
+            <h3 class="text-lg" id="modal-title">{{ headerTitle }}</h3>
+            <div
+              class="mx-auto mt-3 w-96 h-px bg-linear-to-r from-transparent via-edge-2 to-transparent opacity-60 max-md:w-full"
+            ></div>
+          </div>
+        }
+        <ng-content />
+      </div>
+
+      <div data-dialog-actions class="items-center gap-3 justify-end">
+        <ng-content select="[dialogActions]" />
+      </div>
+    </div>
+  </div>
+</dialog>

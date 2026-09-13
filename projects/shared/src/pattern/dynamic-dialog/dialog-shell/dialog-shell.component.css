@@ -1,0 +1,191 @@
+@layer components {
+  dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    overflow: clip;
+    margin: 0;
+    border: 0;
+    padding: calc(var(--spacing) * 4);
+    background: transparent;
+    color: inherit;
+
+    &[open] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &::backdrop {
+      background: transparent;
+    }
+  }
+
+  [data-dialog-backdrop] {
+    animation: var(--animate-fade-in);
+  }
+
+  [data-dialog-frame] {
+    width: fit-content;
+    max-width: var(--container-95vw);
+    max-height: var(--height-95vh);
+    animation: var(--animate-scale-in);
+  }
+
+  [data-dialog-close] {
+    display: flex;
+    top: calc(var(--spacing) * -2);
+    right: calc(var(--spacing) * -2);
+  }
+
+  [data-dialog-card] {
+    max-height: var(--height-95vh);
+    border-radius: var(--radius-2xl);
+    overflow-y: auto;
+  }
+
+  [data-dialog-body] {
+    padding: calc(var(--spacing) * 8);
+  }
+
+  :host([data-variant='immersive']) [data-dialog-card] {
+    background-color: var(--color-surface);
+  }
+
+  [data-dialog-actions] {
+    display: flex;
+    padding: 0 calc(var(--spacing) * 8) calc(var(--spacing) * 6);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  :host([data-variant='immersive']) [data-dialog-actions] {
+    position: static;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  @media (width < 48rem) {
+    dialog[open] {
+      align-items: stretch;
+      padding: 0;
+    }
+
+    [data-dialog-frame] {
+      width: 100%;
+      max-width: 100%;
+      max-height: 100dvh;
+      animation: var(--animate-slide-up);
+    }
+
+    [data-dialog-close] {
+      top: calc(var(--spacing) * 3);
+      right: calc(var(--spacing) * 3);
+    }
+
+    [data-dialog-card] {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      max-height: none;
+      border-radius: 0;
+      overscroll-behavior: contain;
+    }
+
+    [data-dialog-body] {
+      padding: calc(var(--spacing) * 5);
+    }
+
+    [data-dialog-actions] {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 5) var(--spacing-safe-bottom);
+      border-top: 1px solid var(--color-edge-1);
+      background-color: color-mix(in srgb, var(--color-surface-1) 95%, transparent);
+      backdrop-filter: blur(var(--blur-sm));
+    }
+
+    :host([data-variant='sheet']) dialog[open] {
+      align-items: flex-end;
+    }
+
+    :host([data-variant='sheet']) [data-dialog-close],
+    :host([data-variant='immersive']) [data-dialog-close] {
+      display: none;
+    }
+
+    :host([data-variant='sheet']) [data-dialog-card] {
+      height: auto;
+      max-height: var(--height-50dvh);
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+      transition:
+        max-height var(--duration-dialog-settle) var(--ease-sheet),
+        transform var(--duration-dialog-settle) var(--ease-sheet);
+    }
+
+    :host([data-variant='sheet'][data-expanded]) [data-dialog-card] {
+      max-height: var(--height-85dvh);
+    }
+
+    :host([data-variant='sheet'][data-dragging]) [data-dialog-card] {
+      max-height: min(
+        var(--height-85dvh),
+        calc(var(--dialog-drag-start-height) - min(var(--dialog-drag-offset), 0px))
+      );
+      transform: translateY(max(var(--dialog-drag-offset), 0px));
+      transition: none;
+    }
+
+    :host([data-variant='immersive']) [data-dialog-card] {
+      overflow: hidden;
+    }
+
+    :host([data-variant='immersive']) [data-dialog-frame] {
+      animation: dialog-fade-in var(--duration-dialog-open) ease-out;
+    }
+
+    :host([data-variant='immersive']) dialog[data-view-transition] [data-dialog-frame] {
+      animation: none;
+    }
+
+    :host([data-variant='immersive']) [data-dialog-body] {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+      padding: calc(var(--spacing) * 3);
+    }
+  }
+
+  @keyframes dialog-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-dialog-backdrop],
+    [data-dialog-frame],
+    :host([data-variant='immersive']) [data-dialog-frame] {
+      animation: none;
+    }
+
+    :host([data-variant='sheet']) [data-dialog-card] {
+      transition: none;
+    }
+  }
+}
