@@ -1,4 +1,4 @@
-import { inject, Injectable, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
+import { inject, Injectable, Injector, makeStateKey, PLATFORM_ID, TransferState } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { from, map, Observable, of, tap } from 'rxjs';
 import { pendingUntilEvent } from '@angular/core/rxjs-interop';
@@ -11,6 +11,7 @@ export class ProfileService {
   private readonly client = inject(SUPABASE_CLIENT);
   private readonly transferState = inject(TransferState);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly injector = inject(Injector);
 
   getProfile(userId: string): Observable<Profile | null> {
     const PROFILE_TRANSFER_KEY = makeStateKey<Profile | null>(`profile-${userId}`);
@@ -20,7 +21,7 @@ export class ProfileService {
         tap(profile => {
           this.transferState.set(PROFILE_TRANSFER_KEY, profile);
         }),
-        pendingUntilEvent()
+        pendingUntilEvent(this.injector)
       );
     }
 
