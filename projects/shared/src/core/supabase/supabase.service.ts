@@ -43,7 +43,7 @@ export class SupabaseService {
 
     const { data } = await this.client.auth.getSession();
     if (data.session?.user) {
-      //TODO: Write a function mapper
+      //TODO: Write a function mapper | https://github.com/Lukecsharpwalker/angularBlog/issues/126
       const user = data.session.user as UserWithRole;
       this.userService.setAppUser(user);
       this.transferState.set(APP_USER_TRANSFER_KEY, user);
@@ -69,14 +69,12 @@ export class SupabaseService {
           this.userService.setAppUser(null);
           return;
         }
-        if (!session || !session.user) {
+        if (!session?.user) {
           this.userService.setAppUser(null);
           return;
         }
-        if (session.user) {
-          this.userService.setAppUser(session.user as UserWithRole);
-          return;
-        }
+        this.userService.setAppUser(session.user as UserWithRole);
+        return;
       })
       .catch(() => {
         this.userService.setAppUser(null);

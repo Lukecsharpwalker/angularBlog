@@ -5,7 +5,7 @@ import { pendingUntilEvent } from '@angular/core/rxjs-interop';
 import { SUPABASE_CLIENT } from '@shared/core/supabase';
 import { Profile } from '@shared/core/supabase/profiles';
 
-//TODO: Move supabase calls into wrapers to not double api calls logic like withTransferState<T>
+//TODO: Move supabase calls into wrapers to not double api calls logic like withTransferState<T> | https://github.com/Lukecsharpwalker/angularBlog/issues/103
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
   private readonly client = inject(SUPABASE_CLIENT);
@@ -31,7 +31,7 @@ export class ProfileService {
     }
 
     return from(this.client.from('profiles').select('*').eq('id', userId).single()).pipe(
-      map(({ data, error}) => (error ? null : data))
+      map(({ data, error }) => (error ? null : data))
     );
   }
 }
