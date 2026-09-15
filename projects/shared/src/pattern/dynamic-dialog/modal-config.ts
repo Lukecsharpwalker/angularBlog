@@ -7,6 +7,7 @@ export interface ModalConfig<T = unknown> {
   image?: string;
   primaryButton?: string;
   secondaryButton?: string;
+  deleteButton?: string;
   variant: ModalVariant;
   transitionSource?: HTMLElement;
   data?: T;

@@ -40,5 +40,14 @@
         {{ label }}
       </button>
     }
+    @if (modalConfig().deleteButton; as label) {
+      <button
+        (click)="closeDialog(ModalCloseStatusEnum.ACCEPTED)"
+        type="button"
+        class="btn btn-danger"
+      >
+        {{ label }}
+      </button>
+    }
   </ng-container>
 </shared-dialog-shell>
