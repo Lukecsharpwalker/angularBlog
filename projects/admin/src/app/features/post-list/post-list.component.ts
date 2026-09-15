@@ -6,7 +6,7 @@ import {
   signal,
   ViewContainerRef,
 } from '@angular/core';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { take } from 'rxjs';
 import { DynamicDialogService, ModalCloseStatusEnum } from '@shared/pattern/dynamic-dialog';
@@ -16,16 +16,16 @@ import { PanelCardComponent } from '../../ui/panel-card';
 import { StatCardComponent } from '../../ui/stat-card';
 import { StatusChipComponent } from '../../ui/status-chip';
 import { FilterChipComponent } from '../../ui/filter-chip';
-import { PLACEHOLDER_POSTS } from './post-list.data';
-import { PostListRow, PostStatusFilter } from './post-list.model';
+import { PostStatusFilter } from './post-list.model';
 import { ADMIN_ROUTE } from '../../core/routing/admin-routes';
+import { PostListStore } from './post-list.store';
+import { PostListItem, PostListService } from './post-list.service';
 
 @Component({
   selector: 'admin-post-list',
   standalone: true,
   imports: [
     DatePipe,
-    DecimalPipe,
     RouterLink,
     IconComponent,
     PanelCardComponent,
@@ -34,20 +34,17 @@ import { ADMIN_ROUTE } from '../../core/routing/admin-routes';
     FilterChipComponent,
     ChipComponent,
   ],
+  providers: [PostListStore, PostListService],
   templateUrl: './post-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostListComponent {
   protected readonly postRoute = ADMIN_ROUTE.post;
   protected readonly newPostRoute = ADMIN_ROUTE.newPost;
-  protected readonly statusFilters = [
-    { label: 'All', value: 'all' },
-    { label: 'Published', value: 'published' },
-    { label: 'Drafts', value: 'drafts' },
-  ] as const;
+  protected readonly statusFilters: PostStatusFilter[] = ['All', 'Published', 'Drafts'];
 
-  protected readonly statusFilter = signal<PostStatusFilter>('all');
-  protected readonly posts = signal<PostListRow[]>(PLACEHOLDER_POSTS as PostListRow[]);
+  protected readonly statusFilter = signal<PostStatusFilter>('All');
+  protected readonly posts = inject(PostListStore).postList;
 
   protected readonly publishedCount = computed(
     () => this.posts().filter(post => !post.is_draft).length
@@ -60,33 +57,28 @@ export class PostListComponent {
     return total === 0 ? 0 : Math.round((this.publishedCount() / total) * 100);
   });
 
-  protected readonly visiblePosts = computed(() => {
-    const filter = this.statusFilter();
-    if (filter === 'published') {
-      return this.posts().filter(post => !post.is_draft);
-    }
-    if (filter === 'drafts') {
-      return this.posts().filter(post => post.is_draft);
-    }
-    return this.posts();
-  });
+  protected readonly visiblePosts = computed(() =>
+    this.statusFilter() === 'All'
+      ? this.posts()
+      : this.posts().filter(post => post.is_draft === (this.statusFilter() === 'Drafts'))
+  );
 
   private readonly dialogService = inject(DynamicDialogService);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
-  protected confirmDelete(post: PostListRow): void {
+  protected confirmDelete(post: PostListItem): void {
     this.dialogService
       .openDialog(this.viewContainerRef, {
-        title: 'Delete post',
+        title: 'Delete post?',
         variant: 'standard',
-        content: `Delete "${post.title}"? This cannot be undone.`,
-        primaryButton: 'Delete',
+        content: `"${post.title}" will be permanently deleted.`,
+        deleteButton: 'Delete post',
         secondaryButton: 'Cancel',
       })
       .pipe(take(1))
       .subscribe(status => {
         if (status.closeStatus === ModalCloseStatusEnum.ACCEPTED) {
-          this.posts.update(posts => posts.filter(item => item.id !== post.id));
+          console.log(`Post "${post.title}" deleted.`);
         }
       });
   }

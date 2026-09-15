@@ -23,11 +23,11 @@
 <admin-panel-card>
   <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-edge-1">
     <div class="flex gap-2" role="group" aria-label="Filter posts by status">
-      @for (option of statusFilters; track option.value) {
+      @for (option of statusFilters; track option) {
         <admin-filter-chip
-          [label]="option.label"
-          [selected]="option.value === statusFilter()"
-          (activate)="statusFilter.set(option.value)"
+          [label]="option"
+          [selected]="option === statusFilter()"
+          (activate)="statusFilter.set(option)"
         />
       }
     </div>
@@ -39,8 +39,8 @@
     <table class="w-full min-w-3xl border-collapse">
       <thead>
         <tr class="border-b border-edge-1 text-left section-label">
-          <th scope="col" class="px-6 py-3 font-extrabold">Title</th>
-          <th scope="col" class="px-6 py-3 font-extrabold">Tags</th>
+          <th scope="col" class="w-3/10 px-6 py-3 font-extrabold">Title</th>
+          <th scope="col" class="w-3/10 px-6 py-3 font-extrabold">Tags</th>
           <th scope="col" class="px-6 py-3 font-extrabold">Status</th>
           <th scope="col" class="px-6 py-3 font-extrabold">Date</th>
           <th scope="col" class="px-6 py-3 font-extrabold">Views</th>
@@ -55,13 +55,7 @@
           <tr class="border-b border-edge-1 last:border-b-0">
             <td class="px-6 py-4">
               <div class="flex items-center gap-3 min-w-0">
-                <span
-                  class="flex items-center justify-center w-11 h-8.5 shrink-0 rounded-lg bg-nav-active text-primary text-xs font-extrabold"
-                  aria-hidden="true"
-                >
-                  {{ post.title.charAt(0) }}
-                </span>
-                <span class="truncate text-sm font-bold text-primary">{{ post.title }}</span>
+                <span class="wrap-break-word text-sm font-bold text-primary">{{ post.title }}</span>
               </div>
             </td>
 
@@ -82,11 +76,12 @@
             </td>
 
             <td class="px-6 py-4 text-sm font-bold text-ink-2">
-              @if (post.views > 0) {
-                {{ post.views | number }}
-              } @else {
-                —
-              }
+              99
+<!--              @if (post.views > 0) {-->
+<!--                {{ post.views | number }}-->
+<!--              } @else {-->
+<!--                —-->
+<!--              }-->
             </td>
 
             <td class="px-6 py-4">
