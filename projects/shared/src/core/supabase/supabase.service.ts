@@ -59,25 +59,10 @@ export class SupabaseService {
       const user = this.transferState.get(APP_USER_TRANSFER_KEY, null);
       this.userService.setAppUser(user);
       this.transferState.remove(APP_USER_TRANSFER_KEY);
-      return;
     }
 
-    this.client.auth
-      .getSession()
-      .then(({ data: { session }, error }) => {
-        if (error) {
-          this.userService.setAppUser(null);
-          return;
-        }
-        if (!session?.user) {
-          this.userService.setAppUser(null);
-          return;
-        }
-        this.userService.setAppUser(session.user as UserWithRole);
-        return;
-      })
-      .catch(() => {
-        this.userService.setAppUser(null);
-      });
+    this.client.auth.onAuthStateChange((_event, session) => {
+      this.userService.setAppUser((session?.user as UserWithRole | undefined) ?? null);
+    });
   }
 }

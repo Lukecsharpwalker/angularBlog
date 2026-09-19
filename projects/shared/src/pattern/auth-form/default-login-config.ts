@@ -2,7 +2,7 @@ import { InjectionToken, Provider } from '@angular/core';
 import { AuthFormConfig } from './auth-form.model';
 
 export const DEFAULT_LOGIN_CONFIG: AuthFormConfig = {
-  oauthProviders: ['google', 'github', 'linkedin_oidc'],
+  oauthProviders: ['google', 'github'],
   title: 'Welcome Back',
   subtitle: 'Sign in to your account',
   submitButtonText: 'Sign In',

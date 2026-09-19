@@ -1,23 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { Provider } from '@supabase/supabase-js';
-import { from, tap } from 'rxjs';
+import { from } from 'rxjs';
 import { SUPABASE_CLIENT } from '@shared/core/supabase';
-import { UserWithRole } from '@shared/core/auth/user.model';
-import { UserService } from '@shared/core/auth/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly client = inject(SUPABASE_CLIENT);
-  private readonly userService = inject(UserService);
 
   signInWithPassword(email: string, password: string) {
-    return from(this.client.auth.signInWithPassword({ email, password })).pipe(
-      tap(({ data: { user } }) => {
-        if (user) {
-          this.userService.setAppUser(user as UserWithRole);
-        }
-      })
-    );
+    return from(this.client.auth.signInWithPassword({ email, password }));
   }
 
   signUp(email: string, password: string) {
@@ -32,12 +23,6 @@ export class AuthService {
   }
 
   signOut() {
-    return from(this.client.auth.signOut()).pipe(
-      tap(res => {
-        if (!res.error) {
-          this.userService.setAppUser(null);
-        }
-      })
-    );
+    return from(this.client.auth.signOut());
   }
 }

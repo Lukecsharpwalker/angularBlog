@@ -1,6 +1,4 @@
-import {
-  Injectable,
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UserWithRole } from '@shared/core/auth/user.model';
@@ -21,6 +19,14 @@ export class UserService {
   }
 
   setAppUser(user: UserWithRole | null): void {
+    const current = this.appUser.value;
+    if (
+      current !== undefined &&
+      current?.id === user?.id &&
+      current?.app_metadata?.role === user?.app_metadata?.role
+    ) {
+      return;
+    }
     this.appUser.next(user);
   }
 }

@@ -57,3 +57,5 @@ adminSdkConf.json
 #llms
 /llms
 
+/.env
+
