@@ -92,6 +92,8 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "codeCoverage": true,
+            "karmaConfig": "karma.conf.js",
             "tsConfig": "projects/admin/tsconfig.spec.json",
             "assets": [
               {
@@ -223,6 +225,8 @@
               "zone.js",
               "zone.js/testing"
             ],
+            "codeCoverage": true,
+            "karmaConfig": "karma.conf.js",
             "tsConfig": "projects/web/tsconfig.spec.json",
             "assets": [
               {
@@ -268,6 +272,8 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "codeCoverage": true,
+            "karmaConfig": "karma.conf.js",
             "tsConfig": "projects/shared/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
@@ -357,6 +363,8 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "codeCoverage": true,
+            "karmaConfig": "karma.conf.js",
             "tsConfig": "projects/code-samples-mfe/tsconfig.spec.json",
             "assets": [
               {

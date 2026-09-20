@@ -1,6 +1,9 @@
 name: PR Check
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -34,3 +37,11 @@ jobs:
 
       - name: Run unit tests with headless Chrome
         run: npm run test:all
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
+          fail_ci_if_error: false
