@@ -54,16 +54,6 @@ export default defineConfig({
       },
     },
     {
-      name: 'local',
-      testDir: './e2e/web',
-      use: {
-        ...devices['Desktop Chrome'],
-        baseURL: WEB_URL,
-        storageState: 'playwright/.auth/web-user.json',
-      },
-      dependencies: ['web-setup'],
-    },
-    {
       name: 'ssr-anonymous',
       testDir: './e2e/web/ssr/anonymous',
       use: {
@@ -122,14 +112,13 @@ export default defineConfig({
       },
       dependencies: ['web-setup'],
     },
-
   ],
 
   /* Configure local web server for testing */
   webServer: process.env['CI']
     ? undefined
     : {
-        command: 'npm run start:local',
+        command: 'npm run start:web:local-env',
         url: 'http://localhost:4200',
         reuseExistingServer: !process.env['CI'],
       },

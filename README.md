@@ -6,7 +6,7 @@
 ![Playwright](https://img.shields.io/badge/testing-playwright-blue?style=flat-square) 
 ![NPM](https://img.shields.io/npm/v/your-package-name?color=blue)
 
-A modern, feature-rich blog application built with Angular 19 and Supabase. This application provides a responsive, user-friendly interface for reading blog posts and an admin panel for content management.
+A modern, feature-rich blog application built with Angular 20 and Supabase. This application provides a responsive, user-friendly interface for reading blog posts and an admin panel for content management.
 
 ---
 
@@ -35,7 +35,7 @@ A modern, feature-rich blog application built with Angular 19 and Supabase. This
 ## Technologies Used
 
 ### Frontend
-- **Angular 19**
+- **Angular 20**
 - **NgRx Signals**
 - **Tailwind CSS**
 - **DaisyUI**
@@ -55,9 +55,9 @@ A modern, feature-rich blog application built with Angular 19 and Supabase. This
 ## Setup and Installation
 
 ### Prerequisites
-- Node.js (v18 or later)
+- Node.js (v20 or later)
 - npm (v10 or later)
-- Angular CLI (v19 or later)
+- Angular CLI (v20 or later)
 - Docker (for local Supabase setup)
 
 ### Installation Steps
@@ -76,12 +76,12 @@ A modern, feature-rich blog application built with Angular 19 and Supabase. This
 
    **For Unix/macOS users:**
    ```bash
-   npm run setup:local-supabase
+   npm run start:local:backend
    ```
 
    **For Windows users:**
    ```powershell
-   npm run setup:local-supabase:win
+   npm run start:local:backend
    ```
 
    This command will:
@@ -91,21 +91,21 @@ A modern, feature-rich blog application built with Angular 19 and Supabase. This
 
 4. Start the application with local Supabase:
    ```bash
-   npm run start:local
+   npm run start:web:local-env
    ```
    Or use the cloud Supabase instance:
    ```bash
-   npm start
+   npm run start:web
    ```
 
 ### Supabase Management
 - To stop the local Supabase instance:
   ```bash
-  supabase stop
+  npx supabase stop
   ```
 - To start it again:
   ```bash
-  supabase start
+  npx supabase start
   ```
 - To access Supabase Studio (admin interface):
   Open http://localhost:54323 in your browser
@@ -115,12 +115,12 @@ You can sync your local Supabase instance with the cloud instance to get the lat
 
 **For Unix/macOS users:**
 ```bash
-npm run sync:cloud-supabase
+npm run db:seed
 ```
 
 **For Windows users:**
 ```powershell
-npm run sync:cloud-supabase:win
+npm run db:seed
 ```
 
 This command will:

@@ -14,7 +14,7 @@ import { createClient } from '@supabase/supabase-js';
 const [, , userId, newPassword] = process.argv;
 
 if (!userId || !newPassword) {
-  console.error('Usage: ts-node reset-password.ts <userId> <newPassword>');
+  console.error('Usage: npx tsx scripts/reset-password.ts <userId> <newPassword>');
   process.exit(1);
 }
 
@@ -25,7 +25,7 @@ if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
   console.error('Set SUPABASE_URL and SERVICE_ROLE_KEY environment variables.');
   process.exit(1);
 }
-Ś(async () => {
+void (async () => {
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
   });

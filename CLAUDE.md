@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Essential LLM Context Files
 
 - **`/llms/public/app-description.txt`** - Complete application overview, architecture goals, and deployment strategy
-- **`/llms/public/architecture.txt`** - Authoritative enterprise architecture rules and folder structure
+- **`/llms/public/architecture.md`** - Authoritative enterprise architecture rules and folder structure
 - **`/llms/public/llm-full.txt`** - Comprehensive Angular development guidelines and best practices
 - **`/llms/public/styling.txt`** - Authoritative styling architecture (Tailwind v4, design tokens, per-app theming)
 
@@ -82,26 +82,36 @@ This is **angular.fun** - a modern Angular 20+ blog application with Supabase ba
 ### Development
 
 ```bash
-npm start                    # Start main app (development mode)
-npm run start:local          # Start with local Supabase configuration
-npm run start:local:docker   # Open Docker for local development
-npm run start:local:backend  # Start local Supabase instance
+npm run start:web             # Web on port 4200, cloud Supabase
+npm run start:admin           # Admin on port 4201, cloud Supabase
+npm run start:web:local-env   # Web on port 4200, local Supabase
+npm run start:admin:local-env # Admin on port 4201, local Supabase
+npm run start:local:backend   # Start local Supabase instance
+npm run watch:web             # Rebuild web on every change
+npm run watch:admin           # Rebuild admin on every change
 ```
 
 ### Building
 
 ```bash
-npm run build                # Build for production
-npm run build:stats          # Build with bundle analysis stats
-npm run analyze              # Analyze bundle size with webpack-bundle-analyzer
+npm run build                # Web, production
+npm run build:admin          # Admin
+npm run build:all            # shared, web, admin, code-samples-mfe
+npm run build:stats          # Web plus dist/web/stats.json (esbuild metafile)
+npm run serve:ssr:web        # Run the built web SSR server
 ```
 
 ### Testing
 
 ```bash
-npm test                     # Run unit tests with Karma
-npm run e2e                  # Run E2E tests with Playwright
-npm run e2e:local            # Run E2E tests against local environment
+npm run test:web             # Unit tests for web (Karma)
+npm run test:admin           # Unit tests for admin
+npm run test:shared          # Unit tests for shared
+npm run test:mfe             # Unit tests for code-samples-mfe
+npm run test:all             # Unit tests for all four projects
+npm run e2e                  # All Playwright projects
+npm run e2e:web              # Playwright, web project
+npm run e2e:admin            # Playwright, admin project
 ```
 
 ### Supabase Management
@@ -109,16 +119,14 @@ npm run e2e:local            # Run E2E tests against local environment
 ```bash
 npx supabase start           # Start local Supabase
 npx supabase stop            # Stop local Supabase
+npx supabase db reset        # Recreate the local database: migrations and seed/seed.sql
 npm run schema:pull          # Pull remote schema from cloud Supabase
 npm run db:createSeed        # Create database seed file
-npm run db:seed              # Initialize database with seed data
 ```
 
 ### Project-Specific Commands
 
 ```bash
-ng serve admin               # Serve admin project (when refactored)
-ng serve web                 # Serve web project (when refactored)
 ng build shared              # Build shared library
 ng serve code-samples-mfe    # Serve code samples micro-frontend
 ```
@@ -137,7 +145,7 @@ ng serve code-samples-mfe    # Serve code samples micro-frontend
 
 - Use NgRx SignalStore for all state management
 - Feature-scoped stores in individual feature directories
-- Shared stores in `projects/shared/src/data-access/stores`
+- Shared stores in `projects/shared/src/core`
 
 ### Component Structure
 
@@ -191,19 +199,19 @@ ng serve code-samples-mfe    # Serve code samples micro-frontend
 - Keep guards/interceptors/providers at route-level or in `core/` per app.
 - Design tokens live in `projects/shared/src/styles/theme.css`; see `llms/public/styling.txt`.
 
-See the [architecture.txt](llms/private/architecture.txt) document for authoritative rules and dependency boundaries.
+See the [architecture.md](llms/public/architecture.md) document for authoritative rules and dependency boundaries.
 
 ### Styling
 
 - Tailwind CSS v4, CSS-first configuration — no tailwind.config.js; the `@theme` block in `projects/shared/src/styles/theme.css` is the single source of truth
-- Brand palette: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA) — identical in all apps; per-app looks come from overriding semantic variables (`--color-surface` etc.) in each app's `styles.css`
+- Brand palette: primary (#12372A), secondary (#436850), tertiary (#ADBC9F), quaternary (#FBFADA) — identical in all apps; per-app looks come from overriding semantic variables (`--color-surface` etc.) in each app's `src/styles.css`
 - No `@apply` outside app entry stylesheets; full rules in `llms/public/styling.txt`
 - Monitor CSS bundle size with budget limits in angular.json
 
 ### Type Safety
 
 - Strict TypeScript configuration enabled
-- Supabase types generated in `projects/shared/src/models/supabase/`
+- Supabase types generated in `projects/shared/src/core/supabase/`
 - Use proper interfaces for all data models
 
 ### Code Style
@@ -214,9 +222,9 @@ See the [architecture.txt](llms/private/architecture.txt) document for authorita
 
 ### Environment Configuration
 
-- `environment.ts` - Production
-- `environment.development.ts` - Development
-- `environment.local.ts` - Local Supabase instance
+- `environments/environment.ts` - Production
+- `environments/environment.development.ts` - Development
+- `environments/environment.local.ts` - Local Supabase instance
 
 ## Supabase Integration
 

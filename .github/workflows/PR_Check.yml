@@ -33,4 +33,4 @@ jobs:
         run: npm ci
 
       - name: Run unit tests with headless Chrome
-        run: npm run test -- --browsers=ChromeHeadless --watch=false --no-progress
+        run: npm run test:all
